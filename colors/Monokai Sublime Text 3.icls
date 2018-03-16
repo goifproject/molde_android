@@ -495,6 +495,11 @@
         <option name="FOREGROUND" value="f8f8f2" />
       </value>
     </option>
+    <option name="INSTANCE_FINAL_FIELD_ATTRIBUTES">
+      <value>
+        <option name="FOREGROUND" value="f8f8f2" />
+      </value>
+    </option>
     <option name="INTERFACE_NAME_ATTRIBUTES">
       <value>
         <option name="FOREGROUND" value="66d9ef" />
@@ -650,7 +655,7 @@
     </option>
     <option name="STATIC_FIELD_ATTRIBUTES">
       <value>
-        <option name="FOREGROUND" value="f8f8f2" />
+        <option name="FOREGROUND" value="ffa02e" />
       </value>
     </option>
     <option name="STATIC_FINAL_FIELD_ATTRIBUTES">
