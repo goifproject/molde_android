@@ -492,18 +492,40 @@
     </option>
     <option name="INSTANCE_FIELD_ATTRIBUTES">
       <value>
-        <option name="FOREGROUND" value="f8f8f2" />
+        <option name="FOREGROUND" value="ffffff" />
       </value>
     </option>
     <option name="INSTANCE_FINAL_FIELD_ATTRIBUTES">
       <value>
-        <option name="FOREGROUND" value="f8f8f2" />
+        <option name="FOREGROUND" value="ffa02e" />
+        <option name="FONT_TYPE" value="1" />
       </value>
     </option>
     <option name="INTERFACE_NAME_ATTRIBUTES">
       <value>
         <option name="FOREGROUND" value="66d9ef" />
         <option name="FONT_TYPE" value="2" />
+      </value>
+    </option>
+    <option name="JAVA_BLOCK_COMMENT">
+      <value>
+        <option name="FOREGROUND" value="808080" />
+        <option name="FONT_TYPE" value="2" />
+      </value>
+    </option>
+    <option name="JAVA_KEYWORD">
+      <value>
+        <option name="FOREGROUND" value="f92672" />
+      </value>
+    </option>
+    <option name="JAVA_NUMBER">
+      <value>
+        <option name="FOREGROUND" value="ae81ff" />
+      </value>
+    </option>
+    <option name="JAVA_STRING">
+      <value>
+        <option name="FOREGROUND" value="e6db74" />
       </value>
     </option>
     <option name="KOTLIN_ANDROID_EXTENSIONS_PROPERTY_CALL">
@@ -606,6 +628,17 @@
         <option name="FONT_TYPE" value="2" />
       </value>
     </option>
+    <option name="LAMBDA_PARAMETER_ATTRIBUTES">
+      <value>
+        <option name="FOREGROUND" value="66d9ef" />
+        <option name="FONT_TYPE" value="2" />
+      </value>
+    </option>
+    <option name="LOCAL_VARIABLE_ATTRIBUTES">
+      <value>
+        <option name="FOREGROUND" value="faf2c7" />
+      </value>
+    </option>
     <option name="LOG_ERROR_OUTPUT">
       <value>
         <option name="FOREGROUND" value="f92672" />
@@ -642,6 +675,17 @@
       </value>
     </option>
     <option name="PARAMETER_ATTRIBUTES">
+      <value>
+        <option name="FOREGROUND" value="66d9ef" />
+        <option name="FONT_TYPE" value="2" />
+      </value>
+    </option>
+    <option name="REASSIGNED_LOCAL_VARIABLE_ATTRIBUTES">
+      <value>
+        <option name="FOREGROUND" value="faf2c7" />
+      </value>
+    </option>
+    <option name="REASSIGNED_PARAMETER_ATTRIBUTES">
       <value>
         <option name="FOREGROUND" value="66d9ef" />
         <option name="FONT_TYPE" value="2" />
