@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Molde</string>
+    <string name="main_menu_map">몰디 지도</string>
+    <string name="main_menu_magazine">매거진</string>
+    <string name="main_menu_report_list">신고리스트</string>
+    <string name="main_menu_mypage">마이 페이지</string>
+
+</resources>
