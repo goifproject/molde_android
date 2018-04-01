@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.limefriends.molde.menu_map.MoldeSearchMapInfoActivity"
+    android:background="@color/colorLittleWhiteGray">
+
+    <LinearLayout
+        android:id="@+id/loc_map_info_search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="#ffffff"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/loc_map_info_search_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="12dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/map_search_button"
+            android:background="@color/white"/>
+
+        <EditText
+            android:id="@+id/loc_map_info_search_input"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginRight="8dp"
+            android:hint="지역 또는 건물이름 검색"
+            android:maxLength="20"
+            android:singleLine="true"
+            android:theme="@style/LocalSearchInputStyle" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/loc_map_info_search_bar">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/loc_map_info_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/history_map_info_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"/>
+    </FrameLayout>
+
+
+</RelativeLayout>

@@ -1,5 +1,6 @@
 package com.limefriends.molde.menu_map;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -43,11 +44,14 @@ public class MoldeMapFragment extends Fragment implements OnMapReadyCallback {
         SupportMapFragment mapView = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapView);
         mapView.getMapAsync(this);
 
-        search_bar.setElevation(15);
+        search_bar.setElevation(12);
         search_bar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getContext(), "검색 창으로 이동", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent();
+                intent.setClass(getContext(), MoldeSearchMapInfoActivity.class);
+                startActivity(intent);
             }
         });
 
