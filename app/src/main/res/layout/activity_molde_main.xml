@@ -8,19 +8,20 @@
     android:layout_height="match_parent"
     tools:context="com.limefriends.molde.MoldeMainActivity">
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/menu_fragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" />
+        android:layout_height="match_parent" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:background="?android:attr/windowBackground"
-        app:menu="@menu/navigation" />
+        app:menu="@menu/navigation"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"/>
 
 </RelativeLayout>
