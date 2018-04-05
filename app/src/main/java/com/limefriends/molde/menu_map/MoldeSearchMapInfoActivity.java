@@ -3,6 +3,8 @@ package com.limefriends.molde.menu_map;
 import com.limefriends.molde.MoldeMainActivity;
 import com.limefriends.molde.R;
 import com.limefriends.molde.menu_map.cacheManager.Cache;
+import com.limefriends.molde.menu_map.entity.MoldeSearchMapHistoryEntity;
+import com.limefriends.molde.menu_map.entity.MoldeSearchMapInfoEntity;
 
 import android.content.Intent;
 import android.os.Handler;
@@ -13,11 +15,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.support.v7.widget.RecyclerView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -28,7 +33,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MoldeSearchMapInfoActivity extends AppCompatActivity
-        implements MoldeMapInfoRecyclerViewAdapterCallback, MoldeMapHistoryRecyclerViewAdapterCallback {
+        implements MoldeMapInfoRecyclerViewAdapterCallback,
+        MoldeMapHistoryRecyclerViewAdapterCallback{
     @BindView(R.id.loc_map_info_search_bar)
     LinearLayout loc_map_info_search_bar;
     @BindView(R.id.loc_map_info_search_input)
@@ -60,11 +66,22 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
         loc_map_info_search_bar.setElevation(12);
         Intent intent = getIntent();
         String name = intent.getStringExtra("searchName");
-        if(name.equals("검색하기")){
+        if (name.equals("검색하기")) {
             loc_map_info_search_input.setText("");
-        }else{
+        } else {
             loc_map_info_search_input.setText(name);
         }
+        loc_map_info_search_input.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        loc_map_info_search_input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if(actionId == EditorInfo.IME_ACTION_DONE){
+                    loc_map_info_search_button.performClick();
+                }
+                return false;
+            }
+        });
+
         searchFieldInit();
         historyFieldInit();
         delete_all_button.setOnClickListener(new View.OnClickListener() {
@@ -157,11 +174,11 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if(keywordHistoryStr.equals("")){
+        if (keywordHistoryStr.equals("")) {
             return;
-        }else{
+        } else {
             keywordHistoryStr = keywordHistoryStr.trim();
-            if(keywordHistoryStr.charAt(0) == ','){
+            if (keywordHistoryStr.charAt(0) == ',') {
                 keywordHistoryStr = keywordHistoryStr.substring(0, 1);
                 try {
                     cache.Write(keywordHistoryStr);
@@ -169,7 +186,7 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
                     e.printStackTrace();
                 }
                 return;
-            }else{
+            } else {
                 makeHistoryList(keywordHistoryStr);
             }
         }
@@ -179,7 +196,7 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
     private void makeHistoryList(String keywordHistoryStr) {
         String[] historyArray = keywordHistoryStr.split(",");
         ArrayList<MoldeSearchMapHistoryEntity> historyEntityList = new ArrayList<MoldeSearchMapHistoryEntity>();
-        for(int i = 0; i < historyArray.length; i++){
+        for (int i = 0; i < historyArray.length; i++) {
             String[] historyElem = historyArray[i].split("\\|");
             MoldeSearchMapHistoryEntity historyEntity;
             String mapLat = historyElem[0];
@@ -213,8 +230,6 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        /*TextView loc_search_input = ((MoldeMainActivity) MoldeMainActivity.allContext).findViewById(R.id.loc_search_input);
-        loc_search_input.setText(R.string.search);*/
         checkBackPressed = true;
     }
 }

@@ -24,14 +24,18 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.limefriends.molde.MoldeMainActivity;
 import com.limefriends.molde.R;
+import com.limefriends.molde.menu_map.entity.MoldeSearchMapHistoryEntity;
+import com.limefriends.molde.menu_map.entity.MoldeSearchMapInfoEntity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MoldeMapFragment extends Fragment implements OnMapReadyCallback, MoldeMainActivity.onKeyBackPressedListener {
+public class MoldeMapFragment extends Fragment
+        implements OnMapReadyCallback, MoldeMainActivity.onKeyBackPressedListener {
     @BindView(R.id.map_ui)
     RelativeLayout map_ui;
     @BindView(R.id.loc_search_bar)
@@ -39,7 +43,7 @@ public class MoldeMapFragment extends Fragment implements OnMapReadyCallback, Mo
     @BindView(R.id.report_hitory)
     LinearLayout report_history;
     @BindView(R.id.report_history_header)
-    LinearLayout report_history_header;
+    RelativeLayout report_history_header;
     @BindView(R.id.loc_search_input)
     TextView loc_search_input;
     @BindView(R.id.my_loc_button)
@@ -58,7 +62,8 @@ public class MoldeMapFragment extends Fragment implements OnMapReadyCallback, Mo
     private String name = "";
     private String telNo = "";
     private int moveCnt = 0;
-    boolean chk = false;
+    private boolean backChk = false;
+    private boolean initChk = false;
 
     public static MoldeMapFragment newInstance() {
         return new MoldeMapFragment();
@@ -106,13 +111,15 @@ public class MoldeMapFragment extends Fragment implements OnMapReadyCallback, Mo
             @Override
             public void onClick(View view) {
                 Toast.makeText(getContext(), "신고 페이지로 넘어가기", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent();
+                intent.setClass(getContext(), MoldeReportActivity.class);
+                startActivity(intent);
             }
         });
 
+        initChk = true;
         return view;
     }
-
-
 
     @Override
     public void onStart() {
@@ -137,10 +144,12 @@ public class MoldeMapFragment extends Fragment implements OnMapReadyCallback, Mo
                 report_history_header.setElevation(12);
                 report_history.bringToFront();
                 report_history.setVisibility(View.VISIBLE);
+                initChk = false;
                 if(MoldeSearchMapInfoActivity.checkBackPressed == false){
                     Animation trans_to_little_up = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_little_up);
                     map_view_layout.startAnimation(trans_to_little_up);
                 }
+                report_history.setClickable(true);
             }else if(entity == null && historyEntity != null){
                 Toast.makeText(getContext(), historyEntity.toString(), Toast.LENGTH_LONG).show();
                 lat = historyEntity.getMapLat();
@@ -151,29 +160,35 @@ public class MoldeMapFragment extends Fragment implements OnMapReadyCallback, Mo
                 report_history_header.setElevation(12);
                 report_history.bringToFront();
                 report_history.setVisibility(View.VISIBLE);
+                initChk = false;
                 if(MoldeSearchMapInfoActivity.checkBackPressed == false) {
                     Animation trans_to_little_up = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_little_up);
                     map_view_layout.startAnimation(trans_to_little_up);
                 }
+                report_history.setClickable(true);
             }
         }
     }
-
-    /*public void moveDefaultCamera(){
-        LatLng moveLoc = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(moveLoc, 17));
-    }
-
-    public void moveSearchCamera(){
-        LatLng moveLoc = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(moveLoc, 17));
-        mMap.moveCamera(CameraUpdateFactory.scrollBy(0, 240));
-    }*/
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         ((MoldeMainActivity)context).setOnKeyBackPressedListener(this);
+        if(report_history != null){
+            Animation trans_to_down = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_down);
+            report_history.startAnimation(trans_to_down);
+            report_history.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public void makeMarker(){
+        MarkerOptions markerOptions = new MarkerOptions();
+        LatLng myLocation = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
+        markerOptions.position(myLocation);
+        markerOptions.title(name);
+        markerOptions.snippet(telNo);
+        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.map_icon));
+        mMap.addMarker(markerOptions).showInfoWindow();
     }
 
     @Override
@@ -182,6 +197,11 @@ public class MoldeMapFragment extends Fragment implements OnMapReadyCallback, Mo
 
         LatLng moveLoc = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(moveLoc, 17));
+
+
+        if(initChk == false){
+            makeMarker();
+        }
 
         /*
         지도 UI 설정 ZOOM 레벨 설정
@@ -195,19 +215,12 @@ public class MoldeMapFragment extends Fragment implements OnMapReadyCallback, Mo
         uiSettings.setMapToolbarEnabled(true);
         uiSettings.setMyLocationButtonEnabled(true);
 
-        MarkerOptions markerOptions = new MarkerOptions();
-        LatLng myLocation = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
-        markerOptions.position(myLocation);
-        markerOptions.title(name);
-        markerOptions.snippet(telNo);
-        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.map_icon));
-        mMap.addMarker(markerOptions).showInfoWindow();
+
 
         /*********************** Map Click ***********************/
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-
             }
         });
         /*********************** Map long Click ***********************/
@@ -215,6 +228,22 @@ public class MoldeMapFragment extends Fragment implements OnMapReadyCallback, Mo
             @Override
             public void onMapLongClick(LatLng latLng) {
 
+            }
+        });
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                if(Double.parseDouble(lat) == marker.getPosition().latitude && Double.parseDouble(lng) == marker.getPosition().longitude && !name.equals("")){
+                    report_history.setVisibility(View.VISIBLE);
+                    Animation trans_to_up = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_up);
+                    Animation trans_to_little_up = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_little_up);
+                    report_history.startAnimation(trans_to_up);
+                    map_view_layout.startAnimation(trans_to_little_up);
+                    backChk = false;
+                    report_history.setClickable(true);
+                }
+                return false;
             }
         });
     }
@@ -229,20 +258,22 @@ public class MoldeMapFragment extends Fragment implements OnMapReadyCallback, Mo
 
     @Override
     public void onBackKey(){
-        if(chk == false){
+        if(backChk == false && initChk == false){
             Animation trans_to_down = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_down);
             Animation trans_to_little_down = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_little_down);
             report_history.startAnimation(trans_to_down);
             report_history.setVisibility(View.INVISIBLE);
             map_view_layout.startAnimation(trans_to_little_down);
-            chk = true;
-        }else{
+            backChk = true;
+            report_history.setClickable(false);
+        }else if(backChk == true && initChk == false){
             Animation trans_to_up = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_up);
             Animation trans_to_little_up = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_little_up);
             report_history.startAnimation(trans_to_up);
             report_history.setVisibility(View.VISIBLE);
             map_view_layout.startAnimation(trans_to_little_up);
-            chk = false;
+            backChk = false;
+            report_history.setClickable(false);
         }
     }
 
@@ -250,10 +281,10 @@ public class MoldeMapFragment extends Fragment implements OnMapReadyCallback, Mo
     public class MyLocationListener implements LocationListener {
         //위치정보 보여주기
         //구글 맵 이동
-        int count = 0;
+        int syncCount = 0;
         @Override
         public void onLocationChanged(Location location) {
-            if(count == 0) {
+            if(syncCount == 0) {
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
 
@@ -263,7 +294,7 @@ public class MoldeMapFragment extends Fragment implements OnMapReadyCallback, Mo
                 mMap.addMarker(
                         new MarkerOptions().position(position).title("내 위치").icon(BitmapDescriptorFactory.fromResource(R.drawable.map_icon))
                 ).showInfoWindow();
-                count ++;
+                syncCount++;
             }
         }
 
@@ -280,5 +311,11 @@ public class MoldeMapFragment extends Fragment implements OnMapReadyCallback, Mo
         }
 
     }
+
+    public void setMapHistoryBoundaryClick(){
+        report_history.setClickable(false);
+    }
     /****************************************/
+
+
 }

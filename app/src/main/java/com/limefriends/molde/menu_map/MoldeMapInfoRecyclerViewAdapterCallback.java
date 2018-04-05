@@ -1,6 +1,8 @@
 package com.limefriends.molde.menu_map;
 
 
+import com.limefriends.molde.menu_map.entity.MoldeSearchMapInfoEntity;
+
 import java.io.IOException;
 
 public interface MoldeMapInfoRecyclerViewAdapterCallback {
