@@ -3,6 +3,7 @@ package com.limefriends.molde.menu_map;
 import com.limefriends.molde.R;
 import com.limefriends.molde.menu_map.autosearch.SearchPoiParse;
 import com.limefriends.molde.menu_map.cacheManager.Cache;
+import com.limefriends.molde.menu_map.entity.MoldeSearchMapInfoEntity;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
