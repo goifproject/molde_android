@@ -4,5 +4,7 @@
     <string name="main_menu_magazine">매거진</string>
     <string name="main_menu_report_list">피드</string>
     <string name="main_menu_mypage">마이 페이지</string>
-
+    <string name="search">검색하기</string>
+    <string name="search_loc_bld">지역 또는 건물이름 검색</string>
+    <string name="report_history">신고내역</string>
 </resources>
