@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import com.limefriends.molde.R;
 import com.limefriends.molde.menu_map.cacheManager.Cache;
 import java.io.IOException;
@@ -69,7 +69,7 @@ public class MoldeMapHistroyRecyclerViewAdapter extends RecyclerView.Adapter<Rec
                 public void onClick(View view) {
                     String keywordHistoryStr = "";
                     if(historyList.size() <= 1){
-                        historyList.clear();
+                        historyList.remove(position);
                         notifyItemRemoved(position);
                         try {
                             cache.Write(keywordHistoryStr);
@@ -102,22 +102,59 @@ public class MoldeMapHistroyRecyclerViewAdapter extends RecyclerView.Adapter<Rec
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.e("맵 정보",
-                            historyList.get(position).getName() + ", " +
-                            historyList.get(position).getMapLat() + ", " +
-                            historyList.get(position).getMapLng() + ", " +
-                            historyList.get(position).getBizName() + ", " +
-                            historyList.get(position).getMainAddress() + ", " +
-                            historyList.get(position).getTelNo());
-                    callback.applyHistoryMapInfo(new MoldeSearchMapHistoryEntity(
-                            historyList.get(position).getMapLat(),
-                            historyList.get(position).getMapLng(),
-                            historyList.get(position).getName(),
-                            historyList.get(position).getMainAddress(),
-                            historyList.get(position).getBizName(),
-                            historyList.get(position).getTelNo()
-                            )
-                    );
+                    try {
+                        /*Log.e("맵 정보",
+                                historyList.get(position).getName() + ", " +
+                                        historyList.get(position).getMapLat() + ", " +
+                                        historyList.get(position).getMapLng() + ", " +
+                                        historyList.get(position).getBizName() + ", " +
+                                        historyList.get(position).getMainAddress() + ", " +
+                                        historyList.get(position).getTelNo());*/
+                        callback.applyHistoryMapInfo(new MoldeSearchMapHistoryEntity(
+                                        historyList.get(position).getMapLat(),
+                                        historyList.get(position).getMapLng(),
+                                        historyList.get(position).getName(),
+                                        historyList.get(position).getMainAddress(),
+                                        historyList.get(position).getBizName(),
+                                        historyList.get(position).getTelNo()
+                                )
+                        );
+                    }catch (ArrayIndexOutOfBoundsException e){
+                        Log.e("맵 정보",
+                                historyList.get(0).getName() + ", " +
+                                        historyList.get(0).getMapLat() + ", " +
+                                        historyList.get(0).getMapLng() + ", " +
+                                        historyList.get(0).getBizName() + ", " +
+                                        historyList.get(0).getMainAddress() + ", " +
+                                        historyList.get(0).getTelNo());
+                        callback.applyHistoryMapInfo(new MoldeSearchMapHistoryEntity(
+                                        historyList.get(0).getMapLat(),
+                                        historyList.get(0).getMapLng(),
+                                        historyList.get(0).getName(),
+                                        historyList.get(0).getMainAddress(),
+                                        historyList.get(0).getBizName(),
+                                        historyList.get(0).getTelNo()
+                                )
+                        );
+                    }finally {
+                        Log.e("맵 정보",
+                                historyList.get(0).getName() + ", " +
+                                        historyList.get(0).getMapLat() + ", " +
+                                        historyList.get(0).getMapLng() + ", " +
+                                        historyList.get(0).getBizName() + ", " +
+                                        historyList.get(0).getMainAddress() + ", " +
+                                        historyList.get(0).getTelNo());
+                        callback.applyHistoryMapInfo(new MoldeSearchMapHistoryEntity(
+                                        historyList.get(0).getMapLat(),
+                                        historyList.get(0).getMapLng(),
+                                        historyList.get(0).getName(),
+                                        historyList.get(0).getMainAddress(),
+                                        historyList.get(0).getBizName(),
+                                        historyList.get(0).getTelNo()
+                                )
+                        );
+                    }
+                    MoldeSearchMapInfoActivity.checkBackPressed = false;
                 }
             });
         }
