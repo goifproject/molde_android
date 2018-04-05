@@ -2,32 +2,59 @@ package com.limefriends.molde.menu_map.autosearch;
 
 
 public class Poi {
+    //POI 의  id
     private String id;
+    //POI 의 name
     private String name;
+    //POI 에 대한 전화번호
     private String telNo;
+    //시설물 입구 위도 좌표
     private String frontLat;
+    //시설물 입구 경도 좌표
     private String frontLon;
+    //중심점 위도 좌표
     private String noorLat;
+    //중심점 경도 좌표
     private String noorLon;
+    //표출 주소 대분류명
     private String upperAddrName;
+    //표출 주소 중분류명
     private String middleAddrName;
+    //표출 주소 소분류명
     private String lowerAddrName;
+    //표출 주소 세분류명
     private String detailAddrName;
-    private String mlClass;
+    //본번
     private String firstNo;
+    //부번
     private String secondNo;
+    //도로명
     private String roadName;
+    //건물번호 1
     private String firstBuildNo;
+    //건물번호 2
     private String secondBuildNo;
+    //업종 대분류명
+    private String mlClass;
+    //거리(km)
     private String radius;
+    //업소명
     private String bizName;
+    //시설목적
     private String upperBizName;
+    //시설분류
     private String middleBizName;
+    //시설이름 ex) 지하철역 병원 등
     private String lowerBizName;
+    //상세 이름
     private String detailBizName;
+    //길안내 요청 유무
     private String rpFlag;
+    //주차 가능유무
     private String parkFlag;
+    //POI 상세정보 유무
     private String detailInfoFlag;
+    //소개 정보
     private String desc;
 
     public String getId() {

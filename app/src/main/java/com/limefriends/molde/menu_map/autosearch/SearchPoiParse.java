@@ -18,12 +18,12 @@ import java.util.ArrayList;
 public class SearchPoiParse extends AsyncTask<String, Void, ArrayList<MoldeSearchMapInfoEntity>> {
     private final String TMAP_API_KEY = "846fd0ff-fac4-4e07-9c7c-1950cc0131dd";
     private final int SEARCH_COUNT = 20;  // minimum is 20
-    private ArrayList<MoldeSearchMapInfoEntity> mListData;
+    private ArrayList<MoldeSearchMapInfoEntity> searchMapListData;
     private MoldeMapInfoRecyclerViewAdapter mAdapter;
 
     public SearchPoiParse(MoldeMapInfoRecyclerViewAdapter adapter) {
         this.mAdapter = adapter;
-        mListData = new ArrayList<MoldeSearchMapInfoEntity>();
+        searchMapListData = new ArrayList<MoldeSearchMapInfoEntity>();
     }
 
     @Override
@@ -68,26 +68,34 @@ public class SearchPoiParse extends AsyncTask<String, Void, ArrayList<MoldeSearc
 
             String line = reader.readLine();
             if (line == null) {
-                mListData.clear();
-                return mListData;
+                searchMapListData.clear();
+                return searchMapListData;
             }
 
             reader.close();
 
-            mListData.clear();
+            //Log.e("response", line);
+
 
             TMapSearchInfo searchPoiInfo = new Gson().fromJson(line, TMapSearchInfo.class);
 
             ArrayList<Poi> poi = searchPoiInfo.getSearchPoiInfo().getPois().getPoi();
             for (int i = 0; i < poi.size(); i++) {
-                String fullAddr = poi.get(i).getUpperAddrName() + " " + poi.get(i).getMiddleAddrName() +
-                        " " + poi.get(i).getLowerAddrName() + " " + poi.get(i).getDetailAddrName();
-                mListData.add(new MoldeSearchMapInfoEntity(poi.get(i).getName(), fullAddr, poi.get(i).getFrontLat(), poi.get(i).getFrontLon()));
+                String mainAddr = "";
+                if(poi.get(i).getSecondNo() == null || poi.get(i).getSecondNo().trim().equals("")){
+                    mainAddr = poi.get(i).getUpperAddrName().trim() + " " + poi.get(i).getMiddleAddrName().trim() +
+                            " " + poi.get(i).getLowerAddrName().trim() + " " + poi.get(i).getDetailAddrName().trim() + " " + poi.get(i).getFirstNo().trim();
+                }else{
+                    mainAddr = poi.get(i).getUpperAddrName().trim() + " " + poi.get(i).getMiddleAddrName().trim() +
+                            " " + poi.get(i).getLowerAddrName().trim() + " " + poi.get(i).getDetailAddrName().trim() + " " + poi.get(i).getFirstNo().trim() + "-" + poi.get(i).getSecondNo().trim();
+                }
+                String streetAddr = poi.get(i).getRoadName().trim() + " " + poi.get(i).getFirstBuildNo().trim();
+                searchMapListData.add(new MoldeSearchMapInfoEntity(poi.get(i).getNoorLat(), poi.get(i).getNoorLon(), poi.get(i).getName(), mainAddr, streetAddr, poi.get(i).getLowerBizName(), poi.get(i).getTelNo()));
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return mListData;
+        return searchMapListData;
     }
 }

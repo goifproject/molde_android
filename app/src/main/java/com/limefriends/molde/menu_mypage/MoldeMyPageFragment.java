@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.limefriends.molde.R;
-import com.limefriends.molde.menu_map.MoldeMapFragment;
 
 public class MoldeMyPageFragment extends Fragment {
 
@@ -18,7 +17,7 @@ public class MoldeMyPageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_molde_mypage, container, false);
+        return inflater.inflate(R.layout.mypage_fragment, container, false);
     }
 
 

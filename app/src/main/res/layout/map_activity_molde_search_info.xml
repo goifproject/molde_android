@@ -24,17 +24,26 @@
             android:padding="12dp"
             android:scaleType="fitXY"
             android:src="@drawable/map_search_button"
-            android:background="@color/white"/>
+            android:background="@android:color/transparent"/>
 
         <EditText
             android:id="@+id/loc_map_info_search_input"
-            android:layout_width="match_parent"
+            android:layout_width="244dp"
             android:layout_height="48dp"
-            android:layout_marginRight="8dp"
-            android:hint="지역 또는 건물이름 검색"
+            android:hint="@string/search_loc_bld"
             android:maxLength="20"
             android:singleLine="true"
             android:theme="@style/LocalSearchInputStyle" />
+
+        <ImageButton
+            android:id="@+id/delete_all_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="8dp"
+            android:scaleType="fitXY"
+            android:layout_gravity="right"
+            android:background="@android:color/transparent"
+            android:src="@drawable/close_button"/>
     </LinearLayout>
 
     <FrameLayout
