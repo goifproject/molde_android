@@ -106,6 +106,7 @@ public class MoldeMainActivity extends AppCompatActivity{
             Toast.makeText(getApplicationContext(), "한번 더 누르면 종료", Toast.LENGTH_SHORT);
             if (mOnKeyBackPressedListener != null) {
                 mOnKeyBackPressedListener.onBackKey();
+                return;
             }
             return;
         }else {
