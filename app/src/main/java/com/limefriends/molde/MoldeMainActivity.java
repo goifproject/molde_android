@@ -13,12 +13,12 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.limefriends.molde.menu_magazine.MoldeMagazineFragment;
-import com.limefriends.molde.menu_map.MoldeSearchMapHistoryEntity;
-import com.limefriends.molde.menu_map.MoldeSearchMapInfoEntity;
+import com.limefriends.molde.menu_map.MoldeSearchMapInfoActivity;
+import com.limefriends.molde.menu_map.entity.MoldeSearchMapHistoryEntity;
+import com.limefriends.molde.menu_map.entity.MoldeSearchMapInfoEntity;
 import com.limefriends.molde.menu_map.MoldeMapFragment;
 import com.limefriends.molde.menu_mypage.MoldeMyPageFragment;
 import com.limefriends.molde.menu_reportlist.MoldeReportListFragment;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -31,8 +31,6 @@ public class MoldeMainActivity extends AppCompatActivity{
     FragmentManager fm;
     MoldeSearchMapInfoEntity entity;
     MoldeSearchMapHistoryEntity historyEntity;
-    MoldeMapFragment moldeMapFragment;
-    Toast toast;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -107,6 +105,7 @@ public class MoldeMainActivity extends AppCompatActivity{
             Toast.makeText(getApplicationContext(), "한번 더 누르면 종료", Toast.LENGTH_SHORT);
             if (mOnKeyBackPressedListener != null) {
                 mOnKeyBackPressedListener.onBackKey();
+                return;
             }
             return;
         }else {

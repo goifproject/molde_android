@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 
 import com.google.gson.Gson;
 import com.limefriends.molde.menu_map.MoldeMapInfoRecyclerViewAdapter;
-import com.limefriends.molde.menu_map.MoldeSearchMapInfoEntity;
+import com.limefriends.molde.menu_map.entity.MoldeSearchMapInfoEntity;
 
 import java.io.BufferedReader;
 import java.io.IOException;

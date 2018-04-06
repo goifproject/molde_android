@@ -11,8 +11,12 @@ import android.widget.TextView;
 
 import com.limefriends.molde.R;
 import com.limefriends.molde.menu_map.cacheManager.Cache;
+import com.limefriends.molde.menu_map.entity.MoldeSearchMapHistoryEntity;
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -54,7 +58,7 @@ public class MoldeMapHistroyRecyclerViewAdapter extends RecyclerView.Adapter<Rec
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.history_map_info_list_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.map_list_item_history_info, parent, false);
         return new MapHistoryViewHolder(view);
     }
 
@@ -82,8 +86,9 @@ public class MoldeMapHistroyRecyclerViewAdapter extends RecyclerView.Adapter<Rec
                     try {
                         notifyItemRemoved(position);
                         historyList.remove(position);
+                        Collections.reverse(historyList);
                         for(int i = 0; i < historyList.size(); i++){
-                            keywordHistoryStr =
+                            keywordHistoryStr +=
                                             historyList.get(i).getMapLat()
                                     + "|" + historyList.get(i).getMapLng()
                                     + "|" + historyList.get(i).getName()
@@ -103,13 +108,6 @@ public class MoldeMapHistroyRecyclerViewAdapter extends RecyclerView.Adapter<Rec
                 @Override
                 public void onClick(View v) {
                     try {
-                        /*Log.e("맵 정보",
-                                historyList.get(position).getName() + ", " +
-                                        historyList.get(position).getMapLat() + ", " +
-                                        historyList.get(position).getMapLng() + ", " +
-                                        historyList.get(position).getBizName() + ", " +
-                                        historyList.get(position).getMainAddress() + ", " +
-                                        historyList.get(position).getTelNo());*/
                         callback.applyHistoryMapInfo(new MoldeSearchMapHistoryEntity(
                                         historyList.get(position).getMapLat(),
                                         historyList.get(position).getMapLng(),
@@ -119,24 +117,7 @@ public class MoldeMapHistroyRecyclerViewAdapter extends RecyclerView.Adapter<Rec
                                         historyList.get(position).getTelNo()
                                 )
                         );
-                    }catch (ArrayIndexOutOfBoundsException e){
-                        Log.e("맵 정보",
-                                historyList.get(0).getName() + ", " +
-                                        historyList.get(0).getMapLat() + ", " +
-                                        historyList.get(0).getMapLng() + ", " +
-                                        historyList.get(0).getBizName() + ", " +
-                                        historyList.get(0).getMainAddress() + ", " +
-                                        historyList.get(0).getTelNo());
-                        callback.applyHistoryMapInfo(new MoldeSearchMapHistoryEntity(
-                                        historyList.get(0).getMapLat(),
-                                        historyList.get(0).getMapLng(),
-                                        historyList.get(0).getName(),
-                                        historyList.get(0).getMainAddress(),
-                                        historyList.get(0).getBizName(),
-                                        historyList.get(0).getTelNo()
-                                )
-                        );
-                    }finally {
+                    }catch (IndexOutOfBoundsException e) {
                         Log.e("맵 정보",
                                 historyList.get(0).getName() + ", " +
                                         historyList.get(0).getMapLat() + ", " +
@@ -168,5 +149,6 @@ public class MoldeMapHistroyRecyclerViewAdapter extends RecyclerView.Adapter<Rec
     public void setCallback(MoldeMapHistoryRecyclerViewAdapterCallback callback) {
         this.callback = callback;
     }
+
 
 }

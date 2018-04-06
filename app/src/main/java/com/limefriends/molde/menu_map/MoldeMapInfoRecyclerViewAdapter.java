@@ -3,13 +3,16 @@ package com.limefriends.molde.menu_map;
 import com.limefriends.molde.R;
 import com.limefriends.molde.menu_map.autosearch.SearchPoiParse;
 import com.limefriends.molde.menu_map.cacheManager.Cache;
+import com.limefriends.molde.menu_map.entity.MoldeSearchMapInfoEntity;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,6 +39,8 @@ public class MoldeMapInfoRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
         TextView map_info_title;
         @BindView(R.id.map_info_address)
         TextView map_info_address;
+        @BindView(R.id.check_favorite_toggle)
+        ToggleButton check_favorite_toggle;
 
         private String name;
         private String mainAddress;
@@ -53,14 +58,14 @@ public class MoldeMapInfoRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.loc_map_info_list_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.map_list_item_loc_info, parent, false);
         return new MapInfoViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         //final int ItemPosition = position;
-
+        final Resources res = holder.itemView.getContext().getResources();
         if (holder instanceof MapInfoViewHolder) {
             final MapInfoViewHolder viewHolder = (MapInfoViewHolder) holder;
             viewHolder.map_info_title.setText(itemLists.get(position).getName());
@@ -145,6 +150,21 @@ public class MoldeMapInfoRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
                         );
                     } catch (IOException e) {
                         e.printStackTrace();
+                    }
+                }
+            });
+
+            viewHolder.check_favorite_toggle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(viewHolder.check_favorite_toggle.isChecked()){
+                        viewHolder.check_favorite_toggle.setBackgroundDrawable(
+                                res.getDrawable(R.drawable.star_on)
+                        );
+                    }else{
+                        viewHolder.check_favorite_toggle.setBackgroundDrawable(
+                                res.getDrawable(R.drawable.star_off)
+                        );
                     }
                 }
             });

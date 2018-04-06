@@ -1,21 +1,23 @@
-package com.limefriends.molde.menu_map;
+package com.limefriends.molde.menu_map.entity;
 
 
 import java.io.Serializable;
 
-public class MoldeSearchMapHistoryEntity implements Serializable{
+public class MoldeSearchMapInfoEntity implements Serializable{
     private String mapLat;
     private String mapLng;
     private String name;
     private String mainAddress;
+    private String streetAddress;
     private String bizName;
     private String telNo;
 
-    public MoldeSearchMapHistoryEntity(String mapLat, String mapLng, String name, String mainAddress, String bizName, String telNo) {
+    public MoldeSearchMapInfoEntity(String mapLat, String mapLng, String name, String mainAddress, String streetAddress, String bizName, String telNo) {
         this.mapLat = mapLat;
         this.mapLng = mapLng;
         this.name = name;
         this.mainAddress = mainAddress;
+        this.streetAddress = streetAddress;
         this.bizName = bizName;
         this.telNo = telNo;
     }
@@ -50,6 +52,14 @@ public class MoldeSearchMapHistoryEntity implements Serializable{
 
     public void setMainAddress(String mainAddress) {
         this.mainAddress = mainAddress;
+    }
+
+    public String getStreetAddress() {
+        return streetAddress;
+    }
+
+    public void setStreetAddress(String streetAddress) {
+        this.streetAddress = streetAddress;
     }
 
     public String getBizName() {
