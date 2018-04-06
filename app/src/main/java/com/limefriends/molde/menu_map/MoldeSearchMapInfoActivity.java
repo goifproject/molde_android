@@ -231,5 +231,6 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
     public void onBackPressed() {
         super.onBackPressed();
         checkBackPressed = true;
+
     }
 }

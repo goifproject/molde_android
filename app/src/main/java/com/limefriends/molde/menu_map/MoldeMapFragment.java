@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -30,6 +31,9 @@ import com.limefriends.molde.MoldeMainActivity;
 import com.limefriends.molde.R;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapHistoryEntity;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapInfoEntity;
+
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,6 +68,11 @@ public class MoldeMapFragment extends Fragment
     private int moveCnt = 0;
     private boolean backChk = false;
     private boolean initChk = false;
+    private boolean myLocChange = false;
+    private LocationManager manager;
+    private MyLocationListener myLocationListener;
+    private long gpsRequestTime = 0;
+    private ArrayList<Marker> myMarkers = null;
 
     public static MoldeMapFragment newInstance() {
         return new MoldeMapFragment();
@@ -76,7 +85,11 @@ public class MoldeMapFragment extends Fragment
         ButterKnife.bind(this, view);
         mapView = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapView);
         mapView.getMapAsync(this);
-
+        myMarkers = new ArrayList<Marker>();
+        if (moveCnt == 0) {
+            getMyLocation();
+            moveCnt++;
+        }
         search_bar.setElevation(12);
         search_bar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +111,7 @@ public class MoldeMapFragment extends Fragment
                 Toast.makeText(getContext(), "위치 가져오기 기능", Toast.LENGTH_LONG).show();
                 loc_search_input.setText(R.string.search);
                 name = "검색하기";
+                myLocChange = true;
                 getMyLocation();
             }
         });
@@ -124,7 +138,6 @@ public class MoldeMapFragment extends Fragment
     @Override
     public void onStart() {
         super.onStart();
-
     }
 
     @Override
@@ -135,7 +148,7 @@ public class MoldeMapFragment extends Fragment
             MoldeSearchMapInfoEntity entity = ((MoldeMainActivity) getActivity()).getMapInfoResultData();
             MoldeSearchMapHistoryEntity historyEntity = ((MoldeMainActivity) getActivity()).getMapHistoryResultData();
             if (entity != null) {
-                Toast.makeText(getContext(), entity.toString(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), entity.toString(), Toast.LENGTH_LONG).show();
                 lat = entity.getMapLat();
                 lng = entity.getMapLng();
                 name = entity.getName();
@@ -145,13 +158,28 @@ public class MoldeMapFragment extends Fragment
                 report_history.bringToFront();
                 report_history.setVisibility(View.VISIBLE);
                 initChk = false;
-                if(MoldeSearchMapInfoActivity.checkBackPressed == false){
+                report_history.setClickable(false);
+                if (name.charAt(name.length() - 1) == '동') {
+                    StringTokenizer placeInfo = new StringTokenizer(name, " ");
+                    String si = placeInfo.nextToken();
+                    String gu = placeInfo.nextToken();
+                    String dong = placeInfo.nextToken();
+                    if (gu.charAt(gu.length() - 1) == '구' && dong.charAt(dong.length() - 1) == '동') {
+                        Animation trans_to_down = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_down);
+                        report_history.startAnimation(trans_to_down);
+                        report_history.setVisibility(View.INVISIBLE);
+                    }else if (MoldeSearchMapInfoActivity.checkBackPressed == false && backChk == false) {
+                        Animation trans_to_little_up = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_little_up);
+                        map_view_layout.startAnimation(trans_to_little_up);
+                        report_history.setClickable(true);
+                    }
+                }else if (MoldeSearchMapInfoActivity.checkBackPressed == false && backChk == false) {
                     Animation trans_to_little_up = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_little_up);
                     map_view_layout.startAnimation(trans_to_little_up);
+                    report_history.setClickable(true);
                 }
-                report_history.setClickable(true);
-            }else if(entity == null && historyEntity != null){
-                Toast.makeText(getContext(), historyEntity.toString(), Toast.LENGTH_LONG).show();
+            } else if (entity == null && historyEntity != null) {
+                //Toast.makeText(getContext(), historyEntity.toString(), Toast.LENGTH_LONG).show();
                 lat = historyEntity.getMapLat();
                 lng = historyEntity.getMapLng();
                 name = historyEntity.getName();
@@ -161,34 +189,47 @@ public class MoldeMapFragment extends Fragment
                 report_history.bringToFront();
                 report_history.setVisibility(View.VISIBLE);
                 initChk = false;
-                if(MoldeSearchMapInfoActivity.checkBackPressed == false) {
+                report_history.setClickable(false);
+
+                if (name.charAt(name.length() - 1) == '동') {
+                    StringTokenizer placeInfo = new StringTokenizer(name, " ");
+                    String si = placeInfo.nextToken();
+                    String gu = placeInfo.nextToken();
+                    String dong = placeInfo.nextToken();
+                    if (gu.charAt(gu.length() - 1) == '구' && dong.charAt(dong.length() - 1) == '동') {
+                        Animation trans_to_down = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_down);
+                        report_history.startAnimation(trans_to_down);
+                        report_history.setVisibility(View.INVISIBLE);
+                    }else if (MoldeSearchMapInfoActivity.checkBackPressed == false && backChk == false) {
+                        Animation trans_to_little_up = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_little_up);
+                        map_view_layout.startAnimation(trans_to_little_up);
+                        report_history.setClickable(true);
+                    }
+                }else if (MoldeSearchMapInfoActivity.checkBackPressed == false && backChk == false) {
                     Animation trans_to_little_up = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_little_up);
                     map_view_layout.startAnimation(trans_to_little_up);
+                    report_history.setClickable(true);
                 }
-                report_history.setClickable(true);
+
+
             }
         }
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        ((MoldeMainActivity)context).setOnKeyBackPressedListener(this);
-        if(report_history != null){
+        ((MoldeMainActivity) context).setOnKeyBackPressedListener(this);
+        if (report_history != null) {
             Animation trans_to_down = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_down);
             report_history.startAnimation(trans_to_down);
             report_history.setVisibility(View.INVISIBLE);
         }
-    }
-
-    public void makeMarker(){
-        MarkerOptions markerOptions = new MarkerOptions();
-        LatLng myLocation = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
-        markerOptions.position(myLocation);
-        markerOptions.title(name);
-        markerOptions.snippet(telNo);
-        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.map_icon));
-        mMap.addMarker(markerOptions).showInfoWindow();
     }
 
     @Override
@@ -198,22 +239,29 @@ public class MoldeMapFragment extends Fragment
         LatLng moveLoc = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(moveLoc, 17));
 
-
-        if(initChk == false){
-            makeMarker();
+        if(name.equals("")){
+            mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+            UiSettings uiSettings = mMap.getUiSettings();
+            uiSettings.setZoomControlsEnabled(false);
+            uiSettings.setCompassEnabled(true);
+            uiSettings.setMapToolbarEnabled(true);
+            uiSettings.setMyLocationButtonEnabled(true);
+        }else if (!name.equals("")) {
+            if (name.charAt(name.length() - 1) == '동') {
+                StringTokenizer placeInfo = new StringTokenizer(name, " ");
+                String si = placeInfo.nextToken();
+                String gu = placeInfo.nextToken();
+                String dong = placeInfo.nextToken();
+                if (gu.charAt(gu.length() - 1) == '구' && dong.charAt(dong.length() - 1) == '동') {
+                    //주변 위치에 따라 검색해오기
+                    Toast.makeText(getContext(), "시 구 동에 따라 안에 있는 정보들 보여주기", Toast.LENGTH_LONG).show();
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(moveLoc, 15));
+                }
+            }else{
+                makeSearchMarker();
+            }
         }
 
-        /*
-        지도 UI 설정 ZOOM 레벨 설정
-         */
-
-        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
-        UiSettings uiSettings = mMap.getUiSettings();
-        uiSettings.setZoomControlsEnabled(false);
-        uiSettings.setCompassEnabled(true);
-        uiSettings.setMapToolbarEnabled(true);
-        uiSettings.setMyLocationButtonEnabled(true);
 
 
 
@@ -234,7 +282,7 @@ public class MoldeMapFragment extends Fragment
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                if(Double.parseDouble(lat) == marker.getPosition().latitude && Double.parseDouble(lng) == marker.getPosition().longitude && !name.equals("")){
+                if (Double.parseDouble(lat) == marker.getPosition().latitude && Double.parseDouble(lng) == marker.getPosition().longitude && !name.equals("")) {
                     report_history.setVisibility(View.VISIBLE);
                     Animation trans_to_up = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_up);
                     Animation trans_to_little_up = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_little_up);
@@ -248,54 +296,63 @@ public class MoldeMapFragment extends Fragment
         });
     }
 
+    public void makeSearchMarker() {
+        MarkerOptions markerOptions = new MarkerOptions();
+        LatLng myLocation = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
+        markerOptions.position(myLocation);
+        markerOptions.title(name);
+        markerOptions.snippet(telNo);
+        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.map_icon));
+        mMap.addMarker(markerOptions).showInfoWindow();
+    }
+
     public void getMyLocation() {
-        LocationManager manager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-        final long minTime = 0;
-        final float minDistance = 0;
-        MyLocationListener myLocationListener = new MyLocationListener();
-        manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, myLocationListener);
-    }
-
-    @Override
-    public void onBackKey(){
-        if(backChk == false && initChk == false){
-            Animation trans_to_down = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_down);
-            Animation trans_to_little_down = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_little_down);
-            report_history.startAnimation(trans_to_down);
-            report_history.setVisibility(View.INVISIBLE);
-            map_view_layout.startAnimation(trans_to_little_down);
-            backChk = true;
-            report_history.setClickable(false);
-        }else if(backChk == true && initChk == false){
-            Animation trans_to_up = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_up);
-            Animation trans_to_little_up = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_little_up);
-            report_history.startAnimation(trans_to_up);
-            report_history.setVisibility(View.VISIBLE);
-            map_view_layout.startAnimation(trans_to_little_up);
-            backChk = false;
-            report_history.setClickable(false);
+        manager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+        if (myLocationListener == null) {
+            myLocationListener = new MyLocationListener();
         }
+        final long minTime = 3000;
+        final float minDistance = 100;
+        manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, myLocationListener);
+        manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, myLocationListener);
+        gpsRequestTime = System.currentTimeMillis();
+
     }
 
-    /****************************************/
     public class MyLocationListener implements LocationListener {
         //위치정보 보여주기
         //구글 맵 이동
-        int syncCount = 0;
+        int locChangeCount = 0;
+
         @Override
         public void onLocationChanged(Location location) {
-            if(syncCount == 0) {
-                double latitude = location.getLatitude();
-                double longitude = location.getLongitude();
-
-                LatLng position = new LatLng(latitude, longitude);
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 17));
-
-                mMap.addMarker(
-                        new MarkerOptions().position(position).title("내 위치").icon(BitmapDescriptorFactory.fromResource(R.drawable.map_icon))
-                ).showInfoWindow();
-                syncCount++;
+            if (name.equals("") || myLocChange == true) {
+                /*if(System.currentTimeMillis() - gpsRequestTime > 3000){
+                    Toast.makeText(getContext(), "건물 안에서는 더 오랜 시간이 걸립니다", Toast.LENGTH_SHORT).show();
+                }*/
+                if (locChangeCount == 0) {
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
+                    LatLng myLocation = new LatLng(latitude, longitude);
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 17));
+                    if (myMarkers.size() > 1) {
+                        myMarkers.get(myMarkers.size() - 2).remove();
+                    }
+                    Marker myMarker = mMap.addMarker(
+                            new MarkerOptions()
+                                    .position(myLocation)
+                                    .title("내 위치")
+                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.my_location_icon)
+                                    )
+                    );
+                    myMarkers.add(myMarker);
+                    myMarkers.get(myMarkers.size() - 1).showInfoWindow();
+                    locChangeCount++;
+                    myLocChange = false;
+                }
             }
+            manager.removeUpdates(myLocationListener);
+            myLocationListener = null;
         }
 
         @Override
@@ -312,10 +369,17 @@ public class MoldeMapFragment extends Fragment
 
     }
 
-    public void setMapHistoryBoundaryClick(){
-        report_history.setClickable(false);
+    @Override
+    public void onBackKey() {
+        if (backChk == false && initChk == false) {
+            Animation trans_to_down = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_down);
+            Animation trans_to_little_down = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_little_down);
+            report_history.startAnimation(trans_to_down);
+            report_history.setVisibility(View.INVISIBLE);
+            map_view_layout.startAnimation(trans_to_little_down);
+            backChk = true;
+            report_history.setClickable(false);
+        }
     }
-    /****************************************/
-
 
 }
