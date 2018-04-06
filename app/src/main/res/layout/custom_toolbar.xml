@@ -14,6 +14,6 @@
         style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
         android:text="텍스트"
         android:layout_gravity="center"
-        android:layout_marginRight="64dp"/>
+        android:layout_marginRight="48dp"/>
 
 </android.support.v7.widget.Toolbar>

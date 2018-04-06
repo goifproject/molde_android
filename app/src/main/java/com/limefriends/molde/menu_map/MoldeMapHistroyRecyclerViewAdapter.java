@@ -15,6 +15,8 @@ import com.limefriends.molde.menu_map.entity.MoldeSearchMapHistoryEntity;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -84,8 +86,9 @@ public class MoldeMapHistroyRecyclerViewAdapter extends RecyclerView.Adapter<Rec
                     try {
                         notifyItemRemoved(position);
                         historyList.remove(position);
+                        Collections.reverse(historyList);
                         for(int i = 0; i < historyList.size(); i++){
-                            keywordHistoryStr =
+                            keywordHistoryStr +=
                                             historyList.get(i).getMapLat()
                                     + "|" + historyList.get(i).getMapLng()
                                     + "|" + historyList.get(i).getName()
@@ -146,5 +149,6 @@ public class MoldeMapHistroyRecyclerViewAdapter extends RecyclerView.Adapter<Rec
     public void setCallback(MoldeMapHistoryRecyclerViewAdapterCallback callback) {
         this.callback = callback;
     }
+
 
 }
