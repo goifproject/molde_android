@@ -27,9 +27,6 @@ public class MoldeMapHistroyRecyclerViewAdapter extends RecyclerView.Adapter<Rec
     private Context context;
     private Cache cache;
 
-    public MoldeMapHistroyRecyclerViewAdapter() {
-    }
-
     public MoldeMapHistroyRecyclerViewAdapter(ArrayList<MoldeSearchMapHistoryEntity> historyList,
                                               Context context) {
         this.historyList = historyList;
@@ -41,14 +38,6 @@ public class MoldeMapHistroyRecyclerViewAdapter extends RecyclerView.Adapter<Rec
         TextView history_title;
         @BindView(R.id.history_delete_button)
         ImageButton history_delete_button;
-
-        private String mapLat;
-        private String mapLng;
-        private String name;
-        private String mainAddress;
-        private String bizName;
-        private String telNo;
-
 
         public MapHistoryViewHolder(View itemView) {
             super(itemView);

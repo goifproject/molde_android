@@ -14,12 +14,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="LocalSearchInputStyle" parent="Widget.AppCompat.EditText">
-        <item name="colorControlActivated">#ffc32f</item>
+    <style name="LocalSearchInputStyle">
+        <item name="android:imeOptions">actionSearch</item>
+        <item name="colorControlActivated">@color/colorAccentYellow</item>
         <item name="android:textCursorDrawable">@color/colorDeepDarkGray</item>
         <item name="android:textColor">@color/colorDeepDarkGray</item>
         <item name="android:textColorHint">@color/colorLittleDarkGray</item>
-        <item name="android:textColorHighlight">#ffd262</item>
+        <item name="android:textColorHighlight">@color/colorYellow</item>
     </style>
 
 

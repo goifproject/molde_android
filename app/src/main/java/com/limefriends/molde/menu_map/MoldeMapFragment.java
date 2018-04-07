@@ -1,19 +1,26 @@
 package com.limefriends.molde.menu_map;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,7 +39,6 @@ import com.limefriends.molde.R;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapHistoryEntity;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapInfoEntity;
 
-import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import butterknife.BindView;
@@ -58,6 +64,13 @@ public class MoldeMapFragment extends Fragment
     ImageButton report_button;
     @BindView(R.id.map_view_layout)
     LinearLayout map_view_layout;
+    @BindView(R.id.map_view_progress)
+    RelativeLayout map_view_progress;
+    @BindView(R.id.progress_loading)
+    ProgressBar progress_loading;
+    @BindView(R.id.request_gps_button)
+    Button request_gps_button;
+
 
     SupportMapFragment mapView;
     private static GoogleMap mMap;
@@ -72,7 +85,8 @@ public class MoldeMapFragment extends Fragment
     private LocationManager manager;
     private MyLocationListener myLocationListener;
     private long gpsRequestTime = 0;
-    private ArrayList<Marker> myMarkers = null;
+    private Marker myMarker;
+    private final int REQUEST_LOCATION = 1;
 
     public static MoldeMapFragment newInstance() {
         return new MoldeMapFragment();
@@ -85,11 +99,11 @@ public class MoldeMapFragment extends Fragment
         ButterKnife.bind(this, view);
         mapView = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapView);
         mapView.getMapAsync(this);
-        myMarkers = new ArrayList<Marker>();
         if (moveCnt == 0) {
             getMyLocation();
             moveCnt++;
         }
+
         search_bar.setElevation(12);
         search_bar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,6 +145,19 @@ public class MoldeMapFragment extends Fragment
             }
         });
 
+        request_gps_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(getActivity(),
+                            new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                                    android.Manifest.permission.ACCESS_FINE_LOCATION},
+                            REQUEST_LOCATION);
+                    return;
+                }
+            }
+        });
         initChk = true;
         return view;
     }
@@ -148,6 +175,7 @@ public class MoldeMapFragment extends Fragment
             MoldeSearchMapInfoEntity entity = ((MoldeMainActivity) getActivity()).getMapInfoResultData();
             MoldeSearchMapHistoryEntity historyEntity = ((MoldeMainActivity) getActivity()).getMapHistoryResultData();
             if (entity != null) {
+                map_view_progress.setVisibility(View.INVISIBLE);
                 //Toast.makeText(getContext(), entity.toString(), Toast.LENGTH_LONG).show();
                 lat = entity.getMapLat();
                 lng = entity.getMapLng();
@@ -168,17 +196,18 @@ public class MoldeMapFragment extends Fragment
                         Animation trans_to_down = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_down);
                         report_history.startAnimation(trans_to_down);
                         report_history.setVisibility(View.INVISIBLE);
-                    }else if (MoldeSearchMapInfoActivity.checkBackPressed == false && backChk == false) {
+                    } else if (MoldeSearchMapInfoActivity.checkBackPressed == false && backChk == false) {
                         Animation trans_to_little_up = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_little_up);
                         map_view_layout.startAnimation(trans_to_little_up);
                         report_history.setClickable(true);
                     }
-                }else if (MoldeSearchMapInfoActivity.checkBackPressed == false && backChk == false) {
+                } else if (MoldeSearchMapInfoActivity.checkBackPressed == false && backChk == false) {
                     Animation trans_to_little_up = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_little_up);
                     map_view_layout.startAnimation(trans_to_little_up);
                     report_history.setClickable(true);
                 }
             } else if (entity == null && historyEntity != null) {
+                map_view_progress.setVisibility(View.INVISIBLE);
                 //Toast.makeText(getContext(), historyEntity.toString(), Toast.LENGTH_LONG).show();
                 lat = historyEntity.getMapLat();
                 lng = historyEntity.getMapLng();
@@ -200,12 +229,12 @@ public class MoldeMapFragment extends Fragment
                         Animation trans_to_down = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_down);
                         report_history.startAnimation(trans_to_down);
                         report_history.setVisibility(View.INVISIBLE);
-                    }else if (MoldeSearchMapInfoActivity.checkBackPressed == false && backChk == false) {
+                    } else if (MoldeSearchMapInfoActivity.checkBackPressed == false && backChk == false) {
                         Animation trans_to_little_up = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_little_up);
                         map_view_layout.startAnimation(trans_to_little_up);
                         report_history.setClickable(true);
                     }
-                }else if (MoldeSearchMapInfoActivity.checkBackPressed == false && backChk == false) {
+                } else if (MoldeSearchMapInfoActivity.checkBackPressed == false && backChk == false) {
                     Animation trans_to_little_up = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_little_up);
                     map_view_layout.startAnimation(trans_to_little_up);
                     report_history.setClickable(true);
@@ -239,14 +268,14 @@ public class MoldeMapFragment extends Fragment
         LatLng moveLoc = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(moveLoc, 17));
 
-        if(name.equals("")){
+        if (name.equals("")) {
             mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
             UiSettings uiSettings = mMap.getUiSettings();
             uiSettings.setZoomControlsEnabled(false);
             uiSettings.setCompassEnabled(true);
             uiSettings.setMapToolbarEnabled(true);
             uiSettings.setMyLocationButtonEnabled(true);
-        }else if (!name.equals("")) {
+        } else if (!name.equals("")) {
             if (name.charAt(name.length() - 1) == '동') {
                 StringTokenizer placeInfo = new StringTokenizer(name, " ");
                 String si = placeInfo.nextToken();
@@ -257,12 +286,10 @@ public class MoldeMapFragment extends Fragment
                     Toast.makeText(getContext(), "시 구 동에 따라 안에 있는 정보들 보여주기", Toast.LENGTH_LONG).show();
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(moveLoc, 15));
                 }
-            }else{
+            } else {
                 makeSearchMarker();
             }
         }
-
-
 
 
         /*********************** Map Click ***********************/
@@ -306,17 +333,39 @@ public class MoldeMapFragment extends Fragment
         mMap.addMarker(markerOptions).showInfoWindow();
     }
 
+    public void onPermissionCheck(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
+        if (requestCode == REQUEST_LOCATION) {
+            for(int grantResult : grantResults){
+                if(grantResult == PackageManager.PERMISSION_DENIED){
+                    progress_loading.setVisibility(View.INVISIBLE);
+                    request_gps_button.setVisibility(View.VISIBLE);
+                    return;
+                }
+            }
+            getMyLocation();
+        }else {
+            getMyLocation();
+        }
+    }
+
     public void getMyLocation() {
         manager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-        if (myLocationListener == null) {
-            myLocationListener = new MyLocationListener();
-        }
         final long minTime = 3000;
         final float minDistance = 100;
+        if (myLocationListener == null) {
+            myLocationListener = new MyLocationListener();
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                                android.Manifest.permission.ACCESS_FINE_LOCATION},
+                        REQUEST_LOCATION);
+                return;
+            }
+        }
         manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, myLocationListener);
         manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, myLocationListener);
         gpsRequestTime = System.currentTimeMillis();
-
     }
 
     public class MyLocationListener implements LocationListener {
@@ -330,26 +379,26 @@ public class MoldeMapFragment extends Fragment
                 /*if(System.currentTimeMillis() - gpsRequestTime > 3000){
                     Toast.makeText(getContext(), "건물 안에서는 더 오랜 시간이 걸립니다", Toast.LENGTH_SHORT).show();
                 }*/
+                map_view_progress.setVisibility(View.INVISIBLE);
                 if (locChangeCount == 0) {
                     double latitude = location.getLatitude();
                     double longitude = location.getLongitude();
                     LatLng myLocation = new LatLng(latitude, longitude);
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 17));
-                    if (myMarkers.size() > 1) {
-                        myMarkers.get(myMarkers.size() - 2).remove();
+                    if (myMarker != null) {
+                        myMarker.remove();
                     }
-                    Marker myMarker = mMap.addMarker(
+                    myMarker = mMap.addMarker(
                             new MarkerOptions()
                                     .position(myLocation)
                                     .title("내 위치")
                                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.my_location_icon)
                                     )
                     );
-                    myMarkers.add(myMarker);
-                    myMarkers.get(myMarkers.size() - 1).showInfoWindow();
                     locChangeCount++;
                     myLocChange = false;
                 }
+                map_view_progress.setVisibility(View.INVISIBLE);
             }
             manager.removeUpdates(myLocationListener);
             myLocationListener = null;

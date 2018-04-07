@@ -5,7 +5,7 @@ android {
     defaultConfig {
         applicationId "com.limefriends.molde"
         minSdkVersion 21
-        targetSdkVersion 21
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         resConfigs "en", "es", "ja", "in"
