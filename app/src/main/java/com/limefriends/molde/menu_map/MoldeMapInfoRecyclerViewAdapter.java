@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 
 public class MoldeMapInfoRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private ArrayList<MoldeSearchMapInfoEntity> itemLists = new ArrayList<>();
+    private ArrayList<MoldeSearchMapInfoEntity> infoList = new ArrayList<>();
     private MoldeMapInfoRecyclerViewAdapterCallback callback;
     private String keywordHistory;
     private Context context;
@@ -68,25 +68,25 @@ public class MoldeMapInfoRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
         final Resources res = holder.itemView.getContext().getResources();
         if (holder instanceof MapInfoViewHolder) {
             final MapInfoViewHolder viewHolder = (MapInfoViewHolder) holder;
-            viewHolder.map_info_title.setText(itemLists.get(position).getName());
-            viewHolder.map_info_address.setText(itemLists.get(position).getMainAddress());
+            viewHolder.map_info_title.setText(infoList.get(position).getName());
+            viewHolder.map_info_address.setText(infoList.get(position).getMainAddress());
 
-            viewHolder.mapLat = itemLists.get(position).getMapLat();
-            viewHolder.mapLng = itemLists.get(position).getMapLng();
-            viewHolder.name = itemLists.get(position).getName();
-            viewHolder.mainAddress = itemLists.get(position).getMainAddress();
+            viewHolder.mapLat = infoList.get(position).getMapLat();
+            viewHolder.mapLng = infoList.get(position).getMapLng();
+            viewHolder.name = infoList.get(position).getName();
+            viewHolder.mainAddress = infoList.get(position).getMainAddress();
             if(viewHolder.mainAddress == null || viewHolder.mainAddress.equals("")){
                 viewHolder.mainAddress = "정보 없음";
             }
-            viewHolder.bizName = itemLists.get(position).getBizName();
+            viewHolder.bizName = infoList.get(position).getBizName();
             if(viewHolder.bizName == null || viewHolder.bizName.equals("")){
                 viewHolder.bizName = "정보 없음";
             }
-            viewHolder.telNo = itemLists.get(position).getTelNo();
+            viewHolder.telNo = infoList.get(position).getTelNo();
             if(viewHolder.telNo == null || viewHolder.telNo.equals("")){
                 viewHolder.telNo = "정보 없음";
             }
-            viewHolder.streetAddress = itemLists.get(position).getStreetAddress();
+            viewHolder.streetAddress = infoList.get(position).getStreetAddress();
             if(viewHolder.streetAddress == null || viewHolder.streetAddress.equals("")){
                 viewHolder.streetAddress = "정보 없음";
             }
@@ -173,11 +173,11 @@ public class MoldeMapInfoRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
     @Override
     public int getItemCount() {
-        return itemLists.size();
+        return infoList.size();
     }
 
     public void setData(ArrayList<MoldeSearchMapInfoEntity> itemLists) {
-        this.itemLists = itemLists;
+        this.infoList = itemLists;
     }
 
     public void setCallback(MoldeMapInfoRecyclerViewAdapterCallback callback) {
@@ -189,7 +189,7 @@ public class MoldeMapInfoRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
         if (keyword.length() >= 2) {
             try {
                 SearchPoiParse parser = new SearchPoiParse(this);
-                itemLists.addAll(parser.execute(keyword).get());
+                infoList.addAll(parser.execute(keyword).get());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
