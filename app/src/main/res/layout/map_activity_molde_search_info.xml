@@ -30,10 +30,11 @@
             android:id="@+id/loc_map_info_search_input"
             android:layout_width="244dp"
             android:layout_height="48dp"
+            android:imeOptions="actionSearch"
             android:hint="@string/search_loc_bld"
             android:maxLength="20"
             android:singleLine="true"
-            android:theme="@style/LocalSearchInputStyle" />
+            android:theme="@style/LocalSearchInputStyle"/>
 
         <ImageButton
             android:id="@+id/delete_all_button"
@@ -43,7 +44,7 @@
             android:scaleType="fitXY"
             android:layout_gravity="right"
             android:background="@android:color/transparent"
-            android:src="@drawable/close_button"/>
+            android:src="@drawable/text_clear_button"/>
     </LinearLayout>
 
     <FrameLayout

@@ -5,6 +5,19 @@
     android:layout_height="match_parent"
     tools:context="com.limefriends.molde.menu_map.MoldeMapFragment">
 
+    <LinearLayout
+        android:id="@+id/map_view_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <fragment xmlns:map="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/mapView"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="com.limefriends.molde.MoldeMainActivity" />
+    </LinearLayout>
+
     <RelativeLayout
         android:id="@+id/map_ui"
         android:layout_width="match_parent"
@@ -26,17 +39,6 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/map_search_button" />
 
-            <!--<android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="48dp">
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/loc_search_input"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="검색"
-                    android:inputType="text"
-                    android:layout_marginRight="8dp"/>
-            </android.support.design.widget.TextInputLayout>-->
             <TextView
                 android:id="@+id/loc_search_input"
                 android:layout_width="match_parent"
@@ -47,94 +49,87 @@
 
         </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/favorite_button"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_above="@+id/my_loc_button"
-            android:layout_marginBottom="4dp"
-            android:layout_marginLeft="8dp"
-            android:minHeight="36dp"
-            android:minWidth="36dp"
-            android:padding="0dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/favorite_button"
-            android:background="@android:color/transparent"/>
+        <RelativeLayout
+            android:id="@+id/map_option_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageButton
+                android:id="@+id/favorite_button"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_above="@+id/my_loc_button"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="16dp"
+                android:background="@android:color/transparent"
+                android:padding="0dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/favorite_button" />
 
-        <ImageButton
-            android:id="@+id/my_loc_button"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="64dp"
-            android:layout_marginLeft="8dp"
-            android:padding="0dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/my_loc_button"
-            android:background="@android:color/transparent"/>
+            <ImageButton
+                android:id="@+id/my_loc_button"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="72dp"
+                android:layout_marginStart="16dp"
+                android:background="@android:color/transparent"
+                android:padding="0dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/my_loc_button" />
 
-        <ImageButton
-            android:id="@+id/report_button"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="64dp"
-            android:layout_marginRight="8dp"
-            android:padding="0dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/report_button"
-            android:background="@android:color/transparent"/>
+            <ImageButton
+                android:id="@+id/report_button"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="72dp"
+                android:layout_marginEnd="16dp"
+                android:background="@android:color/transparent"
+                android:padding="0dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/report_button" />
+        </RelativeLayout>
 
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/report_hitory"
-        android:layout_width="match_parent"
-        android:layout_height="320dp"
-        android:layout_gravity="bottom"
-        android:orientation="vertical"
-        android:background="@color/colorLittleWhiteGray">
-
-        <RelativeLayout
-            android:id="@+id/report_history_header"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@color/white"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="16dp"
-                android:text="@string/report_history"
-                android:textColor="@color/colorDeepDarkGray"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="16dp"
-                android:text="테스트" />
-        </RelativeLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/map_view_layout"
+    <RelativeLayout
+        android:id="@+id/map_view_progress"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-        <fragment xmlns:map="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/mapView"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:background="@color/white">
+        <ProgressBar
+            android:id="@+id/progress_loading"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="visible"/>
+        <Button
+            android:id="@+id/request_gps_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="GPS 권한 허용 하기"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/report_card_layout"
+        android:layout_width="match_parent"
+        android:layout_height="172dp"
+        android:layout_marginBottom="56dp"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:background="@android:color/transparent">
+        <android.support.v4.view.ViewPager
+            android:id="@+id/report_card_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            tools:context="com.limefriends.molde.MoldeMainActivity" />
-    </LinearLayout>
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:paddingStart="@dimen/report_card_padding"
+            android:paddingEnd="@dimen/report_card_padding">
+        </android.support.v4.view.ViewPager>
+    </FrameLayout>
 </FrameLayout>

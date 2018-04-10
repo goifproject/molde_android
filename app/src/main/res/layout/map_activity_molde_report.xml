@@ -4,6 +4,210 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="12dp"
     tools:context="com.limefriends.molde.menu_map.MoldeReportActivity">
+
+    <LinearLayout
+        android:id="@+id/image_list"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginEnd="8dp"
+            android:background="@color/colorDeepDarkGray"
+            app:srcCompat="@mipmap/ic_launcher" />
+
+        <ImageButton
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginEnd="8dp"
+            android:background="@color/colorDeepDarkGray"
+            app:srcCompat="@mipmap/ic_launcher" />
+
+        <ImageButton
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginEnd="8dp"
+            android:background="@color/colorDeepDarkGray"
+            app:srcCompat="@mipmap/ic_launcher" />
+
+        <ImageButton
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginEnd="8dp"
+            android:background="@color/colorDeepDarkGray"
+            app:srcCompat="@mipmap/ic_launcher" />
+
+        <ImageButton
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginEnd="8dp"
+            android:background="@color/colorDeepDarkGray"
+            app:srcCompat="@mipmap/ic_launcher" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/first_division"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/image_list"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/colorLittleGray" />
+
+    <TextView
+        android:id="@+id/report_content_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/first_division"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/report_content"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/report_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/report_content_title"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/frame"
+        android:gravity="top|left"
+        android:inputType="textMultiLine"
+        android:lines="8"
+        android:padding="4dp"
+        android:scrollHorizontally="false" />
+
+    <RelativeLayout
+        android:id="@+id/report_loc_bar"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_marginTop="16dp"
+        android:layout_below="@id/report_content"
+        android:background="@drawable/frame">
+        <TextView
+            android:id="@+id/report_loc_title"
+            android:layout_width="64dp"
+            android:layout_height="match_parent"
+            android:text="신고 위치"
+            android:textStyle="bold"
+            android:textSize="12sp"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:padding="4dp"
+            android:background="@color/colorLittleWhiteGray"/>
+
+        <TextView
+            android:id="@+id/search_loc_input"
+            android:layout_width="236dp"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@+id/report_loc_title"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:text="검색해서 등록"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+        <ImageButton
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:padding="4dp"
+            android:scaleType="fitXY"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/report_search_loc_button"
+            android:background="@android:color/transparent"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/detail_address_content"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_below="@+id/report_loc_bar">
+        <TextView
+            android:id="@+id/detail_address_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="상세주소 : "
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_marginStart="4dp"
+            android:gravity="center"
+            android:layout_centerVertical="true"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:layout_toEndOf="@+id/detail_address_title"
+            android:textSize="12sp"
+            android:paddingLeft="8dp"
+            android:background="@null"/>
+    </RelativeLayout>
+    <View
+        android:id="@+id/second_division"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/detail_address_content"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:background="@color/colorLittleGray" />
+    
+    <TextView
+        android:id="@+id/reply_email_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="답변받을 이메일"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="4dp"
+        android:layout_below="@+id/second_division"/>
+
+    <RelativeLayout
+        android:id="@+id/reply_email_content"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/frame"
+        android:layout_below="@+id/reply_email_title">
+        <EditText
+            android:id="@+id/reply_email_input"
+            android:layout_width="166dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_marginStart="8dp"
+            android:hint="이메일 입력"
+            android:textSize="10sp"
+            android:maxLength="30"
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:background="@null"/>
+
+        <FrameLayout
+            android:layout_width="166dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true">
+            <Spinner
+                android:id="@+id/reply_email_select"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorLittleWhiteGray">
+            </Spinner>
+            <EditText
+                android:id="@+id/reply_email_self"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible"
+                android:background="@null"/>
+        </FrameLayout>
+    </RelativeLayout>
+
+
 
 </RelativeLayout>

@@ -30,12 +30,12 @@ public class Cache {
         return cacheDir;
     }
 
-    public void Write(String obj) throws IOException {
+    public void Write(String cache) throws IOException {
         File cacheDir = getCacheDir(context);
         File cacheFile = new File(cacheDir, "mapInfoSearchHistory.txt");
         if (!cacheFile.exists()) cacheFile.createNewFile();
         FileWriter fileWriter = new FileWriter(cacheFile);
-        fileWriter.write(obj);
+        fileWriter.write(cache);
         fileWriter.flush();
         fileWriter.close();
     }
@@ -52,6 +52,9 @@ public class Cache {
         }
         inputStream.close();
         return text;
+    }
+
+    public void Delete() throws IOException {
     }
 
 }

@@ -13,32 +13,34 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.limefriends.molde.menu_magazine.MoldeMagazineFragment;
-import com.limefriends.molde.menu_map.MoldeSearchMapInfoActivity;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapHistoryEntity;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapInfoEntity;
 import com.limefriends.molde.menu_map.MoldeMapFragment;
 import com.limefriends.molde.menu_mypage.MoldeMyPageFragment;
 import com.limefriends.molde.menu_reportlist.MoldeReportListFragment;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MoldeMainActivity extends AppCompatActivity{
+public class MoldeMainActivity extends AppCompatActivity {
     public static Context allContext;
-    private long lastTimeBackPressed;
-    private onKeyBackPressedListener mOnKeyBackPressedListener;
-    @BindView(R.id.navigation) BottomNavigationView navigation;
-    FragmentTransaction ft;
-    FragmentManager fm;
-    MoldeSearchMapInfoEntity entity;
-    MoldeSearchMapHistoryEntity historyEntity;
+    @BindView(R.id.navigation)
+    BottomNavigationView navigation;
 
+    private long lastTimeBackPressed;
+    private FragmentTransaction ft;
+    private FragmentManager fm;
+    private MoldeSearchMapInfoEntity entity;
+    private MoldeSearchMapHistoryEntity historyEntity;
+    private Fragment fragment;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.main_menu_map:
-                    replaceFragment(MoldeMapFragment.newInstance());
+                    fragment = MoldeMapFragment.newInstance();
+                    replaceFragment(fragment);
                     return true;
                 case R.id.main_menu_magazine:
                     replaceFragment(MoldeMagazineFragment.newInstance());
@@ -54,18 +56,30 @@ public class MoldeMainActivity extends AppCompatActivity{
         }
 
     };
+    onKeyBackPressedListener mOnKeyBackPressedListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_molde_main);
         ButterKnife.bind(this);
+
+        fragment = MoldeMapFragment.newInstance();
         BottomNavigationViewHelper.disableShiftMode(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         fm = getSupportFragmentManager();
         ft = fm.beginTransaction();
-        ft.add(R.id.menu_fragment, MoldeMapFragment.newInstance()).commit();
+        ft.add(R.id.menu_fragment, fragment).commit();
         allContext = this;
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (fragment != null && fragment instanceof MoldeMapFragment) {
+            ((MoldeMapFragment) fragment).onPermissionCheck(requestCode, permissions, grantResults);
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+
     }
 
     private void replaceFragment(Fragment fm) {
@@ -82,11 +96,11 @@ public class MoldeMainActivity extends AppCompatActivity{
 
     }
 
-    public MoldeSearchMapInfoEntity getMapInfoResultData(){
+    public MoldeSearchMapInfoEntity getMapInfoResultData() {
         return this.entity;
     }
 
-    public MoldeSearchMapHistoryEntity getMapHistoryResultData(){
+    public MoldeSearchMapHistoryEntity getMapHistoryResultData() {
         return this.historyEntity;
     }
 
@@ -94,13 +108,13 @@ public class MoldeMainActivity extends AppCompatActivity{
         void onBackKey();
     }
 
-    public void setOnKeyBackPressedListener(onKeyBackPressedListener listener){
+    public void setOnKeyBackPressedListener(onKeyBackPressedListener listener) {
         mOnKeyBackPressedListener = listener;
     }
 
     @Override
     public void onBackPressed() {
-        if(System.currentTimeMillis() > lastTimeBackPressed + 1500){
+        if (System.currentTimeMillis() > lastTimeBackPressed + 1500) {
             lastTimeBackPressed = System.currentTimeMillis();
             Toast.makeText(getApplicationContext(), "한번 더 누르면 종료", Toast.LENGTH_SHORT);
             if (mOnKeyBackPressedListener != null) {
@@ -108,7 +122,7 @@ public class MoldeMainActivity extends AppCompatActivity{
                 return;
             }
             return;
-        }else {
+        } else {
             finish();
         }
     }

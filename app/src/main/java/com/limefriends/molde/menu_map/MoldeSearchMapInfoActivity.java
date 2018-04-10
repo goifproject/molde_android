@@ -71,12 +71,15 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
         } else {
             loc_map_info_search_input.setText(name);
         }
-        loc_map_info_search_input.setImeOptions(EditorInfo.IME_ACTION_DONE);
         loc_map_info_search_input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                if(actionId == EditorInfo.IME_ACTION_DONE){
+                if(actionId == EditorInfo.IME_ACTION_SEARCH){
                     loc_map_info_search_button.performClick();
+                    return true;
+                }else if(actionId == EditorInfo.IME_ACTION_DONE){
+                    loc_map_info_search_button.performClick();
+                    return true;
                 }
                 return false;
             }

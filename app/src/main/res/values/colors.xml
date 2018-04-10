@@ -8,4 +8,6 @@
     <color name="colorLittleDarkGray">#5a595b</color>
     <color name="colorLittleGray">#bbbbbb</color>
     <color name="colorLittleWhiteGray">#dddddd</color>
+    <color name="colorAccentYellow">#ffc32f</color>
+    <color name="colorYellow">#ffd262</color>
 </resources>
