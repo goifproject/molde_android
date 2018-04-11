@@ -8,7 +8,9 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -27,6 +29,7 @@ public class MoldeMainActivity extends AppCompatActivity {
     @BindView(R.id.navigation)
     BottomNavigationView navigation;
 
+    private SparseArrayCompat sparseArray;
     private long lastTimeBackPressed;
     private FragmentTransaction ft;
     private FragmentManager fm;
@@ -39,17 +42,44 @@ public class MoldeMainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.main_menu_map:
-                    fragment = MoldeMapFragment.newInstance();
-                    replaceFragment(fragment);
+                    if(sparseArray.get(R.string.main_menu_map) == null){
+                        fragment = MoldeMapFragment.newInstance();
+                        sparseArray.append(R.string.main_menu_map, fragment);
+                        replaceFragment(fragment);
+                    }else{
+                        fragment = (Fragment) sparseArray.get(R.string.main_menu_map);
+                        replaceFragment(fragment);
+                    }
                     return true;
                 case R.id.main_menu_magazine:
-                    replaceFragment(MoldeMagazineFragment.newInstance());
+                    if(sparseArray.get(R.string.main_menu_magazine) == null) {
+                        fragment = MoldeMagazineFragment.newInstance();
+                        sparseArray.append(R.string.main_menu_magazine, fragment);
+                        replaceFragment(fragment);
+                    }else{
+                        fragment = (Fragment) sparseArray.get(R.string.main_menu_magazine);
+                        replaceFragment(fragment);
+                    }
                     return true;
                 case R.id.main_menu_reportlist:
-                    replaceFragment(MoldeReportListFragment.newInstance());
+                    if(sparseArray.get(R.string.main_menu_report_list) == null) {
+                        fragment = MoldeReportListFragment.newInstance();
+                        sparseArray.append(R.string.main_menu_report_list, fragment);
+                        replaceFragment(fragment);
+                    }else{
+                        fragment = (Fragment) sparseArray.get(R.string.main_menu_report_list);
+                        replaceFragment(fragment);
+                    }
                     return true;
                 case R.id.main_menu_mypage:
-                    replaceFragment(MoldeMyPageFragment.newInstance());
+                    if(sparseArray.get(R.string.main_menu_mypage) == null) {
+                        fragment = MoldeMyPageFragment.newInstance();
+                        sparseArray.append(R.string.main_menu_mypage, fragment);
+                        replaceFragment(fragment);
+                    }else{
+                        fragment = (Fragment) sparseArray.get(R.string.main_menu_mypage);
+                        replaceFragment(fragment);
+                    }
                     return true;
             }
             return false;
@@ -63,15 +93,19 @@ public class MoldeMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_molde_main);
         ButterKnife.bind(this);
-
-        fragment = MoldeMapFragment.newInstance();
         BottomNavigationViewHelper.disableShiftMode(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        if(fragment == null && sparseArray == null) {
+            sparseArray = new SparseArrayCompat();
+            fragment = MoldeMapFragment.newInstance();
+            sparseArray.append(R.string.main_menu_map, fragment);
+        }
         fm = getSupportFragmentManager();
         ft = fm.beginTransaction();
         ft.add(R.id.menu_fragment, fragment).commit();
         allContext = this;
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (fragment != null && fragment instanceof MoldeMapFragment) {
@@ -84,7 +118,7 @@ public class MoldeMainActivity extends AppCompatActivity {
 
     private void replaceFragment(Fragment fm) {
         ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.menu_fragment, fm).commit();
+        ft.replace(R.id.menu_fragment, fm).addToBackStack(null).commit();
     }
 
     @Override
@@ -116,7 +150,6 @@ public class MoldeMainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (System.currentTimeMillis() > lastTimeBackPressed + 1500) {
             lastTimeBackPressed = System.currentTimeMillis();
-            Toast.makeText(getApplicationContext(), "한번 더 누르면 종료", Toast.LENGTH_SHORT);
             if (mOnKeyBackPressedListener != null) {
                 mOnKeyBackPressedListener.onBackKey();
                 return;

@@ -3,6 +3,8 @@ package com.limefriends.molde.menu_map;
 import com.limefriends.molde.MoldeMainActivity;
 import com.limefriends.molde.R;
 import com.limefriends.molde.menu_map.cacheManager.Cache;
+import com.limefriends.molde.menu_map.callbackMethod.MoldeMapHistoryRecyclerViewAdapterCallback;
+import com.limefriends.molde.menu_map.callbackMethod.MoldeMapInfoRecyclerViewAdapterCallback;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapHistoryEntity;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapInfoEntity;
 
@@ -34,7 +36,7 @@ import butterknife.ButterKnife;
 
 public class MoldeSearchMapInfoActivity extends AppCompatActivity
         implements MoldeMapInfoRecyclerViewAdapterCallback,
-        MoldeMapHistoryRecyclerViewAdapterCallback{
+        MoldeMapHistoryRecyclerViewAdapterCallback {
     @BindView(R.id.loc_map_info_search_bar)
     LinearLayout loc_map_info_search_bar;
     @BindView(R.id.loc_map_info_search_input)
