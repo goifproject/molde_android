@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.limefriends.molde.R;
 import com.limefriends.molde.menu_map.cacheManager.Cache;
+import com.limefriends.molde.menu_map.callbackMethod.MoldeMapHistoryRecyclerViewAdapterCallback;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapHistoryEntity;
 
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package com.limefriends.molde.menu_map;
+package com.limefriends.molde.menu_map.callbackMethod;
 
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapHistoryEntity;
 
