@@ -160,11 +160,11 @@ public class MoldeMapInfoRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
                 public void onClick(View view) {
                     if(viewHolder.check_favorite_toggle.isChecked()){
                         viewHolder.check_favorite_toggle.setBackgroundDrawable(
-                                res.getDrawable(R.drawable.star_on)
+                                res.getDrawable(R.drawable.ic_star_on)
                         );
                     }else{
                         viewHolder.check_favorite_toggle.setBackgroundDrawable(
-                                res.getDrawable(R.drawable.star_off)
+                                res.getDrawable(R.drawable.ic_star_off)
                         );
                     }
                 }

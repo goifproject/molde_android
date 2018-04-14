@@ -7,11 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.limefriends.molde.MoldeMainActivity;
 import com.limefriends.molde.R;
-import com.limefriends.molde.menu_map.BottomSheetDialog;
+import com.limefriends.molde.menu_map.MoldeMapDialog;
 import com.limefriends.molde.menu_map.callbackMethod.MoldeMapReportPagerAdapterCallback;
 
 import java.util.ArrayList;
@@ -89,9 +88,10 @@ public class ReportCardPagerAdapter extends PagerAdapter implements ReportCardAd
             @Override
             public void onClick(View view) {
                 //Toast.makeText(context, position + 1 + "번째 컨테이너 눌림", Toast.LENGTH_SHORT).show();
-                BottomSheetDialog bottomSheetDialog = BottomSheetDialog.getInstance();
-                bottomSheetDialog.show(((MoldeMainActivity) context).getSupportFragmentManager(),"bottomSheet");
-                bottomSheetDialog.setData(reportCardDataList.get(position));
+                MoldeMapDialog moldeMapDialog = MoldeMapDialog.getInstance();
+
+                moldeMapDialog.show(((MoldeMainActivity) context).getSupportFragmentManager(),"bottomSheet");
+                moldeMapDialog.setData(reportCardDataList.get(position));
             }
         });
         return view;

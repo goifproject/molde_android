@@ -4,69 +4,141 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="12dp"
     tools:context="com.limefriends.molde.menu_map.MoldeReportActivity">
 
     <LinearLayout
         android:id="@+id/image_list"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="76dp"
+        android:paddingTop="8dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp"
         android:layout_alignParentTop="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="@color/colorLittleWhiteGray">
 
-        <ImageButton
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_marginEnd="8dp"
-            android:background="@color/colorDeepDarkGray"
-            app:srcCompat="@mipmap/ic_launcher" />
+        <FrameLayout
+            android:id="@+id/first_image_frame"
+            android:layout_width="60dp"
+            android:layout_height="60dp">
 
-        <ImageButton
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_marginEnd="8dp"
-            android:background="@color/colorDeepDarkGray"
-            app:srcCompat="@mipmap/ic_launcher" />
+            <ImageButton
+                android:id="@+id/first_iamge"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorDeepDarkGray"
+                android:scaleType="fitXY"
+                app:srcCompat="@android:drawable/ic_input_add" />
 
-        <ImageButton
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_marginEnd="8dp"
-            android:background="@color/colorDeepDarkGray"
-            app:srcCompat="@mipmap/ic_launcher" />
-
-        <ImageButton
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_marginEnd="8dp"
-            android:background="@color/colorDeepDarkGray"
-            app:srcCompat="@mipmap/ic_launcher" />
-
-        <ImageButton
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_marginEnd="8dp"
-            android:background="@color/colorDeepDarkGray"
-            app:srcCompat="@mipmap/ic_launcher" />
+            <ImageButton
+                android:id="@+id/first_iamge_delete_button"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_gravity="right"
+                android:layout_marginEnd="2dp"
+                android:layout_marginTop="2dp"
+                android:visibility="invisible"
+                app:srcCompat="@android:drawable/btn_dialog" />
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/second_image_frame"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="8dp">
+            <ImageButton
+                android:id="@+id/second_iamge"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:background="@color/colorDeepDarkGray"
+                app:srcCompat="@android:drawable/ic_input_add"/>
+            <ImageButton
+                android:id="@+id/second_iamge_delete_button"
+                android:visibility="invisible"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_gravity="right"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                app:srcCompat="@android:drawable/btn_dialog" />
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/third_image_frame"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="8dp">
+            <ImageButton
+                android:id="@+id/third_iamge"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:background="@color/colorDeepDarkGray"
+                app:srcCompat="@android:drawable/ic_input_add"/>
+            <ImageButton
+                android:id="@+id/third_iamge_delete_button"
+                android:visibility="invisible"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_gravity="right"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                app:srcCompat="@android:drawable/btn_dialog" />
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/forth_image_frame"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="8dp">
+            <ImageButton
+                android:id="@+id/forth_iamge"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:background="@color/colorDeepDarkGray"
+                app:srcCompat="@android:drawable/ic_input_add"/>
+            <ImageButton
+                android:id="@+id/forth_iamge_delete_button"
+                android:visibility="invisible"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_gravity="right"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                app:srcCompat="@android:drawable/btn_dialog" />
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/fifth_image_frame"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="8dp">
+            <ImageButton
+                android:id="@+id/fifth_iamge"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:background="@color/colorDeepDarkGray"
+                app:srcCompat="@android:drawable/ic_input_add"/>
+            <ImageButton
+                android:id="@+id/fifth_iamge_delete_button"
+                android:visibility="invisible"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_gravity="right"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                app:srcCompat="@android:drawable/btn_dialog" />
+        </FrameLayout>
 
     </LinearLayout>
-
-    <View
-        android:id="@+id/first_division"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/image_list"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginTop="12dp"
-        android:background="@color/colorLittleGray" />
 
     <TextView
         android:id="@+id/report_content_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/first_division"
-        android:layout_marginStart="4dp"
+        android:layout_below="@+id/image_list"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
         android:text="@string/report_content"
         android:textSize="14sp"
@@ -76,12 +148,14 @@
         android:id="@+id/report_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_below="@+id/report_content_title"
         android:layout_marginTop="8dp"
         android:background="@drawable/frame"
         android:gravity="top|left"
         android:inputType="textMultiLine"
-        android:lines="8"
+        android:lines="7"
         android:padding="4dp"
         android:scrollHorizontally="false" />
 
@@ -90,6 +164,8 @@
         android:layout_width="match_parent"
         android:layout_height="36dp"
         android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_below="@id/report_content"
         android:background="@drawable/frame">
         <TextView
@@ -117,18 +193,20 @@
         <ImageButton
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:padding="4dp"
-            android:scaleType="fitXY"
+            android:scaleType="fitCenter"
             android:layout_alignParentRight="true"
-            android:src="@drawable/report_search_loc_button"
+            android:src="@drawable/ic_my_location"
             android:background="@android:color/transparent"/>
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/detail_address_content"
         android:layout_width="match_parent"
         android:layout_height="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
-        android:layout_below="@+id/report_loc_bar">
+        android:layout_below="@+id/report_loc_bar"
+        android:background="@drawable/frame">
         <TextView
             android:id="@+id/detail_address_title"
             android:layout_width="wrap_content"
@@ -148,14 +226,6 @@
             android:paddingLeft="8dp"
             android:background="@null"/>
     </RelativeLayout>
-    <View
-        android:id="@+id/second_division"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/detail_address_content"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:background="@color/colorLittleGray" />
     
     <TextView
         android:id="@+id/reply_email_title"
@@ -164,14 +234,17 @@
         android:text="답변받을 이메일"
         android:textSize="12sp"
         android:textStyle="bold"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="24dp"
-        android:layout_marginStart="4dp"
-        android:layout_below="@+id/second_division"/>
+        android:layout_below="@+id/detail_address_content"/>
 
     <RelativeLayout
         android:id="@+id/reply_email_content"
         android:layout_width="match_parent"
         android:layout_height="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="4dp"
         android:background="@drawable/frame"
         android:layout_below="@+id/reply_email_title">
@@ -207,7 +280,16 @@
                 android:background="@null"/>
         </FrameLayout>
     </RelativeLayout>
-
-
+    
+    <Button
+        android:id="@+id/report_send_button"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="전송하기"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorLittleDarkGray"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"/>
 
 </RelativeLayout>

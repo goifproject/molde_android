@@ -6,6 +6,12 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <uses-feature android:name="android.hardware.camera" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -22,22 +28,43 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <!-- 지도 관련 -->
         <activity
             android:name=".menu_map.MoldeSearchMapInfoActivity"
-            android:theme="@style/AppNoBarTheme" />
-
+            android:theme="@style/AppNoBarTheme"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".menu_map.MoldeReportActivity"
-            android:theme="@style/AppTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MoldeMainActivity"/>
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".menu_map.cameraManager.MoldeReportCameraActivity"
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".menu_map.cameraManager.MoldeReportCheckImage"
+            android:theme="@style/AppNoBarTheme"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <!-- 매거진 관련 -->
+        <activity
+            android:name=".menu_magazine.MagazineReportDetailActivity"
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".menu_magazine.MagazineCardnewsDetailActivity"
+            android:theme="@style/AppNoBarTheme"
+            android:screenOrientation="portrait">
         </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAqi9cIlxH_iWsEpaXuuQ2EJ-rGFAoVT1g" />
+
     </application>
 
 </manifest>

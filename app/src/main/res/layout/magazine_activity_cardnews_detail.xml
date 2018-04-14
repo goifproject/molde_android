@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/cardnews_header"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#333333" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/cardnews_viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="380dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/cardnews_header"
+        android:background="#dddddd"/>
+
+
+    <ScrollView
+        android:id="@+id/cardnews_description_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/cardnews_footer"
+        android:layout_below="@+id/cardnews_viewPager">
+
+        <TextView
+            android:id="@+id/cardnews_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="카드뉴스 설명, 텍스트가 길어지면 스크롤됩니다.카드뉴스 설명, 텍스트가 길어지면 스크롤됩니다." />
+
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/cardnews_footer"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:background="#333333">
+
+        <TextView
+            android:id="@+id/page_num"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="pageNum"
+            android:textColor="#ffffff"/>
+
+        <ImageView
+            android:id="@+id/img_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            app:srcCompat="@drawable/comment_dummy" />
+
+        <ImageView
+            android:id="@+id/img_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            app:srcCompat="@drawable/share_dummy" />
+
+        <ImageView
+            android:id="@+id/img_bookmark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/img_share"
+            android:layout_marginEnd="8dp"
+            android:layout_toStartOf="@+id/img_share"
+            app:srcCompat="@drawable/bookmark_dummy" />
+
+    </RelativeLayout>
+
+
+
+
+</RelativeLayout>

@@ -21,30 +21,29 @@
             android:id="@+id/loc_map_info_search_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:padding="12dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/map_search_button"
+            android:src="@drawable/ic_search_bl_48"
             android:background="@android:color/transparent"/>
 
         <EditText
             android:id="@+id/loc_map_info_search_input"
-            android:layout_width="244dp"
+            android:layout_width="252dp"
             android:layout_height="48dp"
             android:imeOptions="actionSearch"
             android:hint="@string/search_loc_bld"
             android:maxLength="20"
             android:singleLine="true"
+            android:background="@null"
             android:theme="@style/LocalSearchInputStyle"/>
 
         <ImageButton
             android:id="@+id/delete_all_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:padding="8dp"
+            android:padding="12dp"
             android:scaleType="fitXY"
-            android:layout_gravity="right"
+            android:layout_gravity="right|center"
             android:background="@android:color/transparent"
-            android:src="@drawable/text_clear_button"/>
+            android:src="@drawable/ic_close"/>
     </LinearLayout>
 
     <FrameLayout
@@ -54,12 +53,10 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/loc_map_info_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@color/white"
-            android:layout_marginTop="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginRight="8dp" />
         <android.support.v7.widget.RecyclerView
             android:id="@+id/history_map_info_list"
             android:layout_width="match_parent"
