@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">Molde</string>
-    <string name="main_menu_map">지도</string>
+    <string name="main_menu_map">지도  </string>
     <string name="map_fragment">지도 프래그먼트</string>
     <string name="main_menu_magazine">매거진</string>
     <string name="magazine_fragment">매거진 프래그먼트</string>
-    <string name="main_menu_report_list">피드</string>
+    <string name="main_menu_report_list">피드  </string>
     <string name="report_list_fragment">피드 프래그먼트</string>
     <string name="main_menu_mypage">마이 페이지</string>
     <string name="mypage_fragment">마이 페이지 프래그먼트</string>
@@ -13,7 +13,12 @@
     <string name="report_history">신고내역</string>
     <string name="report_content">신고내용</string>
 
+    <string name="reportRedhMarkerList">빨간색마커리스트</string>
+    <string name="reportGreenhMarkerList">초록색마커리스트</string>
+    <string name="reportWhitehMarkerList">흰색마커리스트</string>
     <string name="reportInfohMarkers">신고정보마커리스트</string>
     <string name="reportCardItemList">신고정보카드리스트</string>
+    <string name="currMarkerPosition">현재 마커 포지션</string>
+    <string name="moveCnt">좌표 이동 횟수</string>
 
 </resources>

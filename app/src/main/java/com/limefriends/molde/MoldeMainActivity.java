@@ -10,9 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.limefriends.molde.menu_magazine.MoldeMagazineFragment;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapHistoryEntity;
@@ -41,16 +39,6 @@ public class MoldeMainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.main_menu_map:
-                    if(sparseArray.get(R.string.main_menu_map) == null){
-                        fragment = MoldeMapFragment.newInstance();
-                        sparseArray.append(R.string.main_menu_map, fragment);
-                        replaceFragment(fragment);
-                    }else{
-                        fragment = (Fragment) sparseArray.get(R.string.main_menu_map);
-                        replaceFragment(fragment);
-                    }
-                    return true;
                 case R.id.main_menu_magazine:
                     if(sparseArray.get(R.string.main_menu_magazine) == null) {
                         fragment = MoldeMagazineFragment.newInstance();
@@ -61,7 +49,17 @@ public class MoldeMainActivity extends AppCompatActivity {
                         replaceFragment(fragment);
                     }
                     return true;
-                case R.id.main_menu_reportlist:
+                case R.id.main_menu_map:
+                    if(sparseArray.get(R.string.main_menu_map) == null){
+                        fragment = MoldeMapFragment.newInstance();
+                        sparseArray.append(R.string.main_menu_map, fragment);
+                        replaceFragment(fragment);
+                    }else{
+                        fragment = (Fragment) sparseArray.get(R.string.main_menu_map);
+                        replaceFragment(fragment);
+                    }
+                    return true;
+                case R.id.main_menu_feed:
                     if(sparseArray.get(R.string.main_menu_report_list) == null) {
                         fragment = MoldeReportListFragment.newInstance();
                         sparseArray.append(R.string.main_menu_report_list, fragment);
@@ -103,6 +101,7 @@ public class MoldeMainActivity extends AppCompatActivity {
         fm = getSupportFragmentManager();
         ft = fm.beginTransaction();
         ft.add(R.id.menu_fragment, fragment).commit();
+        navigation.setSelectedItemId(R.id.main_menu_map);
         allContext = this;
     }
 

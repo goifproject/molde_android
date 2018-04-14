@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -28,12 +30,18 @@
 
             <Button
                 android:id="@+id/testB"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="84dp"
+                android:layout_height="32dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
+                android:textSize="10sp"
                 android:layout_marginRight="16dp"
                 android:text="테스트" />
         </RelativeLayout>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"/>
     </RelativeLayout>
 </RelativeLayout>
