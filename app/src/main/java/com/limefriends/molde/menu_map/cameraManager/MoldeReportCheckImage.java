@@ -28,13 +28,15 @@ public class MoldeReportCheckImage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_molde_report_check_image);
+        setContentView(R.layout.map_activity_molde_report_check_image);
         ButterKnife.bind(this);
 
         Intent cameraIntent = getIntent();
-        final Uri uri = cameraIntent.getParcelableExtra("imagePath");
         imageSeq = cameraIntent.getIntExtra("imageSeq", 1);
-        report_check_image.setImageURI(uri);
+        final Uri uri = cameraIntent.getParcelableExtra("imagePath");
+        if(uri != null){
+            report_check_image.setImageURI(uri);
+        }
 
         report_check_ok_button.setOnClickListener(new View.OnClickListener() {
             @Override

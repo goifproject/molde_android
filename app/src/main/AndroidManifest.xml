@@ -25,41 +25,41 @@
             android:theme="@style/AppNoBarTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <!-- 지도 관련 -->
         <activity
             android:name=".menu_map.MoldeSearchMapInfoActivity"
-            android:theme="@style/AppNoBarTheme"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppNoBarTheme" />
         <activity
             android:name=".menu_map.MoldeReportActivity"
-            android:theme="@style/AppTheme"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".menu_map.cameraManager.MoldeReportCameraActivity"
-            android:theme="@style/AppTheme"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".menu_map.galleryManager.MoldeReportGalleryActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".menu_map.cameraManager.MoldeReportCheckImage"
-            android:theme="@style/AppNoBarTheme"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppNoBarTheme"/>
 
         <!-- 매거진 관련 -->
         <activity
             android:name=".menu_magazine.MagazineReportDetailActivity"
-            android:theme="@style/AppTheme"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".menu_magazine.MagazineCardnewsDetailActivity"
-            android:theme="@style/AppNoBarTheme"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppNoBarTheme"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

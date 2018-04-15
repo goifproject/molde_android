@@ -12,13 +12,9 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.limefriends.molde.R;
-
-import org.w3c.dom.Text;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,10 +34,12 @@ public class MagazineReportDetailActivity extends AppCompatActivity {
         String title = intent.getStringExtra("title");
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.custom_toolbar);
+        getSupportActionBar().setCustomView(R.layout.default_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        TextView toolbar_title = getSupportActionBar().getCustomView().findViewById(R.id.toolbar_title);
+        toolbar_title.setText(title);
 
         btn_report_call.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -29,16 +29,12 @@ public class MoldeMagazineFragment extends Fragment implements MoldeMainActivity
 
     @BindView(R.id.cardnews_recyclerView)
     RecyclerView cardnews_recyclerView;
-
     @BindView(R.id.manual_molca)
     ImageView manual_molca;
-
     @BindView(R.id.manual_hotel)
     ImageView manual_hotel;
-
     @BindView(R.id.manual_toilet)
     ImageView manual_toilet;
-
     @BindView(R.id.manual_transportation)
     ImageView manual_transportation;
 
@@ -81,7 +77,7 @@ public class MoldeMagazineFragment extends Fragment implements MoldeMainActivity
                 Toast.makeText(getContext(), "hotel clicked", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent();
                 intent.setClass(getActivity(), MagazineReportDetailActivity.class);
-                intent.putExtra("title", "숙박업소에 몰카가 있는 것 같아요!");
+                intent.putExtra("title", "숙박업소");
                 startActivity(intent);
             }
         });
@@ -92,7 +88,7 @@ public class MoldeMagazineFragment extends Fragment implements MoldeMainActivity
                 Toast.makeText(getContext(), "toilet clicked", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent();
                 intent.setClass(getActivity(), MagazineReportDetailActivity.class);
-                intent.putExtra("title", "화장실에 몰카가 있는 것 같아요!");
+                intent.putExtra("title", "화장실");
                 startActivity(intent);
             }
         });
@@ -103,7 +99,7 @@ public class MoldeMagazineFragment extends Fragment implements MoldeMainActivity
                 Toast.makeText(getContext(), "trasportation clicked", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent();
                 intent.setClass(getActivity(), MagazineReportDetailActivity.class);
-                intent.putExtra("title", "대중교통 이용 중 몰카가 의심된다면");
+                intent.putExtra("title", "대중교통");
                 startActivity(intent);
             }
         });
@@ -114,7 +110,7 @@ public class MoldeMagazineFragment extends Fragment implements MoldeMainActivity
                 Toast.makeText(getContext(), "molca clicked", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent();
                 intent.setClass(getActivity(), MagazineReportDetailActivity.class);
-                intent.putExtra("title", "몰카 유포 시 대처법");
+                intent.putExtra("title", "몰카대처법");
                 startActivity(intent);
             }
         });
