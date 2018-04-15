@@ -7,7 +7,8 @@
     <SurfaceView
         android:id="@+id/molde_camera_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginBottom="48dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -15,6 +16,7 @@
         android:background="@color/white"
         android:layout_gravity="bottom">
         <ImageButton
+            android:id="@+id/molde_gallary_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@drawable/ic_photo_library"

@@ -10,4 +10,5 @@
     <color name="colorLittleWhiteGray">#dddddd</color>
     <color name="colorAccentYellow">#ffc32f</color>
     <color name="colorYellow">#ffd262</color>
+    <color name="colorGalleryBG">#f8f8f8</color>
 </resources>

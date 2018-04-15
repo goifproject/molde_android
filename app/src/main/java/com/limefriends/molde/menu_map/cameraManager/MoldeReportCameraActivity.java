@@ -33,9 +33,11 @@ import android.util.Log;
 import android.view.SurfaceView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.limefriends.molde.R;
+import com.limefriends.molde.menu_map.galleryManager.MoldeReportGalleryActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -53,6 +55,9 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
     SurfaceView molde_camera_view;
     @BindView(R.id.molde_camera_capture_button)
     ImageButton molde_camera_capture_button;
+    @BindView(R.id.molde_gallary_button)
+    ImageButton molde_gallary_button;
+
     CameraPreview cameraPreview;
     Camera camera;
     Context ctx;
@@ -61,8 +66,10 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
     private final static int PERMISSIONS_REQUEST_CODE = 100;
     private final static int CAMERA_FACING = Camera.CameraInfo.CAMERA_FACING_BACK;
     private AppCompatActivity mActivity;
-    private Bitmap bitmap;
+    private int imageArraySize;
     private int imageSeq = 0;
+
+    public Bitmap bitmap;
 
     public static void doRestart(Context c) {
         try {
@@ -152,16 +159,30 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Intent intent = getIntent();
         imageSeq = intent.getIntExtra("imageSeq", 1);
-
+        imageArraySize = intent.getIntExtra("imageArraySize", 1);
         ctx = this;
         mActivity = this;
 
         //액션바 구현
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.custom_toolbar);
+        getSupportActionBar().setCustomView(R.layout.default_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        TextView toolbar_title = getSupportActionBar().getCustomView().findViewById(R.id.toolbar_title);
+        toolbar_title.setText("카메라");
+
+        //갤러리 선택 기능 구현
+        molde_gallary_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setClass(getApplicationContext(), MoldeReportGalleryActivity.class);
+                intent.putExtra("imageSeq", imageSeq);
+                intent.putExtra("imageArraySize", imageArraySize);
+                startActivity(intent);
+            }
+        });
 
         //카메라 버튼 기능 구현
         molde_camera_capture_button.setOnClickListener(new View.OnClickListener() {

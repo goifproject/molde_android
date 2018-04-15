@@ -22,15 +22,16 @@
         <FrameLayout
             android:id="@+id/first_image_frame"
             android:layout_width="60dp"
-            android:layout_height="60dp">
+            android:layout_height="60dp"
+            android:background="@color/white">
 
             <ImageButton
                 android:id="@+id/first_iamge"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorDeepDarkGray"
-                android:scaleType="fitXY"
-                app:srcCompat="@android:drawable/ic_input_add" />
+                android:scaleType="centerCrop"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_image_add" />
 
             <ImageButton
                 android:id="@+id/first_iamge_delete_button"
@@ -40,20 +41,21 @@
                 android:layout_marginEnd="2dp"
                 android:layout_marginTop="2dp"
                 android:visibility="invisible"
-                app:srcCompat="@android:drawable/btn_dialog" />
+                android:src="@drawable/ic_image_delete" />
         </FrameLayout>
         <FrameLayout
             android:id="@+id/second_image_frame"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:background="@color/white"
             android:layout_marginStart="8dp">
             <ImageButton
                 android:id="@+id/second_iamge"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                android:background="@color/colorDeepDarkGray"
-                app:srcCompat="@android:drawable/ic_input_add"/>
+                android:scaleType="centerCrop"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_image_add"/>
             <ImageButton
                 android:id="@+id/second_iamge_delete_button"
                 android:visibility="invisible"
@@ -62,20 +64,21 @@
                 android:layout_gravity="right"
                 android:layout_marginTop="2dp"
                 android:layout_marginEnd="2dp"
-                app:srcCompat="@android:drawable/btn_dialog" />
+                android:src="@drawable/ic_image_delete"/>
         </FrameLayout>
         <FrameLayout
             android:id="@+id/third_image_frame"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:background="@color/white"
             android:layout_marginStart="8dp">
             <ImageButton
                 android:id="@+id/third_iamge"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                android:background="@color/colorDeepDarkGray"
-                app:srcCompat="@android:drawable/ic_input_add"/>
+                android:scaleType="centerCrop"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_image_add"/>
             <ImageButton
                 android:id="@+id/third_iamge_delete_button"
                 android:visibility="invisible"
@@ -84,20 +87,21 @@
                 android:layout_gravity="right"
                 android:layout_marginTop="2dp"
                 android:layout_marginEnd="2dp"
-                app:srcCompat="@android:drawable/btn_dialog" />
+                android:src="@drawable/ic_image_delete" />
         </FrameLayout>
         <FrameLayout
             android:id="@+id/forth_image_frame"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:background="@color/white"
             android:layout_marginStart="8dp">
             <ImageButton
-                android:id="@+id/forth_iamge"
+                android:id="@+id/forth_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                android:background="@color/colorDeepDarkGray"
-                app:srcCompat="@android:drawable/ic_input_add"/>
+                android:scaleType="centerCrop"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_image_add"/>
             <ImageButton
                 android:id="@+id/forth_iamge_delete_button"
                 android:visibility="invisible"
@@ -106,20 +110,21 @@
                 android:layout_gravity="right"
                 android:layout_marginTop="2dp"
                 android:layout_marginEnd="2dp"
-                app:srcCompat="@android:drawable/btn_dialog" />
+                android:src="@drawable/ic_image_delete" />
         </FrameLayout>
         <FrameLayout
             android:id="@+id/fifth_image_frame"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:background="@color/white"
             android:layout_marginStart="8dp">
             <ImageButton
-                android:id="@+id/fifth_iamge"
+                android:id="@+id/fifth_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                android:background="@color/colorDeepDarkGray"
-                app:srcCompat="@android:drawable/ic_input_add"/>
+                android:scaleType="centerCrop"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_image_add"/>
             <ImageButton
                 android:id="@+id/fifth_iamge_delete_button"
                 android:visibility="invisible"
@@ -128,7 +133,7 @@
                 android:layout_gravity="right"
                 android:layout_marginTop="2dp"
                 android:layout_marginEnd="2dp"
-                app:srcCompat="@android:drawable/btn_dialog" />
+                android:src="@drawable/ic_image_delete" />
         </FrameLayout>
 
     </LinearLayout>
