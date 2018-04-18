@@ -29,7 +29,7 @@ public class MoldeMapHistroyRecyclerViewAdapter extends RecyclerView.Adapter<Rec
     private Cache cache;
 
     public MoldeMapHistroyRecyclerViewAdapter(ArrayList<MoldeSearchMapHistoryEntity> historyList,
-                                              Context context) {
+                                       Context context) {
         this.historyList = historyList;
         this.context = context;
     }

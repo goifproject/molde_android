@@ -524,7 +524,7 @@ public class MoldeMapFragment extends Fragment
             }
             getMyLocation();
         } else {
-            getMyLocation();
+            return;
         }
     }
 
@@ -538,7 +538,6 @@ public class MoldeMapFragment extends Fragment
             final long minTime = 1500;
             final float minDistance = 100;
             if (myLocationListener == null) {
-                myLocationListener = new MyLocationListener();
                 if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                         && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(getActivity(),
@@ -547,6 +546,7 @@ public class MoldeMapFragment extends Fragment
                             REQUEST_LOCATION);
                     return;
                 }
+                myLocationListener = new MyLocationListener();
             }
             manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, myLocationListener);
             manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, myLocationListener);

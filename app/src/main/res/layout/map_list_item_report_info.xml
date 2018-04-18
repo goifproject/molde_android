@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:gravity="center_vertical"
+    android:background="@color/colorWhite">
+
+    <ImageButton
+        android:id="@+id/report_info_thumbnail_image"
+        android:layout_width="96dp"
+        android:layout_height="72dp"
+        android:layout_margin="4dp"
+        android:background="@color/colorLittleWhiteGray"/>
+    
+    <TextView
+        android:id="@+id/report_info_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="11sp"
+        android:text="YYYY. MM. DD"
+        android:textStyle="bold"
+        android:textColor="@color/colorInfoTextColor"
+        android:layout_toEndOf="@id/report_info_thumbnail_image"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"/>
+    <TextView
+        android:id="@+id/report_info_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10sp"
+        android:text="지역 주소"
+        android:textStyle="bold"
+        android:textColor="@color/colorInfoTextColor"
+        android:layout_toEndOf="@id/report_info_thumbnail_image"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="1dp"
+        android:layout_below="@+id/report_info_date"/>
+    <TextView
+        android:id="@+id/report_info_detail_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10sp"
+        android:text="지역 세부 주소"
+        android:textStyle="bold"
+        android:textColor="@color/colorInfoTextColor"
+        android:layout_toEndOf="@id/report_info_thumbnail_image"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="16dp"
+        android:layout_below="@+id/report_info_address"/>
+</RelativeLayout>

@@ -3,12 +3,15 @@
     <color name="colorPrimary">#fff176</color>
     <color name="colorPrimaryDark">#ffc34a</color>
     <color name="colorAccent">#fff176</color>
-    <color name="white">#ffffff</color>
+    <color name="colorWhite">#ffffff</color>
     <color name="colorDeepDarkGray">#323232</color>
     <color name="colorLittleDarkGray">#5a595b</color>
     <color name="colorLittleGray">#bbbbbb</color>
     <color name="colorLittleWhiteGray">#dddddd</color>
     <color name="colorAccentYellow">#ffc32f</color>
     <color name="colorYellow">#ffd262</color>
-    <color name="colorGalleryBG">#f8f8f8</color>
+    <color name="colorBG">#f8f8f8</color>
+    <color name="colorInfoTextColor">#646464</color>
+    <color name="colorFeedBG">#fcfcfc</color>
+    <color name="colorDiv">#f0f0f0</color>
 </resources>

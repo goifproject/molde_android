@@ -23,7 +23,7 @@
             android:id="@+id/first_image_frame"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:background="@color/white">
+            android:background="@color/colorWhite">
 
             <ImageButton
                 android:id="@+id/first_iamge"
@@ -47,7 +47,7 @@
             android:id="@+id/second_image_frame"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:background="@color/white"
+            android:background="@color/colorWhite"
             android:layout_marginStart="8dp">
             <ImageButton
                 android:id="@+id/second_iamge"
@@ -70,7 +70,7 @@
             android:id="@+id/third_image_frame"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:background="@color/white"
+            android:background="@color/colorWhite"
             android:layout_marginStart="8dp">
             <ImageButton
                 android:id="@+id/third_iamge"
@@ -93,7 +93,7 @@
             android:id="@+id/forth_image_frame"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:background="@color/white"
+            android:background="@color/colorWhite"
             android:layout_marginStart="8dp">
             <ImageButton
                 android:id="@+id/forth_image"
@@ -116,7 +116,7 @@
             android:id="@+id/fifth_image_frame"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:background="@color/white"
+            android:background="@color/colorWhite"
             android:layout_marginStart="8dp">
             <ImageButton
                 android:id="@+id/fifth_image"

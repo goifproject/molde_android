@@ -58,7 +58,7 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
     private Runnable workRunnable;
     private final long DELAY = 100;
     private Cache cache;
-    private String keywordHistoryStr;
+    private String keywordHistoryStr = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -21,8 +21,6 @@ import butterknife.ButterKnife;
  */
 
 public class CustomAdapter extends PagerAdapter {
-
-
     ImageView img_viewPager_child;
     LayoutInflater inflater;
     ArrayList list;

@@ -20,5 +20,6 @@
     <string name="reportCardItemList">신고정보카드리스트</string>
     <string name="currMarkerPosition">현재 마커 포지션</string>
     <string name="moveCnt">좌표 이동 횟수</string>
+    <string name="feedSortCategory">거리순\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020최신순</string>
 
 </resources>

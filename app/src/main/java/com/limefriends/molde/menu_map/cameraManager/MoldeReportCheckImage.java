@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import com.limefriends.molde.R;
 import com.limefriends.molde.menu_map.MoldeReportActivity;
 
+import java.io.File;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -53,6 +55,9 @@ public class MoldeReportCheckImage extends AppCompatActivity {
         report_check_cancel_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                File imageFile = new File(uri.getPath());
+                imageFile.delete();
+                sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(imageFile)));
                 finish();
             }
         });
