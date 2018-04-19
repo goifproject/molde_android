@@ -21,6 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -68,6 +69,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<ViewHolder> implements
         CardnewsListElement cardnewsListElement = dataList.get(position);
 
         Glide.with(context).load(cardnewsListElement.getThumbnail()).into(holder.img_thumbnail);
+//        Glide.with(context).load(cardnewsListElement.getThumbnail())
+//                .bitmapTransform(new CropCircleTransformation(context))
+//                .into(holder.img_thumbnail);
         holder.title.setText(cardnewsListElement.getTitle());
         holder.cardnews_wrapper.setOnClickListener(this);
     }
@@ -75,7 +79,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<ViewHolder> implements
 
     @Override
     public void onClick(View v) {
-        Toast.makeText(v.getContext(), "recyclerview clicked", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent();
         intent.setClass(v.getContext(), MagazineCardnewsDetailActivity.class);
         v.getContext().startActivity(intent);

@@ -11,4 +11,5 @@
     <color name="colorAccentYellow">#ffc32f</color>
     <color name="colorYellow">#ffd262</color>
     <color name="colorGalleryBG">#f8f8f8</color>
+    <color name="colorDefaultText">#4a4a4a</color>
 </resources>

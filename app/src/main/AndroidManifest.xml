@@ -60,11 +60,14 @@
             android:name=".menu_magazine.MagazineCardnewsDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme"/>
+        <activity
+            android:name=".menu_magazine.MagazineCommentActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAqi9cIlxH_iWsEpaXuuQ2EJ-rGFAoVT1g" />
-
     </application>
 
 </manifest>

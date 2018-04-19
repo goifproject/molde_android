@@ -49,10 +49,6 @@ public class MagazineReportDetailActivity extends AppCompatActivity {
             }
         });
 
-        /*
-        * Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:010-1111-2222"));
-    startActivity(intent);
-        * */
     }
 
     @Override
