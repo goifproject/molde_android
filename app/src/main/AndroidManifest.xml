@@ -60,8 +60,12 @@
             android:name=".menu_magazine.MagazineCardnewsDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme"/>
+        <activity
+            android:name=".menu_magazine.MagazineCommentActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
 
-        <!-- 매거진 관련 -->
+        <!-- 마이페이지 관련 -->
         <activity
             android:name=".menu_mypage.MoldeMyPageSettings"
             android:screenOrientation="portrait"

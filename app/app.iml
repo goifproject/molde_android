@@ -126,6 +126,7 @@
     <orderEntry type="library" name="com.android.support:appcompat-v7-26.1.0" level="project" />
     <orderEntry type="library" name="com.android.support:support-annotations:26.1.0@jar" level="project" />
     <orderEntry type="library" name="com.android.support:support-core-utils-26.1.0" level="project" />
+    <orderEntry type="library" name="jp.wasabeef:glide-transformations-2.0.1" level="project" />
     <orderEntry type="library" name="com.android.support:support-core-ui-26.1.0" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-basement-15.0.0" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-tasks-15.0.0" level="project" />

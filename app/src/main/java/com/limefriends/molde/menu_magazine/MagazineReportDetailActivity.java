@@ -5,11 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -49,10 +47,6 @@ public class MagazineReportDetailActivity extends AppCompatActivity {
             }
         });
 
-        /*
-        * Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:010-1111-2222"));
-    startActivity(intent);
-        * */
     }
 
     @Override
