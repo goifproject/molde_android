@@ -52,6 +52,11 @@
                             android:layout_height="76dp"
                             android:layout_marginRight="8dp"
                             android:layout_weight="1"
+<<<<<<< master
+                            android:background="@color/colorWhite" />
+
+                        <ImageView
+=======
                             android:gravity="center"
                             android:orientation="vertical"
                             android:background="@drawable/corner_shape_3dp">
@@ -74,11 +79,17 @@
                         </LinearLayout>
 
                         <LinearLayout
+>>>>>>> master
                             android:id="@+id/manual_transportation"
                             android:layout_width="76dp"
                             android:layout_height="76dp"
                             android:layout_marginRight="8dp"
                             android:layout_weight="1"
+<<<<<<< master
+                            android:background="@color/colorWhite" />
+
+                        <ImageView
+=======
                             android:gravity="center"
                             android:orientation="vertical"
                             android:background="@drawable/corner_shape_3dp">
@@ -101,11 +112,17 @@
                         </LinearLayout>
 
                         <LinearLayout
+>>>>>>> master
                             android:id="@+id/manual_hotel"
                             android:layout_width="76dp"
                             android:layout_height="76dp"
                             android:layout_marginRight="8dp"
                             android:layout_weight="1"
+<<<<<<< master
+                            android:background="@color/colorWhite" />
+
+                        <ImageView
+=======
                             android:gravity="center"
                             android:orientation="vertical"
                             android:background="@drawable/corner_shape_3dp">
@@ -128,11 +145,15 @@
                         </LinearLayout>
 
                         <LinearLayout
+>>>>>>> master
                             android:id="@+id/manual_molca"
                             android:layout_width="76dp"
                             android:layout_height="76dp"
                             android:gravity="center"
                             android:layout_weight="1"
+<<<<<<< master
+                            android:background="@color/colorWhite" />
+=======
                             android:orientation="vertical"
                             android:background="@drawable/corner_shape_3dp">
 
@@ -152,6 +173,7 @@
                                 android:textSize="10sp" />
 
                         </LinearLayout>
+>>>>>>> master
 
                     </LinearLayout>
 

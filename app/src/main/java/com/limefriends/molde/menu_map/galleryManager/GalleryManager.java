@@ -19,8 +19,6 @@ public class GalleryManager {
 
     /**
      * 갤러리 이미지 반환
-     *
-     * @return
      */
     public List<PhotoVO> getAllPhotoPathList() {
 
@@ -51,8 +49,6 @@ public class GalleryManager {
 
     /**
      * 날짜별 갤러리 이미지 반환
-     *
-     * @return
      */
     public List<PhotoVO> getDatePhotoPathList(int year, int month, int day) {
 

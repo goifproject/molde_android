@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.limefriends.molde.MoldeMainActivity;
 import com.limefriends.molde.R;
-import com.limefriends.molde.menu_map.MoldeMapDialog;
+import com.limefriends.molde.menu_map.MoldeReportMapDialog;
 import com.limefriends.molde.menu_map.callbackMethod.MoldeMapReportPagerAdapterCallback;
 
 import java.util.ArrayList;
@@ -88,10 +88,10 @@ public class ReportCardPagerAdapter extends PagerAdapter implements ReportCardAd
             @Override
             public void onClick(View view) {
                 //Toast.makeText(context, position + 1 + "번째 컨테이너 눌림", Toast.LENGTH_SHORT).show();
-                MoldeMapDialog moldeMapDialog = MoldeMapDialog.getInstance();
+                MoldeReportMapDialog moldeReportMapDialog = MoldeReportMapDialog.getInstance();
 
-                moldeMapDialog.show(((MoldeMainActivity) context).getSupportFragmentManager(),"bottomSheet");
-                moldeMapDialog.setData(reportCardDataList.get(position));
+                moldeReportMapDialog.show(((MoldeMainActivity) context).getSupportFragmentManager(),"bottomSheet");
+                moldeReportMapDialog.setData(reportCardDataList.get(position));
             }
         });
         return view;

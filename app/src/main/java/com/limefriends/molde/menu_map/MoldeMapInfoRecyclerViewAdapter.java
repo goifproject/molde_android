@@ -59,7 +59,7 @@ public class MoldeMapInfoRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.map_list_item_loc_info, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.map_list_item_search_info, parent, false);
         return new MapInfoViewHolder(view);
     }
 

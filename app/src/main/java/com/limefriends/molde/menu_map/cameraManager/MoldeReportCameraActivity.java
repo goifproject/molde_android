@@ -23,6 +23,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -105,14 +106,12 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
     }
 
     public void startCamera() {
-
         if (cameraPreview == null) {
             cameraPreview = new CameraPreview(this, molde_camera_view);
             cameraPreview.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                     LayoutParams.MATCH_PARENT));
             molde_camera_layout.addView(cameraPreview);
             cameraPreview.setKeepScreenOn(true);
-
             // 프리뷰 화면 눌렀을 때  사진을 찍음
             /*preview.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -175,7 +174,7 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
         //갤러리 선택 기능 구현
         molde_gallary_button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setClass(getApplicationContext(), MoldeReportGalleryActivity.class);
                 intent.putExtra("imageSeq", imageSeq);
@@ -184,18 +183,36 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
             }
         });
 
+
+
+        cameraFocusOn();
+
         //카메라 버튼 기능 구현
         molde_camera_capture_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                camera.takePicture(shutterCallback, rawCallback, jpegCallback);
+                camera.autoFocus(new Camera.AutoFocusCallback() {
+                    @Override
+                    public void onAutoFocus(boolean success, Camera camera) {
+                        if(success){
+                            camera.takePicture(shutterCallback, rawCallback, jpegCallback);
+                        }
+                        else{
+                        }
+                    }
+                });
             }
         });
 
-        cameraFocusOn();
+        molde_camera_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cameraPreview.setCheckCameraUse(true);
+            }
+        });
+
 
         if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { //API 23 이상이면
                 // 런타임 퍼미션 처리 필요
                 int hasCameraPermission = ContextCompat.checkSelfPermission(this,
@@ -215,7 +232,7 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
                 }
             }
         } else {
-            Toast.makeText(MoldeReportCameraActivity.this, "Camera not supported",
+            Toast.makeText(MoldeReportCameraActivity.this, "카메라를 지원하지 않습니다. 죄송합니다.",
                     Toast.LENGTH_LONG).show();
         }
     }

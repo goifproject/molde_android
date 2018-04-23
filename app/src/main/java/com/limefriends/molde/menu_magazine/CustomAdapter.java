@@ -24,8 +24,6 @@ import butterknife.ButterKnife;
  */
 
 public class CustomAdapter extends PagerAdapter {
-
-
     ImageView img_viewPager_child;
     ScrollView cardnews_description_wrapper;
     TextView txt_cardnews_description;

@@ -17,7 +17,7 @@ import com.limefriends.molde.menu_map.entity.MoldeSearchMapHistoryEntity;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapInfoEntity;
 import com.limefriends.molde.menu_map.MoldeMapFragment;
 import com.limefriends.molde.menu_mypage.MoldeMyPageFragment;
-import com.limefriends.molde.menu_reportlist.MoldeReportListFragment;
+import com.limefriends.molde.menu_feed.MoldeFeedFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,7 +61,7 @@ public class MoldeMainActivity extends AppCompatActivity {
                     return true;
                 case R.id.main_menu_feed:
                     if(sparseArray.get(R.string.main_menu_report_list) == null) {
-                        fragment = MoldeReportListFragment.newInstance();
+                        fragment = MoldeFeedFragment.newInstance();
                         sparseArray.append(R.string.main_menu_report_list, fragment);
                         replaceFragment(fragment);
                     }else{

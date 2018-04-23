@@ -21,7 +21,7 @@
             android:id="@+id/loc_map_info_search_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/ic_search_bl_48"
+            android:src="@drawable/ic_search_button"
             android:background="@android:color/transparent"/>
 
         <EditText
@@ -54,14 +54,14 @@
             android:id="@+id/loc_map_info_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
+            android:background="@color/colorWhite"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp" />
         <android.support.v7.widget.RecyclerView
             android:id="@+id/history_map_info_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@color/colorWhite"
             android:layout_marginTop="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"

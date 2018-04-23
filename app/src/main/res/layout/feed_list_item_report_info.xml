@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="220dp"
+    android:layout_marginBottom="16dp">
+    <ImageButton
+        android:id="@+id/feed_image"
+        android:layout_width="match_parent"
+        android:layout_height="194dp"
+        android:scaleType="centerCrop"
+        android:background="@drawable/frame_rounded"/>
+    
+    <RelativeLayout
+        android:id="@+id/feed_content"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_gravity="bottom"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/frame_rounded">
+        <TextView
+            android:id="@+id/feed_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
+            android:text="홍익대학교"
+            android:textStyle="bold"
+            android:textColor="@color/colorInfoTextColor"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="9dp"/>
+        <TextView
+            android:id="@+id/feed_detail_address"
+            android:layout_below="@+id/feed_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
+            android:text="체육관 2층 여자화장실 3번째 칸"
+            android:textStyle="bold"
+            android:textColor="@color/colorInfoTextColor"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="9dp"/>
+
+        <TextView
+            android:id="@+id/feed_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="8sp"
+            android:textColor="@color/colorInfoTextColor"
+            android:textStyle="bold"
+            android:text="2018.03.05"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_toLeftOf="@id/feed_div"/>
+
+        <View
+            android:id="@+id/feed_div"
+            android:layout_width="1dp"
+            android:layout_height="38dp"
+            android:layout_toStartOf="@id/feed_marker"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="12dp"
+            android:background="@color/colorDiv"/>
+        
+        <ImageView
+            android:id="@+id/feed_marker"
+            android:layout_width="24dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_marker_green"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="12dp"
+            android:layout_marginTop="8dp"/>
+    </RelativeLayout>
+</FrameLayout>

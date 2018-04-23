@@ -13,7 +13,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/white"
+        android:background="@color/colorWhite"
         android:layout_gravity="bottom">
         <ImageButton
             android:id="@+id/molde_gallary_button"
