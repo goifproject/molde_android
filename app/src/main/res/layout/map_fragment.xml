@@ -36,7 +36,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_search_button" />
+                android:src="@drawable/ic_search_bl_48" />
 
             <TextView
                 android:id="@+id/loc_search_input"
