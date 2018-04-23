@@ -1,150 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
-
+    tools:context="com.limefriends.molde.menu_mypage.MoldeMyPageFragment">
     <RelativeLayout
-        android:id="@+id/head_guide"
         android:layout_width="match_parent"
-        android:layout_height="222dp"
-        android:background="@color/colorMypageBG">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="16dp"
-            android:background="@android:color/white">
-
-            <com.alexzh.circleimageview.CircleImageView
-                android:id="@+id/mypage_profile_image"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="19dp"
-                android:layout_marginTop="20dp"
-                android:src="@drawable/ic_img_chkd" />
-
-            <TextView
-                android:id="@+id/mypage_profile_name"
-                android:layout_toRightOf="@+id/mypage_profile_image"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="36dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:text="김모디 님" />
-
-            <ImageButton
-                android:id="@+id/mypage_setting_button"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:scaleType="fitCenter"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_mypage_setting"/>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="20dp"
-                android:gravity="center_vertical">
-
-                <ImageButton
-                    android:id="@+id/mypage_report_button"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:scaleType="fitCenter"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_mypage_setting_report"
-                    android:layout_toStartOf="@+id/setting_div_first"
-                    android:layout_marginEnd="22dp"/>
-                
-                <View
-                    android:id="@+id/setting_div_first"
-                    android:layout_width="1dp"
-                    android:layout_height="56dp"
-                    android:layout_toStartOf="@+id/mypage_comment_button"
-                    android:layout_marginEnd="23dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/colorMypageSettingDiv"/>
-
-                <ImageButton
-                    android:id="@+id/mypage_comment_button"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:scaleType="fitCenter"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_mypage_setting_comment"
-                    android:layout_centerHorizontal="true"/>
-
-                <View
-                    android:id="@+id/setting_div_second"
-                    android:layout_width="1dp"
-                    android:layout_height="56dp"
-                    android:layout_toEndOf="@+id/mypage_comment_button"
-                    android:layout_marginStart="23dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/colorMypageSettingDiv"/>
-
-                <ImageButton
-                    android:id="@+id/mypage_scrap_button"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_toEndOf="@+id/setting_div_second"
-                    android:scaleType="fitCenter"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_mypage_setting_scrap"
-                    android:layout_marginStart="22dp"/>
-            </RelativeLayout>
-        </RelativeLayout>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/mypage_option"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/head_guide">
+        android:layout_height="match_parent">
 
         <Button
-            android:id="@+id/mypage_faq_button"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_alignParentStart="true"
-            android:gravity="center_vertical"
-            android:paddingStart="16dp"
-            android:text="문의하기"
-            android:textSize="14sp"
-            android:textColor="@color/colorDeepDarkGray"
-            android:background="@android:color/transparent"
-            tools:ignore="RtlSymmetry" />
-
-        <View
-            android:id="@+id/mypage_option_div"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@+id/mypage_faq_button"
-            android:background="@color/colorDiv"/>
-
-        <Button
-            android:id="@+id/mypage_log_in_out_button"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_alignParentStart="true"
-            android:gravity="center_vertical"
-            android:paddingStart="16dp"
-            android:layout_below="@+id/mypage_option_div"
-            android:text="로그인 / 로그아웃"
-            android:textSize="14sp"
-            android:textColor="@color/colorDeepDarkGray"
-            android:background="@android:color/transparent"
-            tools:ignore="RtlSymmetry" />
-
+            android:id="@+id/mypageB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="140dp"
+            android:text="마이페이지" />
     </RelativeLayout>
-
-</RelativeLayout>
+</FrameLayout>

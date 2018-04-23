@@ -61,12 +61,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme"/>
 
-        <!-- 매거진 관련 -->
-        <activity
-            android:name=".menu_mypage.MoldeMyPageSettings"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAqi9cIlxH_iWsEpaXuuQ2EJ-rGFAoVT1g" />
