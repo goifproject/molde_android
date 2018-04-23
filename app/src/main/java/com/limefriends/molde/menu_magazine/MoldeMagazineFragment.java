@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.limefriends.molde.MoldeMainActivity;
@@ -30,13 +32,13 @@ public class MoldeMagazineFragment extends Fragment implements MoldeMainActivity
     @BindView(R.id.cardnews_recyclerView)
     RecyclerView cardnews_recyclerView;
     @BindView(R.id.manual_molca)
-    ImageView manual_molca;
+    LinearLayout manual_molca;
     @BindView(R.id.manual_hotel)
-    ImageView manual_hotel;
+    LinearLayout manual_hotel;
     @BindView(R.id.manual_toilet)
-    ImageView manual_toilet;
+    LinearLayout manual_toilet;
     @BindView(R.id.manual_transportation)
-    ImageView manual_transportation;
+    LinearLayout manual_transportation;
 
 
 
@@ -70,7 +72,6 @@ public class MoldeMagazineFragment extends Fragment implements MoldeMainActivity
         ButterKnife.bind(this, rootView);
 
 
-        // TODO: 중복된 코드 제거?!
         manual_hotel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,27 +111,27 @@ public class MoldeMagazineFragment extends Fragment implements MoldeMainActivity
                 Toast.makeText(getContext(), "molca clicked", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent();
                 intent.setClass(getActivity(), MagazineReportDetailActivity.class);
-                intent.putExtra("title", "몰카대처법");
+                intent.putExtra("title", "몰카유포 대처법");
                 startActivity(intent);
             }
         });
 
 
         cardnewsDataList = new ArrayList<CardnewsListElement>();
-        cardnewsDataList.add(new CardnewsListElement(R.drawable.square_dummy, "카드뉴스1"));
-        cardnewsDataList.add(new CardnewsListElement(R.drawable.square_dummy, "카드뉴스2"));
-        cardnewsDataList.add(new CardnewsListElement(R.drawable.square_dummy, "카드뉴스3"));
-        cardnewsDataList.add(new CardnewsListElement(R.drawable.square_dummy, "카드뉴스4"));
-        cardnewsDataList.add(new CardnewsListElement(R.drawable.square_dummy, "카드뉴스5"));
-        cardnewsDataList.add(new CardnewsListElement(R.drawable.square_dummy, "카드뉴스6"));
-        cardnewsDataList.add(new CardnewsListElement(R.drawable.square_dummy, "카드뉴스7"));
-        cardnewsDataList.add(new CardnewsListElement(R.drawable.square_dummy, "카드뉴스8"));
-        cardnewsDataList.add(new CardnewsListElement(R.drawable.square_dummy, "카드뉴스9"));
-        cardnewsDataList.add(new CardnewsListElement(R.drawable.square_dummy, "카드뉴스10"));
+        cardnewsDataList.add(new CardnewsListElement(R.drawable.img_cardnews_dummy, "카드뉴스1"));
+        cardnewsDataList.add(new CardnewsListElement(R.drawable.img_cardnews_dummy, "카드뉴스2"));
+        cardnewsDataList.add(new CardnewsListElement(R.drawable.img_cardnews_dummy, "카드뉴스3"));
+        cardnewsDataList.add(new CardnewsListElement(R.drawable.img_cardnews_dummy, "카드뉴스4"));
+        cardnewsDataList.add(new CardnewsListElement(R.drawable.img_cardnews_dummy, "카드뉴스5"));
+        cardnewsDataList.add(new CardnewsListElement(R.drawable.img_cardnews_dummy, "카드뉴스6"));
+        cardnewsDataList.add(new CardnewsListElement(R.drawable.img_cardnews_dummy, "카드뉴스7"));
+        cardnewsDataList.add(new CardnewsListElement(R.drawable.img_cardnews_dummy, "카드뉴스8"));
+        cardnewsDataList.add(new CardnewsListElement(R.drawable.img_cardnews_dummy, "카드뉴스9"));
+        cardnewsDataList.add(new CardnewsListElement(R.drawable.img_cardnews_dummy, "카드뉴스10"));
+
 
         recyclerAdapter = new RecyclerAdapter(getContext(), R.layout.magazine_item_cardnews_recycler, cardnewsDataList);
         cardnews_recyclerView.setAdapter(recyclerAdapter);
-
 
         return rootView;
     }
