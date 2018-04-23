@@ -33,7 +33,7 @@
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:paddingEnd="76dp"
-        android:background="@color/white"
+        android:background="@color/colorWhite"
         android:hint="댓글을 입력하세요."
         android:textSize="14sp" />
 

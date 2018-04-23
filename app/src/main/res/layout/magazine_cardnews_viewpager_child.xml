@@ -29,7 +29,7 @@
             android:layout_marginRight="28dp"
             android:layout_marginBottom="20dp"
             android:text="카드뉴스 설명, 텍스트가 길어지면 스크롤됩니다.카드뉴스 설명, 텍스트가 길어지면 스크롤됩니다."
-            android:textColor="@color/white"/>
+            android:textColor="@color/colorWhite"/>
 
     </ScrollView>
 </RelativeLayout>

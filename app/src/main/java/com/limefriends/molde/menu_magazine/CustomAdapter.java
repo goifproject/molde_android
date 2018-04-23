@@ -1,9 +1,6 @@
 package com.limefriends.molde.menu_magazine;
 
-import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
-import android.text.Layout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +13,13 @@ import com.limefriends.molde.R;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * Created by joo on 2018. 4. 10..
  */
 
 public class CustomAdapter extends PagerAdapter {
+
+
     ImageView img_viewPager_child;
     ScrollView cardnews_description_wrapper;
     TextView txt_cardnews_description;
