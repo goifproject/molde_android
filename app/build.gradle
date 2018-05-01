@@ -40,18 +40,14 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:3.7.0'
     implementation 'jp.wasabeef:glide-transformations:2.0.1'
     implementation 'com.alexzh:circleimageview:1.2.0'
-<<<<<<< HEAD
 
     /*
       Service (Retrofit2.0)
     */
-    implementation 'com.google.android.gms:play-services-location:15.0.0'
-    implementation 'com.google.code.gson:gson:2.8.1'
-    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
-    implementation 'com.squareup.okhttp3:okhttp:3.8.1'
-    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-    compile 'com.android.support:support-annotations:27.1.1'
-=======
+    implementation 'com.android.support:support-annotations:27.1.1'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
->>>>>>> d935e7f631d61dbb56e4ec95f8930d996e0cb63d
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+
+
 }
