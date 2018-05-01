@@ -56,6 +56,8 @@ public class MoldeMyPageFragment extends Fragment implements MoldeMainActivity.o
             }
         });
 
+        // mypage_faq_button
+
         return view;
     }
 
