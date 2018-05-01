@@ -1,6 +1,7 @@
 package com.limefriends.molde.menu_map.autosearch;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.limefriends.molde.menu_map.MoldeMapInfoRecyclerViewAdapter;
@@ -75,7 +76,6 @@ public class SearchPoiParse extends AsyncTask<String, Void, ArrayList<MoldeSearc
             reader.close();
 
             //Log.e("response", line);
-
 
             TMapSearchInfo searchPoiInfo = new Gson().fromJson(line, TMapSearchInfo.class);
 

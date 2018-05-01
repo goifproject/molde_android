@@ -4,7 +4,7 @@
     <string name="map_fragment">지도 프래그먼트</string>
     <string name="main_menu_magazine">매거진</string>
     <string name="magazine_fragment">매거진 프래그먼트</string>
-    <string name="main_menu_report_list">피드  </string>
+    <string name="main_menu_report_list">피드</string>
     <string name="report_list_fragment">피드 프래그먼트</string>
     <string name="main_menu_mypage">마이 페이지</string>
     <string name="mypage_fragment">마이 페이지 프래그먼트</string>
@@ -21,5 +21,6 @@
     <string name="currMarkerPosition">현재 마커 포지션</string>
     <string name="moveCnt">좌표 이동 횟수</string>
     <string name="feedSortCategory">거리순\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020최신순</string>
-
+    <string name="feedList">피드리스트</string>
+    <string name="feedStatus">피드상태</string>
 </resources>

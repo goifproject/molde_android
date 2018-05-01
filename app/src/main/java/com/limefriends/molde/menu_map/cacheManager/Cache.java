@@ -10,16 +10,16 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Cache {
-    Context context;
+    private Context context;
 
-    public Cache(Context co) {
-        context = co;
+    public Cache(Context context) {
+        this.context = context;
     }
 
     public File getCacheDir(Context context) {
         File cacheDir = null;
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            cacheDir = new File(Environment.getExternalStorageDirectory(), "cachefolder");
+            cacheDir = new File(Environment.getExternalStorageDirectory(), "MoldeCacheFolder");
             if (!cacheDir.isDirectory()) {
                 cacheDir.mkdirs();
             }
