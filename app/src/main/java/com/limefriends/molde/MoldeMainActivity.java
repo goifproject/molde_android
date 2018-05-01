@@ -23,11 +23,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MoldeMainActivity extends AppCompatActivity {
-    public static Context allContext;
     @BindView(R.id.navigation)
     BottomNavigationView navigation;
 
-    private SparseArrayCompat sparseArray;
+    public static Context allContext;
+    public static SparseArrayCompat fragmentSparseArray;
+
     private long lastTimeBackPressed;
     private FragmentTransaction ft;
     private FragmentManager fm;
@@ -40,42 +41,42 @@ public class MoldeMainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.main_menu_magazine:
-                    if(sparseArray.get(R.string.main_menu_magazine) == null) {
+                    if(fragmentSparseArray.get(R.string.main_menu_magazine) == null) {
                         fragment = MoldeMagazineFragment.newInstance();
-                        sparseArray.append(R.string.main_menu_magazine, fragment);
+                        fragmentSparseArray.append(R.string.main_menu_magazine, fragment);
                         replaceFragment(fragment);
                     }else{
-                        fragment = (Fragment) sparseArray.get(R.string.main_menu_magazine);
+                        fragment = (Fragment) fragmentSparseArray.get(R.string.main_menu_magazine);
                         replaceFragment(fragment);
                     }
                     return true;
                 case R.id.main_menu_map:
-                    if(sparseArray.get(R.string.main_menu_map) == null){
+                    if(fragmentSparseArray.get(R.string.main_menu_map) == null){
                         fragment = MoldeMapFragment.newInstance();
-                        sparseArray.append(R.string.main_menu_map, fragment);
+                        fragmentSparseArray.append(R.string.main_menu_map, fragment);
                         replaceFragment(fragment);
                     }else{
-                        fragment = (Fragment) sparseArray.get(R.string.main_menu_map);
+                        fragment = (Fragment) fragmentSparseArray.get(R.string.main_menu_map);
                         replaceFragment(fragment);
                     }
                     return true;
                 case R.id.main_menu_feed:
-                    if(sparseArray.get(R.string.main_menu_report_list) == null) {
+                    if(fragmentSparseArray.get(R.string.main_menu_report_list) == null) {
                         fragment = MoldeFeedFragment.newInstance();
-                        sparseArray.append(R.string.main_menu_report_list, fragment);
+                        fragmentSparseArray.append(R.string.main_menu_report_list, fragment);
                         replaceFragment(fragment);
                     }else{
-                        fragment = (Fragment) sparseArray.get(R.string.main_menu_report_list);
+                        fragment = (Fragment) fragmentSparseArray.get(R.string.main_menu_report_list);
                         replaceFragment(fragment);
                     }
                     return true;
                 case R.id.main_menu_mypage:
-                    if(sparseArray.get(R.string.main_menu_mypage) == null) {
+                    if(fragmentSparseArray.get(R.string.main_menu_mypage) == null) {
                         fragment = MoldeMyPageFragment.newInstance();
-                        sparseArray.append(R.string.main_menu_mypage, fragment);
+                        fragmentSparseArray.append(R.string.main_menu_mypage, fragment);
                         replaceFragment(fragment);
                     }else{
-                        fragment = (Fragment) sparseArray.get(R.string.main_menu_mypage);
+                        fragment = (Fragment) fragmentSparseArray.get(R.string.main_menu_mypage);
                         replaceFragment(fragment);
                     }
                     return true;
@@ -93,10 +94,10 @@ public class MoldeMainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         BottomNavigationViewHelper.disableShiftMode(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        if(fragment == null && sparseArray == null) {
-            sparseArray = new SparseArrayCompat();
+        if(fragment == null && fragmentSparseArray == null) {
+            fragmentSparseArray = new SparseArrayCompat();
             fragment = MoldeMapFragment.newInstance();
-            sparseArray.append(R.string.main_menu_map, fragment);
+            fragmentSparseArray.append(R.string.main_menu_map, fragment);
         }
         fm = getSupportFragmentManager();
         ft = fm.beginTransaction();
@@ -115,7 +116,7 @@ public class MoldeMainActivity extends AppCompatActivity {
 
     }
 
-    private void replaceFragment(Fragment fm) {
+    public void replaceFragment(Fragment fm) {
         ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.menu_fragment, fm).addToBackStack(null).commit();
     }

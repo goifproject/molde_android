@@ -174,6 +174,9 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
     private void historyFieldInit() {
         cache = new Cache(getApplicationContext());
         try {
+            if(cache.Read().equals("")){
+                cache.Write("");
+            }
             keywordHistoryStr = cache.Read();
             //cache.Write("");
         } catch (IOException e) {
@@ -195,7 +198,7 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
                 makeHistoryList(keywordHistoryStr);
             }
         }
-        Log.e("history", keywordHistoryStr);
+        Log.e("history", keywordHistoryStr + ".");
     }
 
     private void makeHistoryList(String keywordHistoryStr) {

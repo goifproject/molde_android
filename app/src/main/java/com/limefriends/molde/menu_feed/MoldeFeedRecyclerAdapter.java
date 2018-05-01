@@ -30,6 +30,7 @@ public class MoldeFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
     private ArrayList<MoldeFeedEntitiy> reportFeedList;
     private LinearLayoutManager layoutManager;
     private OnLoadMoreListener onLoadMoreListener;
+    private OnClickFeedItemListener onClickFeedItemListener;
     private boolean isMoreLoading = false;
     private int visibleThreshold = 1;
     private int firstVisibleItem, visibleItemCount, totalItemCount, lastVisibleItem;
@@ -38,9 +39,16 @@ public class MoldeFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
         void onLoadMore();
     }
 
-    public MoldeFeedRecyclerAdapter(Context context, OnLoadMoreListener onLoadMoreListener) {
+    public interface OnClickFeedItemListener {
+        void callFeedData(MoldeFeedEntitiy feedEntitiy);
+    }
+
+    public MoldeFeedRecyclerAdapter(Context context,
+                                    OnLoadMoreListener onLoadMoreListener,
+                                    OnClickFeedItemListener onClickFeedItemListener) {
         this.context = context;
         this.onLoadMoreListener = onLoadMoreListener;
+        this.onClickFeedItemListener = onClickFeedItemListener;
         this.reportFeedList = new ArrayList<MoldeFeedEntitiy>();
     }
 
@@ -73,6 +81,73 @@ public class MoldeFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
     }
 
     @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == VIEW_ITEM) {
+            View view = LayoutInflater.from(context).inflate(R.layout.feed_list_item_report_info, parent, false);
+            return new FeedViewHolder(view);
+        } else {
+            return new ProgressViewHolder(LayoutInflater.from(context).inflate(R.layout.feed_loading_progress, parent, false));
+        }
+    }
+
+    static class FeedViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.feed_content)
+        RelativeLayout feed_content;
+        @BindView(R.id.feed_image)
+        ImageButton feed_image;
+        @BindView(R.id.feed_address)
+        TextView feed_address;
+        @BindView(R.id.feed_detail_address)
+        TextView feed_detail_address;
+        @BindView(R.id.feed_date)
+        TextView feed_date;
+        @BindView(R.id.feed_state)
+        ImageView feed_state;
+
+        public FeedViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        if (holder instanceof FeedViewHolder) {
+            final FeedViewHolder viewHolder = (FeedViewHolder) holder;
+            Glide.with(context)
+                    .load("http://via.placeholder.com/300.png")
+                    //.bitmapTransform(new RoundedCornersTransformation(context, 30, 10))
+                    .into(viewHolder.feed_image);
+            viewHolder.feed_image.setClipToOutline(true);
+            viewHolder.feed_content.setElevation(8);
+            viewHolder.feed_address.setText(reportFeedList.get(position).getReportFeedAddress());
+            switch (reportFeedList.get(position).getReportFeedMarkerId()) {
+                case 1:
+                    viewHolder.feed_state.setImageResource(R.drawable.ic_marker_red);
+                    break;
+                case 2:
+                    viewHolder.feed_state.setImageResource(R.drawable.ic_marker_green);
+                    break;
+                case 3:
+                    viewHolder.feed_state.setImageResource(R.drawable.ic_marker_white);
+                    break;
+            }
+            viewHolder.feed_content.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickFeedItemListener.callFeedData(reportFeedList.get(position));
+                }
+            });
+        }
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return reportFeedList.size();
+    }
+
+    @Override
     public int getItemViewType(int position) {
         return reportFeedList.get(position) != null ? VIEW_ITEM : VIEW_PROG;
     }
@@ -83,42 +158,17 @@ public class MoldeFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
         notifyDataSetChanged();
     }
 
-    public void addItemMore(ArrayList<MoldeFeedEntitiy> reportFeedList) {
-        this.reportFeedList.addAll(reportFeedList);
-        notifyItemRangeChanged(0, this.reportFeedList.size());
-    }
+    static class ProgressViewHolder extends RecyclerView.ViewHolder {
+        public ProgressBar feedLoadingBar;
 
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == VIEW_ITEM) {
-            View view = LayoutInflater.from(context).inflate(R.layout.feed_list_item_report_info, parent, false);
-            return new FeedViewHolder(view);
-        } else {
-            return new ProgressViewHolder(LayoutInflater.from(context).inflate(R.layout.feed_loading_progress, parent, false));
+        public ProgressViewHolder(View v) {
+            super(v);
+            feedLoadingBar = (ProgressBar) v.findViewById(R.id.feed_loading_bar);
         }
-    }
-
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof FeedViewHolder) {
-            final FeedViewHolder viewHolder = (FeedViewHolder) holder;
-            Glide.with(context)
-                    .load("http://via.placeholder.com/300.png")
-                    //.bitmapTransform(new RoundedCornersTransformation(context, 30, 10))
-                    .into(viewHolder.feed_image);
-            viewHolder.feed_image.setClipToOutline(true);
-            viewHolder.feed_content.setElevation(8);
-        }
-
     }
 
     public void setMoreLoading(boolean isMoreLoading) {
         this.isMoreLoading = isMoreLoading;
-    }
-
-    @Override
-    public int getItemCount() {
-        return reportFeedList.size();
     }
 
     public void setProgressMore(final boolean isProgress) {
@@ -136,33 +186,9 @@ public class MoldeFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
         }
     }
 
-    static class FeedViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.feed_content)
-        RelativeLayout feed_content;
-        @BindView(R.id.feed_image)
-        ImageButton feed_image;
-        @BindView(R.id.feed_address)
-        TextView feed_address;
-        @BindView(R.id.feed_detail_address)
-        TextView feed_detail_address;
-        @BindView(R.id.feed_date)
-        TextView feed_date;
-        @BindView(R.id.feed_marker)
-        ImageView feed_marker;
-
-        public FeedViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
-    }
-
-    static class ProgressViewHolder extends RecyclerView.ViewHolder {
-        public ProgressBar feedLoadingBar;
-
-        public ProgressViewHolder(View v) {
-            super(v);
-            feedLoadingBar = (ProgressBar) v.findViewById(R.id.feed_loading_bar);
-        }
+    public void addItemMore(ArrayList<MoldeFeedEntitiy> reportFeedList) {
+        this.reportFeedList.addAll(reportFeedList);
+        notifyItemRangeChanged(0, this.reportFeedList.size());
     }
 
 }

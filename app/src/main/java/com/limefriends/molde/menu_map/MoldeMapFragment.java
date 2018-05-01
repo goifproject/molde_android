@@ -40,18 +40,17 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import com.google.maps.android.clustering.ClusterManager;
+//import com.google.maps.android.clustering.ClusterManager;
 import com.limefriends.molde.R;
 import com.limefriends.molde.MoldeMainActivity;
+import com.limefriends.molde.menu_feed.entity.MoldeFeedEntitiy;
 import com.limefriends.molde.menu_map.callbackMethod.MoldeMapReportPagerAdapterCallback;
-import com.limefriends.molde.menu_map.entity.MoldeSearchMapClusterEntity;
+//import com.limefriends.molde.menu_map.entity.MoldeSearchMapClusterEntity;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapHistoryEntity;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapInfoEntity;
 import com.limefriends.molde.menu_map.reportCard.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Random;
 import java.util.StringTokenizer;
 
@@ -92,9 +91,9 @@ public class MoldeMapFragment extends Fragment
     Button request_gps_button;
 
     //신고 리스트 보여주는 리스트
-    @BindView(R.id.report_card_layout)
-    FrameLayout report_card_layout;
-    @BindView(R.id.report_card_view)
+    @BindView(R.id.report_card_view_layout)
+    FrameLayout report_card_view_layout;
+    @BindView(R.id.report_card_view_pager)
     ViewPager report_card_view_pager;
 
     SupportMapFragment mapView;
@@ -120,17 +119,18 @@ public class MoldeMapFragment extends Fragment
     private ReportCardPagerAdapter reportCardAdapter;
     private boolean firstPresentReportCard = false;
     private final int REQUEST_LOCATION = 1;
+    private MoldeFeedEntitiy feedData;
 
-    public ClusterManager<MoldeSearchMapClusterEntity> clusterManager;
+    //public ClusterManager<MoldeSearchMapClusterEntity> clusterManager;
     public ShadowTransformer reportCardShadowTransformer;
     public long gpsRequestTime = 0;
     public boolean gpsEnable = false;
     public ArrayList<Long> beforeCallApplyMethodTimeList;
-    public static SparseArrayCompat fragmentSparseArrayCompat;
+    public static SparseArrayCompat mapFragmentSparseArrayCompat;
 
 
     public static MoldeMapFragment newInstance() {
-        fragmentSparseArrayCompat = new SparseArrayCompat();
+        mapFragmentSparseArrayCompat = new SparseArrayCompat();
         return new MoldeMapFragment();
     }
 
@@ -160,20 +160,20 @@ public class MoldeMapFragment extends Fragment
             map_view_progress.setVisibility(View.INVISIBLE);
 
             if (reportInfohMarkers.size() > 0) {
-                if (fragmentSparseArrayCompat.get(R.string.reportRedhMarkerList) != null) {
-                    reportRedMarkerList = (ArrayList<Marker>) fragmentSparseArrayCompat.get(R.string.reportRedhMarkerList);
+                if (mapFragmentSparseArrayCompat.get(R.string.reportRedhMarkerList) != null) {
+                    reportRedMarkerList = (ArrayList<Marker>) mapFragmentSparseArrayCompat.get(R.string.reportRedhMarkerList);
                 }
-                if (fragmentSparseArrayCompat.get(R.string.reportGreenhMarkerList) != null) {
-                    reportGreenMarkerList = (ArrayList<Marker>) fragmentSparseArrayCompat.get(R.string.reportGreenhMarkerList);
+                if (mapFragmentSparseArrayCompat.get(R.string.reportGreenhMarkerList) != null) {
+                    reportGreenMarkerList = (ArrayList<Marker>) mapFragmentSparseArrayCompat.get(R.string.reportGreenhMarkerList);
                 }
-                if (fragmentSparseArrayCompat.get(R.string.reportWhitehMarkerList) != null) {
-                    reportWhiteMarkerList = (ArrayList<Marker>) fragmentSparseArrayCompat.get(R.string.reportWhitehMarkerList);
+                if (mapFragmentSparseArrayCompat.get(R.string.reportWhitehMarkerList) != null) {
+                    reportWhiteMarkerList = (ArrayList<Marker>) mapFragmentSparseArrayCompat.get(R.string.reportWhitehMarkerList);
                 }
-                if (fragmentSparseArrayCompat.get(R.string.reportInfohMarkers) != null) {
-                    reportInfohMarkers = (ArrayList<Marker>) fragmentSparseArrayCompat.get(R.string.reportInfohMarkers);
+                if (mapFragmentSparseArrayCompat.get(R.string.reportInfohMarkers) != null) {
+                    reportInfohMarkers = (ArrayList<Marker>) mapFragmentSparseArrayCompat.get(R.string.reportInfohMarkers);
                 }
-                if (fragmentSparseArrayCompat.get(R.string.reportCardItemList) != null) {
-                    reportCardItemList = (ArrayList<ReportCardItem>) fragmentSparseArrayCompat.get(R.string.reportCardItemList);
+                if (mapFragmentSparseArrayCompat.get(R.string.reportCardItemList) != null) {
+                    reportCardItemList = (ArrayList<ReportCardItem>) mapFragmentSparseArrayCompat.get(R.string.reportCardItemList);
                 }
                 reportCardAdapter = new ReportCardPagerAdapter(getContext());
                 reportCardAdapter.setCallback(this);
@@ -186,10 +186,10 @@ public class MoldeMapFragment extends Fragment
                 report_card_view_pager.setPageTransformer(false, reportCardShadowTransformer);
                 report_card_view_pager.setOffscreenPageLimit(reportCardItemList.size());
                 reportCardShadowTransformer.enableScaling(true);
-                if (fragmentSparseArrayCompat.get(R.string.currMarkerPosition) != null) {
-                    report_card_view_pager.setCurrentItem((int) fragmentSparseArrayCompat.get(R.string.currMarkerPosition));
+                if (mapFragmentSparseArrayCompat.get(R.string.currMarkerPosition) != null) {
+                    report_card_view_pager.setCurrentItem((int) mapFragmentSparseArrayCompat.get(R.string.currMarkerPosition));
                 }
-                report_card_layout.setVisibility(View.VISIBLE);
+                report_card_view_layout.setVisibility(View.VISIBLE);
                 backChk = true;
             }
         }
@@ -207,7 +207,7 @@ public class MoldeMapFragment extends Fragment
         });
 
         map_ui.bringToFront();
-        report_card_layout.setVisibility(View.INVISIBLE);
+        report_card_view_layout.setVisibility(View.INVISIBLE);
 
         my_loc_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -261,11 +261,27 @@ public class MoldeMapFragment extends Fragment
     @Override
     public void onResume() {
         super.onResume();
-        //report_card_layout.setVisibility(View.INVISIBLE);
+        //report_card_view_layout.setVisibility(View.INVISIBLE);
+        try {
+            if (getArguments() != null) {
+                if (getArguments().getSerializable("feedData") != null) {
+                    feedData = (MoldeFeedEntitiy) getArguments().getSerializable("feedData");
+                    Log.e("data", feedData.toString());
+                }
+            }
+        } catch (RuntimeException e) {
+            if (getArguments() != null) {
+                if (getArguments().getSerializable("feedData") != null) {
+                    feedData = (MoldeFeedEntitiy) getArguments().getSerializable("feedData");
+                    Log.e("data", feedData.toString());
+                }
+            }
+            e.printStackTrace();
+        }
         if (searchName.equals("검색하기")) {
             map_view_progress.setVisibility(View.INVISIBLE);
-            report_card_layout.bringToFront();
-            report_card_layout.setVisibility(View.VISIBLE);
+            report_card_view_layout.bringToFront();
+            report_card_view_layout.setVisibility(View.VISIBLE);
             map_option_layout.setVisibility(View.INVISIBLE);
             if (afterSearch == false) {
                 initChk = false;
@@ -285,8 +301,8 @@ public class MoldeMapFragment extends Fragment
                 searchName = entity.getName();
                 telNo = entity.getTelNo();
                 loc_search_input.setText(searchName);
-                report_card_layout.bringToFront();
-                report_card_layout.setVisibility(View.VISIBLE);
+                report_card_view_layout.bringToFront();
+                report_card_view_layout.setVisibility(View.VISIBLE);
                 map_option_layout.setVisibility(View.INVISIBLE);
                 initChk = false;
                 if (MoldeSearchMapInfoActivity.checkBackPressed == false && backChk == false) {
@@ -301,8 +317,8 @@ public class MoldeMapFragment extends Fragment
                 searchName = historyEntity.getName();
                 telNo = historyEntity.getTelNo();
                 loc_search_input.setText(searchName);
-                report_card_layout.bringToFront();
-                report_card_layout.setVisibility(View.VISIBLE);
+                report_card_view_layout.bringToFront();
+                report_card_view_layout.setVisibility(View.VISIBLE);
                 map_option_layout.setVisibility(View.INVISIBLE);
                 initChk = false;
                 if (MoldeSearchMapInfoActivity.checkBackPressed == false && backChk == false) {
@@ -328,23 +344,30 @@ public class MoldeMapFragment extends Fragment
     public void onAttach(Context context) {
         super.onAttach(context);
         ((MoldeMainActivity) context).setOnKeyBackPressedListener(this);
-        if (report_card_layout != null) {
+        if (report_card_view_layout != null) {
             Animation trans_to_down = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_down);
-            report_card_layout.startAnimation(trans_to_down);
-            report_card_layout.setVisibility(View.INVISIBLE);
+            report_card_view_layout.startAnimation(trans_to_down);
+            report_card_view_layout.setVisibility(View.INVISIBLE);
         }
     }
 
-    private void setupClusterer(LatLng moveLoc) {
+    /*private void setupClusterer(LatLng moveLoc) {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(moveLoc, 15));
         clusterManager = new ClusterManager<MoldeSearchMapClusterEntity>(getContext(), mMap);
         mMap.setOnCameraChangeListener(clusterManager);
-    }
+    }*/
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         LatLng moveLoc = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
+        if (feedData != null) {
+            if (afterSearch == false) {
+                makeSearchMarkers(feedData.getReportFeedLocation());
+                afterSearch = true;
+            }
+            return;
+        }
         if (searchName.equals("")) {
             mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
             UiSettings uiSettings = mMap.getUiSettings();
@@ -352,6 +375,7 @@ public class MoldeMapFragment extends Fragment
             uiSettings.setCompassEnabled(true);
             uiSettings.setMapToolbarEnabled(true);
             uiSettings.setMyLocationButtonEnabled(true);
+
         } else if (!searchName.equals("")) {
             if (searchName.charAt(searchName.length() - 1) == '동') {
                 StringTokenizer placeInfo = new StringTokenizer(searchName, " ");
@@ -379,11 +403,11 @@ public class MoldeMapFragment extends Fragment
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                if (report_card_layout.getVisibility() == View.VISIBLE) {
+                if (report_card_view_layout.getVisibility() == View.VISIBLE) {
                     Animation trans_to_down = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_down);
-                    report_card_layout.startAnimation(trans_to_down);
-                    report_card_layout.setVisibility(View.GONE);
-                    report_card_layout.setClickable(false);
+                    report_card_view_layout.startAnimation(trans_to_down);
+                    report_card_view_layout.setVisibility(View.GONE);
+                    report_card_view_layout.setClickable(false);
                     map_option_layout.setVisibility(View.VISIBLE);
                     backChk = true;
                 }
@@ -405,11 +429,11 @@ public class MoldeMapFragment extends Fragment
             public boolean onMarkerClick(Marker marker) {
                 if (marker.getTitle().equals("내 위치")) {
                     marker.setIcon(BitmapDescriptorFactory.fromBitmap(sizeUpMapIcon(R.drawable.my_location_icon)));
-                    if (report_card_layout.getVisibility() == View.VISIBLE) {
+                    if (report_card_view_layout.getVisibility() == View.VISIBLE) {
                         Animation trans_to_down = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_down);
-                        report_card_layout.startAnimation(trans_to_down);
-                        report_card_layout.setVisibility(View.GONE);
-                        report_card_layout.setClickable(false);
+                        report_card_view_layout.startAnimation(trans_to_down);
+                        report_card_view_layout.setVisibility(View.GONE);
+                        report_card_view_layout.setClickable(false);
                         map_option_layout.setVisibility(View.VISIBLE);
                         backChk = true;
                     }
@@ -418,11 +442,11 @@ public class MoldeMapFragment extends Fragment
 
                 if (marker.getTitle().equals("이름 없음")) {
                     marker.setIcon(BitmapDescriptorFactory.fromBitmap(sizeUpMapIcon(R.drawable.ic_map_pick)));
-                    if (report_card_layout.getVisibility() == View.VISIBLE) {
+                    if (report_card_view_layout.getVisibility() == View.VISIBLE) {
                         Animation trans_to_down = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_down);
-                        report_card_layout.startAnimation(trans_to_down);
-                        report_card_layout.setVisibility(View.GONE);
-                        report_card_layout.setClickable(false);
+                        report_card_view_layout.startAnimation(trans_to_down);
+                        report_card_view_layout.setVisibility(View.GONE);
+                        report_card_view_layout.setClickable(false);
                         map_option_layout.setVisibility(View.VISIBLE);
                         backChk = true;
                         Toast.makeText(getContext(), "정보 추가하는 창 띄우기", Toast.LENGTH_SHORT).show();
@@ -432,12 +456,25 @@ public class MoldeMapFragment extends Fragment
                     return false;
                 }
 
+                if (marker.getTitle().equals(searchName)) {
+                    marker.setIcon(BitmapDescriptorFactory.fromBitmap(sizeUpMapIcon(R.drawable.my_location_icon)));
+                    if (report_card_view_layout.getVisibility() == View.VISIBLE) {
+                        Animation trans_to_down = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_down);
+                        report_card_view_layout.startAnimation(trans_to_down);
+                        report_card_view_layout.setVisibility(View.GONE);
+                        report_card_view_layout.setClickable(false);
+                        map_option_layout.setVisibility(View.VISIBLE);
+                        backChk = true;
+                    }
+                    return false;
+                }
+
                 if (moveCnt > 0 && backChk == true) {
-                    report_card_layout.setVisibility(View.VISIBLE);
+                    report_card_view_layout.setVisibility(View.VISIBLE);
                     map_option_layout.setVisibility(View.INVISIBLE);
                     Animation trans_to_up = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_up);
-                    report_card_layout.startAnimation(trans_to_up);
-                    report_card_layout.bringToFront();
+                    report_card_view_layout.startAnimation(trans_to_up);
+                    report_card_view_layout.bringToFront();
                     backChk = false;
                 }
 
@@ -603,12 +640,12 @@ public class MoldeMapFragment extends Fragment
                         reportCardPositionList = new ArrayList<Integer>();
                         makeRandomMarkers(myLocation);
 
-                        report_card_layout.setVisibility(View.VISIBLE);
+                        report_card_view_layout.setVisibility(View.VISIBLE);
                         map_option_layout.setVisibility(View.INVISIBLE);
                         Animation trans_to_up = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_up);
-                        report_card_layout.startAnimation(trans_to_up);
-                        report_card_layout.bringToFront();
-                        report_card_layout.setClickable(true);
+                        report_card_view_layout.startAnimation(trans_to_up);
+                        report_card_view_layout.bringToFront();
+                        report_card_view_layout.setClickable(true);
                         backChk = false;
                         initChk = false;
                     }
@@ -723,11 +760,11 @@ public class MoldeMapFragment extends Fragment
         report_card_view_pager.setOffscreenPageLimit(reportCardItemList.size());
         reportCardShadowTransformer.enableScaling(true);
 
-        fragmentSparseArrayCompat.append(R.string.reportInfohMarkers, reportInfohMarkers);
-        fragmentSparseArrayCompat.append(R.string.reportRedhMarkerList, reportRedMarkerList);
-        fragmentSparseArrayCompat.append(R.string.reportGreenhMarkerList, reportGreenMarkerList);
-        fragmentSparseArrayCompat.append(R.string.reportWhitehMarkerList, reportWhiteMarkerList);
-        fragmentSparseArrayCompat.append(R.string.reportCardItemList, reportCardItemList);
+        mapFragmentSparseArrayCompat.append(R.string.reportInfohMarkers, reportInfohMarkers);
+        mapFragmentSparseArrayCompat.append(R.string.reportRedhMarkerList, reportRedMarkerList);
+        mapFragmentSparseArrayCompat.append(R.string.reportGreenhMarkerList, reportGreenMarkerList);
+        mapFragmentSparseArrayCompat.append(R.string.reportWhitehMarkerList, reportWhiteMarkerList);
+        mapFragmentSparseArrayCompat.append(R.string.reportCardItemList, reportCardItemList);
     }
 
     //현재 신고 카드뷰 페이지 감지 및 데이터 바인딩
@@ -756,7 +793,7 @@ public class MoldeMapFragment extends Fragment
                     } else {
                         int currPosition = reportCardPositionList.get(0);
                         Marker marker = reportInfohMarkers.get(currPosition);
-                        fragmentSparseArrayCompat.append(R.string.currMarkerPosition, currPosition);
+                        mapFragmentSparseArrayCompat.append(R.string.currMarkerPosition, currPosition);
                         for (Marker redMarker : reportRedMarkerList) {
                             if (marker.getTitle().equals(redMarker.getTitle())) {
                                 marker.setIcon(BitmapDescriptorFactory.fromBitmap(sizeUpMapIcon(R.drawable.ic_marker_red)));
@@ -787,9 +824,9 @@ public class MoldeMapFragment extends Fragment
     public void onBackKey() {
         if (backChk == false && initChk == false) {
             Animation trans_to_down = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_down);
-            report_card_layout.startAnimation(trans_to_down);
-            report_card_layout.setVisibility(View.GONE);
-            report_card_layout.setClickable(false);
+            report_card_view_layout.startAnimation(trans_to_down);
+            report_card_view_layout.setVisibility(View.GONE);
+            report_card_view_layout.setClickable(false);
             map_option_layout.setVisibility(View.VISIBLE);
             backChk = true;
         }

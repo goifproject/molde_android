@@ -30,6 +30,7 @@ public class MoldeMapHistroyRecyclerViewAdapter extends RecyclerView.Adapter<Rec
 
     public MoldeMapHistroyRecyclerViewAdapter(ArrayList<MoldeSearchMapHistoryEntity> historyList,
                                        Context context) {
+        Log.e("d", "가니");
         this.historyList = historyList;
         this.context = context;
     }
