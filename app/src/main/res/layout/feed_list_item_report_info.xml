@@ -59,13 +59,13 @@
             android:id="@+id/feed_div"
             android:layout_width="1dp"
             android:layout_height="38dp"
-            android:layout_toStartOf="@id/feed_marker"
+            android:layout_toStartOf="@id/feed_state"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="12dp"
             android:background="@color/colorDiv"/>
         
         <ImageView
-            android:id="@+id/feed_marker"
+            android:id="@+id/feed_state"
             android:layout_width="24dp"
             android:layout_height="32dp"
             android:src="@drawable/ic_marker_green"

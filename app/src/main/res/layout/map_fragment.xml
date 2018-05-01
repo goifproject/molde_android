@@ -114,15 +114,15 @@
     </RelativeLayout>
 
     <FrameLayout
-        android:id="@+id/report_card_layout"
+        android:id="@+id/report_card_view_layout"
         android:layout_width="match_parent"
-        android:layout_height="172dp"
+        android:layout_height="148dp"
         android:layout_marginBottom="56dp"
         android:layout_gravity="bottom"
         android:orientation="vertical"
         android:background="@android:color/transparent">
         <android.support.v4.view.ViewPager
-            android:id="@+id/report_card_view"
+            android:id="@+id/report_card_view_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"

@@ -20,11 +20,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ReportCardPagerAdapter extends PagerAdapter implements ReportCardAdapter {
-    @BindView(R.id.titleTextView)
+    @BindView(R.id.report_card_address)
     TextView titleTextView;
-    @BindView(R.id.contentTextView)
+    @BindView(R.id.report_card_detail_address)
     TextView contentTextView;
-    @BindView(R.id.cardView)
+    @BindView(R.id.report_card_view_layout)
     CardView cardView;
 
     private List<CardView> reportCardViewList;
