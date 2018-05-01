@@ -1,53 +1,54 @@
 package com.limefriends.molde.menu_feed.entity;
 
-import android.graphics.Bitmap;
+import com.google.android.gms.maps.model.LatLng;
 
-public class MoldeFeedEntitiy {
-    //Bitmap reportFeedThumbnail;
-    String reportFeedDate;
-    String reportFeedAddress;
-    String reportFeedDetailAddress;
-    int markerId;
+import java.io.Serializable;
 
-    public MoldeFeedEntitiy(String reportFeedDate,
-                            String reportFeedAddress,
-                            String reportFeedDetailAddress,
-                            int markerId) {
-        this.reportFeedDate = reportFeedDate;
+public class MoldeFeedEntitiy implements Serializable{
+    private String reportFeedAddress;
+    private String reportFeedDetailAddress;
+    private int reportFeedMarkerId;
+    private String reportFeedThumbnail;
+    private String reportFeedDate;
+    private LatLng reportFeedLocation;
+
+    public MoldeFeedEntitiy(String reportFeedAddress, String reportFeedDetailAddress,
+                            int reportFeedMarkerId, String reportFeedThumbnail,
+                            String reportFeedDate, LatLng reportFeedLocation) {
         this.reportFeedAddress = reportFeedAddress;
         this.reportFeedDetailAddress = reportFeedDetailAddress;
-        this.markerId = markerId;
-    }
-
-    public String getReportFeedDate() {
-        return reportFeedDate;
-    }
-
-    public void setReportFeedDate(String reportFeedDate) {
+        this.reportFeedMarkerId = reportFeedMarkerId;
+        this.reportFeedThumbnail = reportFeedThumbnail;
         this.reportFeedDate = reportFeedDate;
+        this.reportFeedLocation = reportFeedLocation;
     }
 
     public String getReportFeedAddress() {
         return reportFeedAddress;
     }
 
-    public void setReportFeedAddress(String reportFeedAddress) {
-        this.reportFeedAddress = reportFeedAddress;
-    }
-
     public String getReportFeedDetailAddress() {
         return reportFeedDetailAddress;
     }
 
-    public void setReportFeedDetailAddress(String reportFeedDetailAddress) {
-        this.reportFeedDetailAddress = reportFeedDetailAddress;
+    public int getReportFeedMarkerId() {
+        return reportFeedMarkerId;
     }
 
-    public int getMarkerId() {
-        return markerId;
+    public String getReportFeedThumbnail() {
+        return reportFeedThumbnail;
     }
 
-    public void setMarkerId(int markerId) {
-        this.markerId = markerId;
+    public String getReportFeedDate() {
+        return reportFeedDate;
+    }
+
+    public LatLng getReportFeedLocation() {
+        return reportFeedLocation;
+    }
+
+    @Override
+    public String toString() {
+        return "addr : " + reportFeedAddress + ", marker : " + reportFeedMarkerId;
     }
 }
