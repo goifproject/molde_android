@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/naver"
+        android:title="naver.com"/>
+
+
+    <item
+        android:id="@+id/hanmail"
+        android:title="hanmail.net" />
+
+    <item
+        android:id="@+id/gmail"
+        android:title="gmail.com" />
+
+</menu>
