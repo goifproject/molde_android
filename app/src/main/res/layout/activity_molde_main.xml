@@ -20,7 +20,9 @@
             android:background="?android:attr/windowBackground"
             app:menu="@menu/navigation"
             android:paddingLeft="16dp"
-            android:paddingRight="16dp"/>
+            android:paddingRight="16dp"
+            android:foregroundTint="@color/colorPrimary"
+            app:itemTextColor="@color/colorDeepDarkGray"/>
     </FrameLayout>
 
 </RelativeLayout>

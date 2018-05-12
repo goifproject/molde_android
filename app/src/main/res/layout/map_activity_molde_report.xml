@@ -11,13 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="76dp"
         android:paddingTop="8dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
         android:paddingBottom="8dp"
         android:layout_alignParentTop="true"
         android:orientation="horizontal"
         android:gravity="center"
-        android:background="@color/colorLittleWhiteGray">
+        android:background="@color/colorBG">
 
         <FrameLayout
             android:id="@+id/first_image_frame"
@@ -157,7 +157,7 @@
         android:layout_marginEnd="16dp"
         android:layout_below="@+id/report_content_title"
         android:layout_marginTop="8dp"
-        android:background="@drawable/frame"
+        android:background="@drawable/frame_gray_rounded"
         android:gravity="top|left"
         android:inputType="textMultiLine"
         android:lines="7"
@@ -172,7 +172,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_below="@id/report_content"
-        android:background="@drawable/frame">
+        android:background="@drawable/frame_gray_rounded">
         <TextView
             android:id="@+id/report_loc_title"
             android:layout_width="64dp"
@@ -183,7 +183,8 @@
             android:textAlignment="center"
             android:gravity="center"
             android:padding="4dp"
-            android:background="@color/colorLittleWhiteGray"/>
+            android:background="@drawable/frame_rounded"
+            android:backgroundTint="@color/colorFrameGrayRounded"/>
 
         <TextView
             android:id="@+id/search_loc_input"
@@ -195,7 +196,9 @@
             android:text="검색해서 등록"
             android:textSize="12sp"
             android:textStyle="bold" />
+
         <ImageButton
+            android:id="@+id/find_map_loc_button"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:scaleType="fitCenter"
@@ -211,7 +214,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
         android:layout_below="@+id/report_loc_bar"
-        android:background="@drawable/frame">
+        android:background="@drawable/frame_gray_rounded">
         <TextView
             android:id="@+id/detail_address_title"
             android:layout_width="wrap_content"
@@ -231,7 +234,7 @@
             android:paddingLeft="8dp"
             android:background="@null"/>
     </RelativeLayout>
-    
+
     <TextView
         android:id="@+id/reply_email_title"
         android:layout_width="wrap_content"
@@ -251,38 +254,61 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="4dp"
-        android:background="@drawable/frame"
+        android:background="@drawable/frame_gray_rounded"
         android:layout_below="@+id/reply_email_title">
         <EditText
             android:id="@+id/reply_email_input"
-            android:layout_width="166dp"
+            android:layout_width="150dp"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:layout_marginStart="8dp"
+            android:paddingStart="8dp"
             android:hint="이메일 입력"
-            android:textSize="10sp"
+            android:textSize="14sp"
             android:maxLength="30"
             android:textStyle="bold"
             android:singleLine="true"
             android:background="@null"/>
-
+        <TextView
+            android:layout_width="32dp"
+            android:layout_height="match_parent"
+            android:text="\@"
+            android:textStyle="bold"
+            android:layout_toEndOf="@id/reply_email_input"
+            android:gravity="center"
+            android:layout_marginBottom="4dp"/>
         <FrameLayout
-            android:layout_width="166dp"
+            android:layout_width="150dp"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true">
+            android:layout_alignParentTop="true"
+            android:background="@drawable/frame_rounded"
+            android:backgroundTint="@color/colorLittleWhiteGray">
             <Spinner
                 android:id="@+id/reply_email_select"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorLittleWhiteGray">
+                android:background="@drawable/frame_rounded"
+                android:backgroundTint="@color/colorLittleWhiteGray">
             </Spinner>
+            <ImageButton
+                android:id="@+id/self_close_button"
+                android:layout_width="25dp"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:scaleType="fitCenter"
+                android:layout_gravity="end"
+                android:background="@drawable/ic_close"/>
             <EditText
                 android:id="@+id/reply_email_self"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:textSize="14sp"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:maxLength="18"
                 android:visibility="invisible"
-                android:background="@null"/>
+                android:background="@drawable/frame_rounded"
+                android:backgroundTint="@color/colorLittleWhiteGray" />
         </FrameLayout>
     </RelativeLayout>
     
@@ -296,5 +322,4 @@
         android:textColor="@color/colorLittleDarkGray"
         android:layout_alignParentBottom="true"
         android:background="@color/colorPrimary"/>
-
 </RelativeLayout>

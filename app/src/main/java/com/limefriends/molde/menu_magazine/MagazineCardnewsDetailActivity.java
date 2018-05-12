@@ -5,6 +5,9 @@ package com.limefriends.molde.menu_magazine;
  */
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -35,6 +38,12 @@ public class MagazineCardnewsDetailActivity extends AppCompatActivity {
 
     @BindView(R.id.img_comment)
     ImageView img_comment;
+
+    @BindView(R.id.img_cardnews_scrap)
+    ImageView img_cardnews_scrap;
+
+    @BindView(R.id.img_cardnews_share)
+    ImageView img_cardnews_share;
 
     @BindView(R.id.txt_current_pagenum)
     TextView txt_current_pagenum;
@@ -98,11 +107,29 @@ public class MagazineCardnewsDetailActivity extends AppCompatActivity {
         img_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Toast.makeText(getApplicationContext(), "comment clicked", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent();
                 intent.setClass(getApplicationContext(), MagazineCommentActivity.class);
                 intent.putExtra("toolbarTitle", "댓글");
                 startActivity(intent);
+
+            }
+        });
+
+        img_cardnews_scrap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_cardnews_scrap.setImageResource(R.drawable.ic_cardscrap_2_24_true);
+                // TODO 스크랩 추가 <-> 취소 toggle
+                Toast.makeText(getApplicationContext(), "스크랩 추가", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        img_cardnews_share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "공유하기", Toast.LENGTH_SHORT).show();
             }
         });
 

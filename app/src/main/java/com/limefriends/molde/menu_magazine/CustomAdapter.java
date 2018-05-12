@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.limefriends.molde.R;
@@ -50,6 +51,7 @@ public class CustomAdapter extends PagerAdapter {
 
         element = (CardnewsDetailListElement)list.get(position);
         int image = element.getImage();
+        Toast.makeText(view.getContext(), String.valueOf(image), Toast.LENGTH_SHORT).show();
         String description = element.getDescription();
 
         Glide.with(view.getContext()).load(image).into(img_viewPager_child);
@@ -57,7 +59,7 @@ public class CustomAdapter extends PagerAdapter {
         container.addView(view);
         return view;
 
-        //TODO textview margin 수정필요
+        // TODO textview margin
 
     }
 

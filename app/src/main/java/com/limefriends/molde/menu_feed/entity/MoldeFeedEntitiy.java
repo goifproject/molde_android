@@ -2,15 +2,15 @@ package com.limefriends.molde.menu_feed.entity;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import java.io.Serializable;
-
-public class MoldeFeedEntitiy implements Serializable{
+public class MoldeFeedEntitiy{
     private String reportFeedAddress;
     private String reportFeedDetailAddress;
     private int reportFeedMarkerId;
     private String reportFeedThumbnail;
     private String reportFeedDate;
     private LatLng reportFeedLocation;
+
+    public MoldeFeedEntitiy(){}
 
     public MoldeFeedEntitiy(String reportFeedAddress, String reportFeedDetailAddress,
                             int reportFeedMarkerId, String reportFeedThumbnail,
@@ -20,6 +20,30 @@ public class MoldeFeedEntitiy implements Serializable{
         this.reportFeedMarkerId = reportFeedMarkerId;
         this.reportFeedThumbnail = reportFeedThumbnail;
         this.reportFeedDate = reportFeedDate;
+        this.reportFeedLocation = reportFeedLocation;
+    }
+
+    public void setReportFeedAddress(String reportFeedAddress) {
+        this.reportFeedAddress = reportFeedAddress;
+    }
+
+    public void setReportFeedDetailAddress(String reportFeedDetailAddress) {
+        this.reportFeedDetailAddress = reportFeedDetailAddress;
+    }
+
+    public void setReportFeedMarkerId(int reportFeedMarkerId) {
+        this.reportFeedMarkerId = reportFeedMarkerId;
+    }
+
+    public void setReportFeedThumbnail(String reportFeedThumbnail) {
+        this.reportFeedThumbnail = reportFeedThumbnail;
+    }
+
+    public void setReportFeedDate(String reportFeedDate) {
+        this.reportFeedDate = reportFeedDate;
+    }
+
+    public void setReportFeedLocation(LatLng reportFeedLocation) {
         this.reportFeedLocation = reportFeedLocation;
     }
 
@@ -49,6 +73,6 @@ public class MoldeFeedEntitiy implements Serializable{
 
     @Override
     public String toString() {
-        return "addr : " + reportFeedAddress + ", marker : " + reportFeedMarkerId;
+        return "addr : " + reportFeedAddress + ", marker : " + reportFeedMarkerId + ", Loc : " + reportFeedLocation;
     }
 }

@@ -4,15 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.limefriends.molde.R;
 
@@ -34,11 +37,17 @@ public class MagazineCommentActivity extends AppCompatActivity {
     @BindView(R.id.layout_activity_comment_wrapper)
     RelativeLayout layout_activity_comment_wrapper;
 
+    @BindView(R.id.layout_comment_swipe)
+    SwipeRefreshLayout layout_comment_swipe;
+
     @BindView(R.id.comment_recyclerview)
     RecyclerView comment_recyclerview;
 
     @BindView(R.id.edittext_comment)
     EditText edittext_comment;
+
+    @BindView(R.id.btn_comment_post)
+    Button btn_comment_post;
 
     CommentRecyclerAdapter adapter;
     List<CommentListElement> commentDataList;
@@ -64,6 +73,7 @@ public class MagazineCommentActivity extends AppCompatActivity {
 
 
         /* set dummy datalist */
+        // 실제로는 서버에서 데이터 받아오기
         commentDataList = new ArrayList<CommentListElement>();
         commentDataList.add(new CommentListElement(R.drawable.img_dummy_profile,
                 "user1", "2018.04.11 11:13", "세상에 이런 일이 다 있네요ㅠㅠ"));
@@ -91,6 +101,32 @@ public class MagazineCommentActivity extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(edittext_comment.getWindowToken(), 0);
             }
         });
+
+
+        /* 댓글 게시 */
+        btn_comment_post.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 로그인 된 상태라면 -> 댓글 등록
+                // 로그인 안 된 상태라면 -> 로그인 화면으로 넘어가기
+                // 서버에 데이터 넘겨주고 콜백함수로 하위에 댓글item 추가
+                // 아래로 끌어당기면 새로고침 되도록 만들기
+                Toast.makeText(getApplicationContext(), "댓글 등록", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        /* 당겨서 새로고침 */
+        layout_comment_swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // 댓글목록 새로 불러오기!
+                Toast.makeText(getApplicationContext(), "refresh", Toast.LENGTH_SHORT).show();
+                layout_comment_swipe.setRefreshing(false);
+            }
+        });
+
+
 
     }
 

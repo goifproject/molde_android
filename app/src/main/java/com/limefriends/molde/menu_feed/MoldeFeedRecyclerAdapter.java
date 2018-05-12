@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.limefriends.molde.R;
+import com.limefriends.molde.RoundedCornersTransformation;
 import com.limefriends.molde.menu_feed.entity.MoldeFeedEntitiy;
 
 import java.util.ArrayList;
@@ -115,12 +116,14 @@ public class MoldeFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
         if (holder instanceof FeedViewHolder) {
             final FeedViewHolder viewHolder = (FeedViewHolder) holder;
             Glide.with(context)
-                    .load("http://via.placeholder.com/300.png")
+                    .load(reportFeedList.get(position).getReportFeedThumbnail())
                     //.bitmapTransform(new RoundedCornersTransformation(context, 30, 10))
                     .into(viewHolder.feed_image);
             viewHolder.feed_image.setClipToOutline(true);
-            viewHolder.feed_content.setElevation(8);
+            viewHolder.feed_image.setElevation(8);
+            viewHolder.feed_content.setElevation(12);
             viewHolder.feed_address.setText(reportFeedList.get(position).getReportFeedAddress());
+            viewHolder.feed_date.setText(reportFeedList.get(position).getReportFeedDate());
             switch (reportFeedList.get(position).getReportFeedMarkerId()) {
                 case 1:
                     viewHolder.feed_state.setImageResource(R.drawable.ic_marker_red);

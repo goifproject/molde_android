@@ -19,7 +19,7 @@ public class Cache {
     public File getCacheDir(Context context) {
         File cacheDir = null;
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            cacheDir = new File(Environment.getExternalStorageDirectory(), "MoldeCacheFolder");
+            cacheDir = new File(Environment.getExternalStorageDirectory(), "molde-cache-folder");
             if (!cacheDir.isDirectory()) {
                 cacheDir.mkdirs();
             }

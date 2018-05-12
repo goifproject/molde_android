@@ -15,11 +15,13 @@
 
     <Button
         android:id="@+id/faqB"
-        android:layout_width="223dp"
+        android:layout_width="wrap_content"
         android:layout_height="32dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="44dp"
+        android:background="@drawable/frame_gray_rounded"
+        android:padding="8dp"
         android:text="자주 묻는 질문"
         android:textSize="14sp" />
 
@@ -45,7 +47,7 @@
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:background="@drawable/border" />
+        android:background="@drawable/frame_gray_rounded" />
 
     <TextView
         android:id="@+id/emailText"
@@ -59,7 +61,7 @@
 
     <EditText
         android:id="@+id/email"
-        android:background="@drawable/border"
+        android:background="@drawable/frame_gray_rounded"
         android:layout_width="248dp"
         android:layout_height="36dp"
         android:layout_alignStart="@+id/edt_faq"

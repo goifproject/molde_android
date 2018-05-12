@@ -12,6 +12,7 @@
     <string name="search_loc_bld">지역 또는 건물이름 검색</string>
     <string name="report_history">신고내역</string>
     <string name="report_content">신고내용</string>
+    <string name="my_favorite">즐겨찾기</string>
 
     <string name="reportRedhMarkerList">빨간색마커리스트</string>
     <string name="reportGreenhMarkerList">초록색마커리스트</string>

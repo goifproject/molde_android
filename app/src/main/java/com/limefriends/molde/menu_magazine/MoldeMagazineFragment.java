@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.limefriends.molde.MoldeMainActivity;
 import com.limefriends.molde.R;
@@ -25,14 +24,12 @@ public class MoldeMagazineFragment extends Fragment implements MoldeMainActivity
 
     @BindView(R.id.cardnews_recyclerView)
     RecyclerView cardnews_recyclerView;
-    @BindView(R.id.manual_molca)
-    LinearLayout manual_molca;
-    @BindView(R.id.manual_hotel)
-    LinearLayout manual_hotel;
-    @BindView(R.id.manual_toilet)
-    LinearLayout manual_toilet;
-    @BindView(R.id.manual_transportation)
-    LinearLayout manual_transportation;
+    @BindView(R.id.manual_for_spreading)
+    LinearLayout manual_for_spreading;
+    @BindView(R.id.manual_new_molca)
+    LinearLayout manual_new_molca;
+    @BindView(R.id.manual_by_location)
+    LinearLayout manual_by_location;
 
 
 
@@ -65,47 +62,37 @@ public class MoldeMagazineFragment extends Fragment implements MoldeMainActivity
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.magazine_fragment, container, false);
         ButterKnife.bind(this, rootView);
 
+        manual_new_molca.setElevation(8);
+        manual_for_spreading.setElevation(8);
+        manual_by_location.setElevation(8);
 
-        manual_hotel.setOnClickListener(new View.OnClickListener() {
+
+        manual_new_molca.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "hotel clicked", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent();
-                intent.setClass(getActivity(), MagazineReportDetailActivity.class);
-                intent.putExtra("title", "숙박업소");
+                intent.setClass(getActivity(), MagazineReportDetail01Activity.class);
+                intent.putExtra("title", "최신 몰카 정보");
                 startActivity(intent);
             }
         });
 
-        manual_toilet.setOnClickListener(new View.OnClickListener() {
+        manual_by_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "toilet clicked", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent();
-                intent.setClass(getActivity(), MagazineReportDetailActivity.class);
-                intent.putExtra("title", "화장실");
+                intent.setClass(getActivity(), MagazineReportDetail02Activity.class);
+                intent.putExtra("title", "장소별 대처법");
                 startActivity(intent);
             }
         });
 
-        manual_transportation.setOnClickListener(new View.OnClickListener() {
+        manual_for_spreading.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "trasportation clicked", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent();
-                intent.setClass(getActivity(), MagazineReportDetailActivity.class);
-                intent.putExtra("title", "대중교통");
-                startActivity(intent);
-            }
-        });
-
-        manual_molca.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "molca clicked", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent();
-                intent.setClass(getActivity(), MagazineReportDetailActivity.class);
-                intent.putExtra("title", "몰카유포 대처법");
+                intent.setClass(getActivity(), MagazineReportDetail03Activity.class);
+                intent.putExtra("title", "몰카유포 대처");
                 startActivity(intent);
             }
         });

@@ -120,6 +120,7 @@ public class MoldeMapFragment extends Fragment
     private boolean firstPresentReportCard = false;
     private final int REQUEST_LOCATION = 1;
     private MoldeFeedEntitiy feedData;
+    private Marker feedMarker;
 
     //public ClusterManager<MoldeSearchMapClusterEntity> clusterManager;
     public ShadowTransformer reportCardShadowTransformer;
@@ -223,6 +224,9 @@ public class MoldeMapFragment extends Fragment
             @Override
             public void onClick(View view) {
                 Toast.makeText(getContext(), "즐겨찾기 페이지로 넘어가기", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent();
+                intent.setClass(getContext(), MoldeMyFavoriteActivity.class);
+                startActivity(intent);
             }
         });
         report_button.setOnClickListener(new View.OnClickListener() {
@@ -261,22 +265,21 @@ public class MoldeMapFragment extends Fragment
     @Override
     public void onResume() {
         super.onResume();
-        //report_card_view_layout.setVisibility(View.INVISIBLE);
-        try {
-            if (getArguments() != null) {
-                if (getArguments().getSerializable("feedData") != null) {
-                    feedData = (MoldeFeedEntitiy) getArguments().getSerializable("feedData");
-                    Log.e("data", feedData.toString());
-                }
-            }
-        } catch (RuntimeException e) {
-            if (getArguments() != null) {
-                if (getArguments().getSerializable("feedData") != null) {
-                    feedData = (MoldeFeedEntitiy) getArguments().getSerializable("feedData");
-                    Log.e("data", feedData.toString());
-                }
-            }
-            e.printStackTrace();
+
+        if (getArguments() != null) {
+            //피드 프래그먼트에서 받아온 피드객체 데이터
+            feedData = new MoldeFeedEntitiy(
+                    getArguments().getString("reportFeedAddress"),
+                    getArguments().getString("reportFeedDetailAddress"),
+                    getArguments().getInt("reportFeedMarkerId"),
+                    getArguments().getString("reportFeedThumbnail"),
+                    getArguments().getString("reportFeedDate"),
+                    new LatLng(
+                            getArguments().getDouble("reportFeedLocationLat"),
+                            getArguments().getDouble("reportFeedLocationLng")
+                    )
+            );
+            Log.e("feedData", feedData.toString());
         }
         if (searchName.equals("검색하기")) {
             map_view_progress.setVisibility(View.INVISIBLE);
@@ -360,22 +363,21 @@ public class MoldeMapFragment extends Fragment
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        LatLng moveLoc = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        UiSettings uiSettings = mMap.getUiSettings();
+        uiSettings.setZoomControlsEnabled(false);
+        uiSettings.setCompassEnabled(true);
+        uiSettings.setMapToolbarEnabled(true);
+        uiSettings.setMyLocationButtonEnabled(true);
+
         if (feedData != null) {
-            if (afterSearch == false) {
-                makeSearchMarkers(feedData.getReportFeedLocation());
-                afterSearch = true;
-            }
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(feedData.getReportFeedLocation(), 15));
+            makeFeedMarker(feedData);
             return;
         }
-        if (searchName.equals("")) {
-            mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-            UiSettings uiSettings = mMap.getUiSettings();
-            uiSettings.setZoomControlsEnabled(false);
-            uiSettings.setCompassEnabled(true);
-            uiSettings.setMapToolbarEnabled(true);
-            uiSettings.setMyLocationButtonEnabled(true);
 
+        LatLng moveLoc = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
+        if (searchName.equals("")) {
         } else if (!searchName.equals("")) {
             if (searchName.charAt(searchName.length() - 1) == '동') {
                 StringTokenizer placeInfo = new StringTokenizer(searchName, " ");
@@ -397,7 +399,6 @@ public class MoldeMapFragment extends Fragment
                 }
             }
         }
-
 
         /*********************** Map Click ***********************/
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
@@ -440,6 +441,7 @@ public class MoldeMapFragment extends Fragment
                     return false;
                 }
 
+                //즐겨찾기 추가 기능
                 if (marker.getTitle().equals("이름 없음")) {
                     marker.setIcon(BitmapDescriptorFactory.fromBitmap(sizeUpMapIcon(R.drawable.ic_map_pick)));
                     if (report_card_view_layout.getVisibility() == View.VISIBLE) {
@@ -449,11 +451,40 @@ public class MoldeMapFragment extends Fragment
                         report_card_view_layout.setClickable(false);
                         map_option_layout.setVisibility(View.VISIBLE);
                         backChk = true;
-                        Toast.makeText(getContext(), "정보 추가하는 창 띄우기", Toast.LENGTH_SHORT).show();
+                        MoldeMyFavoriteInfoMapDialog moldeMyFavoriteInfoMapDialog = MoldeMyFavoriteInfoMapDialog.getInstance();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("markerTitle", marker.getTitle());
+                        bundle.putString("markerInfo", marker.getSnippet());
+                        bundle.putDouble("markerLat", marker.getPosition().latitude);
+                        bundle.putDouble("markerLng", marker.getPosition().longitude);
+                        moldeMyFavoriteInfoMapDialog.setArguments(bundle);
+                        moldeMyFavoriteInfoMapDialog.show(((MoldeMainActivity) getContext()).getSupportFragmentManager(), "bottomSheet");
                     } else {
-                        Toast.makeText(getContext(), "정보 추가하는 창 띄우기", Toast.LENGTH_SHORT).show();
+                        MoldeMyFavoriteInfoMapDialog moldeMyFavoriteInfoMapDialog = MoldeMyFavoriteInfoMapDialog.getInstance();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("markerTitle", marker.getTitle());
+                        bundle.putString("markerInfo", marker.getSnippet());
+                        bundle.putDouble("markerLat", marker.getPosition().latitude);
+                        bundle.putDouble("markerLng", marker.getPosition().longitude);
+                        moldeMyFavoriteInfoMapDialog.setArguments(bundle);
+                        moldeMyFavoriteInfoMapDialog.show(((MoldeMainActivity) getContext()).getSupportFragmentManager(), "bottomSheet");
                     }
                     return false;
+                }
+
+                if(feedData != null){
+                    if(marker.getTitle().equals(feedData.getReportFeedAddress())){
+                        marker.setIcon(BitmapDescriptorFactory.fromBitmap(sizeUpMapIcon(R.drawable.my_location_icon)));
+                        if (report_card_view_layout.getVisibility() == View.VISIBLE) {
+                            Animation trans_to_down = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_down);
+                            report_card_view_layout.startAnimation(trans_to_down);
+                            report_card_view_layout.setVisibility(View.GONE);
+                            report_card_view_layout.setClickable(false);
+                            map_option_layout.setVisibility(View.VISIBLE);
+                            backChk = true;
+                        }
+                        return false;
+                    }
                 }
 
                 if (marker.getTitle().equals(searchName)) {
@@ -516,6 +547,25 @@ public class MoldeMapFragment extends Fragment
                     marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_pick));
                 } else if (marker.getTitle().equals(searchName)) {
                     marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.my_location_icon));
+                } else if(feedData != null){
+                    if(marker.getTitle().equals(feedData.getReportFeedAddress())){
+                        marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.my_location_icon));
+                    }
+                    for (Marker redMarker : reportRedMarkerList) {
+                        if (marker.getTitle().equals(redMarker.getTitle())) {
+                            marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_red));
+                        }
+                    }
+                    for (Marker greenMarker : reportGreenMarkerList) {
+                        if (marker.getTitle().equals(greenMarker.getTitle())) {
+                            marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_green));
+                        }
+                    }
+                    for (Marker whiteMarker : reportWhiteMarkerList) {
+                        if (marker.getTitle().equals(whiteMarker.getTitle())) {
+                            marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_white));
+                        }
+                    }
                 } else {
                     for (Marker redMarker : reportRedMarkerList) {
                         if (marker.getTitle().equals(redMarker.getTitle())) {
@@ -594,6 +644,16 @@ public class MoldeMapFragment extends Fragment
         }
     }
 
+    public void clearReportInfoMarkers() {
+        for (Marker marker : reportInfohMarkers) {
+            marker.remove();
+        }
+        reportInfohMarkers.clear();
+        reportCardItemList.clear();
+        reportCardAdapter.removeAllCardItem();
+        report_card_view_pager.setAdapter(reportCardAdapter);
+    }
+
     public class MyLocationListener implements LocationListener {
         //위치정보 보여주기
         //구글 맵 이동
@@ -628,13 +688,7 @@ public class MoldeMapFragment extends Fragment
                     myLocChange = false;
                     if (moveCnt > 0) {
                         if (reportInfohMarkers.size() > 0 || reportCardItemList.size() > 0) {
-                            for (Marker marker : reportInfohMarkers) {
-                                marker.remove();
-                            }
-                            reportInfohMarkers.clear();
-                            reportCardItemList.clear();
-                            reportCardAdapter.removeAllCardItem();
-                            report_card_view_pager.setAdapter(reportCardAdapter);
+                            clearReportInfoMarkers();
                         }
                         beforeCallApplyMethodTimeList = new ArrayList<Long>();
                         reportCardPositionList = new ArrayList<Integer>();
@@ -682,6 +736,31 @@ public class MoldeMapFragment extends Fragment
                         .snippet("정보 없음")
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_pick))
         );
+    }
+
+    //피드 프래그먼트에서 받아온 데이터를 기반으로 마커 정보를 생성
+    public void makeFeedMarker(MoldeFeedEntitiy feedData) {
+        if(feedMarker != null){
+            feedMarker.remove();
+        }
+        feedMarker = mMap.addMarker(
+                new MarkerOptions()
+                        .position(feedData.getReportFeedLocation())
+                        .title(feedData.getReportFeedAddress())
+                        .snippet(feedData.getReportFeedDetailAddress())
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.my_location_icon))
+        );
+        feedMarker.showInfoWindow();
+        clearReportInfoMarkers();
+        makeSearchMarkers(feedData.getReportFeedLocation());
+        report_card_view_layout.setVisibility(View.VISIBLE);
+        map_option_layout.setVisibility(View.INVISIBLE);
+        Animation trans_to_up = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_up);
+        report_card_view_layout.startAnimation(trans_to_up);
+        report_card_view_layout.bringToFront();
+        report_card_view_layout.setClickable(true);
+        backChk = false;
+        initChk = false;
     }
 
     //검색 후 하나의 마커 생성 및 검색정보 대입
@@ -809,7 +888,6 @@ public class MoldeMapFragment extends Fragment
                                 marker.setIcon(BitmapDescriptorFactory.fromBitmap(sizeUpMapIcon(R.drawable.ic_marker_white)));
                             }
                         }
-                        Log.e("p", currPosition + "");
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 15));
                         marker.showInfoWindow();
                         beforeCallApplyMethodTimeList.clear();

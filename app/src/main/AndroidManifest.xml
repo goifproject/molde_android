@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".MoldeApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -39,39 +40,59 @@
         <activity
             android:name=".menu_map.MoldeReportActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".menu_map.MoldeMyFavoriteActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".menu_map.cameraManager.MoldeReportCameraActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".menu_map.galleryManager.MoldeReportGalleryActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".menu_map.cameraManager.MoldeReportCheckImage"
             android:screenOrientation="portrait"
-            android:theme="@style/AppNoBarTheme"/>
+            android:theme="@style/AppNoBarTheme" />
 
         <!-- 매거진 관련 -->
         <activity
-            android:name=".menu_magazine.MagazineReportDetailActivity"
+            android:name=".menu_magazine.MagazineReportDetail01Activity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".menu_magazine.MagazineReportDetail02Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".menu_magazine.MagazineReportDetail03Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".menu_magazine.MagazineCardnewsDetailActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppNoBarTheme"/>
+            android:theme="@style/AppNoBarTheme" />
         <activity
             android:name=".menu_magazine.MagazineCommentActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
 
         <!-- 마이페이지 관련 -->
         <activity
             android:name=".menu_mypage.MoldeMyPageSettings"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".menu_mypage.MoldeMyPageInquiry"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".menu_mypage.MoldeMyPageFaQ"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
