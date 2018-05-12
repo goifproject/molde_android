@@ -87,6 +87,9 @@ public class CommentRecyclerAdapter extends RecyclerView.Adapter<CommentViewHold
 
     @Override
     public void onClick(View v) {
+        ImageView img_comment_siren = v.findViewById(R.id.img_comment_siren);
+        img_comment_siren.setImageResource(R.drawable.ic_siren_true);
+        // TODO 신고 <-> 신고 취소 toggle
         Snackbar.make(view, "댓글이 신고되었습니다.", 300).show();
     }
 

@@ -56,6 +56,13 @@ public class MoldeMyPageFragment extends Fragment implements MoldeMainActivity.o
             }
         });
 
+        mypage_faq_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(),MoldeMyPageInquiry.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
+            }
+        });
+
         return view;
     }
 

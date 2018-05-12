@@ -10,12 +10,12 @@ public class MoldeFeedResponseInfoEntity {
     private String rep_lon;
     private String rep_date;
     private String rep_detail_addr;
-    //private String rep_img;
+    private String rep_img;
 
 
     public MoldeFeedResponseInfoEntity(String rep_id, String rep_nm, String rep_contents,
-                                       String rep_state, String rep_addr, String rep_lat,
-                                       String rep_lon, String rep_date, String rep_detail_addr) {
+                                       String rep_state, String rep_addr, String rep_lat, String rep_lon,
+                                       String rep_date, String rep_detail_addr, String rep_img) {
         this.rep_id = rep_id;
         this.rep_nm = rep_nm;
         this.rep_contents = rep_contents;
@@ -25,6 +25,7 @@ public class MoldeFeedResponseInfoEntity {
         this.rep_lon = rep_lon;
         this.rep_date = rep_date;
         this.rep_detail_addr = rep_detail_addr;
+        this.rep_img = rep_img;
     }
 
     public String getRep_id() {
@@ -63,9 +64,13 @@ public class MoldeFeedResponseInfoEntity {
         return rep_detail_addr;
     }
 
+    public String getRep_img() {
+        return rep_img;
+    }
+
     @Override
     public String toString() {
-        return "state : " + rep_state + ", name : " + rep_nm + ", address : " + rep_addr;
+        return "state : " + rep_state + ", name : " + rep_nm + ", address : " + rep_addr + ", img : " + rep_img;
     }
 }
 
@@ -79,7 +84,6 @@ public class MoldeFeedResponseInfoEntity {
   "rep_state" : "신고 내역 상태",
   "rep_lat" : "위도",
   "rep_lon" : "경도" ,
-  "rep_img" : "이미지 데이터",
   "rep_addr" : "신고 주소",
   "rep_detail_addr" : "신고 상세주소"
  }

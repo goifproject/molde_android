@@ -27,12 +27,13 @@ public class MoldeMapHistroyRecyclerViewAdapter extends RecyclerView.Adapter<Rec
     private MoldeMapHistoryRecyclerViewAdapterCallback callback;
     private Context context;
     private Cache cache;
+    private String cmd;
 
     public MoldeMapHistroyRecyclerViewAdapter(ArrayList<MoldeSearchMapHistoryEntity> historyList,
-                                       Context context) {
-        Log.e("d", "가니");
+                                       Context context, String cmd) {
         this.historyList = historyList;
         this.context = context;
+        this.cmd = cmd;
     }
 
     public static class MapHistoryViewHolder extends RecyclerView.ViewHolder {
@@ -106,7 +107,7 @@ public class MoldeMapHistroyRecyclerViewAdapter extends RecyclerView.Adapter<Rec
                                         historyList.get(position).getMainAddress(),
                                         historyList.get(position).getBizName(),
                                         historyList.get(position).getTelNo()
-                                )
+                                ), cmd
                         );
                     }catch (IndexOutOfBoundsException e) {
                         Log.e("맵 정보",
@@ -123,7 +124,7 @@ public class MoldeMapHistroyRecyclerViewAdapter extends RecyclerView.Adapter<Rec
                                         historyList.get(0).getMainAddress(),
                                         historyList.get(0).getBizName(),
                                         historyList.get(0).getTelNo()
-                                )
+                                ), cmd
                         );
                     }
                     MoldeSearchMapInfoActivity.checkBackPressed = false;

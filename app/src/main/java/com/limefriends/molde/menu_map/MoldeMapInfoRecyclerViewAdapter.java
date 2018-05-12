@@ -30,9 +30,11 @@ public class MoldeMapInfoRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
     private String keywordHistory;
     private Context context;
     private Cache cache;
+    private String cmd;
 
-    public MoldeMapInfoRecyclerViewAdapter(Context context) {
+    public MoldeMapInfoRecyclerViewAdapter(Context context, String cmd) {
         this.context = context;
+        this.cmd = cmd;
     }
 
     public static class MapInfoViewHolder extends RecyclerView.ViewHolder {
@@ -125,7 +127,7 @@ public class MoldeMapInfoRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
                     for (int i = 0; i < keywordHistoryList.size(); i++) {
                         keywordHistory += keywordHistoryList.get(i) + ",";
                     }
-                    callback.applyMapInfo(
+                    callback.applySearchMapInfo(
                             new MoldeSearchMapInfoEntity(
                                     viewHolder.mapLat,
                                     viewHolder.mapLng,
@@ -134,7 +136,7 @@ public class MoldeMapInfoRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
                                     viewHolder.streetAddress,
                                     viewHolder.bizName,
                                     viewHolder.telNo
-                            )
+                            ), cmd
                     );
                     MoldeSearchMapInfoActivity.checkBackPressed = false;
                     try {

@@ -6,19 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <View
-        android:id="@+id/cardnews_header"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:background="#333333" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/cardnews_viewPager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/cardnews_header"
-        android:layout_above="@+id/cardnews_footer"
+        android:layout_alignParentTop="true"
         android:background="#dddddd"/>
 
 
@@ -32,10 +26,20 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp">
 
+        <ImageView
+            android:id="@+id/img_cardnews_page"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="4dp"
+            android:background="@drawable/ic_view" />
+
         <TextView
             android:id="@+id/txt_current_pagenum"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_toEndOf="@+id/img_cardnews_page"
             android:gravity="center_vertical"
             android:text="1"
             android:textColor="#ffffff" />
@@ -64,24 +68,24 @@
             android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            app:srcCompat="@drawable/comment_dummy" />
+            app:srcCompat="@drawable/ic_comment_selector" />
 
         <ImageView
-            android:id="@+id/img_share"
+            android:id="@+id/img_cardnews_share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            app:srcCompat="@drawable/share_dummy" />
+            app:srcCompat="@drawable/ic_connect_selector" />
 
         <ImageView
-            android:id="@+id/ic_cardscrap_2_24"
+            android:id="@+id/img_cardnews_scrap"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/img_share"
+            android:layout_alignTop="@+id/img_cardnews_share"
             android:layout_marginEnd="8dp"
-            android:layout_toStartOf="@+id/img_share"
-            app:srcCompat="@drawable/bookmark_dummy" />
+            android:layout_toStartOf="@+id/img_cardnews_share"
+            app:srcCompat="@drawable/ic_cardscrap_2_24" />
 
     </RelativeLayout>
 

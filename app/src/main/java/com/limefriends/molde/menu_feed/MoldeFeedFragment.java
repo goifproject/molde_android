@@ -3,6 +3,7 @@ package com.limefriends.molde.menu_feed;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.SparseArrayCompat;
@@ -21,6 +22,7 @@ import com.limefriends.molde.MoldeMainActivity;
 import com.limefriends.molde.R;
 import com.limefriends.molde.menu_feed.entity.MoldeFeedEntitiy;
 import com.limefriends.molde.menu_feed.entity.MoldeFeedResponseInfoEntity;
+import com.limefriends.molde.menu_feed.entity.MoldeFeedResponseInfoEntityList;
 import com.limefriends.molde.menu_map.MoldeMapFragment;
 
 import java.io.IOException;
@@ -37,7 +39,7 @@ import okhttp3.Response;
 public class MoldeFeedFragment extends Fragment
         implements MoldeMainActivity.onKeyBackPressedListener,
         MoldeFeedRecyclerAdapter.OnLoadMoreListener,
-    MoldeFeedRecyclerAdapter.OnClickFeedItemListener{
+        MoldeFeedRecyclerAdapter.OnClickFeedItemListener {
     @BindView(R.id.feed_sort_toggle)
     ToggleButton feed_sort_toggle;
     @BindView(R.id.feed_update_date)
@@ -47,7 +49,12 @@ public class MoldeFeedFragment extends Fragment
 
     private MoldeFeedRecyclerAdapter feedAdapter;
     private ArrayList<MoldeFeedEntitiy> reportFeedList;
+
+    private Handler mHandler;
+    public String res;
     public static SparseArrayCompat feedFragmentSparseArrayCompat;
+    public MoldeFeedResponseInfoEntityList feedResponseInfoEntityList;
+    public MoldeFeedEntitiy feedData;
 
     public static MoldeFeedFragment newInstance() {
         feedFragmentSparseArrayCompat = new SparseArrayCompat();
@@ -74,56 +81,48 @@ public class MoldeFeedFragment extends Fragment
     @Override
     public void onStart() {
         super.onStart();
-        if (feedFragmentSparseArrayCompat.get(R.string.feedList) != null && feedFragmentSparseArrayCompat.get(R.string.feedStatus) != null) {
+        if (feedFragmentSparseArrayCompat.get(R.string.feedStatus) != null) {
             reportFeedList.clear();
             String feedStatus = (String) feedFragmentSparseArrayCompat.get(R.string.feedStatus);
             if (feedStatus.equals("거리순")) {
                 feed_sort_toggle.setChecked(false);
                 feed_sort_toggle.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_feed_toggle_off));
+                loadData("거리순");
             } else if (feedStatus.equals("최신순")) {
                 feed_sort_toggle.setChecked(true);
                 feed_sort_toggle.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_feed_toggle_on));
+                loadData("최신순");
             }
-            reportFeedList = (ArrayList<MoldeFeedEntitiy>) feedFragmentSparseArrayCompat.get(R.string.feedList);
-            feedAdapter.addAll(reportFeedList);
             return;
         }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                loadData("거리순");
-            }
-        }).start();
+        loadData("거리순");
     }
 
     private void loadData(String cmd) {
         try {
-            requestGet("http://13.209.64.183:7019/v1/report");
+            mHandler = new Handler(Looper.getMainLooper());
+            reportFeedList.clear();
+            if (cmd.equals("거리순")) {
+                requestGet("http://13.209.64.183:7019/v1/report");
+            } else if (cmd.equals("최신순")) {
+                for (int i = 1; i <= 20; i++) {
+                    reportFeedList.add(
+                            new MoldeFeedEntitiy(
+                            "최신순" + i, "",
+                            2, "http://via.placeholder.com/300.png", "",
+                            new LatLng(Double.valueOf("37.499597"), Double.valueOf("127.031372"))
+                            )
+                    );
+                }
+                feedAdapter.addAll(reportFeedList);
+            }
             return;
         } catch (IOException e) {
             e.printStackTrace();
         }
-        reportFeedList.clear();
-        if (cmd.equals("거리순")) {
-            for (int i = 1; i <= 20; i++) {
-                reportFeedList.add(new MoldeFeedEntitiy(
-                        "거리순", "",
-                        1, "","",
-                        new LatLng(Double.valueOf("37.499597"), Double.valueOf("127.031372"))));
-            }
-        } else if (cmd.equals("최신순")) {
-            for (int i = 1; i <= 20; i++) {
-                reportFeedList.add(new MoldeFeedEntitiy(
-                        "최신순", "",
-                        2, "","",
-                        new LatLng(Double.valueOf("37.499597"), Double.valueOf("127.031372"))));
-            }
-        }
-        feedAdapter.addAll(reportFeedList);
     }
 
     public void requestGet(String url) throws IOException {
-        final ArrayList<MoldeFeedResponseInfoEntity> feedResponseInfoList = new ArrayList<MoldeFeedResponseInfoEntity>();
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
 
@@ -132,16 +131,41 @@ public class MoldeFeedFragment extends Fragment
             public void onFailure(Call call, IOException e) {
                 Log.e("에러", e.toString());
             }
+
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                Log.e("응답", response.body().string());
-                MoldeFeedResponseInfoEntity[] feedResponseInfoArray =
-                        new Gson().fromJson(response.body().string(), MoldeFeedResponseInfoEntity[].class);
-                for(int i = 0; i < feedResponseInfoArray.length; i++){
-                    feedResponseInfoList.add(feedResponseInfoArray[i]);
-                    Log.e("res", feedResponseInfoArray[i].toString());
-                }
+                //Log.e("응답", response.body().string());
+                res = response.body().string();
+
+                feedResponseInfoEntityList =
+                        new Gson().fromJson(res, MoldeFeedResponseInfoEntityList.class);
+
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (int i = 0; i < 20; i++) {
+                            Log.e("s", feedResponseInfoEntityList.getFeed().get(i + 1).toString());
+                            try {
+                                reportFeedList.add(new MoldeFeedEntitiy(
+                                                feedResponseInfoEntityList.getFeed().get(i+1).getRep_nm(),
+                                                feedResponseInfoEntityList.getFeed().get(i+1).getRep_addr(),
+                                                Integer.parseInt(feedResponseInfoEntityList.getFeed().get(i+1).getRep_state().trim()),
+                                                feedResponseInfoEntityList.getFeed().get(i+1).getRep_img(),
+                                                feedResponseInfoEntityList.getFeed().get(i+1).getRep_date(),
+                                                new LatLng(
+                                                        Double.valueOf(feedResponseInfoEntityList.getFeed().get(i+1).getRep_lat()),
+                                                        Double.valueOf(feedResponseInfoEntityList.getFeed().get(i+1).getRep_lon()))
+                                        )
+                                );
+                            }catch (Exception e){
+                                i++;
+                            }
+                        }
+                        feedAdapter.addAll(reportFeedList);
+                    }
+                });
             }
+
         });
     }
 
@@ -160,7 +184,7 @@ public class MoldeFeedFragment extends Fragment
                     for (int i = start + 1; i <= end; i++) {
                         reportFeedList.add(new MoldeFeedEntitiy(
                                 "거리순", "",
-                                1, "","",
+                                1, "", "",
                                 new LatLng(Double.valueOf("0.0"), Double.valueOf("0.0"))));
                     }
                 } else if (feed_sort_toggle.isChecked() == true) {
@@ -169,7 +193,7 @@ public class MoldeFeedFragment extends Fragment
                     for (int i = start + 1; i <= end; i++) {
                         reportFeedList.add(new MoldeFeedEntitiy(
                                 "최신순", "",
-                                2, "","",
+                                2, "", "",
                                 new LatLng(Double.valueOf("0.0"), Double.valueOf("0.0"))));
                     }
                 }
@@ -205,19 +229,27 @@ public class MoldeFeedFragment extends Fragment
 
     @Override
     public void callFeedData(MoldeFeedEntitiy feedEntitiy) {
-        if(((MoldeMainActivity)getActivity()).fragmentSparseArray.get(R.string.main_menu_map) != null){
-            Fragment fragment = (Fragment) ((MoldeMainActivity)getActivity())
+        if (((MoldeMainActivity) getActivity()).fragmentSparseArray.get(R.string.main_menu_map) != null) {
+            feedData = feedEntitiy;
+            Bundle bundle = new Bundle();
+            bundle.putString("reportFeedAddress", feedEntitiy.getReportFeedAddress());
+            bundle.putString("reportFeedDetailAddress", feedEntitiy.getReportFeedDetailAddress());
+            bundle.putInt("reportFeedMarkerId", feedEntitiy.getReportFeedMarkerId());
+            bundle.putString("reportFeedThumbnail", feedEntitiy.getReportFeedThumbnail());
+            bundle.putString("reportFeedDate", feedEntitiy.getReportFeedDate());
+            bundle.putDouble("reportFeedLocationLat", feedEntitiy.getReportFeedLocation().latitude);
+            bundle.putDouble("reportFeedLocationLng", feedEntitiy.getReportFeedLocation().longitude);
+
+            Fragment fragment = (Fragment) ((MoldeMainActivity) getActivity())
                     .fragmentSparseArray.get(R.string.main_menu_map);
-            Bundle feedDataBundle = new Bundle();
-            feedDataBundle.putSerializable("feedData", feedEntitiy);
-            fragment.setArguments(feedDataBundle);
-            ((MoldeMainActivity)getActivity()).replaceFragment(fragment);
-            BottomNavigationView navigation = ((MoldeMainActivity)getActivity()).findViewById(R.id.navigation);
+            fragment.setArguments(bundle);
+            ((MoldeMainActivity) getActivity()).replaceFragment(fragment);
+            BottomNavigationView navigation = ((MoldeMainActivity) getActivity()).findViewById(R.id.navigation);
             navigation.setSelectedItemId(R.id.main_menu_map);
 
-        }else{
-            ((MoldeMainActivity)getActivity()).replaceFragment(MoldeMapFragment.newInstance());
-            BottomNavigationView navigation = ((MoldeMainActivity)getActivity()).findViewById(R.id.navigation);
+        } else {
+            ((MoldeMainActivity) getActivity()).replaceFragment(MoldeMapFragment.newInstance());
+            BottomNavigationView navigation = ((MoldeMainActivity) getActivity()).findViewById(R.id.navigation);
             navigation.setSelectedItemId(R.id.main_menu_map);
         }
     }
@@ -225,7 +257,6 @@ public class MoldeFeedFragment extends Fragment
     @Override
     public void onStop() {
         super.onStop();
-        feedFragmentSparseArrayCompat.append(R.string.feedList, reportFeedList);
         if (feed_sort_toggle.isChecked() == false) {
             feedFragmentSparseArrayCompat.append(R.string.feedStatus, "거리순");
         } else if (feed_sort_toggle.isChecked() == true) {

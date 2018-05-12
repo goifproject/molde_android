@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/my_favorite_frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorBG">
+
+        <RelativeLayout
+            android:id="@+id/my_favorite_header"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/colorWhite"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:text="@string/my_favorite"
+                android:textColor="@color/colorDeepDarkGray"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/my_favorite_content"
+            android:layout_below="@+id/my_favorite_header"
+            android:layout_width="match_parent"
+            android:layout_height="104dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/colorWhite">
+            <TextView
+                android:id="@+id/my_favorite_marker_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="건물이름"
+                android:textStyle="bold"
+                android:textColor="@color/colorInfoTextColor"
+                android:textSize="16sp"
+                android:layout_marginStart="36dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="28dp"/>
+            <ImageButton
+                android:id="@+id/my_favorite_marker_modi_button"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_write_bl"
+                android:layout_toEndOf="@id/my_favorite_marker_title"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="28dp"
+                android:background="@android:color/transparent"/>
+            <TextView
+                android:id="@+id/my_favorite_marker_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/my_favorite_marker_title"
+                android:text="세부주소"
+                android:textStyle="normal"
+                android:textColor="@color/colorInfoTextColor"
+                android:textSize="12sp"
+                android:layout_marginStart="36dp" />
+            <ToggleButton
+                android:id="@+id/my_favorite_toggle"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:scaleType="fitXY"
+                android:textOn=""
+                android:textOff=""
+                android:background="@drawable/ic_star_off"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="16dp"/>
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

@@ -33,7 +33,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:text="상황별 신고법"
+                        android:text="유용한 정보들"
                         android:textSize="14sp"
                         android:textColor="@color/colorDefaultText"/>
 
@@ -47,94 +47,67 @@
                         android:baselineAligned="false">
 
                         <LinearLayout
-                            android:id="@+id/manual_toilet"
+                            android:id="@+id/manual_new_molca"
                             android:layout_width="76dp"
                             android:layout_height="76dp"
-                            android:layout_marginRight="8dp"
+                            android:layout_marginRight="16dp"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:orientation="vertical"
-                            android:background="@drawable/corner_shape_3dp">
+                            android:background="@drawable/corner_shape_3dp_selector">
 
                             <ImageView
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_marginTop="14dp"
                                 android:layout_marginBottom="13dp"
-                                android:src="@drawable/ic_wc_24"/>
+                                android:src="@drawable/ic_camera"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="14dp"
-                                android:text="화장실"
+                                android:text="최신 몰카 정보"
                                 android:textColor="@color/colorDefaultText"
                                 android:textSize="10sp" />
 
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/manual_transportation"
+                            android:id="@+id/manual_by_location"
                             android:layout_width="76dp"
                             android:layout_height="76dp"
-                            android:layout_marginRight="8dp"
+                            android:layout_marginRight="16dp"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:orientation="vertical"
-                            android:background="@drawable/corner_shape_3dp">
+                            android:background="@drawable/corner_shape_3dp_selector">
 
                             <ImageView
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_marginTop="14dp"
                                 android:layout_marginBottom="13dp"
-                                android:src="@drawable/ic_bus_24"/>
+                                android:src="@drawable/ic_attention"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="14dp"
-                                android:text="대중교통"
+                                android:text="장소별 예방법"
                                 android:textColor="@color/colorDefaultText"
                                 android:textSize="10sp" />
 
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/manual_hotel"
+                            android:id="@+id/manual_for_spreading"
                             android:layout_width="76dp"
                             android:layout_height="76dp"
-                            android:layout_marginRight="8dp"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:orientation="vertical"
-                            android:background="@drawable/corner_shape_3dp">
-
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_marginTop="14dp"
-                                android:layout_marginBottom="13dp"
-                                android:src="@drawable/ic_house_24"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="14dp"
-                                android:text="숙박업소"
-                                android:textColor="@color/colorDefaultText"
-                                android:textSize="10sp" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/manual_molca"
-                            android:layout_width="76dp"
-                            android:layout_height="76dp"
-                            android:gravity="center"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:background="@drawable/corner_shape_3dp">
+                            android:background="@drawable/corner_shape_3dp_selector">
 
                             <ImageView
                                 android:layout_width="24dp"
@@ -147,7 +120,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="14dp"
-                                android:text="몰카유포"
+                                android:text="몰카유포 대처"
                                 android:textColor="@color/colorDefaultText"
                                 android:textSize="10sp" />
 
@@ -176,7 +149,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorWhite"
+                android:background="#ffffff"
                 android:paddingTop="26dp"
                 android:paddingBottom="19dp"
                 android:paddingLeft="16dp"
@@ -193,32 +166,13 @@
             android:layout_height="match_parent"
             android:layout_marginTop="65dp"
             android:layout_marginBottom="65dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="8dp"
+            android:background="#ffffff"
+            android:paddingStart="16dp"
+            android:paddingEnd="8dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layoutManager="GridLayoutManager"
             app:spanCount="2"/>
 
-
-
-        <!-- NestedScrollView is useless -->
-
-        <!--<android.support.v4.widget.NestedScrollView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
-
-        <!--&lt;!&ndash;<TextView&ndash;&gt;-->
-        <!--&lt;!&ndash;android:id="@+id/cardnews_wrapper_title"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:text="새로운 정보들이에요."&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_marginBottom="8dp"/>&ndash;&gt;-->
-
-
-        <!---->
-
-        <!--</android.support.v4.widget.NestedScrollView>-->
 
 
     </android.support.design.widget.CoordinatorLayout>

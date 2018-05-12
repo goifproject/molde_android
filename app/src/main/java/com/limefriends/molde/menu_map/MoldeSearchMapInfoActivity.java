@@ -59,6 +59,7 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
     private final long DELAY = 100;
     private Cache cache;
     private String keywordHistoryStr = "";
+    private String cmd = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,11 +69,15 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
         loc_map_info_search_bar.setElevation(12);
         Intent intent = getIntent();
         String name = intent.getStringExtra("searchName");
-        if (name.equals("검색하기")) {
-            loc_map_info_search_input.setText("");
-        } else {
-            loc_map_info_search_input.setText(name);
+        String activityName = intent.getStringExtra("activity");
+        if(name != null){
+            if (name.equals("검색하기")) {
+                loc_map_info_search_input.setText("");
+            } else {
+                loc_map_info_search_input.setText(name);
+            }
         }
+
         loc_map_info_search_input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
@@ -87,6 +92,12 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
             }
         });
 
+        if(activityName != null){
+            if(activityName.equals("Report")){
+                cmd = "Report";
+            }
+        }
+
         searchFieldInit();
         historyFieldInit();
         delete_all_button.setOnClickListener(new View.OnClickListener() {
@@ -100,15 +111,6 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
     @Override
     public void showToast(String toast) {
         Toast.makeText(this, toast, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void applyMapInfo(MoldeSearchMapInfoEntity entity) {
-        Intent intent = new Intent();
-        intent.setClass(getApplicationContext(), MoldeMainActivity.class);
-        intent.putExtra("mapInfo", entity);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
     }
 
     @Override
@@ -153,7 +155,7 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
 
         //검색 정보 띄우기
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        loc_map_info_list_adapter = new MoldeMapInfoRecyclerViewAdapter(getApplicationContext());
+        loc_map_info_list_adapter = new MoldeMapInfoRecyclerViewAdapter(getApplicationContext(), cmd);
         loc_map_info_list.setLayoutManager(layoutManager);
         loc_map_info_list.setAdapter(loc_map_info_list_adapter);
         loc_map_info_list_adapter.setCallback(this);
@@ -169,6 +171,19 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
             }
         };
         handler.postDelayed(workRunnable, DELAY);
+    }
+
+    @Override
+    public void applySearchMapInfo(MoldeSearchMapInfoEntity entity, String cmd) {
+        Intent intent = new Intent();
+        if(cmd.equals("Report")){
+            intent.setClass(getApplicationContext(), MoldeReportActivity.class);
+        }else{
+            intent.setClass(getApplicationContext(), MoldeMainActivity.class);
+        }
+        intent.putExtra("mapInfo", entity);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     private void historyFieldInit() {
@@ -220,16 +235,20 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
         Collections.reverse(historyEntityList);
         //검색 기록 띄우기
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        history_map_info_list_adapter = new MoldeMapHistroyRecyclerViewAdapter(historyEntityList, getApplicationContext());
+        history_map_info_list_adapter = new MoldeMapHistroyRecyclerViewAdapter(historyEntityList, getApplicationContext(), cmd);
         history_map_info_list.setLayoutManager(layoutManager);
         history_map_info_list.setAdapter(history_map_info_list_adapter);
         history_map_info_list_adapter.setCallback(this);
     }
 
     @Override
-    public void applyHistoryMapInfo(MoldeSearchMapHistoryEntity historyEntity) {
+    public void applyHistoryMapInfo(MoldeSearchMapHistoryEntity historyEntity, String cmd) {
         Intent intent = new Intent();
-        intent.setClass(getApplicationContext(), MoldeMainActivity.class);
+        if(cmd.equals("Report")){
+            intent.setClass(getApplicationContext(), MoldeReportActivity.class);
+        }else{
+            intent.setClass(getApplicationContext(), MoldeMainActivity.class);
+        }
         intent.putExtra("mapHistoryInfo", historyEntity);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);

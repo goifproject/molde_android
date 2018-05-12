@@ -75,7 +75,7 @@ public class SearchPoiParse extends AsyncTask<String, Void, ArrayList<MoldeSearc
 
             reader.close();
 
-            //Log.e("response", line);
+            Log.e("response", line);
 
             TMapSearchInfo searchPoiInfo = new Gson().fromJson(line, TMapSearchInfo.class);
 

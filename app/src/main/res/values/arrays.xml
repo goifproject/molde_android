@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="email_select">
+        <item>이메일 선택</item>
+        <item>naver.com</item>
+        <item>gmail.com</item>
+        <item>daum.net</item>
+        <item>직접선택</item>
+    </string-array>
+</resources>

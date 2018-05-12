@@ -27,12 +27,12 @@ public class MoldeMainActivity extends AppCompatActivity {
     BottomNavigationView navigation;
 
     public static Context allContext;
-    public static SparseArrayCompat fragmentSparseArray;
+    public SparseArrayCompat fragmentSparseArray;
 
     private long lastTimeBackPressed;
     private FragmentTransaction ft;
     private FragmentManager fm;
-    private MoldeSearchMapInfoEntity entity;
+    private MoldeSearchMapInfoEntity searchEntity;
     private MoldeSearchMapHistoryEntity historyEntity;
     private Fragment fragment;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -125,13 +125,14 @@ public class MoldeMainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Intent intent = getIntent();
-        entity = (MoldeSearchMapInfoEntity) intent.getSerializableExtra("mapInfo");
-        historyEntity = (MoldeSearchMapHistoryEntity) intent.getSerializableExtra("mapHistoryInfo");
-
+        if(intent != null){
+            searchEntity = (MoldeSearchMapInfoEntity) intent.getSerializableExtra("mapInfo");
+            historyEntity = (MoldeSearchMapHistoryEntity) intent.getSerializableExtra("mapHistoryInfo");
+        }
     }
 
     public MoldeSearchMapInfoEntity getMapInfoResultData() {
-        return this.entity;
+        return this.searchEntity;
     }
 
     public MoldeSearchMapHistoryEntity getMapHistoryResultData() {

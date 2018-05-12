@@ -8,7 +8,7 @@
         android:id="@+id/report_history"
         android:layout_width="match_parent"
         android:layout_height="320dp"
-        android:background="@color/colorLittleWhiteGray">
+        android:background="@color/colorBG">
 
         <RelativeLayout
             android:id="@+id/report_history_header"
@@ -29,7 +29,7 @@
         </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/report_history_list"
+            android:id="@+id/report_history_list_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginEnd="8dp"

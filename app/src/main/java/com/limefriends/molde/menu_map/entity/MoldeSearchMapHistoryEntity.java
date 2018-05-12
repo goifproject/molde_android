@@ -11,7 +11,8 @@ public class MoldeSearchMapHistoryEntity implements Serializable{
     private String bizName;
     private String telNo;
 
-    public MoldeSearchMapHistoryEntity(String mapLat, String mapLng, String name, String mainAddress, String bizName, String telNo) {
+    public MoldeSearchMapHistoryEntity(String mapLat, String mapLng, String name,
+                                       String mainAddress, String bizName, String telNo) {
         this.mapLat = mapLat;
         this.mapLng = mapLng;
         this.name = name;

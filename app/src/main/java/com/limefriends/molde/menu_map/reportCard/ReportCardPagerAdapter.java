@@ -87,9 +87,7 @@ public class ReportCardPagerAdapter extends PagerAdapter implements ReportCardAd
         reportCardViewList.get(position).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(context, position + 1 + "번째 컨테이너 눌림", Toast.LENGTH_SHORT).show();
                 MoldeReportMapDialog moldeReportMapDialog = MoldeReportMapDialog.getInstance();
-
                 moldeReportMapDialog.show(((MoldeMainActivity) context).getSupportFragmentManager(),"bottomSheet");
                 moldeReportMapDialog.setData(reportCardDataList.get(position));
             }

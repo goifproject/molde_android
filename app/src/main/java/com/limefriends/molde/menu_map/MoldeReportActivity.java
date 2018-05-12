@@ -8,23 +8,31 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.limefriends.molde.R;
+import com.limefriends.molde.menu_map.callbackMethod.MoldeMapHistoryRecyclerViewAdapterCallback;
+import com.limefriends.molde.menu_map.callbackMethod.MoldeMapInfoRecyclerViewAdapterCallback;
 import com.limefriends.molde.menu_map.cameraManager.MoldeReportCameraActivity;
+import com.limefriends.molde.menu_map.entity.MoldeSearchMapHistoryEntity;
+import com.limefriends.molde.menu_map.entity.MoldeSearchMapInfoEntity;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 
 public class MoldeReportActivity extends AppCompatActivity {
     @BindView(R.id.first_iamge)
@@ -49,8 +57,23 @@ public class MoldeReportActivity extends AppCompatActivity {
     @BindView(R.id.fifth_iamge_delete_button)
     ImageButton fifth_iamge_delete_button;
 
+    @BindView(R.id.search_loc_input)
+    TextView search_loc_input;
+
+    @BindView(R.id.reply_email_select)
+    Spinner reply_email_select;
+    @BindView(R.id.reply_email_self)
+    EditText reply_email_self;
+    @BindView(R.id.self_close_button)
+    ImageButton self_close_button;
+
+    @BindView(R.id.find_map_loc_button)
+    ImageButton find_map_loc_button;
+
     private final int TAKE_PICTURE_FOR_ADD_IMAGE = 100;
     private static SparseArrayCompat<Uri> imageArray;
+    private MoldeSearchMapInfoEntity searchEntity;
+    private MoldeSearchMapHistoryEntity historyEntity;
 
     public ArrayList<String> imagePathList;
 
@@ -60,40 +83,6 @@ public class MoldeReportActivity extends AppCompatActivity {
         setContentView(R.layout.map_activity_molde_report);
         ButterKnife.bind(this);
 
-        if (imageArray == null) {
-            imageArray = new SparseArrayCompat<Uri>();
-        }
-
-        Intent data = getIntent();
-        if (data != null) {
-            Uri uri = data.getParcelableExtra("imagePath");
-            int imageSeq = data.getIntExtra("imageSeq", 1);
-            if (uri != null && imageSeq != 0) {
-                Log.e("d", uri + "," + imageSeq);
-                if (imageArray.get(imageSeq) == null) {
-                    imageArray.append(imageSeq, uri);
-                } else {
-                    imageArray.put(imageSeq, uri);
-                }
-            }
-            imagePathList = data.getStringArrayListExtra("imagePathList");
-            if(imagePathList != null){
-                int count = 0;
-                int bringImgListSize = imagePathList.size();
-                for(int i = 1; i <= 5; i ++){
-                    if(bringImgListSize == 0){
-                        break;
-                    }
-                    if(imageArray.get(i) == null){
-                        imageArray.append(i, Uri.parse(imagePathList.get(count)));
-                        count++;
-                        bringImgListSize--;
-                    }
-                }
-            }
-        }
-
-
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.default_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -101,6 +90,8 @@ public class MoldeReportActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         TextView toolbar_title = getSupportActionBar().getCustomView().findViewById(R.id.toolbar_title);
         toolbar_title.setText("신고하기");
+
+        final InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
         //UI 컨트롤
         first_iamge.setOnClickListener(new View.OnClickListener() {
@@ -172,6 +163,93 @@ public class MoldeReportActivity extends AppCompatActivity {
                 imageArray.delete(5);
                 fifth_iamge_delete_button.setVisibility(View.INVISIBLE);
                 fifth_iamge.setImageResource(R.drawable.ic_image_add);
+            }
+        });
+
+        if (imageArray == null) {
+            imageArray = new SparseArrayCompat<Uri>();
+        }
+
+        Intent data = getIntent();
+        if (data != null) {
+            Uri uri = data.getParcelableExtra("imagePath");
+            int imageSeq = data.getIntExtra("imageSeq", 1);
+            imagePathList = data.getStringArrayListExtra("imagePathList");
+            searchEntity = (MoldeSearchMapInfoEntity) data.getSerializableExtra("mapInfo");
+            historyEntity = (MoldeSearchMapHistoryEntity) data.getSerializableExtra("mapHistoryInfo");
+            if (uri != null && imageSeq != 0) {
+                Log.e("d", uri + "," + imageSeq);
+                if (imageArray.get(imageSeq) == null) {
+                    imageArray.append(imageSeq, uri);
+                } else {
+                    imageArray.put(imageSeq, uri);
+                }
+            } else if (imagePathList != null) {
+                int count = 0;
+                int bringImgListSize = imagePathList.size();
+                for (int i = 1; i <= 5; i++) {
+                    if (bringImgListSize == 0) {
+                        break;
+                    }
+                    if (imageArray.get(i) == null) {
+                        imageArray.append(i, Uri.parse(imagePathList.get(count)));
+                        count++;
+                        bringImgListSize--;
+                    }
+                }
+            } else if (searchEntity != null || historyEntity != null) {
+                if (searchEntity != null) {
+                    search_loc_input.setText(searchEntity.getMainAddress() + "\n" + searchEntity.getName());
+                } else if (historyEntity != null) {
+                    search_loc_input.setText(historyEntity.getMainAddress() + "\n" + historyEntity.getName());
+                }
+            }
+        }
+
+        final ArrayAdapter arrayAdapter = ArrayAdapter.createFromResource(this, R.array.email_select, android.R.layout.simple_spinner_item);
+        reply_email_select.setAdapter(arrayAdapter);
+        reply_email_select.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    reply_email_select.setSelected(false);
+                    return;
+                }
+                if (position == arrayAdapter.getCount() - 1) {
+                    Log.e("d", "직접선택");
+                    reply_email_select.setVisibility(View.GONE);
+                    reply_email_select.setClickable(false);
+
+                    reply_email_self.setClickable(true);
+                    reply_email_self.setVisibility(View.VISIBLE);
+                    self_close_button.setVisibility(View.VISIBLE);
+                    self_close_button.bringToFront();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        self_close_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reply_email_self.setText("");
+                inputMethodManager.hideSoftInputFromWindow(reply_email_select.getWindowToken(), 0);
+                reply_email_select.setVisibility(View.VISIBLE);
+                reply_email_select.bringToFront();
+                reply_email_select.setSelection(0);
+            }
+        });
+
+        find_map_loc_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(getApplicationContext(), MoldeSearchMapInfoActivity.class);
+                intent.putExtra("activity", "Report");
+                startActivity(intent);
             }
         });
     }
@@ -257,4 +335,5 @@ public class MoldeReportActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
+
 }

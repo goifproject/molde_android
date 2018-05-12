@@ -1,7 +1,6 @@
 package com.limefriends.molde.menu_map;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
@@ -13,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.limefriends.molde.R;
-import com.limefriends.molde.menu_magazine.RecyclerAdapter;
 import com.limefriends.molde.menu_map.entity.MoldeReportMapEntitiy;
 import com.limefriends.molde.menu_map.reportCard.ReportCardItem;
 
@@ -23,10 +21,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MoldeReportMapDialog extends BottomSheetDialogFragment {
-    @BindView(R.id.report_history)
-    RelativeLayout report_history;
-    @BindView(R.id.report_history_list)
-    RecyclerView report_history_list;
+    @BindView(R.id.report_history_list_view)
+    RecyclerView report_history_list_view;
 
     private Context context;
 
@@ -43,7 +39,7 @@ public class MoldeReportMapDialog extends BottomSheetDialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.map_report_map_dialog, container,false);
+        View view = inflater.inflate(R.layout.map_report_card_dialog, container,false);
         ButterKnife.bind(this, view);
 
         reportHistoryList = new ArrayList<MoldeReportMapEntitiy>();
@@ -56,9 +52,9 @@ public class MoldeReportMapDialog extends BottomSheetDialogFragment {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        report_history_list.setLayoutManager(layoutManager);
+        report_history_list_view.setLayoutManager(layoutManager);
         reportHistoryAdapter = new MoldeReportMapDialogRecyclerAdapter(getContext(), reportHistoryList);
-        report_history_list.setAdapter(reportHistoryAdapter);
+        report_history_list_view.setAdapter(reportHistoryAdapter);
         return view;
     }
 
