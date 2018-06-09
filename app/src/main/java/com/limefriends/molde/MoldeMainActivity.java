@@ -10,7 +10,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.limefriends.molde.menu_magazine.MoldeMagazineFragment;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapHistoryEntity;
@@ -18,6 +20,7 @@ import com.limefriends.molde.menu_map.entity.MoldeSearchMapInfoEntity;
 import com.limefriends.molde.menu_map.MoldeMapFragment;
 import com.limefriends.molde.menu_mypage.MoldeMyPageFragment;
 import com.limefriends.molde.menu_feed.MoldeFeedFragment;
+import com.limefriends.molde.menu_mypage.MoldeMypageLoginActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -153,9 +156,10 @@ public class MoldeMainActivity extends AppCompatActivity {
             lastTimeBackPressed = System.currentTimeMillis();
             if (mOnKeyBackPressedListener != null) {
                 mOnKeyBackPressedListener.onBackKey();
-                return;
             }
-            return;
+            if(MoldeMypageLoginActivity.firebaseAuth!= null){
+                Log.e("login", MoldeMypageLoginActivity.firebaseAuth.getUid());
+            }
         } else {
             finish();
         }

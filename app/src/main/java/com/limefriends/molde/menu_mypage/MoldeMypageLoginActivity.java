@@ -53,10 +53,10 @@ public class MoldeMypageLoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 9001;
 
     // 파이어 베이스 계정
-    private FirebaseAuth firebaseAuth;
-    //GoogleSignClient
-    private GoogleSignInClient googleSignInClient;
+    public static FirebaseAuth firebaseAuth;
 
+    //GoogleSignClient
+    public GoogleSignInClient googleSignInClient;
     //FacebookSignClient TODO Facebook Client 연동 구현 - 완료
     CallbackManager facebookCallbackManager;
     AccessToken fbAccessToken = AccessToken.getCurrentAccessToken();
@@ -242,7 +242,7 @@ public class MoldeMypageLoginActivity extends AppCompatActivity {
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
-        Log.d("facebook", "handleFacebookAccessToken:" + token);
+        Log.e("facebook", "handleFacebookAccessToken:" + token);
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         firebaseAuth.signInWithCredential(credential)
