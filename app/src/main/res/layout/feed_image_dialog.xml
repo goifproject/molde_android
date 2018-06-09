@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content">
+    <ImageButton
+        android:id="@+id/feed_dialog_close_button"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_close"
+        android:layout_gravity="right"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:padding="4dp"
+        android:background="@drawable/frame_gray_rounded"/>
+    <ImageView
+        android:id="@+id/feed_dialog_thumbnail_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter" />
+</FrameLayout>

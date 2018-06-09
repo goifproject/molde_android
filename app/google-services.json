@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "133210223530",
+    "firebase_url": "https://molde-001.firebaseio.com",
+    "project_id": "molde-001",
+    "storage_bucket": "molde-001.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:133210223530:android:17b2f161ed201ce3",
+        "android_client_info": {
+          "package_name": "com.limefriends.molde"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "133210223530-dsrs2b065vo8i27kkhhaaqtacajm293a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.limefriends.molde",
+            "certificate_hash": "809c6bc7e444c1d50ab1cacaa2a63971f637f0f8"
+          }
+        },
+        {
+          "client_id": "133210223530-jdcdndttq6l0o74d8l4ri6btnljk4fh7.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "133210223530-jdcdndttq6l0o74d8l4ri6btnljk4fh7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTPQuoqdkeaT_b3rfLi2GN8bp0_Katq5Q"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "133210223530-jdcdndttq6l0o74d8l4ri6btnljk4fh7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

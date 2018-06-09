@@ -44,24 +44,66 @@ public class MoldeMyPageFragment extends Fragment implements MoldeMainActivity.o
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.mypage_fragment, container, false);
+
         ButterKnife.bind(this, view);
 
         // 설정페이지로 이동
         mypage_setting_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), MoldeMyPageSettings.class);
+                Intent intent = new Intent(getContext(), MoldeMyPageSettingsActivity.class);
                 intent.putExtra("title", "설정");
                 startActivity(intent);
             }
         });
 
+        //문의하기 버튼
         mypage_faq_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getContext(),MoldeMyPageInquiry.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
+                startActivity(new Intent(getContext(),MoldeMyPageInquiryActivity.class)
+                        .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
             }
         });
+
+        // 내 신고
+        mypage_report_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), MoldeMypageMyReportActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // 내가 쓴 댓글
+        mypage_comment_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), MoldeMyPageMyCommentActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //내 스크랩
+        mypage_scrap_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), MoldeMypageMyScrapActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //로그인 페이지 OR 로그아웃
+        mypage_log_in_out_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), MoldeMypageLoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+
 
         return view;
     }

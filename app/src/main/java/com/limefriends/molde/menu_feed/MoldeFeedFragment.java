@@ -21,7 +21,6 @@ import com.google.gson.Gson;
 import com.limefriends.molde.MoldeMainActivity;
 import com.limefriends.molde.R;
 import com.limefriends.molde.menu_feed.entity.MoldeFeedEntitiy;
-import com.limefriends.molde.menu_feed.entity.MoldeFeedResponseInfoEntity;
 import com.limefriends.molde.menu_feed.entity.MoldeFeedResponseInfoEntityList;
 import com.limefriends.molde.menu_map.MoldeMapFragment;
 

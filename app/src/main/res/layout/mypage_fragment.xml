@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="16dp"
-            android:background="@android:color/white">
+            android:background="@drawable/frame_rounded">
 
             <com.alexzh.circleimageview.CircleImageView
                 android:id="@+id/mypage_profile_image"
@@ -54,16 +55,26 @@
                 android:layout_marginBottom="20dp"
                 android:gravity="center_vertical">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/setting_div_first"
+                    android:layout_alignStart="@+id/mypage_report_button"
+                    android:layout_marginStart="21dp"
+                    android:textSize="12sp"
+                    android:text="신고" />
+
+
                 <ImageButton
                     android:id="@+id/mypage_report_button"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:scaleType="fitCenter"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/ic_mypage_setting_report"
+                    android:src="@drawable/mypage_reportbtn"
                     android:layout_toStartOf="@+id/setting_div_first"
                     android:layout_marginEnd="22dp"/>
-                
+
                 <View
                     android:id="@+id/setting_div_first"
                     android:layout_width="1dp"
@@ -73,13 +84,23 @@
                     android:layout_marginTop="8dp"
                     android:background="@color/colorMypageSettingDiv"/>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/setting_div_first"
+                    android:layout_alignStart="@+id/mypage_comment_button"
+                    android:layout_marginStart="21dp"
+                    android:textSize="12sp"
+                    android:text="댓글" />
+
+
                 <ImageButton
                     android:id="@+id/mypage_comment_button"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:scaleType="fitCenter"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/ic_mypage_setting_comment"
+                    android:src="@drawable/mypage_commentbtn"
                     android:layout_centerHorizontal="true"/>
 
                 <View
@@ -91,6 +112,16 @@
                     android:layout_marginTop="8dp"
                     android:background="@color/colorMypageSettingDiv"/>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/mypage_scrap_button"
+                    android:layout_alignTop="@+id/setting_div_second"
+                    android:layout_marginStart="15dp"
+                    android:text="스크랩"
+                    android:textSize="12sp" />
+
+
                 <ImageButton
                     android:id="@+id/mypage_scrap_button"
                     android:layout_width="64dp"
@@ -99,7 +130,7 @@
                     android:layout_toEndOf="@+id/setting_div_second"
                     android:scaleType="fitCenter"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/ic_mypage_setting_scrap"
+                    android:src="@drawable/mypage_scrapbtn"
                     android:layout_marginStart="22dp"/>
             </RelativeLayout>
         </RelativeLayout>
