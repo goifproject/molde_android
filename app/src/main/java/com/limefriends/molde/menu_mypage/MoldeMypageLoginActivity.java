@@ -42,6 +42,8 @@ import butterknife.ButterKnife;
 public class MoldeMypageLoginActivity extends AppCompatActivity {
     @BindView(R.id.login_google_button)
     RelativeLayout login_google_button;
+    @BindView(R.id.login_facebook_button)
+    RelativeLayout login_facebook_button;
     @BindView(R.id.login_to_google)
     TextView login_to_google;
     @BindView(R.id.login_to_facebook)
@@ -96,6 +98,7 @@ public class MoldeMypageLoginActivity extends AppCompatActivity {
                 Log.e("facebook", "facebook:onSuccess:" + facebookLoginResult);
                 handleFacebookAccessToken(facebookLoginResult.getAccessToken());
                 login_to_facebook.setText("로그아웃 하기");
+                login_google_button.setEnabled(false);
             }
 
             @Override
@@ -155,7 +158,7 @@ public class MoldeMypageLoginActivity extends AppCompatActivity {
                 new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        googleUpdateAuth(null);
+                        updateAuth(null);
                     }
                 });
     }
@@ -169,7 +172,7 @@ public class MoldeMypageLoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        googleUpdateAuth(null);
+                        updateAuth(null);
                     }
                 });
     }
@@ -180,10 +183,10 @@ public class MoldeMypageLoginActivity extends AppCompatActivity {
         // [START on_start_check_user]
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        googleUpdateAuth(currentUser);
+        updateAuth(currentUser);
     }
 
-    private void googleUpdateAuth(FirebaseUser user) {
+    private void updateAuth(FirebaseUser user) {
         if (user != null) {
             login_to_google.setText("로그아웃 하기");
         } else {
@@ -205,7 +208,7 @@ public class MoldeMypageLoginActivity extends AppCompatActivity {
                 // Google Sign In failed, update UI appropriately
                 Log.e("google", "Google sign in failed", e);
                 // [START_EXCLUDE]
-                googleUpdateAuth(null);
+                updateAuth(null);
                 // [END_EXCLUDE]
             }
         }
@@ -223,20 +226,16 @@ public class MoldeMypageLoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
                             Log.e("google", "signInWithCredential:success");
                             FirebaseUser user = firebaseAuth.getCurrentUser();
-                            googleUpdateAuth(user);
+                            updateAuth(user);
                         } else {
-                            // If sign in fails, display a message to the user.
                             Log.e("google", "signInWithCredential:failure", task.getException());
                             Snackbar.make(findViewById(R.id.mypage_login_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
-                            googleUpdateAuth(null);
+                            updateAuth(null);
                         }
 
-                        // [START_EXCLUDE]
                         loginProgressDialog.dismiss();
-                        // [END_EXCLUDE]
                     }
                 });
     }
@@ -253,13 +252,13 @@ public class MoldeMypageLoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.e("facebook", "signInWithCredential:success");
                             FirebaseUser user = firebaseAuth.getCurrentUser();
-                            googleUpdateAuth(user);
+                            updateAuth(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.e("facebook", "signInWithCredential:failure", task.getException());
                             Toast.makeText(getApplicationContext(), "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            googleUpdateAuth(null);
+                            updateAuth(null);
                         }
 
                     }
