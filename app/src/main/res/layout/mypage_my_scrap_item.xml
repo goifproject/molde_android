@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    
+    <ImageView
+        android:id="@+id/myScrap_image"
+        android:layout_width="160dp"
+        android:layout_height="175dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:background="@drawable/corner_shape_5dp"
+        android:src="@drawable/mypage_image"/>
+
+    <TextView
+        android:id="@+id/myScrap_text"
+        android:layout_width="128dp"
+        android:layout_height="40dp"
+        android:layout_alignStart="@+id/myScrap_image"
+        android:layout_marginLeft="16dp"
+        android:layout_alignBottom="@+id/myScrap_image"
+        android:layout_marginBottom="10dp"
+        android:textSize="13sp"
+        android:textColor="@color/colorWhite"
+        android:text="에어비앤*에서 다시 몰카 발각"/>
+
+</RelativeLayout>

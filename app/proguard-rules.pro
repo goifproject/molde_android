@@ -19,3 +19,7 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-dontwarn okhttp3.internal.platform.ConscryptPlatform
+-dontwarn okio.Okio
+-dontwarn retrofit2.Platform$Java8
+-dontwarn okio.DeflaterSink

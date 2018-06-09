@@ -1,5 +1,6 @@
 package com.limefriends.molde.menu_feed;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,7 +17,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.limefriends.molde.R;
-import com.limefriends.molde.RoundedCornersTransformation;
 import com.limefriends.molde.menu_feed.entity.MoldeFeedEntitiy;
 
 import java.util.ArrayList;
@@ -25,6 +25,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MoldeFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    ImageView feed_dialog_thumbnail_image;
+    ImageButton feed_dialog_close_button;
+
     private final int VIEW_ITEM = 1;
     private final int VIEW_PROG = 0;
     private Context context;
@@ -35,6 +38,8 @@ public class MoldeFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
     private boolean isMoreLoading = false;
     private int visibleThreshold = 1;
     private int firstVisibleItem, visibleItemCount, totalItemCount, lastVisibleItem;
+
+    public Dialog feedDialogImage;
 
     public interface OnLoadMoreListener {
         void onLoadMore();
@@ -114,13 +119,34 @@ public class MoldeFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof FeedViewHolder) {
-            final FeedViewHolder viewHolder = (FeedViewHolder) holder;
+            FeedViewHolder viewHolder = (FeedViewHolder) holder;
             Glide.with(context)
                     .load(reportFeedList.get(position).getReportFeedThumbnail())
                     //.bitmapTransform(new RoundedCornersTransformation(context, 30, 10))
                     .into(viewHolder.feed_image);
             viewHolder.feed_image.setClipToOutline(true);
             viewHolder.feed_image.setElevation(8);
+            viewHolder.feed_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.e("asdf", reportFeedList.get(position).getReportFeedThumbnail());
+                    feedDialogImage = new Dialog(context);
+                    feedDialogImage.setContentView(R.layout.feed_image_dialog);
+                    feedDialogImage.show();
+                    feed_dialog_thumbnail_image = (ImageView)  feedDialogImage.findViewById(R.id.feed_dialog_thumbnail_image);
+                    feed_dialog_close_button = (ImageButton) feedDialogImage.findViewById(R.id.feed_dialog_close_button);
+                    Glide.with(context)
+                            .load(reportFeedList.get(position).getReportFeedThumbnail())
+                            .into(feed_dialog_thumbnail_image);
+                    feed_dialog_close_button.bringToFront();
+                    feed_dialog_close_button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            feedDialogImage.dismiss();
+                        }
+                    });
+                }
+            });
             viewHolder.feed_content.setElevation(12);
             viewHolder.feed_address.setText(reportFeedList.get(position).getReportFeedAddress());
             viewHolder.feed_date.setText(reportFeedList.get(position).getReportFeedDate());

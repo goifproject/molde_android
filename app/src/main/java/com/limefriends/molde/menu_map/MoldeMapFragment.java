@@ -25,6 +25,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -60,7 +61,8 @@ import butterknife.ButterKnife;
 public class MoldeMapFragment extends Fragment
         implements OnMapReadyCallback,
         MoldeMainActivity.onKeyBackPressedListener,
-        MoldeMapReportPagerAdapterCallback {
+        MoldeMapReportPagerAdapterCallback,
+        MoldeMyFavoriteInfoMapDialog.MoldeApplyMyFavoriteInfoCallback {
     //맵 구성
     @BindView(R.id.map_ui)
     RelativeLayout map_ui;
@@ -79,6 +81,8 @@ public class MoldeMapFragment extends Fragment
     ImageButton my_loc_button;
     @BindView(R.id.favorite_button)
     ImageButton favorite_button;
+    @BindView(R.id.favorite_new)
+    ImageView favorite_new;
     @BindView(R.id.report_button)
     ImageButton report_button;
 
@@ -195,7 +199,6 @@ public class MoldeMapFragment extends Fragment
             }
         }
 
-        search_bar.setElevation(12);
         search_bar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -210,6 +213,20 @@ public class MoldeMapFragment extends Fragment
         map_ui.bringToFront();
         report_card_view_layout.setVisibility(View.INVISIBLE);
 
+        favorite_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "즐겨찾기 페이지로 넘어가기", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent();
+                intent.setClass(getContext(), MoldeMyFavoriteActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        favorite_new.setElevation(12);
+
+
+        my_loc_button.setElevation(8);
         my_loc_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -220,15 +237,8 @@ public class MoldeMapFragment extends Fragment
                 getMyLocation();
             }
         });
-        favorite_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getContext(), "즐겨찾기 페이지로 넘어가기", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent();
-                intent.setClass(getContext(), MoldeMyFavoriteActivity.class);
-                startActivity(intent);
-            }
-        });
+
+        report_button.setElevation(8);
         report_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -442,7 +452,7 @@ public class MoldeMapFragment extends Fragment
                 }
 
                 //즐겨찾기 추가 기능
-                if (marker.getTitle().equals("이름 없음")) {
+                if (marker.getTitle().contains("★")) {
                     marker.setIcon(BitmapDescriptorFactory.fromBitmap(sizeUpMapIcon(R.drawable.ic_map_pick)));
                     if (report_card_view_layout.getVisibility() == View.VISIBLE) {
                         Animation trans_to_down = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_down);
@@ -452,8 +462,9 @@ public class MoldeMapFragment extends Fragment
                         map_option_layout.setVisibility(View.VISIBLE);
                         backChk = true;
                         MoldeMyFavoriteInfoMapDialog moldeMyFavoriteInfoMapDialog = MoldeMyFavoriteInfoMapDialog.getInstance();
+                        moldeMyFavoriteInfoMapDialog.setCallback(MoldeMapFragment.this, marker);
                         Bundle bundle = new Bundle();
-                        bundle.putString("markerTitle", marker.getTitle());
+                        bundle.putString("markerTitle", marker.getTitle().replace("★", ""));
                         bundle.putString("markerInfo", marker.getSnippet());
                         bundle.putDouble("markerLat", marker.getPosition().latitude);
                         bundle.putDouble("markerLng", marker.getPosition().longitude);
@@ -461,8 +472,9 @@ public class MoldeMapFragment extends Fragment
                         moldeMyFavoriteInfoMapDialog.show(((MoldeMainActivity) getContext()).getSupportFragmentManager(), "bottomSheet");
                     } else {
                         MoldeMyFavoriteInfoMapDialog moldeMyFavoriteInfoMapDialog = MoldeMyFavoriteInfoMapDialog.getInstance();
+                        moldeMyFavoriteInfoMapDialog.setCallback(MoldeMapFragment.this, marker);
                         Bundle bundle = new Bundle();
-                        bundle.putString("markerTitle", marker.getTitle());
+                        bundle.putString("markerTitle", marker.getTitle().replace("★", ""));
                         bundle.putString("markerInfo", marker.getSnippet());
                         bundle.putDouble("markerLat", marker.getPosition().latitude);
                         bundle.putDouble("markerLng", marker.getPosition().longitude);
@@ -472,8 +484,8 @@ public class MoldeMapFragment extends Fragment
                     return false;
                 }
 
-                if(feedData != null){
-                    if(marker.getTitle().equals(feedData.getReportFeedAddress())){
+                if (feedData != null) {
+                    if (marker.getTitle().equals(feedData.getReportFeedAddress())) {
                         marker.setIcon(BitmapDescriptorFactory.fromBitmap(sizeUpMapIcon(R.drawable.my_location_icon)));
                         if (report_card_view_layout.getVisibility() == View.VISIBLE) {
                             Animation trans_to_down = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_down);
@@ -543,12 +555,12 @@ public class MoldeMapFragment extends Fragment
             public void onInfoWindowClose(Marker marker) {
                 if (marker.getTitle().equals("내 위치")) {
                     marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.my_location_icon));
-                } else if (marker.getTitle().equals("이름 없음")) {
+                } else if (marker.getTitle().contains("★")) {
                     marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_pick));
                 } else if (marker.getTitle().equals(searchName)) {
                     marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.my_location_icon));
-                } else if(feedData != null){
-                    if(marker.getTitle().equals(feedData.getReportFeedAddress())){
+                } else if (feedData != null) {
+                    if (marker.getTitle().equals(feedData.getReportFeedAddress())) {
                         marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.my_location_icon));
                     }
                     for (Marker redMarker : reportRedMarkerList) {
@@ -586,6 +598,12 @@ public class MoldeMapFragment extends Fragment
             }
         });
 
+    }
+
+    @Override
+    public void applyMyFavoriteInfo(String title, String info, Marker marker) {
+        marker.setTitle("★" + title);
+        marker.setSnippet(info);
     }
 
     private Bitmap sizeUpMapIcon(int imageId) {
@@ -654,6 +672,7 @@ public class MoldeMapFragment extends Fragment
         report_card_view_pager.setAdapter(reportCardAdapter);
     }
 
+
     public class MyLocationListener implements LocationListener {
         //위치정보 보여주기
         //구글 맵 이동
@@ -680,7 +699,6 @@ public class MoldeMapFragment extends Fragment
                             new MarkerOptions()
                                     .position(myLocation)
                                     .title("내 위치")
-                                    .snippet("내 정보")
                                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.my_location_icon)
                                     )
                     );
@@ -732,15 +750,15 @@ public class MoldeMapFragment extends Fragment
         Marker newMarker = mMap.addMarker(
                 new MarkerOptions()
                         .position(latLng)
-                        .title("이름 없음")
-                        .snippet("정보 없음")
+                        .title("★")
+                        .snippet("")
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_pick))
         );
     }
 
     //피드 프래그먼트에서 받아온 데이터를 기반으로 마커 정보를 생성
     public void makeFeedMarker(MoldeFeedEntitiy feedData) {
-        if(feedMarker != null){
+        if (feedMarker != null) {
             feedMarker.remove();
         }
         feedMarker = mMap.addMarker(

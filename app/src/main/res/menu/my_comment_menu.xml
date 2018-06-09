@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/commentSee"
+        android:title="본문 보기" />
+
+    <item
+        android:id="@+id/commentEdit"
+        android:title="댓글 수정" />
+
+    <item
+        android:id="@+id/commentDel"
+        android:title="댓글 삭제" />
+
+</menu>
