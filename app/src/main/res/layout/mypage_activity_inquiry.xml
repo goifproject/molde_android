@@ -15,16 +15,16 @@
 
     <Button
         android:id="@+id/faqB"
-        android:layout_width="wrap_content"
+        android:layout_width="223dp"
         android:layout_height="32dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="44dp"
-        android:background="@drawable/frame_gray_rounded"
+        android:background="@drawable/rectangle_btn"
         android:padding="8dp"
-        android:text="자주 묻는 질문"
-        android:textSize="14sp" />
-
+        android:textSize="14sp"
+        android:textColor="#ffffff"
+        android:text="자주 묻는 질문" />
 
 </RelativeLayout>
 
