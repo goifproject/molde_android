@@ -170,11 +170,10 @@
             android:gravity="center_vertical"
             android:paddingStart="16dp"
             android:layout_below="@+id/mypage_option_div"
-            android:text="로그인 / 로그아웃"
+            android:text="로그인"
             android:textSize="14sp"
             android:textColor="@color/colorDeepDarkGray"
-            android:background="@android:color/transparent"
-            tools:ignore="RtlSymmetry" />
+            android:background="@android:color/transparent" />
 
     </RelativeLayout>
 

@@ -157,9 +157,6 @@ public class MoldeMainActivity extends AppCompatActivity {
             if (mOnKeyBackPressedListener != null) {
                 mOnKeyBackPressedListener.onBackKey();
             }
-            if(MoldeMypageLoginActivity.firebaseAuth!= null){
-                Log.e("login", MoldeMypageLoginActivity.firebaseAuth.getUid());
-            }
         } else {
             finish();
         }

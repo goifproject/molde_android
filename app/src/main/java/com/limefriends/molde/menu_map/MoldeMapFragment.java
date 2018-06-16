@@ -387,8 +387,7 @@ public class MoldeMapFragment extends Fragment
         }
 
         LatLng moveLoc = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
-        if (searchName.equals("")) {
-        } else if (!searchName.equals("")) {
+        if (!searchName.equals("")) {
             if (searchName.charAt(searchName.length() - 1) == '동') {
                 StringTokenizer placeInfo = new StringTokenizer(searchName, " ");
                 String si = placeInfo.nextToken();

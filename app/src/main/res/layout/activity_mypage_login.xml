@@ -77,7 +77,7 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorWhite">
+                android:background="@drawable/frame_rounded">
                 <ImageView
                     android:id="@+id/ic_facebook"
                     android:layout_width="28dp"
@@ -104,7 +104,7 @@
             android:textColor="@color/colorDefaultText"
             android:textStyle="bold"
             android:layout_below="@+id/login_facebook_button"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginStart="220dp"/>
     </RelativeLayout>
 </RelativeLayout>

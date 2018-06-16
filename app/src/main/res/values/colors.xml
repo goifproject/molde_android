@@ -18,4 +18,5 @@
     <color name="colorMypageSettingDiv">#e6e6e6</color>
     <color name="colorDefaultText">#4a4a4a</color>
     <color name="colorFrameGrayRounded">#c1c1c1</color>
+    <color name="colorSubDescSelect">#4db6ac</color>
 </resources>

@@ -51,14 +51,21 @@ public class MoldeMypageLoginActivity extends AppCompatActivity {
     @BindView(R.id.skip_login_button)
     Button skip_login_button;
 
+    //로그인 안하고 건너뜀
+    private static final int SKIP_LOGIN_CODE = 1001;
+    //구글 로그인 완료
+    private static final int CONNECT_GOOGLE_AUTH_CODE = 1002;
+    //페북 로그인 완료
+    private static final int CONNECT_FACEBOOK_AUTH_CODE = 1003;
+
     //파이어베이스 인증 클라이언트
     private static final int RC_SIGN_IN = 9001;
 
     // 파이어 베이스 계정
-    public static FirebaseAuth firebaseAuth;
+    private FirebaseAuth firebaseAuth;
 
     //GoogleSignClient
-    public GoogleSignInClient googleSignInClient;
+    private GoogleSignInClient googleSignInClient;
     //FacebookSignClient TODO Facebook Client 연동 구현 - 완료
     CallbackManager facebookCallbackManager;
     AccessToken fbAccessToken = AccessToken.getCurrentAccessToken();
@@ -71,46 +78,32 @@ public class MoldeMypageLoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypage_login);
         ButterKnife.bind(this);
+        firebaseAuth = FirebaseAuth.getInstance();
 
         loginProgressDialog = new ProgressDialog(MoldeMypageLoginActivity.this);
         loginProgressDialog.setTitle("로그인 중입니다...");
 
-        // Configure Facebook Init
+        // 페이스북 초기화
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
         facebookCallbackManager = CallbackManager.Factory.create();
-        if(fbIsLoggedIn){
-            login_to_facebook.setText("로그아웃 하기");
-        }
         final LoginButton facebookLoginButton = findViewById(R.id.in_facebook_login_button);
         facebookLoginButton.setReadPermissions("email", "public_profile");
-        facebookLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(login_to_facebook.getText().equals("로그아웃 하기")){
-                    firebaseAuth.signOut();
-                }
-            }
-        });
         facebookLoginButton.registerCallback(facebookCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult facebookLoginResult) {
                 Log.e("facebook", "facebook:onSuccess:" + facebookLoginResult);
                 handleFacebookAccessToken(facebookLoginResult.getAccessToken());
-                login_to_facebook.setText("로그아웃 하기");
-                login_google_button.setEnabled(false);
             }
 
             @Override
             public void onCancel() {
                 Log.e("facebook", "facebook:onCancel");
-                login_to_facebook.setText("페이스북으로 로그인하기");
             }
 
             @Override
             public void onError(FacebookException error) {
                 Log.e("facebook", "facebook:onError", error);
-                login_to_facebook.setText("페이스북으로 로그인하기");
             }
         });
 
@@ -121,25 +114,17 @@ public class MoldeMypageLoginActivity extends AppCompatActivity {
                 .build();
         googleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        // [START initialize_auth]
-        firebaseAuth = FirebaseAuth.getInstance();
-        // [END initialize_auth]
-
-
         login_google_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (login_to_google.getText().equals("로그아웃 하기")) {
-                    googleSignOut();
-                } else if (login_to_google.getText().equals("구글로 로그인하기")) {
-                    googleSignIn();
-                }
+                googleSignIn();
             }
         });
 
         skip_login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setResult(SKIP_LOGIN_CODE);
                 finish();
             }
         });
@@ -158,7 +143,7 @@ public class MoldeMypageLoginActivity extends AppCompatActivity {
                 new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        updateAuth(null);
+                        finish();
                     }
                 });
     }
@@ -172,7 +157,7 @@ public class MoldeMypageLoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        updateAuth(null);
+                        finish();
                     }
                 });
     }
@@ -180,36 +165,18 @@ public class MoldeMypageLoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // [START on_start_check_user]
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        updateAuth(currentUser);
-    }
-
-    private void updateAuth(FirebaseUser user) {
-        if (user != null) {
-            login_to_google.setText("로그아웃 하기");
-        } else {
-            login_to_google.setText("구글로 로그인하기");
-        }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
                 Log.e("google", "Google sign in failed", e);
-                // [START_EXCLUDE]
-                updateAuth(null);
-                // [END_EXCLUDE]
             }
         }
         facebookCallbackManager.onActivityResult(requestCode, resultCode, data);
@@ -217,9 +184,7 @@ public class MoldeMypageLoginActivity extends AppCompatActivity {
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.e("google", "firebaseAuthWithGoogle:" + acct.getId());
-        // [START_EXCLUDE silent]
         loginProgressDialog.show();
-        // [END_EXCLUDE]
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -227,40 +192,39 @@ public class MoldeMypageLoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Log.e("google", "signInWithCredential:success");
-                            FirebaseUser user = firebaseAuth.getCurrentUser();
-                            updateAuth(user);
+                            Snackbar.make(findViewById(R.id.mypage_login_layout), "구글 로그인 되었습니다.", Snackbar.LENGTH_SHORT).show();
+                            setResult(CONNECT_GOOGLE_AUTH_CODE);
                         } else {
                             Log.e("google", "signInWithCredential:failure", task.getException());
-                            Snackbar.make(findViewById(R.id.mypage_login_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
-                            updateAuth(null);
+                            Snackbar.make(findViewById(R.id.mypage_login_layout), "로그인이 정상적으로 처리되지 않았습니다.", Snackbar.LENGTH_SHORT).show();
                         }
-
                         loginProgressDialog.dismiss();
+                        finish();
                     }
                 });
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
         Log.e("facebook", "handleFacebookAccessToken:" + token);
-
+        loginProgressDialog.show();
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
                             Log.e("facebook", "signInWithCredential:success");
                             FirebaseUser user = firebaseAuth.getCurrentUser();
-                            updateAuth(user);
+                            Snackbar.make(findViewById(R.id.mypage_login_layout), "페이스북 로그인 되었습니다.", Snackbar.LENGTH_SHORT).show();
+                            setResult(CONNECT_FACEBOOK_AUTH_CODE);
                         } else {
-                            // If sign in fails, display a message to the user.
                             Log.e("facebook", "signInWithCredential:failure", task.getException());
                             Toast.makeText(getApplicationContext(), "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            updateAuth(null);
+                            Snackbar.make(findViewById(R.id.mypage_login_layout), "로그인이 정상적으로 처리되지 않았습니다.", Snackbar.LENGTH_SHORT).show();
                         }
-
+                        loginProgressDialog.dismiss();
+                        finish();
                     }
                 });
     }
