@@ -137,7 +137,6 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/mypage_option"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/head_guide">

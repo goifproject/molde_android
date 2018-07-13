@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/myReport_activity"
     tools:context="com.limefriends.molde.menu_mypage.MoldeMypageMyReportActivity">
 
     <android.support.v7.widget.RecyclerView

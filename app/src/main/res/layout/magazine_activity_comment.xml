@@ -27,8 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="#f6f6f6"
-        android:layout_above="@+id/edittext_comment"
-        android:id="@+id/view" />
+        android:layout_above="@+id/edittext_comment" />
     <EditText
         android:id="@+id/edittext_comment"
         android:layout_width="match_parent"

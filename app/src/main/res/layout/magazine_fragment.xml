@@ -11,7 +11,6 @@
         android:layout_height="match_parent">
 
         <android.support.design.widget.AppBarLayout
-            android:id="@+id/manuals_wrapper"
             android:layout_width="match_parent"
             android:layout_height="143dp"
             android:layout_marginBottom="8dp"
@@ -38,7 +37,6 @@
                         android:textColor="@color/colorDefaultText"/>
 
                     <LinearLayout
-                        android:id="@+id/manuals_detail_wrapper"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_below="@+id/manuals_wrapper_title"

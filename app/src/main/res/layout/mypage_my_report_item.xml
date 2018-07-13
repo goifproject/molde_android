@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/myPage_myReport_item_relativelayout"
     android:layout_width="match_parent"
     android:layout_height="130dp"
     android:layout_marginTop="10dp"
@@ -37,7 +36,6 @@
         android:textSize="11sp" />
 
     <SeekBar
-        android:id="@+id/myReport_seekBar"
         android:layout_width="144dp"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/myReport_map"

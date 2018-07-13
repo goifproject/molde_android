@@ -17,7 +17,7 @@
     </style>
 
     <style name="SplashTheme" parent="AppNoBarTheme">
-        <item name="android:windowBackground">@drawable/splash_background</item>
+        <!--<item name="android:windowBackground">@drawable/splash_background</item>-->
     </style>
 
     <style name="LocalSearchInputStyle">

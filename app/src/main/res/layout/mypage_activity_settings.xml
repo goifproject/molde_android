@@ -12,7 +12,6 @@
         android:background="@color/colorWhite">
 
         <TextView
-            android:id="@+id/mypage_my_loc_push_title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="16dp"
@@ -23,7 +22,6 @@
             android:textColor="@color/colorInfoTextColor"/>
 
         <Switch
-            android:id="@+id/mypage_my_loc_push_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -38,7 +36,6 @@
         android:layout_marginTop="1dp"
         android:background="@color/colorWhite">
         <TextView
-            android:id="@+id/mypage_my_favorite_push_title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="16dp"
@@ -47,7 +44,6 @@
             android:text="내 즐겨찾기 푸시알람"
             android:textColor="@color/colorInfoTextColor"/>
         <Switch
-            android:id="@+id/mypage_my_favorite_push_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"

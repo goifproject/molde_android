@@ -12,7 +12,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.alexzh.circleimageview.CircleImageView;
-import com.facebook.login.LoginManager;
+import com.limefriends.molde.MoldeApplication;
 import com.limefriends.molde.MoldeMainActivity;
 import com.limefriends.molde.R;
 
@@ -21,8 +21,9 @@ import butterknife.ButterKnife;
 
 import static com.limefriends.molde.MoldeApplication.fbLoginManager;
 import static com.limefriends.molde.MoldeApplication.firebaseAuth;
+import static com.limefriends.molde.MoldeApplication.ggClient;
 
-public class MoldeMyPageFragment extends Fragment implements MoldeMainActivity.onKeyBackPressedListener{
+public class MoldeMyPageFragment extends Fragment implements MoldeMainActivity.onKeyBackPressedListener {
     @BindView(R.id.mypage_profile_image)
     CircleImageView mypage_profile_image;
     @BindView(R.id.mypage_profile_name)
@@ -47,7 +48,7 @@ public class MoldeMyPageFragment extends Fragment implements MoldeMainActivity.o
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.mypage_fragment, container, false);
+        View view = inflater.inflate(R.layout.mypage_fragment, container, false);
         ButterKnife.bind(this, view);
 
         // 설정페이지로 이동
@@ -64,7 +65,7 @@ public class MoldeMyPageFragment extends Fragment implements MoldeMainActivity.o
         mypage_faq_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getContext(),MoldeMyPageInquiryActivity.class)
+                startActivity(new Intent(getContext(), MoldeMyPageInquiryActivity.class)
                         .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
             }
         });
@@ -100,12 +101,16 @@ public class MoldeMyPageFragment extends Fragment implements MoldeMainActivity.o
         mypage_log_in_out_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mypage_log_in_out_button.getText().equals("로그아웃")){
-                    firebaseAuth.signOut();
-                    fbLoginManager.logOut();
+                if (mypage_log_in_out_button.getText().equals("로그아웃")) {
+                    if (ggClient != null) {
+                        ggClient.signOut();
+                    } else if (fbLoginManager != null) {
+                        fbLoginManager.logOut();
+                    }
+                    MoldeApplication.firebaseAuth = null;
                     mypage_log_in_out_button.setText("로그인");
-                }else{
-                    Intent intent = new Intent(getContext(), MoldeMypageLoginActivity.class);
+                } else {
+                    Intent intent = new Intent(getContext(), MoldeMyPageLoginActivity.class);
                     startActivity(intent);
                 }
             }
@@ -116,14 +121,16 @@ public class MoldeMyPageFragment extends Fragment implements MoldeMainActivity.o
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        ((MoldeMainActivity)context).setOnKeyBackPressedListener(this);
+        ((MoldeMainActivity) context).setOnKeyBackPressedListener(this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(firebaseAuth != null){
+        if (firebaseAuth != null) {
             mypage_log_in_out_button.setText("로그아웃");
+        } else {
+            mypage_log_in_out_button.setText("로그인");
         }
     }
 

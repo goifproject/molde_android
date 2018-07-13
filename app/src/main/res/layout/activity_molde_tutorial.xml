@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.limefriends.molde.molde_tutorial.MoldeTutorialActivity"
-    android:background="@color/colorLittleWhiteGray"
-    android:id="@+id/activity_molde_tutorial">
+    android:background="@color/colorLittleWhiteGray">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/molde_tutorial_pager"

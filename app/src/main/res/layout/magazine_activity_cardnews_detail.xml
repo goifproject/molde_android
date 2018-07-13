@@ -17,7 +17,6 @@
 
 
     <RelativeLayout
-        android:id="@+id/cardnews_footer"
         android:layout_width="match_parent"
         android:layout_height="52dp"
         android:layout_alignParentBottom="true"

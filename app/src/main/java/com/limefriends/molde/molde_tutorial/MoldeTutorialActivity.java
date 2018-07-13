@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.limefriends.molde.R;
-import com.limefriends.molde.menu_mypage.MoldeMypageLoginActivity;
+import com.limefriends.molde.menu_mypage.MoldeMyPageLoginActivity;
 import com.limefriends.molde.molde_sub_desc.MoldeSubDescActivity;
 
 import butterknife.BindView;
@@ -42,7 +42,7 @@ public class MoldeTutorialActivity extends AppCompatActivity {
         molde_tutorial_end_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MoldeMypageLoginActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MoldeMyPageLoginActivity.class);
                 startActivityForResult(intent, LOGIN_REQUEST_CODE);
             }
         });

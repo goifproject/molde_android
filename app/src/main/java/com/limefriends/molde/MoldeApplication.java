@@ -5,20 +5,21 @@ import android.app.Application;
 import android.content.Context;
 
 import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MoldeApplication extends Application {
     @SuppressLint("StaticFieldLeak")
     private static Context moldeContext;
     public static FirebaseAuth firebaseAuth;
+    public static GoogleSignInClient ggClient;
     public static LoginManager fbLoginManager;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        firebaseAuth = FirebaseAuth.getInstance();
-        fbLoginManager = LoginManager.getInstance();
         moldeContext = this;
+        firebaseAuth = FirebaseAuth.getInstance();
     }
     public static Context getMoldeContext(){
         return moldeContext;

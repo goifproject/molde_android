@@ -5,7 +5,6 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:id="@+id/my_favorite_frame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -31,7 +30,6 @@
         </RelativeLayout>
 
         <FrameLayout
-            android:id="@+id/my_favorite_view"
             android:layout_below="@+id/my_favorite_header"
             android:layout_width="match_parent"
             android:layout_height="104dp">

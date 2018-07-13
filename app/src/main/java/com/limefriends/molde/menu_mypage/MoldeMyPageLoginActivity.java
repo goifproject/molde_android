@@ -32,14 +32,18 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.limefriends.molde.MoldeApplication;
 import com.limefriends.molde.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MoldeMypageLoginActivity extends AppCompatActivity {
+import static com.limefriends.molde.MoldeApplication.fbLoginManager;
+import static com.limefriends.molde.MoldeApplication.firebaseAuth;
+import static com.limefriends.molde.MoldeApplication.ggClient;
+
+public class MoldeMyPageLoginActivity extends AppCompatActivity {
     @BindView(R.id.login_google_button)
     RelativeLayout login_google_button;
     @BindView(R.id.login_facebook_button)
@@ -61,26 +65,24 @@ public class MoldeMypageLoginActivity extends AppCompatActivity {
     //파이어베이스 인증 클라이언트
     private static final int RC_SIGN_IN = 9001;
 
-    // 파이어 베이스 계정
-    private FirebaseAuth firebaseAuth;
 
     //GoogleSignClient
     private GoogleSignInClient googleSignInClient;
-    //FacebookSignClient TODO Facebook Client 연동 구현 - 완료
+    //FacebookSignClient
     CallbackManager facebookCallbackManager;
-    AccessToken fbAccessToken = AccessToken.getCurrentAccessToken();
-    boolean fbIsLoggedIn = fbAccessToken != null && !fbAccessToken.isExpired();
 
     ProgressDialog loginProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mypage_login);
+        setContentView(R.layout.mypage_login_activity);
         ButterKnife.bind(this);
-        firebaseAuth = FirebaseAuth.getInstance();
+        if(firebaseAuth == null){
+            firebaseAuth = FirebaseAuth.getInstance();
+        }
 
-        loginProgressDialog = new ProgressDialog(MoldeMypageLoginActivity.this);
+        loginProgressDialog = new ProgressDialog(MoldeMyPageLoginActivity.this);
         loginProgressDialog.setTitle("로그인 중입니다...");
 
         // 페이스북 초기화
@@ -125,6 +127,12 @@ public class MoldeMypageLoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setResult(SKIP_LOGIN_CODE);
+                if(ggClient != null){
+                    ggClient.signOut();
+                }else if(fbLoginManager != null){
+                    fbLoginManager.logOut();
+                }
+                MoldeApplication.firebaseAuth = null;
                 finish();
             }
         });
@@ -178,6 +186,7 @@ public class MoldeMypageLoginActivity extends AppCompatActivity {
             } catch (ApiException e) {
                 Log.e("google", "Google sign in failed", e);
             }
+            return;
         }
         facebookCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
@@ -191,6 +200,7 @@ public class MoldeMypageLoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            MoldeApplication.firebaseAuth = FirebaseAuth.getInstance();
                             Log.e("google", "signInWithCredential:success");
                             Snackbar.make(findViewById(R.id.mypage_login_layout), "구글 로그인 되었습니다.", Snackbar.LENGTH_SHORT).show();
                             setResult(CONNECT_GOOGLE_AUTH_CODE);
@@ -213,8 +223,9 @@ public class MoldeMypageLoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            MoldeApplication.firebaseAuth = FirebaseAuth.getInstance();
                             Log.e("facebook", "signInWithCredential:success");
-                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            //FirebaseUser user = firebaseAuth.getCurrentUser();
                             Snackbar.make(findViewById(R.id.mypage_login_layout), "페이스북 로그인 되었습니다.", Snackbar.LENGTH_SHORT).show();
                             setResult(CONNECT_FACEBOOK_AUTH_CODE);
                         } else {

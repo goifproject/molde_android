@@ -23,7 +23,7 @@
         <activity
             android:name=".MoldeSplashActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/AppNoBarTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -115,7 +115,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".menu_mypage.MoldeMypageLoginActivity"
+            android:name=".menu_mypage.MoldeMyPageLoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
 
