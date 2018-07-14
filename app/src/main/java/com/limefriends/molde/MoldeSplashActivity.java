@@ -32,9 +32,9 @@ public class MoldeSplashActivity extends AppCompatActivity {
             public void run() {
                 SharedPreferences sharedPreferences = getSharedPreferences("isFirst", Activity.MODE_PRIVATE);
                 boolean firstLaunch = sharedPreferences.getBoolean("isFirst", true);
-                if(firstLaunch){
+                if (firstLaunch) {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putBoolean("isFirst",false);
+                    editor.putBoolean("isFirst", false);
                     editor.commit();
                     Intent intent = new Intent(getApplicationContext(), MoldeTutorialActivity.class);
                     startActivity(intent);
@@ -46,7 +46,7 @@ public class MoldeSplashActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        }, 3000);
+        }, 1500);
 
     }
 }

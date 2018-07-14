@@ -3,6 +3,7 @@ package com.limefriends.molde.menu_mypage;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +41,14 @@ public class MoldeMyPageFragment extends Fragment implements MoldeMainActivity.o
     Button mypage_faq_button;
     @BindView(R.id.mypage_log_in_out_button)
     Button mypage_log_in_out_button;
+
+    //구글 로그인 완료
+    private static final int CONNECT_GOOGLE_AUTH_CODE = 1002;
+    //페북 로그인 완료
+    private static final int CONNECT_FACEBOOK_AUTH_CODE = 1003;
+
+    //파이어베이스 인증 클라이언트
+    private static final int RC_SIGN_IN = 9001;
 
     public static MoldeMyPageFragment newInstance() {
         return new MoldeMyPageFragment();
@@ -109,13 +118,28 @@ public class MoldeMyPageFragment extends Fragment implements MoldeMainActivity.o
                     }
                     MoldeApplication.firebaseAuth.signOut();
                     mypage_log_in_out_button.setText("로그인");
+                    Snackbar.make(getView().findViewById(R.id.mypage_layout), "계정 로그아웃 되었습니다.", Snackbar.LENGTH_SHORT).show();
                 } else {
                     Intent intent = new Intent(getContext(), MoldeMyPageLoginActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, RC_SIGN_IN);
                 }
             }
         });
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == RC_SIGN_IN) {
+            switch (resultCode) {
+                case CONNECT_GOOGLE_AUTH_CODE :
+                    Snackbar.make(getView().findViewById(R.id.mypage_layout), "구글 로그인 되었습니다.", Snackbar.LENGTH_SHORT).show();
+                    break;
+                case CONNECT_FACEBOOK_AUTH_CODE :
+                    Snackbar.make(getView().findViewById(R.id.mypage_layout), "페이스북 로그인 되었습니다.", Snackbar.LENGTH_SHORT).show();
+                    break;
+            }
+        }
     }
 
     @Override

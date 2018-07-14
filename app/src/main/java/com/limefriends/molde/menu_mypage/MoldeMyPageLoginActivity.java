@@ -2,6 +2,7 @@ package com.limefriends.molde.menu_mypage;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -78,7 +79,7 @@ public class MoldeMyPageLoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mypage_login_activity);
         ButterKnife.bind(this);
-        if(firebaseAuth == null){
+        if (firebaseAuth == null) {
             firebaseAuth = FirebaseAuth.getInstance();
         }
 
@@ -127,12 +128,6 @@ public class MoldeMyPageLoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setResult(SKIP_LOGIN_CODE);
-                if(ggClient != null){
-                    ggClient.signOut();
-                }else if(fbLoginManager != null){
-                    fbLoginManager.logOut();
-                }
-                MoldeApplication.firebaseAuth = null;
                 finish();
             }
         });
@@ -202,14 +197,15 @@ public class MoldeMyPageLoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             MoldeApplication.firebaseAuth = FirebaseAuth.getInstance();
                             Log.e("google", "signInWithCredential:success");
-                            Snackbar.make(findViewById(R.id.mypage_login_layout), "구글 로그인 되었습니다.", Snackbar.LENGTH_SHORT).show();
+                            loginProgressDialog.dismiss();
                             setResult(CONNECT_GOOGLE_AUTH_CODE);
+                            finish();
                         } else {
                             Log.e("google", "signInWithCredential:failure", task.getException());
                             Snackbar.make(findViewById(R.id.mypage_login_layout), "로그인이 정상적으로 처리되지 않았습니다.", Snackbar.LENGTH_SHORT).show();
                         }
-                        loginProgressDialog.dismiss();
-                        finish();
+
+
                     }
                 });
     }
@@ -225,17 +221,14 @@ public class MoldeMyPageLoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             MoldeApplication.firebaseAuth = FirebaseAuth.getInstance();
                             Log.e("facebook", "signInWithCredential:success");
-                            //FirebaseUser user = firebaseAuth.getCurrentUser();
-                            Snackbar.make(findViewById(R.id.mypage_login_layout), "페이스북 로그인 되었습니다.", Snackbar.LENGTH_SHORT).show();
+                            loginProgressDialog.dismiss();
                             setResult(CONNECT_FACEBOOK_AUTH_CODE);
+                            finish();
                         } else {
                             Log.e("facebook", "signInWithCredential:failure", task.getException());
-                            Toast.makeText(getApplicationContext(), "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
                             Snackbar.make(findViewById(R.id.mypage_login_layout), "로그인이 정상적으로 처리되지 않았습니다.", Snackbar.LENGTH_SHORT).show();
                         }
-                        loginProgressDialog.dismiss();
-                        finish();
+
                     }
                 });
     }
