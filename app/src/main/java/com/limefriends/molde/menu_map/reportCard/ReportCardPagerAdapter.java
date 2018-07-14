@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.limefriends.molde.MoldeMainActivity;
 import com.limefriends.molde.R;
-import com.limefriends.molde.menu_map.MoldeReportMapDialog;
+import com.limefriends.molde.menu_map.report.MoldeReportMapDialog;
 import com.limefriends.molde.menu_map.callbackMethod.MoldeMapReportPagerAdapterCallback;
 
 import java.util.ArrayList;

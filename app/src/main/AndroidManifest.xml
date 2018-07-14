@@ -47,7 +47,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".menu_map.MoldeReportActivity"
+            android:name=".menu_map.report.MoldeReportActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity

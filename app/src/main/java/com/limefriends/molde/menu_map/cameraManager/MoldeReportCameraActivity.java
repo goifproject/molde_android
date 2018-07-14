@@ -70,6 +70,14 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
     private int imageArraySize;
     private int imageSeq = 0;
 
+    private String reportContent;
+    private String reportAddress;
+    private String reportDetailAddress;
+    private String reportEmailName;
+    private String reportEmailDomainPosition;
+    private String reportLat;
+    private String reportLng;
+
     public Bitmap bitmap;
 
     public static void doRestart(Context c) {
@@ -159,6 +167,14 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
         Intent intent = getIntent();
         imageSeq = intent.getIntExtra("imageSeq", 1);
         imageArraySize = intent.getIntExtra("imageArraySize", 1);
+        reportContent = getIntent().getStringExtra("reportContent");
+        reportAddress = getIntent().getStringExtra("reportAddress");
+        reportDetailAddress = getIntent().getStringExtra("reportDetailAddress");
+        reportEmailName = getIntent().getStringExtra("reportEmailName");
+        reportEmailDomainPosition = getIntent().getStringExtra("reportEmailDomainPosition");
+        reportLat = getIntent().getStringExtra("reportLat");
+        reportLng = getIntent().getStringExtra("reportLng");
+
         ctx = this;
         mActivity = this;
 
@@ -179,10 +195,16 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
                 intent.setClass(getApplicationContext(), MoldeReportGalleryActivity.class);
                 intent.putExtra("imageSeq", imageSeq);
                 intent.putExtra("imageArraySize", imageArraySize);
+                intent.putExtra("reportContent", reportContent);
+                intent.putExtra("reportAddress", reportAddress);
+                intent.putExtra("reportDetailAddress", reportDetailAddress);
+                intent.putExtra("reportEmailName", reportEmailName);
+                intent.putExtra("reportEmailDomainPosition", reportEmailDomainPosition);
+                intent.putExtra("reportLat", reportLat);
+                intent.putExtra("reportLng", reportLng);
                 startActivity(intent);
             }
         });
-
 
 
         cameraFocusOn();
@@ -194,10 +216,9 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
                 camera.autoFocus(new Camera.AutoFocusCallback() {
                     @Override
                     public void onAutoFocus(boolean success, Camera camera) {
-                        if(success){
+                        if (success) {
                             camera.takePicture(shutterCallback, rawCallback, jpegCallback);
-                        }
-                        else{
+                        } else {
                         }
                     }
                 });
@@ -252,17 +273,16 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
         startCamera();
     }
 
-    public void cameraFocusOn(){
+    public void cameraFocusOn() {
         molde_camera_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 camera.autoFocus(new Camera.AutoFocusCallback() {
                     @Override
                     public void onAutoFocus(boolean success, Camera camera) {
-                        if(success){
+                        if (success) {
                             //Toast.makeText(getApplicationContext(),"포커스 성공",Toast.LENGTH_SHORT).show();
-                        }
-                        else{
+                        } else {
                             //Toast.makeText(getApplicationContext(),"포커스 실패",Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -298,6 +318,13 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
         intent.setClass(getApplicationContext(), MoldeReportCheckImage.class);
         intent.putExtra("imagePath", Uri.fromFile(file));
         intent.putExtra("imageSeq", imageSeq);
+        intent.putExtra("reportContent", reportContent);
+        intent.putExtra("reportAddress", reportAddress);
+        intent.putExtra("reportDetailAddress", reportDetailAddress);
+        intent.putExtra("reportEmailName", reportEmailName);
+        intent.putExtra("reportEmailDomainPosition", reportEmailDomainPosition);
+        intent.putExtra("reportLat", reportLat);
+        intent.putExtra("reportLng", reportLng);
         startActivity(intent);
     }
 
@@ -456,19 +483,19 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
                         Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
 
-        if ( (hasCameraPermission == PackageManager.PERMISSION_DENIED && cameraRationale)
-                || (hasWriteExternalStoragePermission== PackageManager.PERMISSION_DENIED
+        if ((hasCameraPermission == PackageManager.PERMISSION_DENIED && cameraRationale)
+                || (hasWriteExternalStoragePermission == PackageManager.PERMISSION_DENIED
                 && writeExternalStorageRationale))
             showDialogForPermission("앱을 실행하려면 퍼미션을 허가하셔야합니다.");
 
-        else if ( (hasCameraPermission == PackageManager.PERMISSION_DENIED && !cameraRationale)
-                || (hasWriteExternalStoragePermission== PackageManager.PERMISSION_DENIED
+        else if ((hasCameraPermission == PackageManager.PERMISSION_DENIED && !cameraRationale)
+                || (hasWriteExternalStoragePermission == PackageManager.PERMISSION_DENIED
                 && !writeExternalStorageRationale))
             showDialogForPermissionSetting("퍼미션 거부 + Don't ask again(다시 묻지 않음) " +
                     "체크 박스를 설정한 경우로 설정에서 퍼미션 허가해야합니다.");
 
-        else if ( hasCameraPermission == PackageManager.PERMISSION_GRANTED
-                || hasWriteExternalStoragePermission== PackageManager.PERMISSION_GRANTED ) {
+        else if (hasCameraPermission == PackageManager.PERMISSION_GRANTED
+                || hasWriteExternalStoragePermission == PackageManager.PERMISSION_GRANTED) {
             doRestart(this);
         }
     }
@@ -483,7 +510,7 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
         builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 //퍼미션 요청
-                ActivityCompat.requestPermissions( MoldeReportCameraActivity.this,
+                ActivityCompat.requestPermissions(MoldeReportCameraActivity.this,
                         new String[]{Manifest.permission.CAMERA,
                                 Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         PERMISSIONS_REQUEST_CODE);

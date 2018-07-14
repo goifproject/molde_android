@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.SparseArrayCompat;
@@ -42,6 +43,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 //import com.google.maps.android.clustering.ClusterManager;
+import com.limefriends.molde.MoldeApplication;
 import com.limefriends.molde.R;
 import com.limefriends.molde.MoldeMainActivity;
 import com.limefriends.molde.menu_feed.entity.MoldeFeedEntitiy;
@@ -49,6 +51,7 @@ import com.limefriends.molde.menu_map.callbackMethod.MoldeMapReportPagerAdapterC
 //import com.limefriends.molde.menu_map.entity.MoldeSearchMapClusterEntity;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapHistoryEntity;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapInfoEntity;
+import com.limefriends.molde.menu_map.report.MoldeReportActivity;
 import com.limefriends.molde.menu_map.reportCard.*;
 
 import java.util.ArrayList;
@@ -102,8 +105,8 @@ public class MoldeMapFragment extends Fragment
 
     SupportMapFragment mapView;
     private static GoogleMap mMap;
-    private String lat = "37.499597";
-    private String lng = "127.031372";
+    private String lat = "0.0";
+    private String lng = "0.0";
     private String searchName = "";
     private String telNo = "";
     private int moveCnt = 0;
@@ -242,10 +245,14 @@ public class MoldeMapFragment extends Fragment
         report_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "신고 페이지로 넘어가기", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent();
-                intent.setClass(getContext(), MoldeReportActivity.class);
-                startActivity(intent);
+                if (MoldeApplication.firebaseAuth.getUid() != null) {
+                    Toast.makeText(getContext(), "Auth : " + MoldeApplication.firebaseAuth.getUid(), Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent();
+                    intent.setClass(getContext(), MoldeReportActivity.class);
+                    startActivity(intent);
+                }else {
+                    Snackbar.make(getView().findViewById(R.id.map_view_layout), "몰디 로그인이 필요합니다!", Snackbar.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -703,7 +710,7 @@ public class MoldeMapFragment extends Fragment
                     );
                     locChangeCount++;
                     myLocChange = false;
-                    if (moveCnt > 0) {
+                    //if (moveCnt > 0) {
                         if (reportInfohMarkers.size() > 0 || reportCardItemList.size() > 0) {
                             clearReportInfoMarkers();
                         }
@@ -719,7 +726,7 @@ public class MoldeMapFragment extends Fragment
                         report_card_view_layout.setClickable(true);
                         backChk = false;
                         initChk = false;
-                    }
+                    //}
                     moveCnt++;
                 }
             }

@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.limefriends.molde.menu_magazine.MoldeMagazineFragment;
@@ -154,6 +155,14 @@ public class MoldeMainActivity extends AppCompatActivity {
             if (mOnKeyBackPressedListener != null) {
                 mOnKeyBackPressedListener.onBackKey();
             }
+            if(MoldeApplication.firebaseAuth.getUid() != null){
+                Log.e("Auth", MoldeApplication.firebaseAuth.getUid());
+                Log.e("User name", MoldeApplication.firebaseAuth.getCurrentUser().getDisplayName());
+            }else {
+                Log.e("Auth", "계정 UID값 없음");
+                Log.e("User name", "계정 이름 없음");
+            }
+
         } else {
             finish();
         }

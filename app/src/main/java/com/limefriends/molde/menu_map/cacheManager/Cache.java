@@ -55,6 +55,9 @@ public class Cache {
     }
 
     public void Delete() throws IOException {
+        File cacheDir = getCacheDir(context);
+        File file = new File(cacheDir, "mapInfoSearchHistory.txt");
+        file.delete();
     }
 
 }

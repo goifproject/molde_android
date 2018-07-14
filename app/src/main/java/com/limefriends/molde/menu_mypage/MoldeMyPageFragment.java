@@ -107,7 +107,7 @@ public class MoldeMyPageFragment extends Fragment implements MoldeMainActivity.o
                     } else if (fbLoginManager != null) {
                         fbLoginManager.logOut();
                     }
-                    MoldeApplication.firebaseAuth = null;
+                    MoldeApplication.firebaseAuth.signOut();
                     mypage_log_in_out_button.setText("로그인");
                 } else {
                     Intent intent = new Intent(getContext(), MoldeMyPageLoginActivity.class);
@@ -127,7 +127,7 @@ public class MoldeMyPageFragment extends Fragment implements MoldeMainActivity.o
     @Override
     public void onResume() {
         super.onResume();
-        if (firebaseAuth != null) {
+        if (firebaseAuth.getUid() != null) {
             mypage_log_in_out_button.setText("로그아웃");
         } else {
             mypage_log_in_out_button.setText("로그인");

@@ -14,6 +14,7 @@ public class MoldeApplication extends Application {
     public static FirebaseAuth firebaseAuth;
     public static GoogleSignInClient ggClient;
     public static LoginManager fbLoginManager;
+    public static final String BASE_URL = "http://13.209.64.183:7019/";
 
     @Override
     public void onCreate() {

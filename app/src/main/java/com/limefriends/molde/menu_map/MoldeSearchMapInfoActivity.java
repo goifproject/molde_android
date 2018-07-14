@@ -7,6 +7,7 @@ import com.limefriends.molde.menu_map.callbackMethod.MoldeMapHistoryRecyclerView
 import com.limefriends.molde.menu_map.callbackMethod.MoldeMapInfoRecyclerViewAdapterCallback;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapHistoryEntity;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapInfoEntity;
+import com.limefriends.molde.menu_map.report.MoldeReportActivity;
 
 import android.content.Intent;
 import android.os.Handler;
@@ -61,6 +62,13 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
     private String keywordHistoryStr = "";
     private String cmd = "";
 
+    private String reportContent;
+    private String reportDetailAddress;
+    private String reportEmailName;
+    private String reportEmailDomainPosition;
+    private String reportLat;
+    private String reportLng;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +103,12 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
         if(activityName != null){
             if(activityName.equals("Report")){
                 cmd = "Report";
+                reportContent = getIntent().getStringExtra("reportContent");
+                reportDetailAddress = getIntent().getStringExtra("reportDetailAddress");
+                reportEmailName = getIntent().getStringExtra("reportEmailName");
+                reportEmailDomainPosition = getIntent().getStringExtra("reportEmailDomainPosition");
+                reportLat= getIntent().getStringExtra("reportLat");
+                reportLng= getIntent().getStringExtra("reportLng");
             }
         }
 
@@ -178,11 +192,17 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
         Intent intent = new Intent();
         if(cmd.equals("Report")){
             intent.setClass(getApplicationContext(), MoldeReportActivity.class);
+            intent.putExtra("reportContent", reportContent);
+            intent.putExtra("reportDetailAddress", reportDetailAddress);
+            intent.putExtra("reportEmailName", reportEmailName);
+            intent.putExtra("reportEmailDomainPosition", reportEmailDomainPosition);
+            intent.putExtra("reportLat", reportLat);
+            intent.putExtra("reportLng", reportLng);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         }else{
             intent.setClass(getApplicationContext(), MoldeMainActivity.class);
         }
         intent.putExtra("mapInfo", entity);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 
@@ -193,7 +213,7 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
                 cache.Write("");
             }
             keywordHistoryStr = cache.Read();
-            //cache.Write("");
+            //cache.Delete();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -246,6 +266,12 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
         Intent intent = new Intent();
         if(cmd.equals("Report")){
             intent.setClass(getApplicationContext(), MoldeReportActivity.class);
+            intent.putExtra("reportContent", reportContent);
+            intent.putExtra("reportDetailAddress", reportDetailAddress);
+            intent.putExtra("reportEmailName", reportEmailName);
+            intent.putExtra("reportEmailDomainPosition", reportEmailDomainPosition);
+            intent.putExtra("reportLat", reportLat);
+            intent.putExtra("reportLng", reportLng);
         }else{
             intent.setClass(getApplicationContext(), MoldeMainActivity.class);
         }

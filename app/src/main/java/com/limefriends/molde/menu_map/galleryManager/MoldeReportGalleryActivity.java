@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.limefriends.molde.R;
-import com.limefriends.molde.menu_map.MoldeReportActivity;
+import com.limefriends.molde.menu_map.report.MoldeReportActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,6 +38,13 @@ public class MoldeReportGalleryActivity extends AppCompatActivity {
     public int imageArraySize;
     public int imageSeq = 0;
 
+    private String reportContent;
+    private String reportAddress;
+    private String reportDetailAddress;
+    private String reportEmailName;
+    private String reportEmailDomainPosition;
+    private String reportLat;
+    private String reportLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +67,15 @@ public class MoldeReportGalleryActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.setClass(getApplicationContext(), MoldeReportActivity.class);
                 intent.putStringArrayListExtra("imagePathList", pathList);
+
+                intent.putExtra("reportContent", reportContent);
+                intent.putExtra("reportAddress", reportAddress);
+                intent.putExtra("reportDetailAddress", reportDetailAddress);
+                intent.putExtra("reportEmailName", reportEmailName);
+                intent.putExtra("reportEmailDomainPosition", reportEmailDomainPosition);
+                intent.putExtra("reportLat", reportLat);
+                intent.putExtra("reportLng", reportLng);
+
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
@@ -72,14 +88,20 @@ public class MoldeReportGalleryActivity extends AppCompatActivity {
         imageSeq = intent.getIntExtra("imageSeq", 1);
         imageArraySize = intent.getIntExtra("imageArraySize", 1);
         lastImageSize = allImageSize - imageArraySize;
-        //Log.e("d", lastImageSize + "장 추가 가능");
         gallery_toolbar_title.setText(lastImageSize + "장 추가 가능");
+        reportContent = intent.getStringExtra("reportContent");
+        reportAddress = intent.getStringExtra("reportAddress");
+        reportDetailAddress = intent.getStringExtra("reportDetailAddress");
+        reportEmailName = intent.getStringExtra("reportEmailName");
+        reportEmailDomainPosition = intent.getStringExtra("reportEmailDomainPosition");
+        reportLat = intent.getStringExtra("reportLat");
+        reportLng = intent.getStringExtra("reportLng");
         init();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.home) {
+        if (item.getItemId() == android.R.id.home) {
             finish();
             return true;
         }
@@ -141,11 +163,11 @@ public class MoldeReportGalleryActivity extends AppCompatActivity {
         @Override
         public void OnItemClick(GalleryAdapter.PhotoViewHolder photoViewHolder, int position) {
             PhotoVO photoVO = galleryAdapter.getmPhotoList().get(position);
-            if(photoVO.isSelected()){
+            if (photoVO.isSelected()) {
                 photoVO.setSelected(false);
                 lastImageSize++;
-            }else{
-                if(lastImageSize == 0){
+            } else {
+                if (lastImageSize == 0) {
                     Toast.makeText(getApplicationContext(), "이미 선택할 수 있는 이미지 수를 넘었습니다.", Toast.LENGTH_SHORT).show();
                     lastImageSize = 0;
                     gallery_toolbar_title.setText(lastImageSize + "장 추가 가능");
@@ -155,7 +177,7 @@ public class MoldeReportGalleryActivity extends AppCompatActivity {
                 lastImageSize--;
             }
             gallery_toolbar_title.setText(lastImageSize + "장 추가 가능");
-            galleryAdapter.getmPhotoList().set(position,photoVO);
+            galleryAdapter.getmPhotoList().set(position, photoVO);
             galleryAdapter.notifyDataSetChanged();
         }
     };
