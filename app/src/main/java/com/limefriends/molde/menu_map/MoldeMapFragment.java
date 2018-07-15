@@ -265,7 +265,6 @@ public class MoldeMapFragment extends Fragment
                             new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
                                     android.Manifest.permission.ACCESS_FINE_LOCATION},
                             REQUEST_LOCATION);
-                    return;
                 }
             }
         });
@@ -634,17 +633,12 @@ public class MoldeMapFragment extends Fragment
                 }
             }
             getMyLocation();
-        } else {
-            return;
         }
     }
 
     public void getMyLocation() {
         manager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-        gpsEnable = false;
-        if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            gpsEnable = true;
-        }
+        gpsEnable = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         if (gpsEnable) {
             final long minTime = 1500;
             final float minDistance = 100;
