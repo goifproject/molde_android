@@ -10,6 +10,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.Slide;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -92,6 +94,7 @@ public class MoldeMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_molde_main);
+        setupWindowAnimations();
         ButterKnife.bind(this);
         BottomNavigationViewHelper.disableShiftMode(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -105,6 +108,11 @@ public class MoldeMainActivity extends AppCompatActivity {
         ft.add(R.id.menu_fragment, fragment).commit();
         navigation.setSelectedItemId(R.id.main_menu_map);
         allContext = this;
+    }
+
+    private void setupWindowAnimations() {
+        Slide slide = (Slide) TransitionInflater.from(this).inflateTransition(R.transition.activity_slide);
+        getWindow().setExitTransition(slide);
     }
 
     @Override
@@ -164,7 +172,7 @@ public class MoldeMainActivity extends AppCompatActivity {
             }
 
         } else {
-            finish();
+            finishAfterTransition();
         }
     }
 }

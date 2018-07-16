@@ -122,7 +122,6 @@ public class MoldeReportGalleryActivity extends AppCompatActivity {
      */
     private List<PhotoVO> initGalleryPathList() {
         mGalleryManager = new GalleryManager(getApplicationContext());
-        //return mGalleryManager.getDatePhotoPathList(2015, 9, 19);
         List<PhotoVO> galleryList = mGalleryManager.getAllPhotoPathList();
         Collections.reverse(galleryList);
         return galleryList;

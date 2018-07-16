@@ -17,6 +17,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.transition.Slide;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -74,6 +76,8 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_activity_molde_search_info);
         ButterKnife.bind(this);
+        setupWindowAnimations();
+
         loc_map_info_search_bar.setElevation(12);
         Intent intent = getIntent();
         String name = intent.getStringExtra("searchName");
@@ -120,6 +124,11 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
                 loc_map_info_search_input.setText("");
             }
         });
+    }
+
+    private void setupWindowAnimations() {
+        Slide slide = (Slide) TransitionInflater.from(this).inflateTransition(R.transition.activity_slide);
+        getWindow().setExitTransition(slide);
     }
 
     @Override

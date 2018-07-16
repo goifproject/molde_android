@@ -60,6 +60,13 @@ public class MoldeMyPageFragment extends Fragment implements MoldeMainActivity.o
         View view = inflater.inflate(R.layout.mypage_fragment, container, false);
         ButterKnife.bind(this, view);
 
+        mypage_profile_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(getView().findViewById(R.id.mypage_layout), "프로필 이미지", Snackbar.LENGTH_SHORT).show();
+            }
+        });
+
         // 설정페이지로 이동
         mypage_setting_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,6 +132,8 @@ public class MoldeMyPageFragment extends Fragment implements MoldeMainActivity.o
                 }
             }
         });
+
+
         return view;
     }
 

@@ -1,6 +1,7 @@
 package com.limefriends.molde.menu_map;
 
 import android.Manifest;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -209,7 +210,7 @@ public class MoldeMapFragment extends Fragment
                 Intent intent = new Intent();
                 intent.setClass(getContext(), MoldeSearchMapInfoActivity.class);
                 intent.putExtra("searchName", searchName);
-                startActivity(intent);
+                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
             }
         });
 
