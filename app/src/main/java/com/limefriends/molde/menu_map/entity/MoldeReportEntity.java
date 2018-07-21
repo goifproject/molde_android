@@ -8,19 +8,19 @@ import java.util.List;
 public class MoldeReportEntity implements Serializable {
     private String userId;
     private String userName;
+    private String userEmail;
     private int reportState;
     private List<File> reportImageList;
     private String reportContent;
     private String reportAddress;
     private String reportDetailAddress;
-    private String reportEmail;
     private String reportLat;
     private String reportLng;
     private Date reportDate;
 
     public MoldeReportEntity(String userId, String userName, int reportState, List<File> reportImageList,
                              String reportContent, String reportAddress, String reportDetailAddress,
-                             String reportEmail, String reportLat, String reportLng, Date reportDate) {
+                             String userEmail, String reportLat, String reportLng, Date reportDate) {
         this.userId = userId;
         this.userName = userName;
         this.reportState = reportState;
@@ -28,7 +28,7 @@ public class MoldeReportEntity implements Serializable {
         this.reportContent = reportContent;
         this.reportAddress = reportAddress;
         this.reportDetailAddress = reportDetailAddress;
-        this.reportEmail = reportEmail;
+        this.userEmail = userEmail;
         this.reportLat = reportLat;
         this.reportLng = reportLng;
         this.reportDate = reportDate;
@@ -90,12 +90,12 @@ public class MoldeReportEntity implements Serializable {
         this.reportDetailAddress = reportDetailAddress;
     }
 
-    public String getReportEmail() {
-        return reportEmail;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setReportEmail(String reportEmail) {
-        this.reportEmail = reportEmail;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public String getReportLat() {
