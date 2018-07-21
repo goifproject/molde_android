@@ -1,4 +1,4 @@
-package com.limefriends.molde.menu_map.reportCard;
+package com.limefriends.molde.menu_map.reportcard;
 
 
 public class ReportCardItem {

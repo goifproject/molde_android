@@ -1,4 +1,4 @@
-package com.limefriends.molde.menu_map.reportCard;
+package com.limefriends.molde.menu_map.reportcard;
 
 
 import android.support.v7.widget.CardView;

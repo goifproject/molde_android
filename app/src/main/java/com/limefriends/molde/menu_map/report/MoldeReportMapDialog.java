@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.limefriends.molde.R;
 import com.limefriends.molde.menu_map.entity.MoldeReportMapEntitiy;
-import com.limefriends.molde.menu_map.reportCard.ReportCardItem;
+import com.limefriends.molde.menu_map.reportcard.ReportCardItem;
 
 import java.util.ArrayList;
 

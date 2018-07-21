@@ -21,12 +21,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.limefriends.molde.MoldeApplication;
 import com.limefriends.molde.R;
 import com.limefriends.molde.menu_map.search.MoldeSearchMapInfoActivity;
-import com.limefriends.molde.menu_map.cameraManager.MoldeReportCameraActivity;
+import com.limefriends.molde.menu_map.camera_manager.MoldeReportCameraActivity;
 import com.limefriends.molde.menu_map.entity.MoldeReportEntity;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapHistoryEntity;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapInfoEntity;
@@ -419,7 +420,8 @@ public class MoldeReportActivity extends AppCompatActivity {
                 reportDetailAddress = detail_address.getText().toString();
                 reportEmail = reply_email_input.getText().toString() + "@" + reply_email_select.getSelectedItem().toString();
                 reportDate = new Date();
-                MoldeReportEntity moldeReportEntity = new MoldeReportEntity(reportUserId, reportUserName, reportImageFileList, reportContent, reportAddress, reportDetailAddress, reportEmail, reportLat, reportLng, reportDate);
+                MoldeReportEntity moldeReportEntity = new MoldeReportEntity(reportUserId, reportUserName, 0, reportImageFileList, reportContent, reportAddress, reportDetailAddress, reportEmail, reportLat, reportLng, reportDate);
+                Log.e("entity json Data", new Gson().toJson(moldeReportEntity));
                 Call<MoldeReportEntity> moldeReportEntityCall = moldeReportRestService.sendReportData(moldeReportEntity);
                 moldeReportEntityCall.enqueue(new Callback<MoldeReportEntity>() {
                     @Override

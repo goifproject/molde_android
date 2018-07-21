@@ -1,4 +1,4 @@
-package com.limefriends.molde.menu_map.reportCard;
+package com.limefriends.molde.menu_map.reportcard;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.limefriends.molde.MoldeMainActivity;
 import com.limefriends.molde.R;
 import com.limefriends.molde.menu_map.report.MoldeReportMapDialog;
-import com.limefriends.molde.menu_map.callbackMethod.MoldeMapReportPagerAdapterCallback;
+import com.limefriends.molde.menu_map.callback_method.MoldeMapReportPagerAdapterCallback;
 
 import java.util.ArrayList;
 import java.util.List;

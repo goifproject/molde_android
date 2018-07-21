@@ -48,14 +48,14 @@ import com.limefriends.molde.MoldeApplication;
 import com.limefriends.molde.R;
 import com.limefriends.molde.MoldeMainActivity;
 import com.limefriends.molde.menu_feed.entity.MoldeFeedEntitiy;
-import com.limefriends.molde.menu_map.callbackMethod.MoldeMapReportPagerAdapterCallback;
+import com.limefriends.molde.menu_map.callback_method.MoldeMapReportPagerAdapterCallback;
 //import com.limefriends.molde.menu_map.entity.MoldeSearchMapClusterEntity;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapHistoryEntity;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapInfoEntity;
 import com.limefriends.molde.menu_map.favorite.MoldeMyFavoriteActivity;
 import com.limefriends.molde.menu_map.favorite.MoldeMyFavoriteInfoMapDialog;
 import com.limefriends.molde.menu_map.report.MoldeReportActivity;
-import com.limefriends.molde.menu_map.reportCard.*;
+import com.limefriends.molde.menu_map.reportcard.*;
 import com.limefriends.molde.menu_map.search.MoldeSearchMapInfoActivity;
 
 import java.util.ArrayList;

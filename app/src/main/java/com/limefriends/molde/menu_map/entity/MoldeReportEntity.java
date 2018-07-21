@@ -6,8 +6,9 @@ import java.util.Date;
 import java.util.List;
 
 public class MoldeReportEntity implements Serializable {
-    private String reportUserId;
-    private String reportUserName;
+    private String userId;
+    private String userName;
+    private int reportState;
     private List<File> reportImageList;
     private String reportContent;
     private String reportAddress;
@@ -17,34 +18,44 @@ public class MoldeReportEntity implements Serializable {
     private String reportLng;
     private Date reportDate;
 
-    public MoldeReportEntity(String reportUserId, String reportUserName, List<File> reportImageList,
-                             String reportContent, String reportAddress, String reportDetailAddress, String reportEmail,
-                             String reportLat, String reportLng, Date reportDate) {
-        this.reportUserId = reportUserId;
-        this.reportUserName = reportUserName;
+    public MoldeReportEntity(String userId, String userName, int reportState, List<File> reportImageList,
+                             String reportContent, String reportAddress, String reportDetailAddress,
+                             String reportEmail, String reportLat, String reportLng, Date reportDate) {
+        this.userId = userId;
+        this.userName = userName;
+        this.reportState = reportState;
         this.reportImageList = reportImageList;
         this.reportContent = reportContent;
         this.reportAddress = reportAddress;
+        this.reportDetailAddress = reportDetailAddress;
         this.reportEmail = reportEmail;
         this.reportLat = reportLat;
         this.reportLng = reportLng;
         this.reportDate = reportDate;
     }
 
-    public String getReportUserId() {
-        return reportUserId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setReportUserId(String reportUserId) {
-        this.reportUserId = reportUserId;
+    public void setUserId(String reportUserId) {
+        this.userId = reportUserId;
     }
 
-    public String getReportUserName() {
-        return reportUserName;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setReportUserName(String reportUserName) {
-        this.reportUserName = reportUserName;
+    public void setUserName(String reportUserName) {
+        this.userName = reportUserName;
+    }
+
+    public int getReportState() {
+        return reportState;
+    }
+
+    public void setReportState(int reportState) {
+        this.reportState = reportState;
     }
 
     public List<File> getReportImageList() {
