@@ -19,7 +19,7 @@ import com.limefriends.molde.menu_magazine.MoldeMagazineFragment;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapHistoryEntity;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapInfoEntity;
 import com.limefriends.molde.menu_map.MoldeMapFragment;
-import com.limefriends.molde.menu_mypage.MoldeMyPageFragment;
+import com.limefriends.molde.menu_mypage.MyPageFragment;
 import com.limefriends.molde.menu_feed.MoldeFeedFragment;
 
 import butterknife.BindView;
@@ -75,7 +75,7 @@ public class MoldeMainActivity extends AppCompatActivity {
                     return true;
                 case R.id.main_menu_mypage:
                     if(fragmentSparseArray.get(R.string.main_menu_mypage) == null) {
-                        fragment = MoldeMyPageFragment.newInstance();
+                        fragment = MyPageFragment.newInstance();
                         fragmentSparseArray.append(R.string.main_menu_mypage, fragment);
                         replaceFragment(fragment);
                     }else{

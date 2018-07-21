@@ -3,7 +3,7 @@ package com.limefriends.molde.molde_backend;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.limefriends.molde.molde_backend.proxy.FaqProxy;
+import com.limefriends.molde.menu_mypage.faq.FaqProxy;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;

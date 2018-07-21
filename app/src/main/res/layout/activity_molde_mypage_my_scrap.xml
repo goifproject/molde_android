@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
-    tools:context="com.limefriends.molde.menu_mypage.MoldeMypageMyScrapActivity">
+    tools:context="com.limefriends.molde.menu_mypage.scrap.MypageMyScrapActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/myScrap_recyclerView"

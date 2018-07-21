@@ -14,5 +14,4 @@ public interface MoldeReportRestService {
     @POST(MoldeReportApi.POST_REPORT_API)
     public Call<MoldeReportEntity> sendReportData(@Body MoldeReportEntity moldeReportEntity);
 
-
 }

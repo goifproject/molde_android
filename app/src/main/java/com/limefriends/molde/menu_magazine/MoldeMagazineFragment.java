@@ -13,6 +13,11 @@ import android.widget.LinearLayout;
 
 import com.limefriends.molde.MoldeMainActivity;
 import com.limefriends.molde.R;
+import com.limefriends.molde.menu_magazine.cardnews.CardNewsAdapter;
+import com.limefriends.molde.menu_magazine.entity.CardnewsEntity;
+import com.limefriends.molde.menu_magazine.magazineReport.MagazineReportLocationDetailActivity;
+import com.limefriends.molde.menu_magazine.magazineReport.MagazineReportMolcaDetailActivity;
+import com.limefriends.molde.menu_magazine.magazineReport.MagazineReportSpreadDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,17 +29,15 @@ public class MoldeMagazineFragment extends Fragment implements MoldeMainActivity
 
     @BindView(R.id.cardnews_recyclerView)
     RecyclerView cardnews_recyclerView;
-    @BindView(R.id.manual_for_spreading)
-    LinearLayout manual_for_spreading;
     @BindView(R.id.manual_new_molca)
     LinearLayout manual_new_molca;
     @BindView(R.id.manual_by_location)
     LinearLayout manual_by_location;
+    @BindView(R.id.manual_for_spreading)
+    LinearLayout manual_for_spreading;
 
-
-
-    private RecyclerAdapter recyclerAdapter;
-    private List<CardnewsListElement> cardnewsDataList;
+    private CardNewsAdapter cardNewsAdapter;
+    private List<CardnewsEntity> cardnewsDataList;
 
 
     public MoldeMagazineFragment(){}
@@ -71,7 +74,7 @@ public class MoldeMagazineFragment extends Fragment implements MoldeMainActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(getActivity(), MagazineReportDetail01Activity.class);
+                intent.setClass(getActivity(), MagazineReportMolcaDetailActivity.class);
                 intent.putExtra("title", "최신 몰카 정보");
                 startActivity(intent);
             }
@@ -81,7 +84,7 @@ public class MoldeMagazineFragment extends Fragment implements MoldeMainActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(getActivity(), MagazineReportDetail02Activity.class);
+                intent.setClass(getActivity(), MagazineReportLocationDetailActivity.class);
                 intent.putExtra("title", "장소별 대처법");
                 startActivity(intent);
             }
@@ -91,28 +94,28 @@ public class MoldeMagazineFragment extends Fragment implements MoldeMainActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(getActivity(), MagazineReportDetail03Activity.class);
+                intent.setClass(getActivity(), MagazineReportSpreadDetailActivity.class);
                 intent.putExtra("title", "몰카유포 대처");
                 startActivity(intent);
             }
         });
 
 
-        cardnewsDataList = new ArrayList<CardnewsListElement>();
-        cardnewsDataList.add(new CardnewsListElement(R.drawable.img_cardnews_dummy, "카드뉴스1"));
-        cardnewsDataList.add(new CardnewsListElement(R.drawable.img_cardnews_dummy, "카드뉴스2"));
-        cardnewsDataList.add(new CardnewsListElement(R.drawable.img_cardnews_dummy, "카드뉴스3"));
-        cardnewsDataList.add(new CardnewsListElement(R.drawable.img_cardnews_dummy, "카드뉴스4"));
-        cardnewsDataList.add(new CardnewsListElement(R.drawable.img_cardnews_dummy, "카드뉴스5"));
-        cardnewsDataList.add(new CardnewsListElement(R.drawable.img_cardnews_dummy, "카드뉴스6"));
-        cardnewsDataList.add(new CardnewsListElement(R.drawable.img_cardnews_dummy, "카드뉴스7"));
-        cardnewsDataList.add(new CardnewsListElement(R.drawable.img_cardnews_dummy, "카드뉴스8"));
-        cardnewsDataList.add(new CardnewsListElement(R.drawable.img_cardnews_dummy, "카드뉴스9"));
-        cardnewsDataList.add(new CardnewsListElement(R.drawable.img_cardnews_dummy, "카드뉴스10"));
+        cardnewsDataList = new ArrayList<CardnewsEntity>();
+        cardnewsDataList.add(new CardnewsEntity(R.drawable.img_cardnews_dummy, "카드뉴스1"));
+        cardnewsDataList.add(new CardnewsEntity(R.drawable.img_cardnews_dummy, "카드뉴스2"));
+        cardnewsDataList.add(new CardnewsEntity(R.drawable.img_cardnews_dummy, "카드뉴스3"));
+        cardnewsDataList.add(new CardnewsEntity(R.drawable.img_cardnews_dummy, "카드뉴스4"));
+        cardnewsDataList.add(new CardnewsEntity(R.drawable.img_cardnews_dummy, "카드뉴스5"));
+        cardnewsDataList.add(new CardnewsEntity(R.drawable.img_cardnews_dummy, "카드뉴스6"));
+        cardnewsDataList.add(new CardnewsEntity(R.drawable.img_cardnews_dummy, "카드뉴스7"));
+        cardnewsDataList.add(new CardnewsEntity(R.drawable.img_cardnews_dummy, "카드뉴스8"));
+        cardnewsDataList.add(new CardnewsEntity(R.drawable.img_cardnews_dummy, "카드뉴스9"));
+        cardnewsDataList.add(new CardnewsEntity(R.drawable.img_cardnews_dummy, "카드뉴스10"));
 
 
-        recyclerAdapter = new RecyclerAdapter(getContext(), R.layout.magazine_item_cardnews_recycler, cardnewsDataList);
-        cardnews_recyclerView.setAdapter(recyclerAdapter);
+        cardNewsAdapter = new CardNewsAdapter(getContext(), R.layout.magazine_item_cardnews_recycler, cardnewsDataList);
+        cardnews_recyclerView.setAdapter(cardNewsAdapter);
 
         return rootView;
     }

@@ -18,10 +18,12 @@ import android.widget.ToggleButton;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
+import com.limefriends.molde.MoldeApplication;
 import com.limefriends.molde.MoldeMainActivity;
 import com.limefriends.molde.R;
 import com.limefriends.molde.menu_feed.entity.MoldeFeedEntitiy;
 import com.limefriends.molde.menu_feed.entity.MoldeFeedResponseInfoEntityList;
+import com.limefriends.molde.menu_feed.feed.MoldeFeedRecyclerAdapter;
 import com.limefriends.molde.menu_map.MoldeMapFragment;
 
 import java.io.IOException;
@@ -48,8 +50,11 @@ public class MoldeFeedFragment extends Fragment
 
     private MoldeFeedRecyclerAdapter feedAdapter;
     private ArrayList<MoldeFeedEntitiy> reportFeedList;
-
     private Handler mHandler;
+
+    private static final String feedDistance = "거리순";
+    private static final String feedLast = "최신순";
+
     public String res;
     public static SparseArrayCompat feedFragmentSparseArrayCompat;
     public MoldeFeedResponseInfoEntityList feedResponseInfoEntityList;
@@ -83,27 +88,27 @@ public class MoldeFeedFragment extends Fragment
         if (feedFragmentSparseArrayCompat.get(R.string.feedStatus) != null) {
             reportFeedList.clear();
             String feedStatus = (String) feedFragmentSparseArrayCompat.get(R.string.feedStatus);
-            if (feedStatus.equals("거리순")) {
+            if (feedStatus.equals(feedDistance)) {
                 feed_sort_toggle.setChecked(false);
                 feed_sort_toggle.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_feed_toggle_off));
-                loadData("거리순");
-            } else if (feedStatus.equals("최신순")) {
+                loadData(feedDistance);
+            } else if (feedStatus.equals(feedLast)) {
                 feed_sort_toggle.setChecked(true);
                 feed_sort_toggle.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_feed_toggle_on));
-                loadData("최신순");
+                loadData(feedLast);
             }
             return;
         }
-        loadData("거리순");
+        loadData(feedDistance);
     }
 
     private void loadData(String cmd) {
         try {
             mHandler = new Handler(Looper.getMainLooper());
             reportFeedList.clear();
-            if (cmd.equals("거리순")) {
-                requestGet("http://13.209.64.183:7019/v1/report");
-            } else if (cmd.equals("최신순")) {
+            if (cmd.equals(feedDistance)) {
+                feedRequestGet(MoldeApplication.BASE_URL + "/v1/report");
+            } else if (cmd.equals(feedLast)) {
                 for (int i = 1; i <= 20; i++) {
                     reportFeedList.add(
                             new MoldeFeedEntitiy(
@@ -115,13 +120,12 @@ public class MoldeFeedFragment extends Fragment
                 }
                 feedAdapter.addAll(reportFeedList);
             }
-            return;
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void requestGet(String url) throws IOException {
+    public void feedRequestGet(String url) throws IOException {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
 
@@ -133,9 +137,7 @@ public class MoldeFeedFragment extends Fragment
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                //Log.e("응답", response.body().string());
                 res = response.body().string();
-
                 feedResponseInfoEntityList =
                         new Gson().fromJson(res, MoldeFeedResponseInfoEntityList.class);
 
@@ -177,7 +179,7 @@ public class MoldeFeedFragment extends Fragment
                 reportFeedList.clear();
                 feedAdapter.setProgressMore(false);
 
-                if (feed_sort_toggle.isChecked() == false) {
+                if (!feed_sort_toggle.isChecked()) {
                     int start = feedAdapter.getItemCount();
                     int end = start + 10;
                     for (int i = start + 1; i <= end; i++) {
@@ -186,7 +188,7 @@ public class MoldeFeedFragment extends Fragment
                                 1, "", "",
                                 new LatLng(Double.valueOf("0.0"), Double.valueOf("0.0"))));
                     }
-                } else if (feed_sort_toggle.isChecked() == true) {
+                } else if (feed_sort_toggle.isChecked()) {
                     int start = feedAdapter.getItemCount();
                     int end = start + 10;
                     for (int i = start + 1; i <= end; i++) {
@@ -215,12 +217,12 @@ public class MoldeFeedFragment extends Fragment
         feed_sort_toggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (feed_sort_toggle.isChecked() == false) {
+                if (!feed_sort_toggle.isChecked()) {
                     feed_sort_toggle.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_feed_toggle_off));
-                    loadData("거리순");
-                } else if (feed_sort_toggle.isChecked() == true) {
+                    loadData(feedDistance);
+                } else if (feed_sort_toggle.isChecked()) {
                     feed_sort_toggle.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_feed_toggle_on));
-                    loadData("최신순");
+                    loadData(feedLast);
                 }
             }
         });
@@ -256,10 +258,10 @@ public class MoldeFeedFragment extends Fragment
     @Override
     public void onStop() {
         super.onStop();
-        if (feed_sort_toggle.isChecked() == false) {
-            feedFragmentSparseArrayCompat.append(R.string.feedStatus, "거리순");
-        } else if (feed_sort_toggle.isChecked() == true) {
-            feedFragmentSparseArrayCompat.append(R.string.feedStatus, "최신순");
+        if (!feed_sort_toggle.isChecked()) {
+            feedFragmentSparseArrayCompat.append(R.string.feedStatus, feedDistance);
+        } else if (feed_sort_toggle.isChecked()) {
+            feedFragmentSparseArrayCompat.append(R.string.feedStatus, feedLast);
         }
     }
 

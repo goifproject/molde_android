@@ -25,7 +25,7 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.limefriends.molde.MoldeApplication;
 import com.limefriends.molde.R;
-import com.limefriends.molde.menu_map.MoldeSearchMapInfoActivity;
+import com.limefriends.molde.menu_map.search.MoldeSearchMapInfoActivity;
 import com.limefriends.molde.menu_map.cameraManager.MoldeReportCameraActivity;
 import com.limefriends.molde.menu_map.entity.MoldeReportEntity;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapHistoryEntity;
@@ -338,7 +338,7 @@ public class MoldeReportActivity extends AppCompatActivity {
                     } else if (historyEntity != null) {
                         intent.putExtra("reportAddress", historyEntity.getMainAddress() + "\n" + historyEntity.getName());
                     }
-                }else{
+                } else {
                     intent.putExtra("reportAddress", search_loc_input.getText().toString());
                 }
                 intent.putExtra("reportDetailAddress", detail_address.getText().toString());
@@ -424,8 +424,10 @@ public class MoldeReportActivity extends AppCompatActivity {
                 moldeReportEntityCall.enqueue(new Callback<MoldeReportEntity>() {
                     @Override
                     public void onResponse(Call<MoldeReportEntity> call, Response<MoldeReportEntity> response) {
-                        Toast.makeText(getApplicationContext(), "데이터 전송 성공", Toast.LENGTH_SHORT).show();
-                        Log.e("로그 자 보자", response.message());
+                        if (response.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "데이터 전송 성공", Toast.LENGTH_SHORT).show();
+                            Log.e("로그 자 보자", response.message());
+                        }
                     }
 
                     @Override
