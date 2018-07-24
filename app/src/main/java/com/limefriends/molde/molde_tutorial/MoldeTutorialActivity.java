@@ -83,18 +83,21 @@ public class MoldeTutorialActivity extends AppCompatActivity {
                 case SKIP_LOGIN_CODE :
                     Intent intent1 =new Intent(getApplicationContext(), MoldeSubDescActivity.class);
                     intent1.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    intent1.putExtra("authLoginDone", SKIP_LOGIN_CODE);
                     startActivity(intent1);
                     finish();
                     break;
                 case CONNECT_GOOGLE_AUTH_CODE :
                     Intent intent2 =new Intent(getApplicationContext(), MoldeSubDescActivity.class);
                     intent2.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    intent2.putExtra("authLoginDone", CONNECT_GOOGLE_AUTH_CODE);
                     startActivity(intent2);
                     finish();
                     break;
                 case CONNECT_FACEBOOK_AUTH_CODE :
                     Intent intent3 =new Intent(getApplicationContext(), MoldeSubDescActivity.class);
                     intent3.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    intent3.putExtra("authLoginDone", CONNECT_FACEBOOK_AUTH_CODE);
                     startActivity(intent3);
                     finish();
                     break;

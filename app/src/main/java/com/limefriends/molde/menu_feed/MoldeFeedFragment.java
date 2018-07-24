@@ -21,7 +21,7 @@ import com.google.gson.Gson;
 import com.limefriends.molde.MoldeApplication;
 import com.limefriends.molde.MoldeMainActivity;
 import com.limefriends.molde.R;
-import com.limefriends.molde.menu_feed.entity.MoldeFeedEntitiy;
+import com.limefriends.molde.menu_feed.entity.MoldeFeedEntity;
 import com.limefriends.molde.menu_feed.entity.MoldeFeedResponseInfoEntityList;
 import com.limefriends.molde.menu_feed.feed.MoldeFeedRecyclerAdapter;
 import com.limefriends.molde.menu_map.MoldeMapFragment;
@@ -49,7 +49,7 @@ public class MoldeFeedFragment extends Fragment
     RecyclerView feed_list;
 
     private MoldeFeedRecyclerAdapter feedAdapter;
-    private ArrayList<MoldeFeedEntitiy> reportFeedList;
+    private ArrayList<MoldeFeedEntity> reportFeedList;
     private Handler mHandler;
 
     private static final String feedDistance = "거리순";
@@ -58,7 +58,7 @@ public class MoldeFeedFragment extends Fragment
     public String res;
     public static SparseArrayCompat feedFragmentSparseArrayCompat;
     public MoldeFeedResponseInfoEntityList feedResponseInfoEntityList;
-    public MoldeFeedEntitiy feedData;
+    public MoldeFeedEntity feedData;
 
     public static MoldeFeedFragment newInstance() {
         feedFragmentSparseArrayCompat = new SparseArrayCompat();
@@ -70,7 +70,7 @@ public class MoldeFeedFragment extends Fragment
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.feed_fragment, container, false);
         ButterKnife.bind(this, view);
-        reportFeedList = new ArrayList<MoldeFeedEntitiy>();
+        reportFeedList = new ArrayList<MoldeFeedEntity>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         feed_list.setLayoutManager(layoutManager);
@@ -111,7 +111,7 @@ public class MoldeFeedFragment extends Fragment
             } else if (cmd.equals(feedLast)) {
                 for (int i = 1; i <= 20; i++) {
                     reportFeedList.add(
-                            new MoldeFeedEntitiy(
+                            new MoldeFeedEntity(
                             "최신순" + i, "",
                             2, "http://via.placeholder.com/300.png", "",
                             new LatLng(Double.valueOf("37.499597"), Double.valueOf("127.031372"))
@@ -147,7 +147,7 @@ public class MoldeFeedFragment extends Fragment
                         for (int i = 0; i < 20; i++) {
                             Log.e("s", feedResponseInfoEntityList.getFeed().get(i + 1).toString());
                             try {
-                                reportFeedList.add(new MoldeFeedEntitiy(
+                                reportFeedList.add(new MoldeFeedEntity(
                                                 feedResponseInfoEntityList.getFeed().get(i+1).getRep_nm(),
                                                 feedResponseInfoEntityList.getFeed().get(i+1).getRep_addr(),
                                                 Integer.parseInt(feedResponseInfoEntityList.getFeed().get(i+1).getRep_state().trim()),
@@ -183,7 +183,7 @@ public class MoldeFeedFragment extends Fragment
                     int start = feedAdapter.getItemCount();
                     int end = start + 10;
                     for (int i = start + 1; i <= end; i++) {
-                        reportFeedList.add(new MoldeFeedEntitiy(
+                        reportFeedList.add(new MoldeFeedEntity(
                                 "거리순", "",
                                 1, "", "",
                                 new LatLng(Double.valueOf("0.0"), Double.valueOf("0.0"))));
@@ -192,7 +192,7 @@ public class MoldeFeedFragment extends Fragment
                     int start = feedAdapter.getItemCount();
                     int end = start + 10;
                     for (int i = start + 1; i <= end; i++) {
-                        reportFeedList.add(new MoldeFeedEntitiy(
+                        reportFeedList.add(new MoldeFeedEntity(
                                 "최신순", "",
                                 2, "", "",
                                 new LatLng(Double.valueOf("0.0"), Double.valueOf("0.0"))));
@@ -229,7 +229,7 @@ public class MoldeFeedFragment extends Fragment
     }
 
     @Override
-    public void callFeedData(MoldeFeedEntitiy feedEntitiy) {
+    public void callFeedData(MoldeFeedEntity feedEntitiy) {
         if (((MoldeMainActivity) getActivity()).fragmentSparseArray.get(R.string.main_menu_map) != null) {
             feedData = feedEntitiy;
             Bundle bundle = new Bundle();
