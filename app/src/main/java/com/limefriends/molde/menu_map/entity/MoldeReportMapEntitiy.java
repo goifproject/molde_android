@@ -5,9 +5,9 @@ import java.util.Date;
 
 public class MoldeReportMapEntitiy {
     //Bitmap reportThumbnailImage;
-    String reportDate;
-    String reportAddress;
-    String reportDetailAddress;
+    private String reportDate;
+    private String reportAddress;
+    private String reportDetailAddress;
 
     public MoldeReportMapEntitiy(String reportDate, String reportAddress, String reportDetailAddress) {
         this.reportDate = reportDate;

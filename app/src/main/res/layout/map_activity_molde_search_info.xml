@@ -47,6 +47,7 @@
     </LinearLayout>
 
     <FrameLayout
+        android:id="@+id/search_list_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/loc_map_info_search_bar">
@@ -66,7 +67,17 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"/>
+        <Button
+            android:id="@+id/delete_search_history_button"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@color/colorPrimary"
+            android:layout_gravity="bottom"
+            android:text="@string/deleteSearchHistory"
+            android:textStyle="bold"
+            android:textColor="@color/colorDeepDarkGray"/>
     </FrameLayout>
-
 
 </RelativeLayout>

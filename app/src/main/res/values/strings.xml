@@ -19,6 +19,8 @@
     <string name="feedSortCategory">거리순\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020최신순</string>
     <string name="feedStatus">피드상태</string>
 
+    <string name="deleteSearchHistory">전체기록 삭제</string>
+
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
     <string name="facebook_app_id">971533716339908</string>
     <string name="fb_login_protocol_scheme">fb971533716339908</string>

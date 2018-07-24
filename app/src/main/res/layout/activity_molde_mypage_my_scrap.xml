@@ -5,16 +5,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
     tools:context="com.limefriends.molde.menu_mypage.scrap.MypageMyScrapActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/myScrap_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layoutManager="GridLayoutManager"
-        app:spanCount="2">
+        app:layoutManager="android.support.v7.widget.GridLayoutManager"
+        app:spanCount="2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp">
     </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>
