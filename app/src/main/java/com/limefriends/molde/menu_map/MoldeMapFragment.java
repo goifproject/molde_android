@@ -121,7 +121,7 @@ public class MoldeMapFragment extends Fragment
     private LocationManager manager;
     private MyLocationListener myLocationListener;
     private Marker myMarker;
-    private ArrayList<Marker> reportInfohMarkers;
+    private ArrayList<Marker> reportInfoMarkers;
     private ArrayList<Marker> reportRedMarkerList;
     private ArrayList<Marker> reportGreenMarkerList;
     private ArrayList<Marker> reportWhiteMarkerList;
@@ -132,8 +132,6 @@ public class MoldeMapFragment extends Fragment
     private final int REQUEST_LOCATION = 1;
     private MoldeFeedEntity feedData;
     private Marker feedMarker;
-
-    //public ClusterManager<MoldeSearchMapClusterEntity> clusterManager;
     public ShadowTransformer reportCardShadowTransformer;
     public long gpsRequestTime = 0;
     public boolean isGpsEnable = false;
@@ -164,14 +162,14 @@ public class MoldeMapFragment extends Fragment
             reportWhiteMarkerList = new ArrayList<Marker>();
 
             //뷰페이저어댑터 생성 및 콜백 지정
-            reportInfohMarkers = new ArrayList<Marker>();
+            reportInfoMarkers = new ArrayList<Marker>();
             reportCardItemList = new ArrayList<ReportCardItem>();
             reportCardAdapter = new ReportCardPagerAdapter(getContext());
             reportCardAdapter.setCallback(this);
         } else {
             map_view_progress.setVisibility(View.INVISIBLE);
 
-            if (reportInfohMarkers.size() > 0) {
+            if (reportInfoMarkers.size() > 0) {
                 if (mapFragmentSparseArrayCompat.get(R.string.reportRedhMarkerList) != null) {
                     reportRedMarkerList = (ArrayList<Marker>) mapFragmentSparseArrayCompat.get(R.string.reportRedhMarkerList);
                 }
@@ -182,15 +180,15 @@ public class MoldeMapFragment extends Fragment
                     reportWhiteMarkerList = (ArrayList<Marker>) mapFragmentSparseArrayCompat.get(R.string.reportWhitehMarkerList);
                 }
                 if (mapFragmentSparseArrayCompat.get(R.string.reportInfohMarkers) != null) {
-                    reportInfohMarkers = (ArrayList<Marker>) mapFragmentSparseArrayCompat.get(R.string.reportInfohMarkers);
+                    reportInfoMarkers = (ArrayList<Marker>) mapFragmentSparseArrayCompat.get(R.string.reportInfohMarkers);
                 }
                 if (mapFragmentSparseArrayCompat.get(R.string.reportCardItemList) != null) {
                     reportCardItemList = (ArrayList<ReportCardItem>) mapFragmentSparseArrayCompat.get(R.string.reportCardItemList);
                 }
                 reportCardAdapter = new ReportCardPagerAdapter(getContext());
                 reportCardAdapter.setCallback(this);
-                for (int i = 0; i < reportInfohMarkers.size(); i++) {
-                    reportCardAdapter.addCardItem(new ReportCardItem(reportInfohMarkers.get(i).getTitle(), reportInfohMarkers.get(i).getSnippet()));
+                for (int i = 0; i < reportInfoMarkers.size(); i++) {
+                    reportCardAdapter.addCardItem(new ReportCardItem(reportInfoMarkers.get(i).getTitle(), reportInfoMarkers.get(i).getSnippet()));
                 }
                 reportCardShadowTransformer = new ShadowTransformer(report_card_view_pager, reportCardAdapter);
                 report_card_view_pager.setAdapter(reportCardAdapter);
@@ -318,7 +316,6 @@ public class MoldeMapFragment extends Fragment
             MoldeSearchMapHistoryEntity historyEntity = ((MoldeMainActivity) getActivity()).getMapHistoryResultData();
             if (entity != null) {
                 map_view_progress.setVisibility(View.INVISIBLE);
-                //Toast.makeText(getContext(), entity.toString(), Toast.LENGTH_LONG).show();
                 lat = entity.getMapLat();
                 lng = entity.getMapLng();
                 searchName = entity.getName();
@@ -373,12 +370,6 @@ public class MoldeMapFragment extends Fragment
             report_card_view_layout.setVisibility(View.INVISIBLE);
         }
     }
-
-    /*private void setupClusterer(LatLng moveLoc) {
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(moveLoc, 15));
-        clusterManager = new ClusterManager<MoldeSearchMapClusterEntity>(getContext(), mMap);
-        mMap.setOnCameraChangeListener(clusterManager);
-    }*/
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -461,7 +452,7 @@ public class MoldeMapFragment extends Fragment
                 }
 
                 //즐겨찾기 추가 기능
-                if (marker.getTitle().contains("★")) {
+                if (marker.getTitle().startsWith("★")) {
                     marker.setIcon(BitmapDescriptorFactory.fromBitmap(sizeUpMapIcon(R.drawable.ic_map_pick)));
                     if (report_card_view_layout.getVisibility() == View.VISIBLE) {
                         Animation trans_to_down = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_down);
@@ -530,9 +521,9 @@ public class MoldeMapFragment extends Fragment
                     isBackBtnClicked = false;
                 }
 
-                if (reportInfohMarkers != null) {
-                    for (int i = 0; i < reportInfohMarkers.size(); i++) {
-                        if (marker.getTitle().equals(reportInfohMarkers.get(i).getTitle())) {
+                if (reportInfoMarkers != null) {
+                    for (int i = 0; i < reportInfoMarkers.size(); i++) {
+                        if (marker.getTitle().equals(reportInfoMarkers.get(i).getTitle())) {
                             for (Marker redMarker : reportRedMarkerList) {
                                 if (marker.getTitle().equals(redMarker.getTitle())) {
                                     marker.setIcon(BitmapDescriptorFactory.fromBitmap(sizeUpMapIcon(R.drawable.ic_marker_red)));
@@ -564,7 +555,7 @@ public class MoldeMapFragment extends Fragment
             public void onInfoWindowClose(Marker marker) {
                 if (marker.getTitle().equals("내 위치")) {
                     marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.my_location_icon));
-                } else if (marker.getTitle().contains("★")) {
+                } else if (marker.getTitle().startsWith("★")) {
                     marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_pick));
                 } else if (marker.getTitle().equals(searchName)) {
                     marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.my_location_icon));
@@ -667,10 +658,10 @@ public class MoldeMapFragment extends Fragment
     }
 
     public void clearReportInfoMarkers() {
-        for (Marker marker : reportInfohMarkers) {
+        for (Marker marker : reportInfoMarkers) {
             marker.remove();
         }
-        reportInfohMarkers.clear();
+        reportInfoMarkers.clear();
         reportCardItemList.clear();
         reportCardAdapter.removeAllCardItem();
         report_card_view_pager.setAdapter(reportCardAdapter);
@@ -689,9 +680,6 @@ public class MoldeMapFragment extends Fragment
                     Toast.makeText(getContext(), "건물 안에서는 더 오랜 시간이 걸립니다", Toast.LENGTH_SHORT).show();
                 }*/
                 if (locChangeCount == 0) {
-                    /*double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
-                    LatLng myLocation = new LatLng(latitude, longitude);*/
                     lat = Double.toString(location.getLatitude());
                     lng = Double.toString(location.getLongitude());
                     LatLng myLocation = new LatLng(Double.valueOf(lat), Double.valueOf(lng));
@@ -703,13 +691,12 @@ public class MoldeMapFragment extends Fragment
                             new MarkerOptions()
                                     .position(myLocation)
                                     .title("내 위치")
-                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.my_location_icon)
-                                    )
+                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.my_location_icon))
                     );
                     locChangeCount++;
                     isMyLocChange = false;
                     //if (moveCnt > 0) {
-                        if (reportInfohMarkers.size() > 0 || reportCardItemList.size() > 0) {
+                        if (reportInfoMarkers.size() > 0 || reportCardItemList.size() > 0) {
                             clearReportInfoMarkers();
                         }
                         beforeCallApplyMethodTimeList = new ArrayList<Long>();
@@ -806,7 +793,6 @@ public class MoldeMapFragment extends Fragment
 
     //랜덤으로 마커 정보 10개 추가 및 카드뷰 추가 - 테스트용
     public void makeRandomMarkers(LatLng moveLoc) {
-        //setupClusterer(moveLoc);
         double start = -0.000000001;
         double end = 0.000000001;
         double rng = (end - start) + 0.01;
@@ -823,9 +809,8 @@ public class MoldeMapFragment extends Fragment
                         .snippet(latLng.latitude + ", " + latLng.longitude)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_red))
                 );
-                reportInfohMarkers.add(currMarker);
+                reportInfoMarkers.add(currMarker);
                 reportRedMarkerList.add(currMarker);
-
                 reportCardItemList.add(new ReportCardItem(currMarker.getTitle(), currMarker.getSnippet()));
                 reportCardAdapter.addCardItem(new ReportCardItem(currMarker.getTitle(), currMarker.getSnippet()));
             } else if (i % 3 == 1) {
@@ -835,9 +820,8 @@ public class MoldeMapFragment extends Fragment
                         .snippet(latLng.latitude + ", " + latLng.longitude)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_green))
                 );
-                reportInfohMarkers.add(currMarker);
+                reportInfoMarkers.add(currMarker);
                 reportGreenMarkerList.add(currMarker);
-
                 reportCardItemList.add(new ReportCardItem(currMarker.getTitle(), currMarker.getSnippet()));
                 reportCardAdapter.addCardItem(new ReportCardItem(currMarker.getTitle(), currMarker.getSnippet()));
             } else {
@@ -847,9 +831,8 @@ public class MoldeMapFragment extends Fragment
                         .snippet(latLng.latitude + ", " + latLng.longitude)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_white))
                 );
-                reportInfohMarkers.add(currMarker);
+                reportInfoMarkers.add(currMarker);
                 reportWhiteMarkerList.add(currMarker);
-
                 reportCardItemList.add(new ReportCardItem(currMarker.getTitle(), currMarker.getSnippet()));
                 reportCardAdapter.addCardItem(new ReportCardItem(currMarker.getTitle(), currMarker.getSnippet()));
             }
@@ -861,7 +844,7 @@ public class MoldeMapFragment extends Fragment
         report_card_view_pager.setOffscreenPageLimit(reportCardItemList.size());
         reportCardShadowTransformer.enableScaling(true);
 
-        mapFragmentSparseArrayCompat.append(R.string.reportInfohMarkers, reportInfohMarkers);
+        mapFragmentSparseArrayCompat.append(R.string.reportInfohMarkers, reportInfoMarkers);
         mapFragmentSparseArrayCompat.append(R.string.reportRedhMarkerList, reportRedMarkerList);
         mapFragmentSparseArrayCompat.append(R.string.reportGreenhMarkerList, reportGreenMarkerList);
         mapFragmentSparseArrayCompat.append(R.string.reportWhitehMarkerList, reportWhiteMarkerList);
@@ -871,11 +854,11 @@ public class MoldeMapFragment extends Fragment
     //현재 신고 카드뷰 페이지 감지 및 데이터 바인딩
     @Override
     public void applyReportCardInfo(int position) {
-        if (reportInfohMarkers != null) {
+        if (reportInfoMarkers != null) {
             if (!isInit && !isBackBtnClicked) {
                 if (isFirstPresentReportCard) {
                     if (position == 1) {
-                        Marker marker = reportInfohMarkers.get(0);
+                        Marker marker = reportInfoMarkers.get(0);
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 15));
                         marker.showInfoWindow();
                         isFirstPresentReportCard = false;
@@ -892,7 +875,7 @@ public class MoldeMapFragment extends Fragment
                         beforeCallApplyMethodTimeList.remove(1);
                     } else {
                         int currPosition = reportCardPositionList.get(0);
-                        Marker marker = reportInfohMarkers.get(currPosition);
+                        Marker marker = reportInfoMarkers.get(currPosition);
                         mapFragmentSparseArrayCompat.append(R.string.currMarkerPosition, currPosition);
                         for (Marker redMarker : reportRedMarkerList) {
                             if (marker.getTitle().equals(redMarker.getTitle())) {
