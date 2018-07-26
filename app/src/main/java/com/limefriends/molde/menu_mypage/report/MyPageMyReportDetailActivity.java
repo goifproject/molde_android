@@ -15,7 +15,7 @@ public class MyPageMyReportDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_page_my_report_detail);
+        setContentView(R.layout.mypage_activity_my_report_detail);
 
         ButterKnife.bind(this);
 

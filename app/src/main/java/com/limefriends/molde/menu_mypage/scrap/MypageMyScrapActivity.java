@@ -28,7 +28,7 @@ public class MypageMyScrapActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_molde_mypage_my_scrap);
+        setContentView(R.layout.mypage_activity_my_scrap);
 
         ButterKnife.bind(this);
 
@@ -70,7 +70,7 @@ public class MypageMyScrapActivity extends AppCompatActivity {
 
 
         adapter = new MyPageMyScrapAdapter(getApplicationContext(),
-                R.layout.activity_molde_mypage_my_scrap, myPageMyScrapEntityList);
+                R.layout.mypage_activity_my_scrap, myPageMyScrapEntityList);
 
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);

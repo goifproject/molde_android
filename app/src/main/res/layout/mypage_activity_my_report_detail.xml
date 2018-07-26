@@ -76,7 +76,7 @@
             android:text="신고취소"
             android:textColor="@color/colorInfoTextColor"
             android:textStyle="bold"
-            android:style="?android:attr/borderlessButtonStyle"/>
+            style="?android:attr/borderlessButtonStyle"/>
     </RelativeLayout>
 
     <RelativeLayout

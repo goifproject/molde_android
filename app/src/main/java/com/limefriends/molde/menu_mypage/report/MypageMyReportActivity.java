@@ -28,7 +28,7 @@ public class MypageMyReportActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_molde_mypage_my_report);
+        setContentView(R.layout.mypage_activity_my_report);
 
         ButterKnife.bind(this);
 
@@ -57,7 +57,7 @@ public class MypageMyReportActivity extends AppCompatActivity {
 
 
         adapter = new MyPageMyReportAdapter(getApplicationContext(),
-                R.layout.activity_molde_mypage_my_report, myReportElemList);
+                R.layout.mypage_activity_my_report, myReportElemList);
 
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
