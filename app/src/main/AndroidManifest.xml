@@ -18,26 +18,27 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:largeHeap="true">
+        android:supportsRtl="true">
         <activity
             android:name=".MoldeSplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".molde_tutorial.MoldeTutorialActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppNoBarTheme"/>
+            android:theme="@style/AppNoBarTheme" />
         <activity
             android:name=".molde_sub_desc.MoldeSubDescActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppNoBarTheme"/>
+            android:theme="@style/AppNoBarTheme" />
         <activity
             android:name=".MoldeMainActivity"
             android:screenOrientation="portrait"
@@ -141,12 +142,14 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+        <activity android:name=".menu_mypage.report.MyPageMyReportDetailActivity"></activity>
     </application>
 
 </manifest>
