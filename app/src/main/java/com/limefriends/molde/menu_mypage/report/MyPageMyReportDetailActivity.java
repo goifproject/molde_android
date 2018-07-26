@@ -14,7 +14,7 @@ public class MyPageMyReportDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_my_page_my_report_detail);
     }
 
-    public void test1() {
+    public void test2() {
 
     }
 }
