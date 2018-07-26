@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:gravity="center"
+            android:background="#ffffff">
+
+
+
+            <TextView
+                android:id="@+id/txt_new_molca_01"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:gravity="center"
+                android:text="new molca txt 01"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:elegantTextHeight="true"/>
+
+            <ImageView
+                android:id="@+id/img_new_molca_01"
+                android:layout_below="@+id/txt_new_molca_01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txt_new_molca_02"
+                android:layout_below="@+id/img_new_molca_01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:text="시계 몰카 설명"
+                android:textColor="#000000"
+                android:textSize="12sp"/>
+
+            <ImageView
+                android:id="@+id/img_new_molca_02"
+                android:layout_below="@+id/txt_new_molca_02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txt_new_molca_03"
+                android:layout_below="@+id/img_new_molca_02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:text="안경 몰카 설명"
+                android:textColor="#000000"
+                android:textSize="12sp"/>
+
+            <ImageView
+                android:id="@+id/img_new_molca_03"
+                android:layout_below="@+id/txt_new_molca_03"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txt_new_molca_04"
+                android:layout_below="@+id/img_new_molca_03"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:text="볼펜 몰카 설명"
+                android:textColor="#000000"
+                android:textSize="12sp"/>
+
+            <ImageView
+                android:id="@+id/img_new_molca_04"
+                android:layout_below="@+id/txt_new_molca_04"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txt_new_molca_05"
+                android:layout_below="@+id/img_new_molca_04"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:text="차키 몰카 설명"
+                android:textColor="#000000"
+                android:textSize="12sp"/>
+
+            <ImageView
+                android:id="@+id/img_new_molca_05"
+                android:layout_below="@+id/txt_new_molca_05"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txt_new_molca_06"
+                android:layout_below="@+id/img_new_molca_05"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:text="기타 휴대용 몰카 설명"
+                android:textColor="#000000"
+                android:textSize="12sp"/>
+
+            <ImageView
+                android:id="@+id/img_new_molca_06"
+                android:layout_below="@+id/txt_new_molca_06"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:id="@+id/img_new_molca_07"
+                android:layout_below="@+id/img_new_molca_06"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:id="@+id/img_new_molca_08"
+                android:layout_below="@+id/img_new_molca_07"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txt_new_molca_07"
+                android:layout_below="@+id/img_new_molca_08"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:text="인테리어 몰카 설명"
+                android:textColor="#000000"
+                android:textSize="12sp"/>
+        </RelativeLayout>
+    </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btn_molca_report_call"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="24dp"
+        app:fabSize="normal"
+        app:srcCompat="@android:drawable/stat_sys_phone_call" />
+</RelativeLayout>
