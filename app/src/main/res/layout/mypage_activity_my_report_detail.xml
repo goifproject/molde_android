@@ -52,7 +52,7 @@
             android:textColor="@color/colorDefaultText"
             android:text="테스트 위치" />
 
-        <view
+        <View
             android:id="@+id/mypage_detail_report_div"
             android:layout_width="match_parent"
             android:layout_height="1dp"
