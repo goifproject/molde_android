@@ -13,4 +13,8 @@ public class MyPageMyReportDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_page_my_report_detail);
     }
+
+    public void test1() {
+
+    }
 }
