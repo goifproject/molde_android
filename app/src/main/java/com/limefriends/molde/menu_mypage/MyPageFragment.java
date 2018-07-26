@@ -135,8 +135,6 @@ public class MyPageFragment extends Fragment implements MoldeMainActivity.onKeyB
                 }
             }
         });
-
-
         return view;
     }
 

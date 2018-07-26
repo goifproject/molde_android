@@ -1,11 +1,13 @@
 package com.limefriends.molde.menu_mypage.report;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -31,15 +33,14 @@ public class MyPageMyReportAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public class MyPageMyReportViewHorder extends RecyclerView.ViewHolder {
-
-        @BindView(R.id.myReport_map)
-        ImageView myReport_map;
-
-        @BindView(R.id.myReport_date)
-        TextView myReport_date;
-
-        @BindView(R.id.myReport_location)
-        TextView myReport_location;
+        @BindView(R.id.mypage_report_layout)
+        RelativeLayout mypage_report_layout;
+        @BindView(R.id.mypage_report_map)
+        ImageView mypage_report_map;
+        @BindView(R.id.mypage_report_date)
+        TextView mypage_report_date;
+        @BindView(R.id.mypage_report_location)
+        TextView mypage_report_location;
 
         public MyPageMyReportViewHorder(View itemView) {
             super(itemView);
@@ -57,9 +58,17 @@ public class MyPageMyReportAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final MyPageMyReportViewHorder viewHorder = (MyPageMyReportViewHorder) holder;
-        Glide.with(context).load(myPageMyReportEntityList.get(position).getMyReport_map()).into(viewHorder.myReport_map);
-        viewHorder.myReport_date.setText(myPageMyReportEntityList.get(position).getMyReport_date());
-        viewHorder.myReport_location.setText(myPageMyReportEntityList.get(position).getMyReport_location());
+        Glide.with(context).load(myPageMyReportEntityList.get(position).getMyReport_map()).into(viewHorder.mypage_report_map);
+        viewHorder.mypage_report_date.setText(myPageMyReportEntityList.get(position).getMyReport_date());
+        viewHorder.mypage_report_location.setText(myPageMyReportEntityList.get(position).getMyReport_location());
+
+        viewHorder.mypage_report_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, MyPageMyReportDetailActivity.class);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

@@ -108,6 +108,9 @@
             android:name=".menu_mypage.report.MypageMyReportActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
+        <activity android:name=".menu_mypage.report.MyPageMyReportDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".menu_mypage.comment.MoldeMyPageMyCommentActivity"
             android:screenOrientation="portrait"
@@ -149,7 +152,6 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".menu_mypage.report.MyPageMyReportDetailActivity"></activity>
     </application>
 
 </manifest>

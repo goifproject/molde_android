@@ -37,7 +37,6 @@ public class MypageMyReportActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
         TextView toolbar_title = getSupportActionBar().getCustomView().findViewById(R.id.toolbar_title);
         toolbar_title.setText("내 신고 내역");
 

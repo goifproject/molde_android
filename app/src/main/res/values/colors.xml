@@ -14,10 +14,10 @@
     <color name="colorFeedBG">#fcfcfc</color>
     <color name="colorMypageBG">#ffee59</color>
     <color name="colorInfoTextColor">#646464</color>
-    <color name="colorDiv">#f0f0f0</color>
     <color name="colorMypageSettingDiv">#e6e6e6</color>
     <color name="colorDefaultText">#4a4a4a</color>
     <color name="colorFrameGrayRounded">#c1c1c1</color>
     <color name="colorSubDescSelect">#4db6ac</color>
     <color name="colorSplashBG">#FEF07E</color>
+    <color name="colorDivision">#d8d8d8</color>
 </resources>
