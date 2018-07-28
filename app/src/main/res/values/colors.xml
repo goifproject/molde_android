@@ -20,4 +20,5 @@
     <color name="colorSubDescSelect">#4db6ac</color>
     <color name="colorSplashBG">#FEF07E</color>
     <color name="colorDivision">#d8d8d8</color>
+    <color name="colorResultMsgBox">#f6f6f6</color>
 </resources>

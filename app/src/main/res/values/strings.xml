@@ -21,6 +21,10 @@
 
     <string name="deleteSearchHistory">전체기록 삭제</string>
 
+    <string name="siren_red_dead">죽은 빨간색 싸이렌</string>
+
+    <string name="reportFailStatus">사진을 인식할 수 없거나 위치를\n확인할 수 없습니다. 다시 신고해주세요.</string>
+
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
     <string name="facebook_app_id">971533716339908</string>
     <string name="fb_login_protocol_scheme">fb971533716339908</string>

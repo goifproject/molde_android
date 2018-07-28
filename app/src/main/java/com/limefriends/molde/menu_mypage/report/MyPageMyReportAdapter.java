@@ -22,13 +22,11 @@ import butterknife.ButterKnife;
 public class MyPageMyReportAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
-    private int resourceId;
     private List<MyPageMyReportEntity> myPageMyReportEntityList;
 
 
-    public MyPageMyReportAdapter(Context context, int resourceId, List<MyPageMyReportEntity> myPageMyReportEntityList) {
+    public MyPageMyReportAdapter(Context context, List<MyPageMyReportEntity> myPageMyReportEntityList) {
         this.context = context;
-        this.resourceId = resourceId;
         this.myPageMyReportEntityList = myPageMyReportEntityList;
     }
 

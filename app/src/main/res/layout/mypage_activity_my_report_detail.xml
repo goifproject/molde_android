@@ -1,99 +1,246 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".menu_mypage.report.MyPageMyReportDetailActivity"
-    android:background="@color/colorFeedBG">
-    <RelativeLayout
-        android:id="@+id/mypage_detail_report_layout"
+    android:layout_height="wrap_content"
+    android:background="@color/colorMypageSettingDiv"
+    tools:context=".menu_mypage.report.MyPageMyReportDetailActivity">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@color/white">
-        <ImageView
-            android:id="@+id/mypage_detail_report_image"
-            android:layout_width="match_parent"
-            android:layout_height="216dp"
-            android:src="@drawable/img_01_01"
-            android:scaleType="centerCrop"
-            android:layout_margin="14dp" />
-        <TextView
-            android:id="@+id/mypage_detail_report_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="신고내용 : TEST"
-            android:textStyle="bold"
-            android:textSize="14sp"
-            android:layout_below="@+id/mypage_detail_report_image"
-            android:textColor="@color/colorDefaultText"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"/>
-        <TextView
-            android:id="@+id/mypage_detail_report_location_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="14sp"
-            android:text="신고위치 : "
-            android:textColor="@color/colorDefaultText"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:layout_below="@+id/mypage_detail_report_content"/>
-        <TextView
-            android:id="@+id/mypage_detail_report_location_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="90dp"
-            android:layout_marginEnd="24dp"
-            android:layout_below="@+id/mypage_detail_report_content"
-            android:textStyle="bold"
-            android:textSize="14sp"
-            android:textColor="@color/colorDefaultText"
-            android:text="테스트 위치" />
+        android:orientation="vertical">
 
-        <View
-            android:id="@+id/mypage_detail_report_div"
+        <RelativeLayout
+            android:id="@+id/mypage_detail_report_layout"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorDivision"
-            android:layout_below="@+id/mypage_detail_report_location_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginStart="14dp"
-            android:layout_marginEnd="14dp"/>
-        
-        <Button
-            android:id="@+id/mypage_detail_report_cancel_button"
-            android:layout_width="92dp"
-            android:layout_height="32dp"
-            android:background="@drawable/frame_rounded"
-            android:backgroundTint="@color/colorPrimary"
-            android:layout_below="@+id/mypage_detail_report_div"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="14dp"
-            android:layout_marginBottom="12dp"
-            android:layout_alignParentEnd="true"
-            android:text="신고취소"
-            android:textColor="@color/colorInfoTextColor"
-            android:textStyle="bold"
-            style="?android:attr/borderlessButtonStyle"/>
-    </RelativeLayout>
+            android:background="@color/white">
+            <RelativeLayout
+                android:id="@+id/mypage_detail_report_image_container"
+                android:layout_width="match_parent"
+                android:layout_height="216dp"
+                android:layout_margin="14dp">
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/mypage_detail_report_image_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="216dp"/>
+                <RelativeLayout
+                    android:id="@+id/mypage_detail_report_image_indicator_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:background="@color/white"
+                    android:alpha="0.8"
+                    android:layout_alignParentBottom="true">
+                    <com.pm10.library.CircleIndicator
+                        android:id="@+id/mypage_detail_report_image_indicator"
+                        android:layout_width="144dp"
+                        android:layout_height="10dp"
+                        android:layout_centerInParent="true"
+                        app:p_defaultColor="@color/colorLittleDarkGray"
+                        app:p_gap="16dp"
+                        app:p_radius="5dp"
+                        app:p_selectedColor="@color/black" />
+                </RelativeLayout>
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/mypage_detail_report_location_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/mypage_detail_report_image_container"
+                android:layout_marginEnd="24dp"
+                android:layout_marginStart="24dp"
+                android:text="신고위치 : "
+                android:textColor="@color/colorDefaultText"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
-    <RelativeLayout
-        android:id="@+id/mypage_detail_report_status_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:layout_below="@+id/mypage_detail_report_layout"
-        android:layout_marginTop="12dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="신고 결과"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:textColor="@color/colorInfoTextColor"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"/>
-    </RelativeLayout>
-</RelativeLayout>
+            <TextView
+                android:id="@+id/mypage_detail_report_location_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/mypage_detail_report_image_container"
+                android:layout_marginEnd="24dp"
+                android:layout_marginStart="90dp"
+                android:text="테스트 위치 asdfasdfsdfasdfasdfasdfasdfasdfasdf"
+                android:textColor="@color/colorDefaultText"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/mypage_detail_report_content_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/mypage_detail_report_location_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginStart="24dp"
+                android:text="신고내용 : "
+                android:textColor="@color/colorDefaultText"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/mypage_detail_report_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/mypage_detail_report_location_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginStart="90dp"
+                android:text="통신·방송의 시설기준과 신문의 기능을 보장하여 법률로 정한다.
+국회의원과 정부는 법률안을 제출할 수 있다. 국회는 상호원조 또는 안전보장에 관한 조약, 중요한 국제조직에 관한 조약, 우호통상항해조약, 주권의 제약에 관한 조약, 강화조약, 국가나 국민에게 중대한 재정적 부담을 지우는 조약 또는 입법사항에 관한 조약의 체결·비준에 대한 동의권을 가진다."
+                android:textColor="@color/colorDefaultText"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <View
+                android:id="@+id/mypage_detail_report_div"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/mypage_detail_report_content"
+                android:layout_marginEnd="14dp"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/colorDivision" />
+
+            <Button
+                android:id="@+id/mypage_detail_report_cancel_button"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="92dp"
+                android:layout_height="32dp"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/mypage_detail_report_div"
+                android:layout_marginBottom="12dp"
+                android:layout_marginEnd="14dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/frame_rounded"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="신고취소"
+                android:textColor="@color/colorInfoTextColor"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/mypage_detail_report_status_layout"
+            android:layout_width="match_parent"
+            android:layout_height="168dp"
+            android:layout_below="@+id/mypage_detail_report_layout"
+            android:layout_marginTop="12dp"
+            android:background="@color/white">
+
+            <TextView
+                android:id="@+id/mypage_detail_report_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="신고 결과"
+                android:textColor="@color/colorInfoTextColor"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <FrameLayout
+                android:layout_width="360dp"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/mypage_detail_report_result"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="16dp">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="12dp"
+                    android:contentDescription="@string/siren_red_dead"
+                    android:src="@drawable/ic_siren_red_dead" />
+
+                <RelativeLayout
+                    android:layout_width="216dp"
+                    android:layout_height="56dp"
+                    android:layout_marginStart="72dp">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/frame_rounded"
+                        android:backgroundTint="@color/colorResultMsgBox" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:text="@string/reportFailStatus"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="150dp"
+                    android:layout_height="2dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="72dp"
+                    android:background="@color/colorDivision" />
+
+                <View
+                    android:layout_width="150dp"
+                    android:layout_height="2dp"
+                    android:layout_marginStart="180dp"
+                    android:layout_marginTop="72dp"
+                    android:background="@color/colorDivision" />
+
+                <RelativeLayout
+                    android:id="@+id/mypage_detail_report_ing"
+                    android:layout_width="312dp"
+                    android:layout_height="12dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="67dp">
+
+                    <ImageView
+                        android:id="@+id/mypage_detail_report_ing_first"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:src="@drawable/ic_mypage_detail_ing" />
+
+                    <ImageView
+                        android:id="@+id/mypage_detail_report_ing_second"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_mypage_detail_ing" />
+
+                    <ImageView
+                        android:id="@+id/mypage_detail_report_ing_third"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/ic_mypage_detail_ing" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/mypage_detail_report_not_ing"
+                    android:layout_width="308dp"
+                    android:layout_height="8dp"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="69dp">
+
+                    <ImageView
+                        android:id="@+id/mypage_detail_report_not_ing_second"
+                        android:layout_width="wrap_content"
+                        android:layout_height="8dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_mypage_detail_not_ing" />
+
+                    <ImageView
+                        android:id="@+id/mypage_detail_report_not_ing_third"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/ic_mypage_detail_not_ing" />
+                </RelativeLayout>
+            </FrameLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>
