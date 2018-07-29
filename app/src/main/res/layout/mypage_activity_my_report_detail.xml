@@ -127,7 +127,6 @@
             android:id="@+id/mypage_detail_report_status_layout"
             android:layout_width="match_parent"
             android:layout_height="168dp"
-            android:layout_below="@+id/mypage_detail_report_layout"
             android:layout_marginTop="12dp"
             android:background="@color/white">
 
@@ -154,8 +153,35 @@
                     android:layout_height="32dp"
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="12dp"
+                    android:src="@drawable/ic_siren_red_dead"
                     android:contentDescription="@string/siren_red_dead"
-                    android:src="@drawable/ic_siren_red_dead" />
+                    android:visibility="gone"/>
+                
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="6dp"
+                    android:src="@drawable/ic_siren_red"
+                    android:contentDescription="@string/siren_red"/>
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_gravity="end"
+                    android:src="@drawable/ic_siren_green"
+                    android:contentDescription="@string/siren_green"/>
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_gravity="end"
+                    android:src="@drawable/ic_siren_white"
+                    android:contentDescription="@string/siren_white"/>
 
                 <RelativeLayout
                     android:layout_width="216dp"
@@ -183,7 +209,6 @@
                     android:layout_marginStart="30dp"
                     android:layout_marginTop="72dp"
                     android:background="@color/colorDivision" />
-
                 <View
                     android:layout_width="150dp"
                     android:layout_height="2dp"
@@ -227,8 +252,14 @@
                     android:layout_marginTop="69dp">
 
                     <ImageView
+                        android:id="@+id/mypage_detail_report_not_ing_first"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:src="@drawable/ic_mypage_detail_not_ing"/>
+
+                    <ImageView
                         android:id="@+id/mypage_detail_report_not_ing_second"
-                        android:layout_width="wrap_content"
+                        android:layout_width="8dp"
                         android:layout_height="8dp"
                         android:layout_centerInParent="true"
                         android:src="@drawable/ic_mypage_detail_not_ing" />
@@ -239,6 +270,36 @@
                         android:layout_height="8dp"
                         android:layout_alignParentEnd="true"
                         android:src="@drawable/ic_mypage_detail_not_ing" />
+                </RelativeLayout>
+                
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_gravity="bottom"
+                    android:gravity="center_vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="접수중"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:layout_marginStart="12dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="접수완료"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:layout_centerInParent="true"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="접수결과"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:layout_marginEnd="12dp"
+                        android:layout_alignParentEnd="true"/>
                 </RelativeLayout>
             </FrameLayout>
         </RelativeLayout>

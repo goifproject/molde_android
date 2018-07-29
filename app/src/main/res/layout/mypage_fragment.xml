@@ -11,7 +11,7 @@
         android:id="@+id/head_guide"
         android:layout_width="match_parent"
         android:layout_height="222dp"
-        android:background="@color/colorMypageBG">
+        android:background="@color/colorAccent">
 
         <RelativeLayout
             android:layout_width="match_parent"
