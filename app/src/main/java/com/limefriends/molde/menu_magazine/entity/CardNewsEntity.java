@@ -1,10 +1,10 @@
 package com.limefriends.molde.menu_magazine.entity;
 
-public class CardnewsEntity {
+public class CardNewsEntity {
     private int thumbnail;
     private String title;
 
-    public CardnewsEntity(int thumbnail, String title) {
+    public CardNewsEntity(int thumbnail, String title) {
         this.thumbnail = thumbnail;
         this.title = title;
     }

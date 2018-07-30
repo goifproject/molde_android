@@ -18,7 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.limefriends.molde.R;
-import com.limefriends.molde.menu_magazine.entity.CommentEntity;
+import com.limefriends.molde.menu_magazine.entity.CardNewsCommentEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,33 +26,22 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by joo on 2018. 4. 13..
- */
+public class MagazineCommentActivity extends AppCompatActivity {
 
-/*** make a pair with magazine_activity_comment.xml ***/
+    @BindView(R.id.comment_layout)
+    RelativeLayout comment_layout;
+    @BindView(R.id.comment_swipe_layout)
+    SwipeRefreshLayout comment_swipe_layout;
+    @BindView(R.id.comment_list_view)
+    RecyclerView comment_list_view;
+    @BindView(R.id.comment_input)
+    EditText comment_input;
+    @BindView(R.id.comment_send_button)
+    Button comment_send_button;
 
-
-public class CommentActivity extends AppCompatActivity {
-
-    @BindView(R.id.layout_activity_comment_wrapper)
-    RelativeLayout layout_activity_comment_wrapper;
-
-    @BindView(R.id.layout_comment_swipe)
-    SwipeRefreshLayout layout_comment_swipe;
-
-    @BindView(R.id.comment_recyclerview)
-    RecyclerView comment_recyclerview;
-
-    @BindView(R.id.edittext_comment)
-    EditText edittext_comment;
-
-    @BindView(R.id.btn_comment_post)
-    Button btn_comment_post;
-
-    CommentRecyclerAdapter adapter;
-    List<CommentEntity> commentDataList;
-    InputMethodManager imm;
+    MagazineCommentRecyclerAdapter magazineCommentRecyclerAdapter;
+    List<CardNewsCommentEntity> commentDataList;
+    InputMethodManager inputMethodManager;
 
 
     @Override
@@ -75,37 +64,35 @@ public class CommentActivity extends AppCompatActivity {
 
         /* set dummy datalist */
         // 실제로는 서버에서 데이터 받아오기
-        commentDataList = new ArrayList<CommentEntity>();
-        commentDataList.add(new CommentEntity(R.drawable.img_dummy_profile,
+        commentDataList = new ArrayList<CardNewsCommentEntity>();
+        commentDataList.add(new CardNewsCommentEntity(R.drawable.img_dummy_profile,
                 "user1", "2018.04.11 11:13", "세상에 이런 일이 다 있네요ㅠㅠ"));
-        commentDataList.add(new CommentEntity(R.drawable.img_dummy_profile,
+        commentDataList.add(new CardNewsCommentEntity(R.drawable.img_dummy_profile,
                 "user2", "2018.04.11 11:14",
                 "세상에 이런 일이 다 있네요ㅠㅠ 세상에 이런 일이 다 있네요ㅠㅠ 세상에 이런 일이 다 있네요ㅠㅠ 세상에 이런 일이 다 있네요ㅠㅠ 세상에 이런 일이 다 있네요ㅠㅠ 세상에 이런 일이 다 있네요ㅠㅠ"));
-        commentDataList.add(new CommentEntity(R.drawable.img_dummy_profile,
+        commentDataList.add(new CardNewsCommentEntity(R.drawable.img_dummy_profile,
                 "user3", "2018.04.11 11:15", "세상에 이런 일이 다 있네요ㅠㅠ"));
-        commentDataList.add(new CommentEntity(R.drawable.img_dummy_profile,
+        commentDataList.add(new CardNewsCommentEntity(R.drawable.img_dummy_profile,
                 "user4", "2018.04.11 11:16", "세상에 이런 일이 다 있네요ㅠㅠ"));
 
 
-        adapter = new CommentRecyclerAdapter(getApplicationContext(),
-                    R.layout.magazine_item_comment_recycler,
+        magazineCommentRecyclerAdapter = new MagazineCommentRecyclerAdapter(getApplicationContext(),
+                    R.layout.magazine_comment_item,
                     commentDataList,
-                    layout_activity_comment_wrapper);
-        comment_recyclerview.setAdapter(adapter);
+                comment_layout);
+        comment_list_view.setAdapter(magazineCommentRecyclerAdapter);
 
-
-        /* editText 이외의 부분을 터치하면 키패드가 내려가도록 함 TODO hide keyboard */
-        layout_activity_comment_wrapper.setOnClickListener(new View.OnClickListener() {
+        comment_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(edittext_comment.getWindowToken(), 0);
+                inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(comment_input.getWindowToken(), 0);
             }
         });
 
 
         /* 댓글 게시 */
-        btn_comment_post.setOnClickListener(new View.OnClickListener() {
+        comment_send_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 로그인 된 상태라면 -> 댓글 등록
@@ -118,12 +105,12 @@ public class CommentActivity extends AppCompatActivity {
 
 
         /* 당겨서 새로고침 */
-        layout_comment_swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        comment_swipe_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 // 댓글목록 새로 불러오기!
                 Toast.makeText(getApplicationContext(), "refresh", Toast.LENGTH_SHORT).show();
-                layout_comment_swipe.setRefreshing(false);
+                comment_swipe_layout.setRefreshing(false);
             }
         });
 

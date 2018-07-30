@@ -6,8 +6,6 @@
     android:layout_height="148dp"
     app:cardUseCompatPadding="true">
 
-
-
         <ImageView
             android:id="@+id/report_card_image"
             android:layout_width="128dp"

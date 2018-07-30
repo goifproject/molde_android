@@ -49,7 +49,7 @@ public class MoldeMyFavoriteAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.map_list_item_my_favorite_info, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.map_my_favorite_info_item, parent, false);
         return new MyFavoriteViewHolder(view);
     }
 

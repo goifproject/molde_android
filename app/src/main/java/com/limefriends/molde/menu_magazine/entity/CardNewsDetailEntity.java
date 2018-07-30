@@ -4,11 +4,11 @@ package com.limefriends.molde.menu_magazine.entity;
  * Created by joo on 2018. 4. 19..
  */
 
-public class CardnewsDetailEntity {
+public class CardNewsDetailEntity {
     private int image;
     private String description;
 
-    public CardnewsDetailEntity(int image, String description) {
+    public CardNewsDetailEntity(int image, String description) {
         this.image = image;
         this.description = description;
     }

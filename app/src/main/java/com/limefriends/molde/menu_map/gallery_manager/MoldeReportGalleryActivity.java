@@ -58,7 +58,7 @@ public class MoldeReportGalleryActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        gallery_done_button = getSupportActionBar().getCustomView().findViewById(R.id.gallery_done_button);
+        gallery_done_button = getSupportActionBar().getCustomView().findViewById(R.id.done_button);
         gallery_done_button.setVisibility(View.VISIBLE);
         gallery_done_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +96,7 @@ public class MoldeReportGalleryActivity extends AppCompatActivity {
         reportEmailDomainPosition = intent.getStringExtra("reportEmailDomainPosition");
         reportLat = intent.getStringExtra("reportLat");
         reportLng = intent.getStringExtra("reportLng");
-        init();
+        initRecyclerGallery();
     }
 
     @Override
@@ -109,15 +109,6 @@ public class MoldeReportGalleryActivity extends AppCompatActivity {
     }
 
     /**
-     * 데이터 초기화
-     */
-    private void init() {
-        //갤러리 리사이클러뷰 초기화
-        initRecyclerGallery();
-    }
-
-
-    /**
      * 갤러리 이미지 데이터 초기화
      */
     private List<PhotoVO> initGalleryPathList() {
@@ -126,7 +117,6 @@ public class MoldeReportGalleryActivity extends AppCompatActivity {
         Collections.reverse(galleryList);
         return galleryList;
     }
-
 
     /**
      * 확인 버튼 선택 시
@@ -146,7 +136,7 @@ public class MoldeReportGalleryActivity extends AppCompatActivity {
      * 갤러리 리사이클러뷰 초기화
      */
     private void initRecyclerGallery() {
-        galleryAdapter = new GalleryAdapter(MoldeReportGalleryActivity.this, initGalleryPathList(), R.layout.map_list_item_gallery);
+        galleryAdapter = new GalleryAdapter(MoldeReportGalleryActivity.this, initGalleryPathList(), R.layout.map_gallery_item);
         galleryAdapter.setOnItemClickListener(mOnItemClickListener);
         recyclerGallery.setAdapter(galleryAdapter);
         recyclerGallery.setLayoutManager(new GridLayoutManager(this, 2));

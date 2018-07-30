@@ -49,7 +49,7 @@ public class MoldeReportCardMapDialogAdapter extends RecyclerView.Adapter<Recycl
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.map_list_item_report_info, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.map_report_info_item, parent, false);
         return new ReportMapViewHolder(view);
     }
 

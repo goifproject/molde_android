@@ -250,7 +250,7 @@
         android:textStyle="bold"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:layout_below="@+id/detail_address_content"/>
 
     <RelativeLayout
@@ -258,7 +258,7 @@
         android:layout_height="24dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/frame_gray_rounded"
         android:layout_below="@+id/reply_email_title">
         <EditText

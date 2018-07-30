@@ -65,9 +65,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".menu_map.camera_manager.MoldeReportCheckImage"
+            android:name=".menu_map.camera_manager.MoldeReportCheckImageActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppNoBarTheme" />
+            android:theme="@style/AppTheme" />
 
         <!-- 매거진 관련 -->
         <activity
@@ -83,11 +83,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".menu_magazine.cardnews.CardnewsDetailActivity"
+            android:name=".menu_magazine.cardnews.MagazineCardnewsDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".menu_magazine.comment.CommentActivity"
+            android:name=".menu_magazine.comment.MagazineCommentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
 

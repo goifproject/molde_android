@@ -314,7 +314,7 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
         mediaScanIntent.setData(Uri.fromFile(file));
         sendBroadcast(mediaScanIntent);
         Intent intent = new Intent();
-        intent.setClass(getApplicationContext(), MoldeReportCheckImage.class);
+        intent.setClass(getApplicationContext(), MoldeReportCheckImageActivity.class);
         intent.putExtra("imagePath", Uri.fromFile(file));
         intent.putExtra("imageSeq", imageSeq);
         intent.putExtra("reportContent", reportContent);

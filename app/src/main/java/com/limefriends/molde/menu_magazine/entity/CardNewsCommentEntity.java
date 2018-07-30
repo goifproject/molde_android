@@ -4,14 +4,14 @@ package com.limefriends.molde.menu_magazine.entity;
  * Created by joo on 2018. 4. 19..
  */
 
-public class CommentEntity {
+public class CardNewsCommentEntity {
 
     private int profileImg;
     private String userName;
     private String creDate;
     private String content;
 
-    public CommentEntity(int profileImg, String userName, String creDate, String content) {
+    public CardNewsCommentEntity(int profileImg, String userName, String creDate, String content) {
         this.profileImg = profileImg;
         this.userName = userName;
         this.creDate = creDate;
@@ -19,7 +19,7 @@ public class CommentEntity {
     }
 
     // 프로필 사진이 없는 경우
-    public CommentEntity(String userName, String creDate, String content) {
+    public CardNewsCommentEntity(String userName, String creDate, String content) {
         this.userName = userName;
         this.creDate = creDate;
         this.content = content;

@@ -72,7 +72,7 @@ public class ReportCardPagerAdapter extends PagerAdapter implements ReportCardAd
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
         View view = LayoutInflater.from(container.getContext())
-                .inflate(R.layout.map_report_card, container, false);
+                .inflate(R.layout.map_report_card_item, container, false);
         ButterKnife.bind(this, view);
         notifyDataSetChanged();
         container.addView(view);

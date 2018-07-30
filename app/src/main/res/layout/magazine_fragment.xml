@@ -58,7 +58,7 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_marginTop="14dp"
-                                android:layout_marginBottom="13dp"
+                                android:layout_marginBottom="12dp"
                                 android:src="@drawable/ic_camera"/>
 
                             <TextView
@@ -85,7 +85,7 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_marginTop="14dp"
-                                android:layout_marginBottom="13dp"
+                                android:layout_marginBottom="12dp"
                                 android:src="@drawable/ic_attention"/>
 
                             <TextView
@@ -111,8 +111,8 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_marginTop="14dp"
-                                android:layout_marginBottom="13dp"
-                                android:src="@drawable/ic_cam_24"/>
+                                android:layout_marginBottom="12dp"
+                                android:src="@drawable/ic_camera"/>
 
                             <TextView
                                 android:layout_width="wrap_content"

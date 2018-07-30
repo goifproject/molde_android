@@ -50,7 +50,7 @@ public class MoldeMapHistroyAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.map_list_item_history_info, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.map_history_info_item, parent, false);
         return new MapHistoryViewHolder(view);
     }
 

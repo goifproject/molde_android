@@ -2,13 +2,13 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cardnews_fragment_container"
+    android:id="@+id/cardnews_detail_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/cardnews_viewPager"
+        android:id="@+id/cardnews_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
@@ -26,43 +26,43 @@
         android:paddingRight="8dp">
 
         <ImageView
-            android:id="@+id/img_cardnews_page"
+            android:id="@+id/cardnews_page"
             android:layout_width="14dp"
             android:layout_height="14dp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="4dp"
-            android:background="@drawable/ic_view" />
+            android:background="@drawable/ic_page" />
 
         <TextView
-            android:id="@+id/txt_current_pagenum"
+            android:id="@+id/current_page_no"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_toEndOf="@+id/img_cardnews_page"
+            android:layout_toEndOf="@+id/cardnews_page"
             android:gravity="center_vertical"
             android:text="1"
-            android:textColor="#ffffff" />
+            android:textColor="@color/white" />
 
         <TextView
-            android:id="@+id/txt_pagenum_token"
+            android:id="@+id/token_page_no"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_toEndOf="@+id/txt_current_pagenum"
+            android:layout_toEndOf="@+id/current_page_no"
             android:gravity="center_vertical"
             android:text=" / "
-            android:textColor="#ffffff" />
+            android:textColor="@color/white" />
 
         <TextView
-            android:id="@+id/txt_total_pagenum"
+            android:id="@+id/total_page_no"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_toEndOf="@+id/txt_pagenum_token"
+            android:layout_toEndOf="@+id/token_page_no"
             android:gravity="center_vertical"
-            android:text="10"
-            android:textColor="#ffffff" />
+            android:text="1"
+            android:textColor="@color/white" />
 
         <ImageView
-            android:id="@+id/img_comment"
+            android:id="@+id/cardnews_comment"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
@@ -70,7 +70,7 @@
             app:srcCompat="@drawable/ic_comment_selector" />
 
         <ImageView
-            android:id="@+id/img_cardnews_share"
+            android:id="@+id/cardnews_share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -78,13 +78,13 @@
             app:srcCompat="@drawable/ic_connect_selector" />
 
         <ImageView
-            android:id="@+id/img_cardnews_scrap"
+            android:id="@+id/cardnews_scrap"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/img_cardnews_share"
+            android:layout_alignTop="@+id/cardnews_share"
             android:layout_marginEnd="8dp"
-            android:layout_toStartOf="@+id/img_cardnews_share"
-            app:srcCompat="@drawable/ic_cardscrap_2_24" />
+            android:layout_toStartOf="@+id/cardnews_share"
+            app:srcCompat="@drawable/ic_card_scrap_false" />
 
     </RelativeLayout>
 

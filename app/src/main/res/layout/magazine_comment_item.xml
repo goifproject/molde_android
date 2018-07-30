@@ -1,73 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorWhite"
-    android:minHeight="55dp"
-    android:paddingTop="8dp">
-
+    android:minHeight="56dp">
 
     <ImageView
-        android:id="@+id/img_comment_profile"
+        android:id="@+id/comment_profile_image"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="12dp"/>
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/img_comment_profile"
-        android:layout_toStartOf="@+id/img_comment_siren"
-        android:orientation="vertical">
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/comment_profile_image"
+        android:layout_toStartOf="@+id/comment_report"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
 
         <TextView
-            android:id="@+id/txt_comment_user"
+            android:id="@+id/comment_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp"
             android:text="댓글 작성자"
             android:textColor="@color/colorDefaultText"
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/txt_comment_date"
+            android:id="@+id/comment_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/txt_comment_user"
-            android:layout_toRightOf="@+id/txt_comment_user"
+            android:layout_alignBaseline="@+id/comment_user_name"
+            android:layout_toEndOf="@+id/comment_user_name"
             android:text="댓글작성일시"
             android:textColor="@color/colorDefaultText"
             android:textSize="9sp" />
 
         <TextView
-            android:id="@+id/txt_comment_content"
+            android:id="@+id/comment_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/txt_comment_user"
-            android:layout_marginBottom="8dp"
+            android:layout_below="@+id/comment_user_name"
             android:text="댓글내용"
             android:textColor="@color/colorDefaultText"
             android:textSize="13sp" />
     </RelativeLayout>
 
     <ImageView
-        android:id="@+id/img_comment_siren"
+        android:id="@+id/comment_report"
         android:layout_width="48dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/ic_siren" />
+        android:background="@drawable/ic_siren"
+        android:layout_centerVertical="true"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_alignParentBottom="true"
-        android:background="#dddddd" />
+        android:background="@color/colorDivision" />
 
 </RelativeLayout>
