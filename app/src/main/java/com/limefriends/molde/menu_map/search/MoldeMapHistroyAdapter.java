@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.limefriends.molde.R;
 import com.limefriends.molde.menu_map.cache_manager.Cache;
-import com.limefriends.molde.menu_map.callback_method.MoldeMapHistoryRecyclerViewAdapterCallback;
+import com.limefriends.molde.menu_map.callback_method.MapHistoryAdapterCallback;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapHistoryEntity;
 
 import java.io.IOException;
@@ -22,15 +22,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class MoldeMapHistroyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MoldeMapHistroyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<MoldeSearchMapHistoryEntity> historyList;
-    private MoldeMapHistoryRecyclerViewAdapterCallback callback;
+    private MapHistoryAdapterCallback mapHistoryAdapterCallback;
     private Context context;
     private Cache cache;
     private String cmd;
 
-    public MoldeMapHistroyRecyclerViewAdapter(ArrayList<MoldeSearchMapHistoryEntity> historyList,
-                                       Context context, String cmd) {
+    public MoldeMapHistroyAdapter(ArrayList<MoldeSearchMapHistoryEntity> historyList,
+                                  Context context, String cmd) {
         this.historyList = historyList;
         this.context = context;
         this.cmd = cmd;
@@ -68,7 +68,7 @@ public class MoldeMapHistroyRecyclerViewAdapter extends RecyclerView.Adapter<Rec
                         historyList.remove(position);
                         notifyItemRemoved(position);
                         try {
-                            cache.Write(keywordHistoryStr);
+                            cache.write(keywordHistoryStr);
                             return;
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -89,7 +89,7 @@ public class MoldeMapHistroyRecyclerViewAdapter extends RecyclerView.Adapter<Rec
                                     + "|" + historyList.get(i).getTelNo() + ",";
 
                         }
-                        cache.Write(keywordHistoryStr);
+                        cache.write(keywordHistoryStr);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -100,7 +100,7 @@ public class MoldeMapHistroyRecyclerViewAdapter extends RecyclerView.Adapter<Rec
                 @Override
                 public void onClick(View v) {
                     try {
-                        callback.applyHistoryMapInfo(new MoldeSearchMapHistoryEntity(
+                        mapHistoryAdapterCallback.applyHistoryMapInfo(new MoldeSearchMapHistoryEntity(
                                         historyList.get(position).getMapLat(),
                                         historyList.get(position).getMapLng(),
                                         historyList.get(position).getName(),
@@ -117,7 +117,7 @@ public class MoldeMapHistroyRecyclerViewAdapter extends RecyclerView.Adapter<Rec
                                         historyList.get(0).getBizName() + ", " +
                                         historyList.get(0).getMainAddress() + ", " +
                                         historyList.get(0).getTelNo());
-                        callback.applyHistoryMapInfo(new MoldeSearchMapHistoryEntity(
+                        mapHistoryAdapterCallback.applyHistoryMapInfo(new MoldeSearchMapHistoryEntity(
                                         historyList.get(0).getMapLat(),
                                         historyList.get(0).getMapLng(),
                                         historyList.get(0).getName(),
@@ -127,7 +127,7 @@ public class MoldeMapHistroyRecyclerViewAdapter extends RecyclerView.Adapter<Rec
                                 ), cmd
                         );
                     }
-                    MoldeSearchMapInfoActivity.checkBackPressed = false;
+                    SearchMapInfoActivity.isCheckBackPressed = false;
                 }
             });
         }
@@ -138,8 +138,8 @@ public class MoldeMapHistroyRecyclerViewAdapter extends RecyclerView.Adapter<Rec
         return historyList.size();
     }
 
-    public void setCallback(MoldeMapHistoryRecyclerViewAdapterCallback callback) {
-        this.callback = callback;
+    public void setMapHistoryAdapterCallback(MapHistoryAdapterCallback mapHistoryAdapterCallback) {
+        this.mapHistoryAdapterCallback = mapHistoryAdapterCallback;
     }
 
 

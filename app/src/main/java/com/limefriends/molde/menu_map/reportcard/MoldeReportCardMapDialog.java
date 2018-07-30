@@ -1,4 +1,4 @@
-package com.limefriends.molde.menu_map.report;
+package com.limefriends.molde.menu_map.reportcard;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,24 +12,23 @@ import android.view.ViewGroup;
 
 import com.limefriends.molde.R;
 import com.limefriends.molde.menu_map.entity.MoldeReportMapEntitiy;
-import com.limefriends.molde.menu_map.reportcard.ReportCardItem;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MoldeReportMapDialog extends BottomSheetDialogFragment {
+public class MoldeReportCardMapDialog extends BottomSheetDialogFragment {
     @BindView(R.id.report_history_list_view)
     RecyclerView report_history_list_view;
 
     private Context context;
 
-    public MoldeReportMapDialogRecyclerAdapter reportHistoryAdapter;
+    public MoldeReportCardMapDialogAdapter reportHistoryAdapter;
     public ArrayList<MoldeReportMapEntitiy> reportHistoryList;
     public ReportCardItem reportCardData;
 
-    public static MoldeReportMapDialog getInstance() { return new MoldeReportMapDialog(); }
+    public static MoldeReportCardMapDialog getInstance() { return new MoldeReportCardMapDialog(); }
 
     public void setData(ReportCardItem data){
         reportCardData = data;
@@ -52,7 +51,7 @@ public class MoldeReportMapDialog extends BottomSheetDialogFragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         report_history_list_view.setLayoutManager(layoutManager);
-        reportHistoryAdapter = new MoldeReportMapDialogRecyclerAdapter(getContext(), reportHistoryList);
+        reportHistoryAdapter = new MoldeReportCardMapDialogAdapter(getContext(), reportHistoryList);
         report_history_list_view.setAdapter(reportHistoryAdapter);
         return view;
     }

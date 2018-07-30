@@ -3,8 +3,8 @@ package com.limefriends.molde.menu_map.search;
 import com.limefriends.molde.MoldeMainActivity;
 import com.limefriends.molde.R;
 import com.limefriends.molde.menu_map.cache_manager.Cache;
-import com.limefriends.molde.menu_map.callback_method.MoldeMapHistoryRecyclerViewAdapterCallback;
-import com.limefriends.molde.menu_map.callback_method.MoldeMapInfoRecyclerViewAdapterCallback;
+import com.limefriends.molde.menu_map.callback_method.MapHistoryAdapterCallback;
+import com.limefriends.molde.menu_map.callback_method.MapInfoAdapterCallback;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapHistoryEntity;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapInfoEntity;
 import com.limefriends.molde.menu_map.report.MoldeReportActivity;
@@ -34,13 +34,14 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MoldeSearchMapInfoActivity extends AppCompatActivity
-        implements MoldeMapInfoRecyclerViewAdapterCallback,
-        MoldeMapHistoryRecyclerViewAdapterCallback {
+public class SearchMapInfoActivity extends AppCompatActivity
+        implements MapInfoAdapterCallback,
+        MapHistoryAdapterCallback {
     @BindView(R.id.loc_map_info_search_bar)
     LinearLayout loc_map_info_search_bar;
     @BindView(R.id.loc_map_info_search_input)
@@ -57,16 +58,16 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
     Button delete_search_history_button;
 
     //private FileCache fileCache;
-    public static boolean checkBackPressed = false;
-    private MoldeMapInfoRecyclerViewAdapter loc_map_info_list_adapter;
-    private MoldeMapHistroyRecyclerViewAdapter history_map_info_list_adapter;
+    public static boolean isCheckBackPressed = false;
+    private MoldeMapInfoAdapter loc_map_info_list_adapter;
+    private MoldeMapHistroyAdapter history_map_info_list_adapter;
     private Handler handler = new Handler(Looper.getMainLooper());
     private Runnable workRunnable;
     private final long DELAY = 100;
     private Cache cache;
     private String keywordHistoryStr = "";
     private String cmd = "";
-
+    private final static String cmdReport = "Report";
     private String reportContent;
     private String reportDetailAddress;
     private String reportEmailName;
@@ -127,8 +128,8 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
         });
 
         if(activityName != null){
-            if(activityName.equals("Report")){
-                cmd = "Report";
+            if(activityName.equals(cmdReport)){
+                cmd = cmdReport;
                 reportContent = getIntent().getStringExtra("reportContent");
                 reportDetailAddress = getIntent().getStringExtra("reportDetailAddress");
                 reportEmailName = getIntent().getStringExtra("reportEmailName");
@@ -153,7 +154,7 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
             public void onClick(View v) {
                 Cache cache = new Cache(getApplicationContext());
                 try {
-                    if(cache.Delete()) {
+                    if(cache.delete()) {
                         showToast("성공적으로 삭제 완료");
                     }else {
                         showToast("삭제 실패");
@@ -180,7 +181,7 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
         String history = entity.getMapLat() + "|" + entity.getMapLng() + "|" + entity.getName() + "|" + entity.getMainAddress() + "|" + entity.getBizName() + "|" + entity.getTelNo();
         keywordHistoryStr = historyStr;
         keywordHistoryStr += history + ",";
-        cache.Write(keywordHistoryStr);
+        cache.write(keywordHistoryStr);
     }
 
     private void searchFieldInit() {
@@ -217,10 +218,10 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
 
         //검색 정보 띄우기
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        loc_map_info_list_adapter = new MoldeMapInfoRecyclerViewAdapter(getApplicationContext(), cmd);
+        loc_map_info_list_adapter = new MoldeMapInfoAdapter(getApplicationContext(), cmd);
         loc_map_info_list.setLayoutManager(layoutManager);
         loc_map_info_list.setAdapter(loc_map_info_list_adapter);
-        loc_map_info_list_adapter.setCallback(this);
+        loc_map_info_list_adapter.setMapInfoAdapterCallback(this);
     }
 
     private void searchMapInfoList() {
@@ -238,7 +239,7 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
     @Override
     public void applySearchMapInfo(MoldeSearchMapInfoEntity entity, String cmd) {
         Intent intent = new Intent();
-        if(cmd.equals("Report")){
+        if(cmd.equals(cmdReport)){
             intent.setClass(getApplicationContext(), MoldeReportActivity.class);
             intent.putExtra("reportContent", reportContent);
             intent.putExtra("reportDetailAddress", reportDetailAddress);
@@ -250,17 +251,17 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
         }else{
             intent.setClass(getApplicationContext(), MoldeMainActivity.class);
         }
-        intent.putExtra("mapInfo", entity);
+        intent.putExtra("mapSearchInfo", entity);
         startActivity(intent);
     }
 
     private void historyFieldInit() {
         cache = new Cache(getApplicationContext());
         try {
-            if(cache.Read().equals("")){
-                cache.Write("");
+            if(cache.read().equals("")){
+                cache.write("");
             }
-            keywordHistoryStr = cache.Read();
+            keywordHistoryStr = cache.read();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -271,7 +272,7 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
             if (keywordHistoryStr.charAt(0) == ',') {
                 keywordHistoryStr = keywordHistoryStr.substring(0, 1);
                 try {
-                    cache.Write(keywordHistoryStr);
+                    cache.write(keywordHistoryStr);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -285,9 +286,9 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
 
     private void makeHistoryList(String keywordHistoryStr) {
         String[] historyArray = keywordHistoryStr.split(",");
-        ArrayList<MoldeSearchMapHistoryEntity> historyEntityList = new ArrayList<MoldeSearchMapHistoryEntity>();
-        for (int i = 0; i < historyArray.length; i++) {
-            String[] historyElem = historyArray[i].split("\\|");
+        List<MoldeSearchMapHistoryEntity> historyEntityList = new ArrayList<>();
+        for (String aHistoryArray : historyArray) {
+            String[] historyElem = aHistoryArray.split("\\|");
             MoldeSearchMapHistoryEntity historyEntity;
             String mapLat = historyElem[0];
             String mapLng = historyElem[1];
@@ -302,16 +303,16 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
         Collections.reverse(historyEntityList);
         //검색 기록 띄우기
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        history_map_info_list_adapter = new MoldeMapHistroyRecyclerViewAdapter(historyEntityList, getApplicationContext(), cmd);
+        history_map_info_list_adapter = new MoldeMapHistroyAdapter((ArrayList<MoldeSearchMapHistoryEntity>) historyEntityList, getApplicationContext(), cmd);
         history_map_info_list.setLayoutManager(layoutManager);
         history_map_info_list.setAdapter(history_map_info_list_adapter);
-        history_map_info_list_adapter.setCallback(this);
+        history_map_info_list_adapter.setMapHistoryAdapterCallback(this);
     }
 
     @Override
     public void applyHistoryMapInfo(MoldeSearchMapHistoryEntity historyEntity, String cmd) {
         Intent intent = new Intent();
-        if(cmd.equals("Report")){
+        if(cmd.equals(cmdReport)){
             intent.setClass(getApplicationContext(), MoldeReportActivity.class);
             intent.putExtra("reportContent", reportContent);
             intent.putExtra("reportDetailAddress", reportDetailAddress);
@@ -330,7 +331,7 @@ public class MoldeSearchMapInfoActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        checkBackPressed = true;
+        isCheckBackPressed = true;
 
     }
 }

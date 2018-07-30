@@ -16,9 +16,10 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.limefriends.molde.menu_magazine.MoldeMagazineFragment;
+import com.limefriends.molde.menu_map.entity.MoldeMyFavoriteEntity;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapHistoryEntity;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapInfoEntity;
-import com.limefriends.molde.menu_map.MoldeMapFragment;
+import com.limefriends.molde.menu_map.MapFragment;
 import com.limefriends.molde.menu_mypage.MyPageFragment;
 import com.limefriends.molde.menu_feed.MoldeFeedFragment;
 
@@ -37,6 +38,7 @@ public class MoldeMainActivity extends AppCompatActivity {
     private FragmentManager fm;
     private MoldeSearchMapInfoEntity searchEntity;
     private MoldeSearchMapHistoryEntity historyEntity;
+    private MoldeMyFavoriteEntity myFavoriteEntity;
     private Fragment fragment;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -55,7 +57,7 @@ public class MoldeMainActivity extends AppCompatActivity {
                     return true;
                 case R.id.main_menu_map:
                     if(fragmentSparseArray.get(R.string.main_menu_map) == null){
-                        fragment = MoldeMapFragment.newInstance();
+                        fragment = MapFragment.newInstance();
                         fragmentSparseArray.append(R.string.main_menu_map, fragment);
                         replaceFragment(fragment);
                     }else{
@@ -100,7 +102,7 @@ public class MoldeMainActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         if(fragment == null && fragmentSparseArray == null) {
             fragmentSparseArray = new SparseArrayCompat();
-            fragment = MoldeMapFragment.newInstance();
+            fragment = MapFragment.newInstance();
             fragmentSparseArray.append(R.string.main_menu_map, fragment);
         }
         fm = getSupportFragmentManager();
@@ -117,8 +119,8 @@ public class MoldeMainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (fragment != null && fragment instanceof MoldeMapFragment) {
-            ((MoldeMapFragment) fragment).onPermissionCheck(requestCode, permissions, grantResults);
+        if (fragment != null && fragment instanceof MapFragment) {
+            ((MapFragment) fragment).onPermissionCheck(requestCode, permissions, grantResults);
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
@@ -135,18 +137,15 @@ public class MoldeMainActivity extends AppCompatActivity {
         super.onResume();
         Intent intent = getIntent();
         if(intent != null){
-            searchEntity = (MoldeSearchMapInfoEntity) intent.getSerializableExtra("mapInfo");
+            searchEntity = (MoldeSearchMapInfoEntity) intent.getSerializableExtra("mapSearchInfo");
             historyEntity = (MoldeSearchMapHistoryEntity) intent.getSerializableExtra("mapHistoryInfo");
+            myFavoriteEntity = (MoldeMyFavoriteEntity) intent.getSerializableExtra("mapFavoriteInfo");
         }
     }
 
-    public MoldeSearchMapInfoEntity getMapInfoResultData() {
-        return this.searchEntity;
-    }
-
-    public MoldeSearchMapHistoryEntity getMapHistoryResultData() {
-        return this.historyEntity;
-    }
+    public MoldeSearchMapInfoEntity getMapInfoResultData() { return this.searchEntity; }
+    public MoldeSearchMapHistoryEntity getMapHistoryResultData() { return this.historyEntity; }
+    public MoldeMyFavoriteEntity getMyFavoriteEntity() { return this.myFavoriteEntity; }
 
     public interface onKeyBackPressedListener {
         void onBackKey();

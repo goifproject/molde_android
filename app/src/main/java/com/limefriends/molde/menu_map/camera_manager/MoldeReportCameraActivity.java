@@ -378,7 +378,7 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
         protected Void doInBackground(byte[]... data) {
             FileOutputStream outStream = null;
 
-            // Write to SD Card
+            // write to SD Card
             try {
                 File sdCard = Environment.getExternalStorageDirectory();
                 File dir = new File(sdCard.getAbsolutePath() + "/molde_report_image");

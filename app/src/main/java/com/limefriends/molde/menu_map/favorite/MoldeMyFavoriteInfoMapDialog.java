@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-
 import com.google.android.gms.maps.model.Marker;
 import com.limefriends.molde.R;
+import com.limefriends.molde.menu_map.MapFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,20 +70,25 @@ public class MoldeMyFavoriteInfoMapDialog extends BottomSheetDialogFragment {
         if(bundle != null){
             my_favorite_marker_title.setText(bundle.getString("markerTitle"));
             my_favorite_marker_info.setText(bundle.getString("markerInfo"));
+            my_favorite_toggle.setChecked(bundle.getBoolean("myFavoriteActive"));
+            if (my_favorite_toggle.isChecked()) {
+                my_favorite_toggle.setBackgroundResource(R.drawable.ic_star_on);
+            } else {
+                my_favorite_toggle.setBackgroundResource(R.drawable.ic_star_off);
+            }
         }
-
-        my_favorite_toggle.setChecked(false);
         my_favorite_toggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(my_favorite_toggle.isChecked() == false){
-                    my_favorite_toggle.setBackgroundResource(R.drawable.ic_star_off);
-                }else if(my_favorite_toggle.isChecked() == true){
+                if(my_favorite_toggle.isChecked()){
                     my_favorite_toggle.setBackgroundResource(R.drawable.ic_star_on);
+                    MapFragment.isMyFavoriteActive = true;
+                }else {
+                    my_favorite_toggle.setBackgroundResource(R.drawable.ic_star_off);
+                    MapFragment.isMyFavoriteActive = false;
                 }
             }
         });
-
         my_favorite_marker_modify_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

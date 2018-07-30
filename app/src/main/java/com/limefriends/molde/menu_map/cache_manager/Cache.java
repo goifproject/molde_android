@@ -11,6 +11,7 @@ import java.util.Scanner;
 
 public class Cache {
     private Context context;
+    private final String cacheFileName = "mapInfoSearchHistory.txt";
 
     public Cache(Context context) {
         this.context = context;
@@ -30,9 +31,9 @@ public class Cache {
         return cacheDir;
     }
 
-    public void Write(String cache) throws IOException {
+    public void write(String cache) throws IOException {
         File cacheDir = getCacheDir(context);
-        File cacheFile = new File(cacheDir, "mapInfoSearchHistory.txt");
+        File cacheFile = new File(cacheDir, cacheFileName);
         if (!cacheFile.exists()) cacheFile.createNewFile();
         FileWriter fileWriter = new FileWriter(cacheFile);
         fileWriter.write(cache);
@@ -40,9 +41,9 @@ public class Cache {
         fileWriter.close();
     }
 
-    public String Read() throws IOException {
+    public String read() throws IOException {
         File cacheDir = getCacheDir(context);
-        File cacheFile = new File(cacheDir, "mapInfoSearchHistory.txt");
+        File cacheFile = new File(cacheDir, cacheFileName);
         if (!cacheFile.exists()) cacheFile.createNewFile();
         FileInputStream inputStream = new FileInputStream(cacheFile);
         Scanner s = new Scanner(inputStream);
@@ -54,9 +55,9 @@ public class Cache {
         return text;
     }
 
-    public boolean Delete() throws IOException {
+    public boolean delete() throws IOException {
         File cacheDir = getCacheDir(context);
-        File file = new File(cacheDir, "mapInfoSearchHistory.txt");
+        File file = new File(cacheDir, cacheFileName);
         file.delete();
         return cacheDir.delete();
     }

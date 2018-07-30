@@ -1,14 +1,41 @@
 package com.limefriends.molde.menu_map.entity;
 
-public class MoldeMyFavoriteEntity {
+import java.io.Serializable;
+
+public class MoldeMyFavoriteEntity implements Serializable {
+    private String mapLat;
+    private String mapLng;
     private String myFavoriteTitle;
     private String myFavoriteInfo;
-    private boolean myFavoriteToggle;
 
-    public MoldeMyFavoriteEntity(String myFavoriteTitle, String myFavoriteInfo, boolean myFavoriteToggle) {
+    private boolean myFavoriteActive;
+
+    public MoldeMyFavoriteEntity() { }
+
+    public MoldeMyFavoriteEntity(String mapLat, String mapLng,
+                                 String myFavoriteTitle, String myFavoriteInfo,
+                                 boolean myFavoriteActive) {
+        this.mapLat = mapLat;
+        this.mapLng = mapLng;
         this.myFavoriteTitle = myFavoriteTitle;
         this.myFavoriteInfo = myFavoriteInfo;
-        this.myFavoriteToggle = myFavoriteToggle;
+        this.myFavoriteActive = myFavoriteActive;
+    }
+
+    public String getMapLat() {
+        return mapLat;
+    }
+
+    public void setMapLat(String mapLat) {
+        this.mapLat = mapLat;
+    }
+
+    public String getMapLng() {
+        return mapLng;
+    }
+
+    public void setMapLng(String mapLng) {
+        this.mapLng = mapLng;
     }
 
     public String getMyFavoriteTitle() {
@@ -27,11 +54,16 @@ public class MoldeMyFavoriteEntity {
         this.myFavoriteInfo = myFavoriteInfo;
     }
 
-    public boolean isMyFavoriteToggle() {
-        return myFavoriteToggle;
+    public boolean isMyFavoriteActive() {
+        return myFavoriteActive;
     }
 
-    public void setMyFavoriteToggle(boolean myFavoriteToggle) {
-        this.myFavoriteToggle = myFavoriteToggle;
+    public void setMyFavoriteActive(boolean myFavoriteActive) {
+        this.myFavoriteActive = myFavoriteActive;
+    }
+
+    @Override
+    public String toString() {
+        return "제목 : " + myFavoriteTitle + ", 정보 : " + myFavoriteInfo;
     }
 }

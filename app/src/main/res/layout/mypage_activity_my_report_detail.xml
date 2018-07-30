@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
         <RelativeLayout
             android:id="@+id/mypage_detail_report_layout"
             android:layout_width="match_parent"
@@ -64,7 +63,7 @@
                 android:layout_below="@+id/mypage_detail_report_image_container"
                 android:layout_marginEnd="24dp"
                 android:layout_marginStart="90dp"
-                android:text="테스트 위치 asdfasdfsdfasdfasdfasdfasdfasdfasdf"
+                android:text="테스트 위치 asdfasdfsdfasdfasdf"
                 android:textColor="@color/colorDefaultText"
                 android:textSize="14sp"
                 android:textStyle="bold" />

@@ -26,7 +26,7 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.limefriends.molde.MoldeApplication;
 import com.limefriends.molde.R;
-import com.limefriends.molde.menu_map.search.MoldeSearchMapInfoActivity;
+import com.limefriends.molde.menu_map.search.SearchMapInfoActivity;
 import com.limefriends.molde.menu_map.camera_manager.MoldeReportCameraActivity;
 import com.limefriends.molde.menu_map.entity.MoldeReportEntity;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapHistoryEntity;
@@ -301,7 +301,7 @@ public class MoldeReportActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(getApplicationContext(), MoldeSearchMapInfoActivity.class);
+                intent.setClass(getApplicationContext(), SearchMapInfoActivity.class);
                 intent.putExtra("activity", "Report");
                 intent.putExtra("reportContent", report_content.getText().toString());
                 intent.putExtra("reportDetailAddress", detail_address.getText().toString());
@@ -443,7 +443,7 @@ public class MoldeReportActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        MoldeSearchMapInfoActivity.checkBackPressed = true;
+        SearchMapInfoActivity.isCheckBackPressed = true;
         imageSparseArray.clear();
         imageSparseArray = null;
         finish();

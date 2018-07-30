@@ -48,15 +48,16 @@ import com.limefriends.molde.MoldeApplication;
 import com.limefriends.molde.R;
 import com.limefriends.molde.MoldeMainActivity;
 import com.limefriends.molde.menu_feed.entity.MoldeFeedEntity;
-import com.limefriends.molde.menu_map.callback_method.MoldeMapReportPagerAdapterCallback;
+import com.limefriends.molde.menu_map.callback_method.MapReportPagerAdapterCallback;
 //import com.limefriends.molde.menu_map.entity.MoldeSearchMapClusterEntity;
+import com.limefriends.molde.menu_map.entity.MoldeMyFavoriteEntity;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapHistoryEntity;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapInfoEntity;
 import com.limefriends.molde.menu_map.favorite.MoldeMyFavoriteActivity;
 import com.limefriends.molde.menu_map.favorite.MoldeMyFavoriteInfoMapDialog;
 import com.limefriends.molde.menu_map.report.MoldeReportActivity;
 import com.limefriends.molde.menu_map.reportcard.*;
-import com.limefriends.molde.menu_map.search.MoldeSearchMapInfoActivity;
+import com.limefriends.molde.menu_map.search.SearchMapInfoActivity;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -65,10 +66,10 @@ import java.util.StringTokenizer;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MoldeMapFragment extends Fragment
+public class MapFragment extends Fragment
         implements OnMapReadyCallback,
         MoldeMainActivity.onKeyBackPressedListener,
-        MoldeMapReportPagerAdapterCallback,
+        MapReportPagerAdapterCallback,
         MoldeMyFavoriteInfoMapDialog.MoldeApplyMyFavoriteInfoCallback {
     //맵 구성
     @BindView(R.id.map_ui)
@@ -111,8 +112,8 @@ public class MoldeMapFragment extends Fragment
     private static GoogleMap mMap;
     private String lat = "0.0";
     private String lng = "0.0";
-    private String searchName = "";
-    private String telNo = "";
+    private String searchTitle = "";
+    private String searchInfo = "";
     private int moveCnt = 0;
     private boolean isBackBtnClicked = false;
     private boolean isInit = false;
@@ -137,11 +138,11 @@ public class MoldeMapFragment extends Fragment
     public boolean isGpsEnable = false;
     public ArrayList<Long> beforeCallApplyMethodTimeList;
     public static SparseArrayCompat mapFragmentSparseArrayCompat;
+    public static boolean isMyFavoriteActive = false;
 
-
-    public static MoldeMapFragment newInstance() {
+    public static MapFragment newInstance() {
         mapFragmentSparseArrayCompat = new SparseArrayCompat();
-        return new MoldeMapFragment();
+        return new MapFragment();
     }
 
     @Override
@@ -209,8 +210,8 @@ public class MoldeMapFragment extends Fragment
             public void onClick(View view) {
                 Toast.makeText(getContext(), "검색 창으로 이동", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent();
-                intent.setClass(getContext(), MoldeSearchMapInfoActivity.class);
-                intent.putExtra("searchName", searchName);
+                intent.setClass(getContext(), SearchMapInfoActivity.class);
+                intent.putExtra("searchTitle", searchTitle);
                 startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
             }
         });
@@ -237,7 +238,7 @@ public class MoldeMapFragment extends Fragment
             public void onClick(View view) {
                 Toast.makeText(getContext(), "위치 가져오기 기능", Toast.LENGTH_LONG).show();
                 loc_search_input.setText(R.string.search);
-                searchName = "검색하기";
+                searchTitle = "검색하기";
                 isMyLocChange = true;
                 getMyLocation();
             }
@@ -299,7 +300,7 @@ public class MoldeMapFragment extends Fragment
             );
             Log.e("feedData", feedData.toString());
         }
-        if (searchName.equals("검색하기")) {
+        if (searchTitle.equals("검색하기")) {
             map_view_progress.setVisibility(View.INVISIBLE);
             report_card_view_layout.bringToFront();
             report_card_view_layout.setVisibility(View.VISIBLE);
@@ -312,40 +313,53 @@ public class MoldeMapFragment extends Fragment
             }
         }
         if (getActivity() != null && getActivity() instanceof MoldeMainActivity) {
-            MoldeSearchMapInfoEntity entity = ((MoldeMainActivity) getActivity()).getMapInfoResultData();
+            MoldeSearchMapInfoEntity searchEntity = ((MoldeMainActivity) getActivity()).getMapInfoResultData();
             MoldeSearchMapHistoryEntity historyEntity = ((MoldeMainActivity) getActivity()).getMapHistoryResultData();
-            if (entity != null) {
+            MoldeMyFavoriteEntity myFavoriteEntity = ((MoldeMainActivity) getActivity()).getMyFavoriteEntity();
+            if (searchEntity != null) {
                 map_view_progress.setVisibility(View.INVISIBLE);
-                lat = entity.getMapLat();
-                lng = entity.getMapLng();
-                searchName = entity.getName();
-                telNo = entity.getTelNo();
-                loc_search_input.setText(searchName);
+                lat = searchEntity.getMapLat();
+                lng = searchEntity.getMapLng();
+                searchTitle = searchEntity.getName();
+                searchInfo = searchEntity.getMainAddress();
+                loc_search_input.setText(searchTitle);
                 report_card_view_layout.bringToFront();
                 report_card_view_layout.setVisibility(View.VISIBLE);
                 map_option_layout.setVisibility(View.INVISIBLE);
                 isInit = false;
-                if (!MoldeSearchMapInfoActivity.checkBackPressed && !isBackBtnClicked) {
+                if (!SearchMapInfoActivity.isCheckBackPressed && !isBackBtnClicked) {
                     //이곳에 좌표를 기준으로 검색 메서드를 추가해야함
                     moveCnt++;
                 }
-            } else if (entity == null && historyEntity != null) {
+            } else if (historyEntity != null) {
                 map_view_progress.setVisibility(View.INVISIBLE);
-                //Toast.makeText(getContext(), historyEntity.toString(), Toast.LENGTH_LONG).show();
                 lat = historyEntity.getMapLat();
                 lng = historyEntity.getMapLng();
-                searchName = historyEntity.getName();
-                telNo = historyEntity.getTelNo();
-                loc_search_input.setText(searchName);
+                searchTitle = historyEntity.getName();
+                searchInfo = historyEntity.getMainAddress();
+                loc_search_input.setText(searchTitle);
                 report_card_view_layout.bringToFront();
                 report_card_view_layout.setVisibility(View.VISIBLE);
                 map_option_layout.setVisibility(View.INVISIBLE);
                 isInit = false;
-                if (!MoldeSearchMapInfoActivity.checkBackPressed && !isBackBtnClicked) {
+                if (!SearchMapInfoActivity.isCheckBackPressed && !isBackBtnClicked) {
                     //이곳에 좌표를 기준으로 검색 메서드를 추가해야함
                     moveCnt++;
                 }
-
+            } else if(myFavoriteEntity != null) {
+                map_view_progress.setVisibility(View.INVISIBLE);
+                Log.e("즐겨찾기 정보", myFavoriteEntity.toString());
+                lat = myFavoriteEntity.getMapLat();
+                lng = myFavoriteEntity.getMapLng();
+                searchTitle = "★" + myFavoriteEntity.getMyFavoriteTitle();
+                searchInfo = myFavoriteEntity.getMyFavoriteInfo();
+                loc_search_input.setText(searchTitle);
+                report_card_view_layout.bringToFront();
+                report_card_view_layout.setVisibility(View.VISIBLE);
+                map_option_layout.setVisibility(View.INVISIBLE);
+                isInit = false;
+                isMyFavoriteActive = myFavoriteEntity.isMyFavoriteActive();
+                moveCnt++;
             }
         }
     }
@@ -388,9 +402,9 @@ public class MoldeMapFragment extends Fragment
         }
 
         LatLng moveLoc = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
-        if (!searchName.equals("")) {
-            if (searchName.charAt(searchName.length() - 1) == '동') {
-                StringTokenizer placeInfo = new StringTokenizer(searchName, " ");
+        if (!searchTitle.equals("")) {
+            if (searchTitle.charAt(searchTitle.length() - 1) == '동') {
+                StringTokenizer placeInfo = new StringTokenizer(searchTitle, " ");
                 String si = placeInfo.nextToken();
                 String gu = placeInfo.nextToken();
                 String dong = placeInfo.nextToken();
@@ -462,22 +476,24 @@ public class MoldeMapFragment extends Fragment
                         map_option_layout.setVisibility(View.VISIBLE);
                         isBackBtnClicked = true;
                         MoldeMyFavoriteInfoMapDialog moldeMyFavoriteInfoMapDialog = MoldeMyFavoriteInfoMapDialog.getInstance();
-                        moldeMyFavoriteInfoMapDialog.setCallback(MoldeMapFragment.this, marker);
+                        moldeMyFavoriteInfoMapDialog.setCallback(MapFragment.this, marker);
                         Bundle bundle = new Bundle();
                         bundle.putString("markerTitle", marker.getTitle().replace("★", ""));
                         bundle.putString("markerInfo", marker.getSnippet());
                         bundle.putDouble("markerLat", marker.getPosition().latitude);
                         bundle.putDouble("markerLng", marker.getPosition().longitude);
+                        bundle.putBoolean("myFavoriteActive", isMyFavoriteActive);
                         moldeMyFavoriteInfoMapDialog.setArguments(bundle);
                         moldeMyFavoriteInfoMapDialog.show(((MoldeMainActivity) getContext()).getSupportFragmentManager(), "bottomSheet");
                     } else {
                         MoldeMyFavoriteInfoMapDialog moldeMyFavoriteInfoMapDialog = MoldeMyFavoriteInfoMapDialog.getInstance();
-                        moldeMyFavoriteInfoMapDialog.setCallback(MoldeMapFragment.this, marker);
+                        moldeMyFavoriteInfoMapDialog.setCallback(MapFragment.this, marker);
                         Bundle bundle = new Bundle();
                         bundle.putString("markerTitle", marker.getTitle().replace("★", ""));
                         bundle.putString("markerInfo", marker.getSnippet());
                         bundle.putDouble("markerLat", marker.getPosition().latitude);
                         bundle.putDouble("markerLng", marker.getPosition().longitude);
+                        bundle.putBoolean("myFavoriteActive", isMyFavoriteActive);
                         moldeMyFavoriteInfoMapDialog.setArguments(bundle);
                         moldeMyFavoriteInfoMapDialog.show(((MoldeMainActivity) getContext()).getSupportFragmentManager(), "bottomSheet");
                     }
@@ -499,7 +515,7 @@ public class MoldeMapFragment extends Fragment
                     }
                 }
 
-                if (marker.getTitle().equals(searchName)) {
+                if (marker.getTitle().equals(searchTitle)) {
                     marker.setIcon(BitmapDescriptorFactory.fromBitmap(sizeUpMapIcon(R.drawable.my_location_icon)));
                     if (report_card_view_layout.getVisibility() == View.VISIBLE) {
                         Animation trans_to_down = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_down);
@@ -557,7 +573,7 @@ public class MoldeMapFragment extends Fragment
                     marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.my_location_icon));
                 } else if (marker.getTitle().startsWith("★")) {
                     marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_pick));
-                } else if (marker.getTitle().equals(searchName)) {
+                } else if (marker.getTitle().equals(searchTitle)) {
                     marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.my_location_icon));
                 } else if (feedData != null) {
                     if (marker.getTitle().equals(feedData.getReportFeedAddress())) {
@@ -675,7 +691,7 @@ public class MoldeMapFragment extends Fragment
 
         @Override
         public void onLocationChanged(Location location) {
-            if (searchName.equals("") || isMyLocChange == true) {
+            if (searchTitle.equals("") || isMyLocChange == true) {
                 /*if(System.currentTimeMillis() - gpsRequestTime > 3000){
                     Toast.makeText(getContext(), "건물 안에서는 더 오랜 시간이 걸립니다", Toast.LENGTH_SHORT).show();
                 }*/
@@ -777,8 +793,8 @@ public class MoldeMapFragment extends Fragment
         Marker newMarker = mMap.addMarker(
                 new MarkerOptions()
                         .position(moveLoc)
-                        .title(searchName)
-                        .snippet(telNo)
+                        .title(searchTitle)
+                        .snippet(searchInfo)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.my_location_icon))
         );
         newMarker.showInfoWindow();

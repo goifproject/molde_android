@@ -45,7 +45,7 @@
             android:theme="@style/AppNoBarTheme" />
         <!-- 지도 관련 -->
         <activity
-            android:name=".menu_map.search.MoldeSearchMapInfoActivity"
+            android:name=".menu_map.search.SearchMapInfoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity

@@ -1,9 +1,9 @@
 package com.limefriends.molde.menu_map.search;
 
 import com.limefriends.molde.R;
+import com.limefriends.molde.menu_map.callback_method.MapInfoAdapterCallback;
 import com.limefriends.molde.menu_map.search.searchPoi.SearchPoiParse;
 import com.limefriends.molde.menu_map.cache_manager.Cache;
-import com.limefriends.molde.menu_map.callback_method.MoldeMapInfoRecyclerViewAdapterCallback;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapInfoEntity;
 
 import android.content.Context;
@@ -17,22 +17,23 @@ import android.widget.ToggleButton;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class MoldeMapInfoRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MoldeMapInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ArrayList<MoldeSearchMapInfoEntity> infoList = new ArrayList<>();
-    private MoldeMapInfoRecyclerViewAdapterCallback callback;
+    private MapInfoAdapterCallback mapInfoAdapterCallback;
     private String keywordHistory;
     private Context context;
     private Cache cache;
     private String cmd;
 
-    public MoldeMapInfoRecyclerViewAdapter(Context context, String cmd) {
+    public MoldeMapInfoAdapter(Context context, String cmd) {
         this.context = context;
         this.cmd = cmd;
     }
@@ -107,17 +108,14 @@ public class MoldeMapInfoRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
                             + "|" + viewHolder.mainAddress
                             + "|" + viewHolder.bizName
                             + "|" + viewHolder.telNo + ",";
-                            cache.Write(keywordHistory);
+                            cache.write(keywordHistory);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
-                    //callback.showToast(viewHolder.mapLat + ", " + viewHolder.mapLng + " : " + viewHolder.bizName + " - " + viewHolder.telNo);
+                    //mapInfoAdapterCallback.showToast(viewHolder.mapLat + ", " + viewHolder.mapLng + " : " + viewHolder.bizName + " - " + viewHolder.telNo);
                     String[] keywordHistoryArray = keywordHistory.split(",");
-                    ArrayList<String> keywordHistoryList = new ArrayList<String>();
-                    for (int i = 0; i < keywordHistoryArray.length; i++) {
-                        keywordHistoryList.add(keywordHistoryArray[i]);
-                    }
+                    ArrayList<String> keywordHistoryList = new ArrayList<String>(Arrays.asList(keywordHistoryArray));
                     for (int i = 0; i < keywordHistoryList.size(); i++) {
                         if (keywordHistoryList.get(i).contains(viewHolder.mapLat + "|" + viewHolder.mapLng + "|" + viewHolder.name)) {
                             keywordHistoryList.remove(i);
@@ -127,7 +125,7 @@ public class MoldeMapInfoRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
                     for (int i = 0; i < keywordHistoryList.size(); i++) {
                         keywordHistory += keywordHistoryList.get(i) + ",";
                     }
-                    callback.applySearchMapInfo(
+                    mapInfoAdapterCallback.applySearchMapInfo(
                             new MoldeSearchMapInfoEntity(
                                     viewHolder.mapLat,
                                     viewHolder.mapLng,
@@ -138,9 +136,9 @@ public class MoldeMapInfoRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
                                     viewHolder.telNo
                             ), cmd
                     );
-                    MoldeSearchMapInfoActivity.checkBackPressed = false;
+                    SearchMapInfoActivity.isCheckBackPressed = false;
                     try {
-                        callback.writeSearchMapHistory(
+                        mapInfoAdapterCallback.writeSearchMapHistory(
                                 new MoldeSearchMapInfoEntity(
                                         viewHolder.mapLat,
                                         viewHolder.mapLng,
@@ -183,8 +181,8 @@ public class MoldeMapInfoRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
         this.infoList = itemLists;
     }
 
-    public void setCallback(MoldeMapInfoRecyclerViewAdapterCallback callback) {
-        this.callback = callback;
+    public void setMapInfoAdapterCallback(MapInfoAdapterCallback mapInfoAdapterCallback) {
+        this.mapInfoAdapterCallback = mapInfoAdapterCallback;
     }
 
     public void filter(String keyword, String keywordHistoryStr) {
@@ -193,9 +191,7 @@ public class MoldeMapInfoRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
             try {
                 SearchPoiParse parser = new SearchPoiParse(this);
                 infoList.addAll(parser.execute(keyword).get());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
+            } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
         }
