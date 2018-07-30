@@ -11,7 +11,7 @@
         android:id="@+id/head_guide"
         android:layout_width="match_parent"
         android:layout_height="222dp"
-        android:background="@color/colorMypageBG">
+        android:background="@color/colorAccent">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -160,7 +160,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@+id/mypage_faq_button"
-            android:background="@color/colorDiv"/>
+            android:background="@color/colorDivision"/>
 
         <Button
             android:id="@+id/mypage_log_in_out_button"

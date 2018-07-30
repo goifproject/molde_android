@@ -24,7 +24,7 @@ import com.limefriends.molde.R;
 import com.limefriends.molde.menu_feed.entity.MoldeFeedEntity;
 import com.limefriends.molde.menu_feed.entity.MoldeFeedResponseInfoEntityList;
 import com.limefriends.molde.menu_feed.feed.MoldeFeedRecyclerAdapter;
-import com.limefriends.molde.menu_map.MoldeMapFragment;
+import com.limefriends.molde.menu_map.MapFragment;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -249,7 +249,7 @@ public class MoldeFeedFragment extends Fragment
             navigation.setSelectedItemId(R.id.main_menu_map);
 
         } else {
-            ((MoldeMainActivity) getActivity()).replaceFragment(MoldeMapFragment.newInstance());
+            ((MoldeMainActivity) getActivity()).replaceFragment(MapFragment.newInstance());
             BottomNavigationView navigation = ((MoldeMainActivity) getActivity()).findViewById(R.id.navigation);
             navigation.setSelectedItemId(R.id.main_menu_map);
         }

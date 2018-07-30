@@ -1,79 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mypage_report_layout"
     android:layout_width="match_parent"
     android:layout_height="130dp"
     android:layout_marginTop="10dp"
     android:background="@color/colorWhite">
     
     <ImageView
-        android:id="@+id/myReport_map"
+        android:id="@+id/mypage_report_map"
         android:layout_width="136dp"
         android:layout_height="128dp"
         android:src="@drawable/report_map_img" />
 
-    <TextView
-        android:id="@+id/myReport_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="42dp"
-        android:layout_marginTop="24dp"
-        android:layout_toEndOf="@+id/myReport_map"
-        android:textSize="11sp"
-        android:textColor="#646464"
-        android:text="2018. 03. 02" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toEndOf="@id/mypage_report_map">
+        <TextView
+            android:id="@+id/mypage_report_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="42dp"
+            android:layout_marginTop="24dp"
+            android:textSize="11sp"
+            android:textColor="@color/colorInfoTextColor"
+            android:text="2018. 03. 02" />
 
-    <TextView
-        android:id="@+id/myReport_location"
-        android:layout_width="144dp"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/myReport_date"
-        android:layout_below="@+id/myReport_date"
-        android:layout_marginTop="7dp"
-        android:text="서울시 마포구 와우산로 92 체육관 2층 여자화장실 3번째 칸"
-        android:textColor="#646464"
-        android:textSize="11sp" />
+        <TextView
+            android:id="@+id/mypage_report_location"
+            android:layout_width="144dp"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/mypage_report_date"
+            android:layout_below="@+id/mypage_report_date"
+            android:layout_marginTop="8dp"
+            android:text="서울시 마포구 와우산로 92 체육관 2층 여자화장실 3번째 칸"
+            android:textColor="@color/colorInfoTextColor"
+            android:textSize="11sp" />
 
-    <SeekBar
-        android:layout_width="144dp"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/myReport_map"
-        android:layout_marginLeft="41dp"
-        android:layout_below="@+id/myReport_location" />
+        <RelativeLayout
+            android:layout_width="196dp"
+            android:layout_height="2dp"
+            android:layout_below="@id/mypage_report_location"
+            android:layout_alignStart="@+id/mypage_report_not_ing"
+            android:layout_marginTop="13dp">
+            <View
+                android:id="@+id/report_progress_first"
+                android:layout_width="100dp"
+                android:layout_height="2dp"
+                android:background="@color/colorDivision"/>
+            <View
+                android:id="@+id/report_progress_second"
+                android:layout_width="100dp"
+                android:layout_height="2dp"
+                android:background="@color/colorDivision"
+                android:layout_toEndOf="@+id/report_progress_first"/>
+        </RelativeLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/myReport_map"
-        android:layout_marginLeft="33dp"
-        android:layout_below="@+id/myReport_location"
-        android:layout_marginTop="15dp"
-        android:textSize="8sp"
-        android:textColor="#646464"
-        android:text="접수중" />
+        <RelativeLayout
+            android:id="@+id/mypage_report_ing"
+            android:layout_width="200dp"
+            android:layout_height="12dp"
+            android:layout_below="@id/mypage_report_location"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="8dp">
+            <ImageView
+                android:id="@+id/mypage_detail_report_ing_first"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:src="@drawable/ic_mypage_detail_ing" />
+            <ImageView
+                android:id="@+id/mypage_detail_report_ing_second"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_mypage_detail_ing" />
+            <ImageView
+                android:id="@+id/mypage_detail_report_ing_third"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_mypage_detail_ing" />
+        </RelativeLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/myReport_map"
-        android:layout_marginLeft="102dp"
-        android:layout_below="@+id/myReport_location"
-        android:layout_marginTop="15dp"
-        android:textSize="8sp"
-        android:textColor="#646464"
-        android:text="접수완료" />
+        <RelativeLayout
+            android:id="@+id/mypage_report_not_ing"
+            android:layout_width="196dp"
+            android:layout_height="8dp"
+            android:layout_below="@id/mypage_report_location"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="2dp">
+            <ImageView
+                android:id="@+id/mypage_detail_report_not_ing_first"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:src="@drawable/ic_mypage_detail_not_ing"/>
+            <ImageView
+                android:id="@+id/mypage_detail_report_not_ing_second"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_mypage_detail_not_ing" />
+            <ImageView
+                android:id="@+id/mypage_detail_report_not_ing_third"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_mypage_detail_not_ing" />
+        </RelativeLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/myReport_map"
-        android:layout_marginLeft="172dp"
-        android:layout_below="@+id/myReport_location"
-        android:layout_marginTop="15dp"
-        android:textSize="8sp"
-        android:textColor="#d8d8d8"
-        android:text="접수결과" />
-
-
+        <RelativeLayout
+            android:layout_width="212dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_below="@+id/mypage_report_ing"
+            android:layout_centerInParent="true">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="8sp"
+                android:text="접수중"
+                android:layout_alignParentStart="true"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="8sp"
+                android:text="접수완료"
+                android:layout_centerInParent="true"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="8sp"
+                android:text="접수결과"
+                android:layout_alignParentEnd="true"/>
+        </RelativeLayout>
+    </RelativeLayout>
 </RelativeLayout>

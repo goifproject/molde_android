@@ -19,7 +19,7 @@
         android:layout_marginEnd="56dp" />
 
     <Button
-        android:id="@+id/gallery_done_button"
+        android:id="@+id/done_button"
         android:layout_width="48dp"
         android:layout_height="wrap_content"
         android:text="확인"

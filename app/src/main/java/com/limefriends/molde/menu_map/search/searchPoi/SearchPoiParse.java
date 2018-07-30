@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.limefriends.molde.menu_map.search.MoldeMapInfoRecyclerViewAdapter;
+import com.limefriends.molde.menu_map.search.MoldeMapInfoAdapter;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapInfoEntity;
 
 import java.io.BufferedReader;
@@ -20,9 +20,9 @@ public class SearchPoiParse extends AsyncTask<String, Void, ArrayList<MoldeSearc
     private final String TMAP_API_KEY = "846fd0ff-fac4-4e07-9c7c-1950cc0131dd";
     private final int SEARCH_COUNT = 20;  // minimum is 20
     private ArrayList<MoldeSearchMapInfoEntity> searchMapListData;
-    private MoldeMapInfoRecyclerViewAdapter mAdapter;
+    private MoldeMapInfoAdapter mAdapter;
 
-    public SearchPoiParse(MoldeMapInfoRecyclerViewAdapter adapter) {
+    public SearchPoiParse(MoldeMapInfoAdapter adapter) {
         this.mAdapter = adapter;
         searchMapListData = new ArrayList<MoldeSearchMapInfoEntity>();
     }

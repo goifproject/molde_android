@@ -1,40 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.limefriends.molde.menu_map.camera_manager.MoldeReportCheckImage"
+    tools:context="com.limefriends.molde.menu_map.camera_manager.MoldeReportCheckImageActivity"
     android:background="@color/colorDeepDarkGray">
 
     <ImageView
         android:id="@+id/report_check_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_gravity="bottom"
-        android:gravity="center">
-        <ImageButton
-            android:id="@+id/report_check_ok_button"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:scaleType="fitXY"
-            android:background="@android:color/transparent"
-            app:srcCompat="@android:drawable/checkbox_on_background"/>
-
-        <ImageButton
-            android:id="@+id/report_check_cancel_button"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_toRightOf="@id/report_check_ok_button"
-            android:background="@android:color/transparent"
-            android:scaleType="fitXY"
-            app:srcCompat="@android:drawable/btn_dialog" />
-    </RelativeLayout>
 
 </FrameLayout>

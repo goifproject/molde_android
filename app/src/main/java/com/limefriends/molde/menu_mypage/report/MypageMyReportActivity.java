@@ -23,12 +23,12 @@ public class MypageMyReportActivity extends AppCompatActivity {
     RecyclerView myReport_recyclerView;
 
     MyPageMyReportAdapter adapter;
-    List<MyPageMyReportEntity> myReportElemList;
+    List<MyPageMyReportEntity> myReportEntityList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_molde_mypage_my_report);
+        setContentView(R.layout.mypage_activity_my_report);
 
         ButterKnife.bind(this);
 
@@ -37,28 +37,26 @@ public class MypageMyReportActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
         TextView toolbar_title = getSupportActionBar().getCustomView().findViewById(R.id.toolbar_title);
         toolbar_title.setText("내 신고 내역");
 
 
-        myReportElemList = new ArrayList<MyPageMyReportEntity>();
+        myReportEntityList = new ArrayList<MyPageMyReportEntity>();
 
-        myReportElemList.add(new MyPageMyReportEntity(R.drawable.report_map_img,
+        myReportEntityList.add(new MyPageMyReportEntity(R.drawable.report_map_img,
                 "2018. 03. 01", "서울시 마포구 와우산로 92 체육관 2층 여자화장실 1번째 칸"));
 
-        myReportElemList.add(new MyPageMyReportEntity(R.drawable.report_map_img,
+        myReportEntityList.add(new MyPageMyReportEntity(R.drawable.report_map_img,
                 "2018. 03. 02", "서울시 마포구 와우산로 92 체육관 2층 여자화장실 2번째 칸"));
 
-        myReportElemList.add(new MyPageMyReportEntity(R.drawable.report_map_img,
+        myReportEntityList.add(new MyPageMyReportEntity(R.drawable.report_map_img,
                 "2018. 03. 03", "서울시 마포구 와우산로 92 체육관 2층 여자화장실 3번째 칸"));
 
-        myReportElemList.add(new MyPageMyReportEntity(R.drawable.report_map_img,
+        myReportEntityList.add(new MyPageMyReportEntity(R.drawable.report_map_img,
                 "2018. 03. 04", "서울시 마포구 와우산로 92 체육관 2층 여자화장실 4번째 칸"));
 
 
-        adapter = new MyPageMyReportAdapter(getApplicationContext(),
-                R.layout.activity_molde_mypage_my_report, myReportElemList);
+        adapter = new MyPageMyReportAdapter(getApplicationContext(), myReportEntityList);
 
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());

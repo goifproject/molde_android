@@ -34,12 +34,14 @@
 
             <ImageButton
                 android:id="@+id/first_iamge_delete_button"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
+                android:visibility="invisible"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_gravity="right"
                 android:layout_marginEnd="2dp"
                 android:layout_marginTop="2dp"
-                android:visibility="invisible"
+                android:background="@drawable/frame_rounded"
+                android:backgroundTint="@color/colorDivision"
                 android:src="@drawable/ic_image_delete" />
         </FrameLayout>
         <FrameLayout
@@ -57,11 +59,13 @@
             <ImageButton
                 android:id="@+id/second_iamge_delete_button"
                 android:visibility="invisible"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_gravity="right"
-                android:layout_marginTop="2dp"
                 android:layout_marginEnd="2dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/frame_rounded"
+                android:backgroundTint="@color/colorDivision"
                 android:src="@drawable/ic_image_delete"/>
         </FrameLayout>
         <FrameLayout
@@ -79,11 +83,13 @@
             <ImageButton
                 android:id="@+id/third_iamge_delete_button"
                 android:visibility="invisible"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_gravity="right"
-                android:layout_marginTop="2dp"
                 android:layout_marginEnd="2dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/frame_rounded"
+                android:backgroundTint="@color/colorDivision"
                 android:src="@drawable/ic_image_delete" />
         </FrameLayout>
         <FrameLayout
@@ -101,11 +107,13 @@
             <ImageButton
                 android:id="@+id/forth_iamge_delete_button"
                 android:visibility="invisible"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_gravity="right"
-                android:layout_marginTop="2dp"
                 android:layout_marginEnd="2dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/frame_rounded"
+                android:backgroundTint="@color/colorDivision"
                 android:src="@drawable/ic_image_delete" />
         </FrameLayout>
         <FrameLayout
@@ -123,11 +131,13 @@
             <ImageButton
                 android:id="@+id/fifth_iamge_delete_button"
                 android:visibility="invisible"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_gravity="right"
-                android:layout_marginTop="2dp"
                 android:layout_marginEnd="2dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/frame_rounded"
+                android:backgroundTint="@color/colorDivision"
                 android:src="@drawable/ic_image_delete" />
         </FrameLayout>
 
@@ -207,7 +217,7 @@
         android:layout_height="24dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_below="@+id/report_loc_bar"
         android:background="@drawable/frame_gray_rounded">
         <TextView
@@ -236,11 +246,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="답변받을 이메일"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:layout_below="@+id/detail_address_content"/>
 
     <RelativeLayout
@@ -248,7 +258,7 @@
         android:layout_height="24dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/frame_gray_rounded"
         android:layout_below="@+id/reply_email_title">
         <EditText

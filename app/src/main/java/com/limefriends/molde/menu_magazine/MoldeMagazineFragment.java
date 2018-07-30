@@ -1,6 +1,5 @@
 package com.limefriends.molde.menu_magazine;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,8 +12,8 @@ import android.widget.LinearLayout;
 
 import com.limefriends.molde.MoldeMainActivity;
 import com.limefriends.molde.R;
-import com.limefriends.molde.menu_magazine.cardnews.CardNewsAdapter;
-import com.limefriends.molde.menu_magazine.entity.CardnewsEntity;
+import com.limefriends.molde.menu_magazine.cardnews.MagazineCardNewsAdapter;
+import com.limefriends.molde.menu_magazine.entity.CardNewsEntity;
 import com.limefriends.molde.menu_magazine.magazineReport.MagazineReportLocationDetailActivity;
 import com.limefriends.molde.menu_magazine.magazineReport.MagazineReportMolcaDetailActivity;
 import com.limefriends.molde.menu_magazine.magazineReport.MagazineReportSpreadDetailActivity;
@@ -36,12 +35,7 @@ public class MoldeMagazineFragment extends Fragment implements MoldeMainActivity
     @BindView(R.id.manual_for_spreading)
     LinearLayout manual_for_spreading;
 
-    private CardNewsAdapter cardNewsAdapter;
-    private List<CardnewsEntity> cardnewsDataList;
-
-
     public MoldeMagazineFragment(){}
-
 
     public static MoldeMagazineFragment newInstance() {
         MoldeMagazineFragment fragment = new MoldeMagazineFragment();
@@ -101,40 +95,27 @@ public class MoldeMagazineFragment extends Fragment implements MoldeMainActivity
         });
 
 
-        cardnewsDataList = new ArrayList<CardnewsEntity>();
-        cardnewsDataList.add(new CardnewsEntity(R.drawable.img_cardnews_dummy, "카드뉴스1"));
-        cardnewsDataList.add(new CardnewsEntity(R.drawable.img_cardnews_dummy, "카드뉴스2"));
-        cardnewsDataList.add(new CardnewsEntity(R.drawable.img_cardnews_dummy, "카드뉴스3"));
-        cardnewsDataList.add(new CardnewsEntity(R.drawable.img_cardnews_dummy, "카드뉴스4"));
-        cardnewsDataList.add(new CardnewsEntity(R.drawable.img_cardnews_dummy, "카드뉴스5"));
-        cardnewsDataList.add(new CardnewsEntity(R.drawable.img_cardnews_dummy, "카드뉴스6"));
-        cardnewsDataList.add(new CardnewsEntity(R.drawable.img_cardnews_dummy, "카드뉴스7"));
-        cardnewsDataList.add(new CardnewsEntity(R.drawable.img_cardnews_dummy, "카드뉴스8"));
-        cardnewsDataList.add(new CardnewsEntity(R.drawable.img_cardnews_dummy, "카드뉴스9"));
-        cardnewsDataList.add(new CardnewsEntity(R.drawable.img_cardnews_dummy, "카드뉴스10"));
+        List<CardNewsEntity> cardnewsDataList = new ArrayList<CardNewsEntity>();
+        cardnewsDataList.add(new CardNewsEntity(R.drawable.img_cardnews_dummy, "카드뉴스1"));
+        cardnewsDataList.add(new CardNewsEntity(R.drawable.img_cardnews_dummy, "카드뉴스2"));
+        cardnewsDataList.add(new CardNewsEntity(R.drawable.img_cardnews_dummy, "카드뉴스3"));
+        cardnewsDataList.add(new CardNewsEntity(R.drawable.img_cardnews_dummy, "카드뉴스4"));
+        cardnewsDataList.add(new CardNewsEntity(R.drawable.img_cardnews_dummy, "카드뉴스5"));
+        cardnewsDataList.add(new CardNewsEntity(R.drawable.img_cardnews_dummy, "카드뉴스6"));
+        cardnewsDataList.add(new CardNewsEntity(R.drawable.img_cardnews_dummy, "카드뉴스7"));
+        cardnewsDataList.add(new CardNewsEntity(R.drawable.img_cardnews_dummy, "카드뉴스8"));
+        cardnewsDataList.add(new CardNewsEntity(R.drawable.img_cardnews_dummy, "카드뉴스9"));
+        cardnewsDataList.add(new CardNewsEntity(R.drawable.img_cardnews_dummy, "카드뉴스10"));
 
 
-        cardNewsAdapter = new CardNewsAdapter(getContext(), R.layout.magazine_item_cardnews_recycler, cardnewsDataList);
-        cardnews_recyclerView.setAdapter(cardNewsAdapter);
+        MagazineCardNewsAdapter magazineCardNewsAdapter = new MagazineCardNewsAdapter(getContext(), cardnewsDataList);
+        cardnews_recyclerView.setAdapter(magazineCardNewsAdapter);
 
         return rootView;
     }
 
-
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-
-    }
-
     @Override
     public void onBackKey() {
+
     }
 }

@@ -10,8 +10,7 @@ import android.widget.TextView;
 
 import com.limefriends.molde.MoldeMainActivity;
 import com.limefriends.molde.R;
-import com.limefriends.molde.menu_map.report.MoldeReportMapDialog;
-import com.limefriends.molde.menu_map.callback_method.MoldeMapReportPagerAdapterCallback;
+import com.limefriends.molde.menu_map.callback_method.MapReportPagerAdapterCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ public class ReportCardPagerAdapter extends PagerAdapter implements ReportCardAd
 
     private List<CardView> reportCardViewList;
     private List<ReportCardItem> reportCardDataList;
-    private MoldeMapReportPagerAdapterCallback callback;
+    private MapReportPagerAdapterCallback callback;
     private float mBaseElevation;
     private Context context;
 
@@ -73,7 +72,7 @@ public class ReportCardPagerAdapter extends PagerAdapter implements ReportCardAd
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
         View view = LayoutInflater.from(container.getContext())
-                .inflate(R.layout.map_report_card, container, false);
+                .inflate(R.layout.map_report_card_item, container, false);
         ButterKnife.bind(this, view);
         notifyDataSetChanged();
         container.addView(view);
@@ -87,9 +86,9 @@ public class ReportCardPagerAdapter extends PagerAdapter implements ReportCardAd
         reportCardViewList.get(position).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MoldeReportMapDialog moldeReportMapDialog = MoldeReportMapDialog.getInstance();
-                moldeReportMapDialog.show(((MoldeMainActivity) context).getSupportFragmentManager(),"bottomSheet");
-                moldeReportMapDialog.setData(reportCardDataList.get(position));
+                MoldeReportCardMapDialog moldeReportCardMapDialog = MoldeReportCardMapDialog.getInstance();
+                moldeReportCardMapDialog.show(((MoldeMainActivity) context).getSupportFragmentManager(),"bottomSheet");
+                moldeReportCardMapDialog.setData(reportCardDataList.get(position));
             }
         });
         return view;
@@ -106,7 +105,7 @@ public class ReportCardPagerAdapter extends PagerAdapter implements ReportCardAd
         contentTextView.setText(item.getText());
     }
 
-    public void setCallback(MoldeMapReportPagerAdapterCallback callback) {
+    public void setCallback(MapReportPagerAdapterCallback callback) {
         this.callback = callback;
     }
 

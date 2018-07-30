@@ -314,7 +314,7 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
         mediaScanIntent.setData(Uri.fromFile(file));
         sendBroadcast(mediaScanIntent);
         Intent intent = new Intent();
-        intent.setClass(getApplicationContext(), MoldeReportCheckImage.class);
+        intent.setClass(getApplicationContext(), MoldeReportCheckImageActivity.class);
         intent.putExtra("imagePath", Uri.fromFile(file));
         intent.putExtra("imageSeq", imageSeq);
         intent.putExtra("reportContent", reportContent);
@@ -378,7 +378,7 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
         protected Void doInBackground(byte[]... data) {
             FileOutputStream outStream = null;
 
-            // Write to SD Card
+            // write to SD Card
             try {
                 File sdCard = Environment.getExternalStorageDirectory();
                 File dir = new File(sdCard.getAbsolutePath() + "/molde_report_image");

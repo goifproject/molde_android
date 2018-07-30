@@ -28,7 +28,7 @@ public class MoldeMyPageMyCommentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_molde_my_page_my_comment);
+        setContentView(R.layout.mypage_activity_my_comment);
 
         ButterKnife.bind(this);
 
@@ -65,7 +65,7 @@ public class MoldeMyPageMyCommentActivity extends AppCompatActivity {
                 "세상에… 이런일이 다 있네요 ㅠㅠ"));
 
         adapter = new MoldeMyPageMyCommentAdapter(getApplicationContext(),
-                R.layout.activity_molde_my_page_my_comment, myPageMyCommentEntityList);
+                R.layout.mypage_activity_my_comment, myPageMyCommentEntityList);
 
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());

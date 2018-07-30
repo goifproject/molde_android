@@ -18,33 +18,34 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:largeHeap="true">
+        android:supportsRtl="true">
         <activity
             android:name=".MoldeSplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".molde_tutorial.MoldeTutorialActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppNoBarTheme"/>
+            android:theme="@style/AppNoBarTheme" />
         <activity
             android:name=".molde_sub_desc.MoldeSubDescActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppNoBarTheme"/>
+            android:theme="@style/AppNoBarTheme" />
         <activity
             android:name=".MoldeMainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <!-- 지도 관련 -->
         <activity
-            android:name=".menu_map.search.MoldeSearchMapInfoActivity"
+            android:name=".menu_map.search.SearchMapInfoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
@@ -64,9 +65,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".menu_map.camera_manager.MoldeReportCheckImage"
+            android:name=".menu_map.camera_manager.MoldeReportCheckImageActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppNoBarTheme" />
+            android:theme="@style/AppTheme" />
 
         <!-- 매거진 관련 -->
         <activity
@@ -82,11 +83,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".menu_magazine.cardnews.CardnewsDetailActivity"
+            android:name=".menu_magazine.cardnews.MagazineCardnewsDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".menu_magazine.comment.CommentActivity"
+            android:name=".menu_magazine.comment.MagazineCommentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
 
@@ -107,6 +108,9 @@
             android:name=".menu_mypage.report.MypageMyReportActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
+        <activity android:name=".menu_mypage.report.MyPageMyReportDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".menu_mypage.comment.MoldeMyPageMyCommentActivity"
             android:screenOrientation="portrait"
@@ -141,6 +145,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/my_favorite_layout"
+    android:layout_width="match_parent"
+    android:layout_height="104dp"
+    android:layout_below="@+id/my_favorite_header"
+    android:layout_marginBottom="4dp"
+    android:layout_marginTop="4dp"
+    android:background="@color/colorWhite">
+
+    <ImageView
+        android:id="@+id/my_favorite_view_new"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_new"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/my_favorite_view_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginStart="36dp"
+        android:text="건물이름"
+        android:textColor="@color/colorInfoTextColor"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_below="@id/my_favorite_view_new"/>
+
+    <TextView
+        android:id="@+id/my_favorite_view_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/my_favorite_view_title"
+        android:layout_marginStart="36dp"
+        android:text="세부주소"
+        android:textColor="@color/colorInfoTextColor"
+        android:textSize="12sp"
+        android:textStyle="normal" />
+
+    <ToggleButton
+        android:id="@+id/my_favorite_view_toggle"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/ic_star_on"
+        android:checked="true"
+        android:scaleType="fitXY"
+        android:textOff=""
+        android:textOn="" />
+</RelativeLayout>
