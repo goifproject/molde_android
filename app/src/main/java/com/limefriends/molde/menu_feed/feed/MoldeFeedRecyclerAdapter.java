@@ -147,15 +147,16 @@ public class MoldeFeedRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
             });
             viewHolder.feed_content.setElevation(12);
             viewHolder.feed_address.setText(reportFeedList.get(position).getReportFeedAddress());
+            viewHolder.feed_detail_address.setText(reportFeedList.get(position).getReportFeedDetailAddress());
             viewHolder.feed_date.setText(reportFeedList.get(position).getReportFeedDate());
             switch (reportFeedList.get(position).getReportFeedMarkerId()) {
-                case 1:
+                case 0:
                     viewHolder.feed_state.setImageResource(R.drawable.ic_marker_red);
                     break;
-                case 2:
+                case 1:
                     viewHolder.feed_state.setImageResource(R.drawable.ic_marker_green);
                     break;
-                case 3:
+                case 2:
                     viewHolder.feed_state.setImageResource(R.drawable.ic_marker_white);
                     break;
             }

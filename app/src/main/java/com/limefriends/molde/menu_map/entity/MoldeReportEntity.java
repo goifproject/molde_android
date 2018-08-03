@@ -1,30 +1,26 @@
 package com.limefriends.molde.menu_map.entity;
 
-import java.io.File;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 public class MoldeReportEntity implements Serializable {
     private String userId;
     private String userName;
-    private String userEmail;
     private int reportState;
-    private List<File> reportImageList;
     private String reportContent;
     private String reportAddress;
     private String reportDetailAddress;
+    private String userEmail;
     private String reportLat;
     private String reportLng;
     private Date reportDate;
 
-    public MoldeReportEntity(String userId, String userName, int reportState, List<File> reportImageList,
+    public MoldeReportEntity(String userId, String userName, int reportState,
                              String reportContent, String reportAddress, String reportDetailAddress,
                              String userEmail, String reportLat, String reportLng, Date reportDate) {
         this.userId = userId;
         this.userName = userName;
         this.reportState = reportState;
-        this.reportImageList = reportImageList;
         this.reportContent = reportContent;
         this.reportAddress = reportAddress;
         this.reportDetailAddress = reportDetailAddress;
@@ -56,14 +52,6 @@ public class MoldeReportEntity implements Serializable {
 
     public void setReportState(int reportState) {
         this.reportState = reportState;
-    }
-
-    public List<File> getReportImageList() {
-        return reportImageList;
-    }
-
-    public void setReportImageList(List<File> reportImageList) {
-        this.reportImageList = reportImageList;
     }
 
     public String getReportContent() {

@@ -10,7 +10,6 @@ public class MoldeFeedEntity {
     private String reportFeedDate;
     private LatLng reportFeedLocation;
 
-    public MoldeFeedEntity(){}
 
     public MoldeFeedEntity(String reportFeedAddress, String reportFeedDetailAddress,
                            int reportFeedMarkerId, String reportFeedThumbnail,

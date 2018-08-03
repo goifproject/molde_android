@@ -103,7 +103,7 @@ public class MapFragment extends Fragment
     Button request_gps_button;
 
     //신고 리스트 보여주는 리스트
-    @BindView(R.id.report_card_view_layout)
+    @BindView(R.id.report_card_view)
     FrameLayout report_card_view_layout;
     @BindView(R.id.report_card_view_pager)
     ViewPager report_card_view_pager;
@@ -699,6 +699,7 @@ public class MapFragment extends Fragment
                     lat = Double.toString(location.getLatitude());
                     lng = Double.toString(location.getLongitude());
                     LatLng myLocation = new LatLng(Double.valueOf(lat), Double.valueOf(lng));
+                    MoldeApplication.myLocation = myLocation;
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 17));
                     if (myMarker != null) {
                         myMarker.remove();

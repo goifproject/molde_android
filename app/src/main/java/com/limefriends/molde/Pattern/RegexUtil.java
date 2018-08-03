@@ -3,10 +3,6 @@ package com.limefriends.molde.Pattern;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by haams on 2018-01-22.
- */
-
 public class RegexUtil {
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);

@@ -20,11 +20,11 @@ import butterknife.ButterKnife;
 
 public class ReportCardPagerAdapter extends PagerAdapter implements ReportCardAdapter {
     @BindView(R.id.report_card_address)
-    TextView titleTextView;
+    TextView report_card_address;
     @BindView(R.id.report_card_detail_address)
-    TextView contentTextView;
-    @BindView(R.id.report_card_view_layout)
-    CardView cardView;
+    TextView report_card_detail_address;
+    @BindView(R.id.report_card_view)
+    CardView report_card_view;
 
     private List<CardView> reportCardViewList;
     private List<ReportCardItem> reportCardDataList;
@@ -78,10 +78,10 @@ public class ReportCardPagerAdapter extends PagerAdapter implements ReportCardAd
         container.addView(view);
         bind(reportCardDataList.get(position));
         if (mBaseElevation == 0) {
-            mBaseElevation = cardView.getCardElevation();
+            mBaseElevation = report_card_view.getCardElevation();
         }
-        cardView.setMaxCardElevation(mBaseElevation * MAX_ELEVATION_FACTOR);
-        reportCardViewList.set(position, cardView);
+        report_card_view.setMaxCardElevation(mBaseElevation * MAX_ELEVATION_FACTOR);
+        reportCardViewList.set(position, report_card_view);
 
         reportCardViewList.get(position).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +89,8 @@ public class ReportCardPagerAdapter extends PagerAdapter implements ReportCardAd
                 MoldeReportCardMapDialog moldeReportCardMapDialog = MoldeReportCardMapDialog.getInstance();
                 moldeReportCardMapDialog.show(((MoldeMainActivity) context).getSupportFragmentManager(),"bottomSheet");
                 moldeReportCardMapDialog.setData(reportCardDataList.get(position));
+
+
             }
         });
         return view;
@@ -101,8 +103,8 @@ public class ReportCardPagerAdapter extends PagerAdapter implements ReportCardAd
     }
 
     private void bind(ReportCardItem item) {
-        titleTextView.setText(item.getTitle());
-        contentTextView.setText(item.getText());
+        report_card_address.setText(item.getTitle());
+        report_card_detail_address.setText(item.getText());
     }
 
     public void setCallback(MapReportPagerAdapterCallback callback) {

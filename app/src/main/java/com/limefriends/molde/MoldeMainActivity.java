@@ -123,8 +123,6 @@ public class MoldeMainActivity extends AppCompatActivity {
             ((MapFragment) fragment).onPermissionCheck(requestCode, permissions, grantResults);
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-
     }
 
     public void replaceFragment(Fragment fm) {

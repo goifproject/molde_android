@@ -6,6 +6,7 @@ import android.content.Context;
 
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MoldeApplication extends Application {
@@ -15,6 +16,7 @@ public class MoldeApplication extends Application {
     public static GoogleSignInClient ggClient;
     public static LoginManager fbLoginManager;
     public static final String BASE_URL = "http://13.209.64.183:7019";
+    public static LatLng myLocation;
 
     @Override
     public void onCreate() {

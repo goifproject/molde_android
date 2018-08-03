@@ -22,12 +22,15 @@ import com.limefriends.molde.MoldeApplication;
 import com.limefriends.molde.MoldeMainActivity;
 import com.limefriends.molde.R;
 import com.limefriends.molde.menu_feed.entity.MoldeFeedEntity;
+import com.limefriends.molde.menu_feed.entity.MoldeFeedResponseInfoEntity;
 import com.limefriends.molde.menu_feed.entity.MoldeFeedResponseInfoEntityList;
 import com.limefriends.molde.menu_feed.feed.MoldeFeedRecyclerAdapter;
 import com.limefriends.molde.menu_map.MapFragment;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,7 +53,7 @@ public class MoldeFeedFragment extends Fragment
 
     private MoldeFeedRecyclerAdapter feedAdapter;
     private ArrayList<MoldeFeedEntity> reportFeedList;
-    private Handler mHandler;
+    private Handler handler;
 
     private static final String feedDistance = "거리순";
     private static final String feedLast = "최신순";
@@ -58,6 +61,7 @@ public class MoldeFeedFragment extends Fragment
     public String res;
     public static SparseArrayCompat feedFragmentSparseArrayCompat;
     public MoldeFeedResponseInfoEntityList feedResponseInfoEntityList;
+    public List<MoldeFeedResponseInfoEntity> feedResponseInfoList;
     public MoldeFeedEntity feedData;
 
     public static MoldeFeedFragment newInstance() {
@@ -104,21 +108,16 @@ public class MoldeFeedFragment extends Fragment
 
     private void loadData(String cmd) {
         try {
-            mHandler = new Handler(Looper.getMainLooper());
+            handler = new Handler(Looper.getMainLooper());
             reportFeedList.clear();
             if (cmd.equals(feedDistance)) {
-                feedRequestGet(MoldeApplication.BASE_URL + "/v1/report");
-            } else if (cmd.equals(feedLast)) {
-                for (int i = 1; i <= 20; i++) {
-                    reportFeedList.add(
-                            new MoldeFeedEntity(
-                            "최신순" + i, "",
-                            2, "http://via.placeholder.com/300.png", "",
-                            new LatLng(Double.valueOf("37.499597"), Double.valueOf("127.031372"))
-                            )
-                    );
+                if (MoldeApplication.myLocation != null) {
+                    feedRequestGet(MoldeApplication.BASE_URL + "/v1/pin?" + "reportLat=" + MoldeApplication.myLocation.latitude + "&reportLng=" + MoldeApplication.myLocation.longitude);
+                } else {
+                    feedRequestGet(MoldeApplication.BASE_URL + "/v1/pin");
                 }
-                feedAdapter.addAll(reportFeedList);
+            } else if (cmd.equals(feedLast)) {
+                feedRequestGet(MoldeApplication.BASE_URL + "/v1/pin");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -137,29 +136,19 @@ public class MoldeFeedFragment extends Fragment
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                res = response.body().string();
-                feedResponseInfoEntityList =
-                        new Gson().fromJson(res, MoldeFeedResponseInfoEntityList.class);
-
-                mHandler.post(new Runnable() {
+                res = response.body().string().replace("\\\"", "");
+                feedResponseInfoEntityList = new Gson().fromJson(res, MoldeFeedResponseInfoEntityList.class);
+                feedResponseInfoList = feedResponseInfoEntityList.getFeed();
+                handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        for (int i = 0; i < 20; i++) {
-                            Log.e("s", feedResponseInfoEntityList.getFeed().get(i + 1).toString());
-                            try {
-                                reportFeedList.add(new MoldeFeedEntity(
-                                                feedResponseInfoEntityList.getFeed().get(i+1).getRep_nm(),
-                                                feedResponseInfoEntityList.getFeed().get(i+1).getRep_addr(),
-                                                Integer.parseInt(feedResponseInfoEntityList.getFeed().get(i+1).getRep_state().trim()),
-                                                feedResponseInfoEntityList.getFeed().get(i+1).getRep_img(),
-                                                feedResponseInfoEntityList.getFeed().get(i+1).getRep_date(),
-                                                new LatLng(
-                                                        Double.valueOf(feedResponseInfoEntityList.getFeed().get(i+1).getRep_lat()),
-                                                        Double.valueOf(feedResponseInfoEntityList.getFeed().get(i+1).getRep_lon()))
-                                        )
-                                );
-                            }catch (Exception e){
-                                i++;
+                        if (feedResponseInfoList.size() < 10) {
+                            for (int i = 0; i < feedResponseInfoList.size(); i++) {
+                                addFeedList(i);
+                            }
+                        } else {
+                            for (int i = 0; i < 10; i++) {
+                                addFeedList(i);
                             }
                         }
                         feedAdapter.addAll(reportFeedList);
@@ -168,6 +157,34 @@ public class MoldeFeedFragment extends Fragment
             }
 
         });
+    }
+
+    public void addFeedList(int i) {
+        try {
+            reportFeedList.add(new MoldeFeedEntity(
+                            feedResponseInfoList.get(i).getRep_addr(),
+                            feedResponseInfoList.get(i).getRep_detail_addr(),
+                            feedResponseInfoList.get(i).getRep_state(),
+                            feedResponseInfoList.get(i).getRep_img().get(0),
+                            feedResponseInfoList.get(i).getRep_date(),
+                            new LatLng(
+                                    Double.valueOf(feedResponseInfoList.get(i).getRep_lat()),
+                                    Double.valueOf(feedResponseInfoList.get(i).getRep_lon()))
+                    )
+            );
+        } catch (Exception e) {
+            reportFeedList.add(new MoldeFeedEntity(
+                            "에러 나는 장소",
+                            "에러 나는 세부 장소",
+                            0,
+                            "",
+                            "에러 나는 날짜",
+                            new LatLng(0, 0)
+                    )
+            );
+        } finally {
+            Log.e("s", feedResponseInfoList.get(i).toString());
+        }
     }
 
     @Override
@@ -184,8 +201,8 @@ public class MoldeFeedFragment extends Fragment
                     int end = start + 10;
                     for (int i = start + 1; i <= end; i++) {
                         reportFeedList.add(new MoldeFeedEntity(
-                                "거리순", "",
-                                1, "", "",
+                                "거리순 주소", "세부주소",
+                                1, "", new Date().toString(),
                                 new LatLng(Double.valueOf("0.0"), Double.valueOf("0.0"))));
                     }
                 } else if (feed_sort_toggle.isChecked()) {
@@ -193,8 +210,8 @@ public class MoldeFeedFragment extends Fragment
                     int end = start + 10;
                     for (int i = start + 1; i <= end; i++) {
                         reportFeedList.add(new MoldeFeedEntity(
-                                "최신순", "",
-                                2, "", "",
+                                "시간순 주소", "세부주소",
+                                2, "", new Date().toString(),
                                 new LatLng(Double.valueOf("0.0"), Double.valueOf("0.0"))));
                     }
                 }

@@ -87,7 +87,7 @@ public class MyPageLoginActivity extends AppCompatActivity {
         AppEventsLogger.activateApp(this);
         facebookCallbackManager = CallbackManager.Factory.create();
         final LoginButton facebookLoginButton = findViewById(R.id.in_facebook_login_button);
-        facebookLoginButton.setReadPermissions("email", "public_profile");
+        facebookLoginButton.setReadPermissions("faq_email_input", "public_profile");
         facebookLoginButton.registerCallback(facebookCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult facebookLoginResult) {

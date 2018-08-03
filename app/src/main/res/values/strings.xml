@@ -32,5 +32,5 @@
     <string name="facebook_app_id">971533716339908</string>
     <string name="fb_login_protocol_scheme">fb971533716339908</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="internal_storage">Internal storage</string>
 </resources>

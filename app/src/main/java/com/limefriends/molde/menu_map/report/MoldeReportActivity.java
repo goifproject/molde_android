@@ -3,11 +3,11 @@ package com.limefriends.molde.menu_map.report;
 import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,24 +26,29 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.limefriends.molde.MoldeApplication;
 import com.limefriends.molde.R;
-import com.limefriends.molde.menu_map.search.SearchMapInfoActivity;
 import com.limefriends.molde.menu_map.camera_manager.MoldeReportCameraActivity;
 import com.limefriends.molde.menu_map.entity.MoldeReportEntity;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapHistoryEntity;
 import com.limefriends.molde.menu_map.entity.MoldeSearchMapInfoEntity;
+import com.limefriends.molde.menu_map.search.SearchMapInfoActivity;
+import com.limefriends.molde.molde_backend.MoldeNetwork;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MoldeReportActivity extends AppCompatActivity {
     @BindView(R.id.first_iamge)
@@ -101,7 +106,6 @@ public class MoldeReportActivity extends AppCompatActivity {
 
     private String reportUserId;
     private String reportUserName;
-    private List<File> reportImageFileList;
     private String reportContent;
     private String reportAddress;
     private String reportDetailAddress;
@@ -210,7 +214,7 @@ public class MoldeReportActivity extends AppCompatActivity {
             Uri uri = data.getParcelableExtra("imagePath");
             int imageSeq = data.getIntExtra("imageSeq", 1);
             imagePathList = data.getStringArrayListExtra("imagePathList");
-            searchEntity = (MoldeSearchMapInfoEntity) data.getSerializableExtra("mapInfo");
+            searchEntity = (MoldeSearchMapInfoEntity) data.getSerializableExtra("mapSearchInfo");
             historyEntity = (MoldeSearchMapHistoryEntity) data.getSerializableExtra("mapHistoryInfo");
             report_content.setText(data.getStringExtra("reportContent"));
             search_loc_input.setText(data.getStringExtra("reportAddress"));
@@ -401,15 +405,16 @@ public class MoldeReportActivity extends AppCompatActivity {
         send_report_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Retrofit retrofit = new Retrofit.Builder().baseUrl(MoldeApplication.BASE_URL).addConverterFactory(GsonConverterFactory.create()).build();
+                Retrofit retrofit = MoldeNetwork.getNetworkInstance().getRetrofit();
                 MoldeReportRestService moldeReportRestService = retrofit.create(MoldeReportRestService.class);
                 reportUserId = MoldeApplication.firebaseAuth.getUid();
                 reportUserName = MoldeApplication.firebaseAuth.getCurrentUser().getDisplayName();
-                reportImageFileList = new ArrayList<>();
+                List<MultipartBody.Part> imageMultiParts = new ArrayList<>();
                 if (imageSparseArray != null) {
                     if (imageSparseArray.size() > 0) {
                         for (int i = 1; i <= imageSparseArray.size(); i++) {
-                            reportImageFileList.add(new File(imageSparseArray.get(i).getPath()));
+                            //reportImageFileList.add(new File(imageSparseArray.get(i).getPath()));
+                            imageMultiParts.add(prepareFilePart("reportImageList", imageSparseArray.get(i)));
                         }
                     }
                 } else {
@@ -420,25 +425,42 @@ public class MoldeReportActivity extends AppCompatActivity {
                 reportDetailAddress = detail_address.getText().toString();
                 reportEmail = reply_email_input.getText().toString() + "@" + reply_email_select.getSelectedItem().toString();
                 reportDate = new Date();
-                MoldeReportEntity moldeReportEntity = new MoldeReportEntity(reportUserId, reportUserName, 0, reportImageFileList, reportContent, reportAddress, reportDetailAddress, reportEmail, reportLat, reportLng, reportDate);
+                MoldeReportEntity moldeReportEntity = new MoldeReportEntity(reportUserId, reportUserName, 0, reportContent, reportAddress, reportDetailAddress, reportEmail, reportLat, reportLng, reportDate);
                 Log.e("entity json Data", new Gson().toJson(moldeReportEntity));
-                Call<MoldeReportEntity> moldeReportEntityCall = moldeReportRestService.sendReportData(moldeReportEntity);
-                moldeReportEntityCall.enqueue(new Callback<MoldeReportEntity>() {
+                Call<ResponseBody> moldeReportEntityCall = moldeReportRestService.sendReportData(reportUserId, reportUserName, 0, reportContent, reportAddress, reportDetailAddress, reportEmail, reportLat, reportLng, reportDate, imageMultiParts);
+                moldeReportEntityCall.enqueue(new Callback<ResponseBody>() {
                     @Override
-                    public void onResponse(Call<MoldeReportEntity> call, Response<MoldeReportEntity> response) {
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if (response.isSuccessful()) {
                             Toast.makeText(getApplicationContext(), "데이터 전송 성공", Toast.LENGTH_SHORT).show();
-                            Log.e("로그 자 보자", response.message());
+                            try {
+                                Log.e("로그 자 보자", response.body().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }else {
+                            try {
+                                Log.e("로그 자 보자", response.errorBody().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<MoldeReportEntity> call, Throwable t) {
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
                         Toast.makeText(getApplicationContext(), "데이터 전송 실패", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
         });
+    }
+
+    private MultipartBody.Part prepareFilePart(String partName, Uri fileUri) {
+        Log.e("file uri", fileUri.toString());
+        File file = new File(fileUri.getPath());
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        return MultipartBody.Part.createFormData(partName, file.getName(), requestFile);
     }
 
     @Override

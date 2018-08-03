@@ -13,7 +13,7 @@
     android:background="#fcfcfc">
 
     <Button
-        android:id="@+id/faqB"
+        android:id="@+id/faq_button"
         android:layout_width="220dp"
         android:layout_height="32dp"
         android:layout_alignParentTop="true"
@@ -32,13 +32,13 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/edt_faq"
+        android:layout_alignStart="@+id/faq_content"
         android:layout_below="@+id/firstlayout"
         android:textSize="12sp"
         android:text="문의 내용" />
 
     <EditText
-        android:id="@+id/edt_faq"
+        android:id="@+id/faq_content"
         android:layout_width="328dp"
         android:layout_height="174dp"
         android:layout_below="@+id/textView"
@@ -53,36 +53,36 @@
         android:id="@+id/emailText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/edt_faq"
-        android:layout_below="@+id/edt_faq"
+        android:layout_alignStart="@+id/faq_content"
+        android:layout_below="@+id/faq_content"
         android:layout_marginTop="16dp"
         android:textSize="12sp"
         android:text="답변받을 이메일" />
 
     <EditText
-        android:id="@+id/email"
+        android:id="@+id/faq_email_input"
         android:background="@drawable/frame_gray_rounded"
         android:layout_width="248dp"
         android:layout_height="36dp"
-        android:layout_alignStart="@+id/edt_faq"
+        android:layout_alignStart="@+id/faq_content"
         android:layout_below="@+id/emailText"
         android:layout_marginTop="8dp"
         android:hint="이메일 주소"
         android:paddingStart="8dp"/>
 
     <Button
-        android:id="@+id/emailSelect"
+        android:id="@+id/faq_email_select_button"
         android:layout_width="72dp"
         android:layout_height="35dp"
-        android:layout_alignEnd="@+id/edt_faq"
-        android:layout_alignTop="@+id/email"
+        android:layout_alignEnd="@+id/faq_content"
+        android:layout_alignTop="@+id/faq_email_input"
         android:background="@drawable/frame_rounded"
         android:backgroundTint="@color/colorAccent"
-        android:text="직접 입력"
-        android:textSize="14sp" />
+        android:text="이메일 선택"
+        android:textSize="12sp" />
 
     <TextView
-        android:id="@+id/emailEnter"
+        android:id="@+id/faq_send_button"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_alignParentBottom="true"
