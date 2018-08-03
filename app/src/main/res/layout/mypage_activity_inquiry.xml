@@ -50,38 +50,82 @@
         android:background="@drawable/frame_gray_rounded" />
 
     <TextView
-        android:id="@+id/emailText"
+        android:id="@+id/faq_email_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/faq_content"
-        android:layout_below="@+id/faq_content"
+        android:text="답변받을 이메일"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
-        android:textSize="12sp"
-        android:text="답변받을 이메일" />
+        android:layout_below="@+id/faq_content"/>
 
-    <EditText
-        android:id="@+id/faq_email_input"
-        android:background="@drawable/frame_gray_rounded"
-        android:layout_width="248dp"
-        android:layout_height="36dp"
-        android:layout_alignStart="@+id/faq_content"
-        android:layout_below="@+id/emailText"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
-        android:hint="이메일 주소"
-        android:paddingStart="8dp"/>
+        android:background="@drawable/frame_gray_rounded"
+        android:layout_below="@+id/faq_email_title">
+        <EditText
+            android:id="@+id/faq_email_input"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingStart="8dp"
+            android:hint="이메일 입력"
+            android:textSize="14sp"
+            android:maxLength="30"
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:background="@null"/>
+        <TextView
+            android:layout_width="32dp"
+            android:layout_height="match_parent"
+            android:text="\@"
+            android:textStyle="bold"
+            android:layout_toEndOf="@id/faq_email_input"
+            android:gravity="center"
+            android:layout_marginBottom="4dp"/>
+        <FrameLayout
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/frame_rounded"
+            android:backgroundTint="@color/colorLittleWhiteGray">
+            <Spinner
+                android:id="@+id/faq_email_select"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/frame_rounded"
+                android:backgroundTint="@color/colorLittleWhiteGray">
+            </Spinner>
+            <ImageButton
+                android:id="@+id/faq_self_close_button"
+                android:layout_width="25dp"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:scaleType="fitCenter"
+                android:layout_gravity="end"
+                android:background="@drawable/ic_close"/>
+            <EditText
+                android:id="@+id/faq_email_self_input"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="14sp"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:maxLength="18"
+                android:visibility="invisible"
+                android:background="@drawable/frame_rounded"
+                android:backgroundTint="@color/colorLittleWhiteGray" />
+        </FrameLayout>
+    </RelativeLayout>
 
     <Button
-        android:id="@+id/faq_email_select_button"
-        android:layout_width="72dp"
-        android:layout_height="35dp"
-        android:layout_alignEnd="@+id/faq_content"
-        android:layout_alignTop="@+id/faq_email_input"
-        android:background="@drawable/frame_rounded"
-        android:backgroundTint="@color/colorAccent"
-        android:text="이메일 선택"
-        android:textSize="12sp" />
-
-    <TextView
         android:id="@+id/faq_send_button"
         android:layout_width="match_parent"
         android:layout_height="56dp"

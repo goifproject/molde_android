@@ -237,12 +237,12 @@
             android:layout_height="24dp"
             android:layout_toEndOf="@+id/detail_address_title"
             android:textSize="12sp"
-            android:paddingLeft="8dp"
+            android:paddingStart="8dp"
             android:background="@null"/>
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/reply_email_title"
+        android:id="@+id/report_email_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="답변받을 이메일"
@@ -260,9 +260,9 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/frame_gray_rounded"
-        android:layout_below="@+id/reply_email_title">
+        android:layout_below="@+id/report_email_title">
         <EditText
-            android:id="@+id/reply_email_input"
+            android:id="@+id/report_email_input"
             android:layout_width="150dp"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
@@ -278,7 +278,7 @@
             android:layout_height="match_parent"
             android:text="\@"
             android:textStyle="bold"
-            android:layout_toEndOf="@id/reply_email_input"
+            android:layout_toEndOf="@id/report_email_input"
             android:gravity="center"
             android:layout_marginBottom="4dp"/>
         <FrameLayout
@@ -289,14 +289,14 @@
             android:background="@drawable/frame_rounded"
             android:backgroundTint="@color/colorLittleWhiteGray">
             <Spinner
-                android:id="@+id/reply_email_select"
+                android:id="@+id/report_email_select"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/frame_rounded"
                 android:backgroundTint="@color/colorLittleWhiteGray">
             </Spinner>
             <ImageButton
-                android:id="@+id/self_close_button"
+                android:id="@+id/report_self_close_button"
                 android:layout_width="25dp"
                 android:layout_height="match_parent"
                 android:visibility="gone"
@@ -304,7 +304,7 @@
                 android:layout_gravity="end"
                 android:background="@drawable/ic_close"/>
             <EditText
-                android:id="@+id/reply_email_self"
+                android:id="@+id/report_email_self_input"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textSize="14sp"

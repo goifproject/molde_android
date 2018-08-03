@@ -7,9 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.PopupMenu;
+import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,14 +41,16 @@ public class MyPageInquiryActivity extends AppCompatActivity {
     EditText faq_content;
     @BindView(R.id.faq_email_input)
     EditText faq_email_input;
-    @BindView(R.id.faq_email_select_button)
-    Button faq_email_select_button;
+    @BindView(R.id.faq_email_self_input)
+    EditText faq_email_self_input;
+    @BindView(R.id.faq_email_select)
+    Spinner faq_email_select;
+    @BindView(R.id.faq_self_close_button)
+    ImageButton faq_self_close_button;
     @BindView(R.id.faq_send_button)
     Button faq_send_button;
 
-    private static String emailExt;
-    private String userEmail;
-
+    private String faqEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,21 +76,73 @@ public class MyPageInquiryActivity extends AppCompatActivity {
             }
         });
 
-
-        faq_email_select_button.setOnClickListener(new View.OnClickListener() {
+        final InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        final ArrayAdapter emailArrayAdapter = ArrayAdapter.createFromResource(this, R.array.email_select, android.R.layout.simple_spinner_item);
+        faq_email_select.setAdapter(emailArrayAdapter);
+        faq_email_select.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                PopupMenu popup = new PopupMenu(getApplicationContext(), v);
-                getMenuInflater().inflate(R.menu.emailmenu, popup.getMenu());
-                popup.setOnMenuItemClickListener(listener);
-                popup.show();
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    faq_email_select.setSelected(false);
+                    return;
+                }
+                if (position == emailArrayAdapter.getCount() - 1) {
+                    faq_email_select.setVisibility(View.GONE);
+                    faq_email_self_input.setVisibility(View.VISIBLE);
+                    faq_self_close_button.setVisibility(View.VISIBLE);
+                    faq_self_close_button.bringToFront();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+        faq_self_close_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                faq_email_self_input.setVisibility(View.GONE);
+                faq_self_close_button.setVisibility(View.GONE);
+                faq_email_self_input.setText("");
+                inputMethodManager.hideSoftInputFromWindow(faq_email_select.getWindowToken(), 0);
+                faq_email_select.setVisibility(View.VISIBLE);
+                faq_email_select.bringToFront();
+                faq_email_select.setSelection(0);
+            }
+        });
+
         faq_send_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (RegexUtil.validateEmail(userEmail)) {
-                    sendFaqData();
+                if(faq_email_select.getVisibility() == View.GONE && faq_email_self_input.getVisibility() == View.VISIBLE) {
+                    faqEmail = faq_email_input.getText().toString() + "@" + faq_email_self_input.toString();
+                }else if(faq_email_self_input.getVisibility() == View.VISIBLE && faq_email_self_input.getVisibility() == View.GONE) {
+                    faqEmail = faq_email_input.getText().toString() + "@" + faq_email_select.getSelectedItem().toString();
+                }
+                if (RegexUtil.validateEmail(faqEmail)) {
+                    Retrofit retrofit = MoldeNetwork.getNetworkInstance().getRetrofit();
+                    MoldeFaqRestService moldeFaqRestService = retrofit.create(MoldeFaqRestService.class);
+                    Call<MoldeFaQ> moldeFaqCall = moldeFaqRestService.sendFaQData(
+                            new MoldeFaQ(
+                                    MoldeApplication.firebaseAuth.getUid(),
+                                    MoldeApplication.firebaseAuth.getCurrentUser().getDisplayName(),
+                                    faq_content.getText().toString(),
+                                    faqEmail
+                            )
+                    );
+                    moldeFaqCall.enqueue(new Callback<MoldeFaQ>() {
+                        @Override
+                        public void onResponse(Call<MoldeFaQ> call, Response<MoldeFaQ> response) {
+                            if (response.isSuccessful()) {
+
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<MoldeFaQ> call, Throwable t) {
+                            Log.e(TAG, t.getMessage());
+                        }
+                    });
                 } else {
                     Toast.makeText(MyPageInquiryActivity.this, "이메일 양식에 맞지 않습니다. 확인해주세요", Toast.LENGTH_LONG).show();
                 }
@@ -94,63 +152,10 @@ public class MyPageInquiryActivity extends AppCompatActivity {
 
     }
 
-    PopupMenu.OnMenuItemClickListener listener = new PopupMenu.OnMenuItemClickListener() {
-
-        @Override
-        public boolean onMenuItemClick(MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.naver:
-                    emailExt = "naver.com";
-                    Toast.makeText(MyPageInquiryActivity.this, "Naver", Toast.LENGTH_SHORT).show();
-                    break;
-
-                case R.id.hanmail:
-                    emailExt = "hanmail.net";
-                    Toast.makeText(MyPageInquiryActivity.this, "Hanmail", Toast.LENGTH_SHORT).show();
-                    break;
-
-                case R.id.gmail:
-                    emailExt = "gmail.com";
-                    Toast.makeText(MyPageInquiryActivity.this, "Gmail", Toast.LENGTH_SHORT).show();
-                    break;
-            }
-            // 입력하고 나서 이메일 합쳐주기
-            userEmail = faq_email_input.getText().toString() + emailExt;
-            return false;
-        }
-    };
-
-    private void sendFaqData() {
-        Retrofit retrofit = MoldeNetwork.getNetworkInstance().getRetrofit();
-        MoldeFaqRestService moldeFaqRestService = retrofit.create(MoldeFaqRestService.class);
-        Call<MoldeFaQ> moldeFaqCall = moldeFaqRestService.sendFaQ(
-                new MoldeFaQ(
-                        MoldeApplication.firebaseAuth.getUid(),
-                        MoldeApplication.firebaseAuth.getCurrentUser().getDisplayName(),
-                        faq_content.getText().toString(),
-                        userEmail
-                )
-        );
-        moldeFaqCall.enqueue(new Callback<MoldeFaQ>() {
-            @Override
-            public void onResponse(Call<MoldeFaQ> call, Response<MoldeFaQ> response) {
-                if (response.isSuccessful()) {
-                    // 전송 완료
-                    Log.i(TAG, "전송 완료");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MoldeFaQ> call, Throwable t) {
-                Log.e(TAG, t.getMessage());
-            }
-        });
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            finish();
+            onBackPressed();
             return true;
         }
         return false;
