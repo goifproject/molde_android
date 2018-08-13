@@ -1,4 +1,4 @@
-package com.limefriends.molde.menu_mypage;
+package com.limefriends.molde.ui.menu_mypage.settings;
 
 import android.content.Intent;
 import android.os.Bundle;

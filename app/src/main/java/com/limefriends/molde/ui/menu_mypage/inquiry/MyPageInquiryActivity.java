@@ -1,10 +1,9 @@
-package com.limefriends.molde.menu_mypage;
+package com.limefriends.molde.ui.menu_mypage.inquiry;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -17,20 +16,20 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.limefriends.molde.MoldeApplication;
-import com.limefriends.molde.Pattern.RegexUtil;
+import com.limefriends.molde.comm.MoldeApplication;
+import com.limefriends.molde.comm.utils.pattern.RegexUtil;
 import com.limefriends.molde.R;
-import com.limefriends.molde.menu_mypage.faq.MoldeFaQ;
-import com.limefriends.molde.menu_mypage.faq.MoldeFaqRestService;
-import com.limefriends.molde.menu_mypage.faq.MoldeMyPageFaQActivity;
-import com.limefriends.molde.molde_backend.MoldeNetwork;
+import com.limefriends.molde.entity.response.Result;
+import com.limefriends.molde.remote.MoldeRestfulService;
+import com.limefriends.molde.remote.MoldeNetwork;
+import com.limefriends.molde.ui.menu_mypage.faq.MoldeMyPageFaQActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class MyPageInquiryActivity extends AppCompatActivity {
 
@@ -120,36 +119,35 @@ public class MyPageInquiryActivity extends AppCompatActivity {
                     faqEmail = faq_email_input.getText().toString() + "@" + faq_email_select.getSelectedItem().toString();
                 }
                 if (RegexUtil.validateEmail(faqEmail)) {
-                    Retrofit retrofit = MoldeNetwork.getNetworkInstance().getRetrofit();
-                    MoldeFaqRestService moldeFaqRestService = retrofit.create(MoldeFaqRestService.class);
-                    Call<MoldeFaQ> moldeFaqCall = moldeFaqRestService.sendFaQData(
-                            new MoldeFaQ(
-                                    MoldeApplication.firebaseAuth.getUid(),
-                                    MoldeApplication.firebaseAuth.getCurrentUser().getDisplayName(),
-                                    faq_content.getText().toString(),
-                                    faqEmail
-                            )
-                    );
-                    moldeFaqCall.enqueue(new Callback<MoldeFaQ>() {
-                        @Override
-                        public void onResponse(Call<MoldeFaQ> call, Response<MoldeFaQ> response) {
-                            if (response.isSuccessful()) {
 
-                            }
+                    MoldeRestfulService.Faq faqService
+                            = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Faq.class);
+
+                    // TODO 로그인 할 때 받아놓고 없으면 로그인 페이지로 넘어가도록 해야 한다.
+                    Call<Result> call = faqService.createNewFaq(
+                            MoldeApplication.firebaseAuth.getUid(),
+                            MoldeApplication.firebaseAuth.getCurrentUser().getDisplayName(),
+                            faq_content.getText().toString(),
+                            faqEmail
+                    );
+
+                    call.enqueue(new Callback<Result>() {
+                        @Override
+                        public void onResponse(Call<Result> call, Response<Result> response) {
+
                         }
 
                         @Override
-                        public void onFailure(Call<MoldeFaQ> call, Throwable t) {
-                            Log.e(TAG, t.getMessage());
+                        public void onFailure(Call<Result> call, Throwable t) {
+
                         }
                     });
+
                 } else {
                     Toast.makeText(MyPageInquiryActivity.this, "이메일 양식에 맞지 않습니다. 확인해주세요", Toast.LENGTH_LONG).show();
                 }
             }
         });
-
-
     }
 
     @Override

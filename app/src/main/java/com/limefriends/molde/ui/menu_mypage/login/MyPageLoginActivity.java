@@ -1,11 +1,11 @@
-package com.limefriends.molde.menu_mypage;
+package com.limefriends.molde.menu_mypage.login;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -32,13 +32,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.limefriends.molde.MoldeApplication;
+import com.limefriends.molde.comm.MoldeApplication;
 import com.limefriends.molde.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.limefriends.molde.MoldeApplication.firebaseAuth;
+import static com.limefriends.molde.comm.MoldeApplication.firebaseAuth;
 
 public class MyPageLoginActivity extends AppCompatActivity {
     @BindView(R.id.login_google_button)
@@ -229,3 +229,4 @@ public class MyPageLoginActivity extends AppCompatActivity {
                 });
     }
 }
+

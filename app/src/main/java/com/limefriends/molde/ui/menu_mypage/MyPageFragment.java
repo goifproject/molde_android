@@ -1,4 +1,4 @@
-package com.limefriends.molde.menu_mypage;
+package com.limefriends.molde.ui.menu_mypage;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,19 +13,22 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.alexzh.circleimageview.CircleImageView;
-import com.limefriends.molde.MoldeApplication;
-import com.limefriends.molde.MoldeMainActivity;
+import com.limefriends.molde.comm.MoldeApplication;
+import com.limefriends.molde.ui.MoldeMainActivity;
 import com.limefriends.molde.R;
-import com.limefriends.molde.menu_mypage.comment.MoldeMyPageMyCommentActivity;
-import com.limefriends.molde.menu_mypage.report.MypageMyReportActivity;
-import com.limefriends.molde.menu_mypage.scrap.MypageMyScrapActivity;
+import com.limefriends.molde.menu_mypage.login.MyPageLoginActivity;
+import com.limefriends.molde.ui.menu_mypage.comment.MoldeMyPageMyCommentActivity;
+import com.limefriends.molde.ui.menu_mypage.inquiry.MyPageInquiryActivity;
+import com.limefriends.molde.ui.menu_mypage.report.MypageMyReportActivity;
+import com.limefriends.molde.ui.menu_mypage.scrap.MypageMyScrapActivity;
+import com.limefriends.molde.ui.menu_mypage.settings.MyPageSettingsActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.limefriends.molde.MoldeApplication.fbLoginManager;
-import static com.limefriends.molde.MoldeApplication.firebaseAuth;
-import static com.limefriends.molde.MoldeApplication.ggClient;
+import static com.limefriends.molde.comm.MoldeApplication.fbLoginManager;
+import static com.limefriends.molde.comm.MoldeApplication.firebaseAuth;
+import static com.limefriends.molde.comm.MoldeApplication.ggClient;
 
 public class MyPageFragment extends Fragment implements MoldeMainActivity.onKeyBackPressedListener {
     @BindView(R.id.mypage_profile_image)
@@ -63,6 +66,9 @@ public class MyPageFragment extends Fragment implements MoldeMainActivity.onKeyB
         View view = inflater.inflate(R.layout.mypage_fragment, container, false);
         ButterKnife.bind(this, view);
 
+        // TODO 로그인하면서 체크할 것
+        final String userId = getUserId();
+
         mypage_profile_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,8 +90,13 @@ public class MyPageFragment extends Fragment implements MoldeMainActivity.onKeyB
         mypage_faq_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getContext(), MyPageInquiryActivity.class)
-                        .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
+                if (userId.equals("")) {
+                    startActivity(new Intent(getContext(), MyPageLoginActivity.class));
+                } else {
+                    startActivity(new Intent(getContext(), MyPageInquiryActivity.class)
+                            .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
+
+                }
             }
         });
 
@@ -93,8 +104,12 @@ public class MyPageFragment extends Fragment implements MoldeMainActivity.onKeyB
         mypage_report_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), MypageMyReportActivity.class);
-                startActivity(intent);
+                if (userId.equals("")) {
+                    startActivity(new Intent(getContext(), MyPageLoginActivity.class));
+                } else {
+                    Intent intent = new Intent(getContext(), MypageMyReportActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -102,8 +117,12 @@ public class MyPageFragment extends Fragment implements MoldeMainActivity.onKeyB
         mypage_comment_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), MoldeMyPageMyCommentActivity.class);
-                startActivity(intent);
+                if (userId.equals("")) {
+                    startActivity(new Intent(getContext(), MyPageLoginActivity.class));
+                } else {
+                    Intent intent = new Intent(getContext(), MoldeMyPageMyCommentActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -111,8 +130,12 @@ public class MyPageFragment extends Fragment implements MoldeMainActivity.onKeyB
         mypage_scrap_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), MypageMyScrapActivity.class);
-                startActivity(intent);
+                if (userId.equals("")) {
+                    startActivity(new Intent(getContext(), MyPageLoginActivity.class));
+                } else {
+                    Intent intent = new Intent(getContext(), MypageMyScrapActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -140,12 +163,12 @@ public class MyPageFragment extends Fragment implements MoldeMainActivity.onKeyB
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == RC_SIGN_IN) {
+        if (requestCode == RC_SIGN_IN) {
             switch (resultCode) {
-                case CONNECT_GOOGLE_AUTH_CODE :
+                case CONNECT_GOOGLE_AUTH_CODE:
                     Snackbar.make(getView().findViewById(R.id.mypage_layout), "구글 로그인 되었습니다.", Snackbar.LENGTH_SHORT).show();
                     break;
-                case CONNECT_FACEBOOK_AUTH_CODE :
+                case CONNECT_FACEBOOK_AUTH_CODE:
                     Snackbar.make(getView().findViewById(R.id.mypage_layout), "페이스북 로그인 되었습니다.", Snackbar.LENGTH_SHORT).show();
                     break;
             }
@@ -170,6 +193,11 @@ public class MyPageFragment extends Fragment implements MoldeMainActivity.onKeyB
 
     @Override
     public void onBackKey() {
+    }
+
+    private String getUserId() {
+        // return PreferenceUtil.getString(getContext(), "userId");
+        return "lkj";
     }
 
 }

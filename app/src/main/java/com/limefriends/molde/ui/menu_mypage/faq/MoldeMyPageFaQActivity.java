@@ -1,4 +1,4 @@
-package com.limefriends.molde.menu_mypage.faq;
+package com.limefriends.molde.ui.menu_mypage.faq;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -8,9 +8,20 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.limefriends.molde.R;
+import com.limefriends.molde.entity.faq.FaqEntitiy;
+import com.limefriends.molde.entity.faq.FaqResponseInfoEntity;
+import com.limefriends.molde.entity.faq.FaqResponseInfoEntityList;
+import com.limefriends.molde.remote.MoldeRestfulService;
+import com.limefriends.molde.remote.MoldeNetwork;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MoldeMyPageFaQActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -58,6 +69,8 @@ public class MoldeMyPageFaQActivity extends AppCompatActivity implements View.On
         findViewById(R.id.faq3).setOnClickListener(this);
         findViewById(R.id.faq4).setOnClickListener(this);
         findViewById(R.id.faq5).setOnClickListener(this);
+
+        loadFaq();
 
     }
 
@@ -115,4 +128,44 @@ public class MoldeMyPageFaQActivity extends AppCompatActivity implements View.On
         }
         return false;
     }
+
+    private void loadFaq() {
+
+        MoldeRestfulService.Faq faqService
+                = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Faq.class);
+
+        // TODO 로그인 할 때 받아놓고 없으면 로그인 페이지로 넘어가도록 해야 한다.
+        Call<FaqResponseInfoEntityList> call = faqService.getMyFaqList();
+
+        call.enqueue(new Callback<FaqResponseInfoEntityList>() {
+            @Override
+            public void onResponse(Call<FaqResponseInfoEntityList> call, Response<FaqResponseInfoEntityList> response) {
+                if (response.isSuccessful()) {
+                    List<FaqEntitiy> entitiys = fromSchemaToLocalEntity(response.body().getData());
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FaqResponseInfoEntityList> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    private List<FaqEntitiy> fromSchemaToLocalEntity(List<FaqResponseInfoEntity> schemas) {
+        List<FaqEntitiy> entities = new ArrayList<>();
+        for (FaqResponseInfoEntity schema : schemas) {
+            entities.add(new FaqEntitiy(
+                    schema.getFaqId(),
+                    schema.getUserId(),
+                    schema.getUserName(),
+                    schema.getFaqContents(),
+                    schema.getFaqEmail()
+            ));
+        }
+        return entities;
+    }
+
 }

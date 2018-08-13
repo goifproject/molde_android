@@ -1,4 +1,4 @@
-package com.limefriends.molde.menu_mypage.report;
+package com.limefriends.molde.ui.menu_mypage.report;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
 import com.bumptech.glide.Glide;
 import com.limefriends.molde.R;
 
