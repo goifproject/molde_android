@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardnews_detail_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
 
     <android.support.v4.view.ViewPager
         android:id="@+id/cardnews_pager"
@@ -13,10 +11,10 @@
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="#dddddd"/>
-
+        android:background="#dddddd" />
 
     <RelativeLayout
+        android:id="@+id/cardnews_icon_container"
         android:layout_width="match_parent"
         android:layout_height="52dp"
         android:layout_alignParentBottom="true"
@@ -67,6 +65,7 @@
             android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
+
             app:srcCompat="@drawable/ic_comment_selector" />
 
         <ImageView
@@ -77,18 +76,45 @@
             android:layout_centerVertical="true"
             app:srcCompat="@drawable/ic_connect_selector" />
 
+        <!--<ImageView-->
+        <!--android:id="@+id/cardnews_scrap"-->
+        <!--android:layout_width="24dp"-->
+        <!--android:layout_height="24dp"-->
+        <!--android:layout_alignTop="@+id/cardnews_share"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_toStartOf="@+id/cardnews_share"-->
+        <!--app:srcCompat="@drawable/scrap_button_background" />-->
+
         <ImageView
             android:id="@+id/cardnews_scrap"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_alignTop="@+id/cardnews_share"
             android:layout_marginEnd="8dp"
             android:layout_toStartOf="@+id/cardnews_share"
             app:srcCompat="@drawable/ic_card_scrap_false" />
 
+
     </RelativeLayout>
 
+    <ScrollView
+        android:id="@+id/cardnews_description_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/cardnews_icon_container"
+        android:background="#3a3e39"
+        android:minHeight="100dp">
 
+        <TextView
+            android:id="@+id/cardnews_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="28dp"
+            android:layout_marginRight="28dp"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/colorWhite" />
 
+    </ScrollView>
 
 </RelativeLayout>

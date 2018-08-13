@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.limefriends.molde.MoldeSplashActivity">
+    tools:context="com.limefriends.molde.ui.MoldeSplashActivity">
     <ImageView
         android:id="@+id/molde_splash"
         android:layout_width="match_parent"

@@ -4,14 +4,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.limefriends.molde.menu_mypage.comment.MoldeMyPageMyCommentActivity">
+    android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
+    <com.limefriends.molde.comm.custom.recyclerview.AddOnScrollRecyclerView
         android:id="@+id/myComment_recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="invisible" />
 
-    </android.support.v7.widget.RecyclerView>
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="invisible" />
 
 </RelativeLayout>

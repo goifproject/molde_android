@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:layout_marginTop="9dp"
+    android:background="#ffffff">
+
+    <TextView
+        android:id="@+id/myComment_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="#4a4a4a"
+        android:layout_marginTop="41dp"
+        android:layout_marginLeft="15dp"
+        android:text="에어비앤*에서 다시 몰카 발각" />
+
+    <ImageView
+        android:id="@+id/myComment_image"
+        android:layout_width="92dp"
+        android:layout_height="92dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/mypage_image"/>
+
+</RelativeLayout>
