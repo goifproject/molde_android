@@ -31,7 +31,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MoldeMagazineFragment extends Fragment implements MoldeMainActivity.onKeyBackPressedListener {
+public class MoldeMagazineFragment extends Fragment implements MoldeMainActivity.OnKeyBackPressedListener {
 
     @BindView(R.id.cardnews_recyclerView)
     AddOnScrollRecyclerView cardnews_recyclerView;
@@ -238,9 +238,16 @@ public class MoldeMagazineFragment extends Fragment implements MoldeMainActivity
      * TODO 생명주기 관리가 전혀 안 됨. 왜 이게 어쩔 때는 저장되었다가 어쩔 때는 원상태인지 파악이 안 됨
      */
     // 5. 생명주기
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        setHasMoreToLoad(true);
+//        currentPage = 0;
+//    }
+
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onDestroy() {
+        super.onDestroy();
         setHasMoreToLoad(true);
         currentPage = 0;
     }

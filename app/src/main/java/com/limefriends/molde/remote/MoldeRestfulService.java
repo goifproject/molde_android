@@ -17,6 +17,7 @@ import okhttp3.MultipartBody;
 
 
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -42,50 +43,78 @@ public interface MoldeRestfulService {
 
     interface Feed {
 
+        // 현재 위치 1.5 반경 피드
         @GET(MoldeRestfulApi.Feed.GET_FEED_API)
-        Call<MoldeFeedResponseInfoEntityList> getPagedByDistance(@Query("reportLat") long lat,
-                                                                 @Query("reportLng") long lng,
-                                                                 @Query("perPage") int perPage,
-                                                                 @Query("page") int page);
+        Call<MoldeFeedResponseInfoEntityList> getFeedByDistance(@Query("reportLat") double lat,
+                                                                 @Query("reportLng") double lng);
 
-        @GET(MoldeRestfulApi.Feed.GET_PAGED_FEED_API)
-        Call<MoldeFeedResponseInfoEntityList> getFeedByDate(@Query("perPage") int perPage,
-                                                            @Query("page") int page);
-
+        // 내가 작성한 피드
         @GET(MoldeRestfulApi.Feed.GET_MY_FEED_API)
         Call<MoldeFeedResponseInfoEntityList> getMyFeed(@Query("userId") String userId,
                                                         @Query("perPage") int perPage,
                                                         @Query("page") int page);
 
-        @GET(MoldeRestfulApi.Feed.GET_PAGED_FEED_API)
-        Call<MoldeFeedResponseInfoEntityList> getPagedFeed(@Query("perPage") int perPage,
+        @GET(MoldeRestfulApi.Feed.GET_FEED_BY_DATE_API)
+        Call<MoldeFeedResponseInfoEntityList> getPagedFeedByDate(@Query("perPage") int perPage,
+                                                            @Query("page") int page);
+
+        @GET(MoldeRestfulApi.Feed.GET_FEED_BY_LOCATION_API)
+        Call<MoldeFeedResponseInfoEntityList> getPagedFeedByDistance(@Query("reportLat") double lat,
+                                                           @Query("reportLng") double lng,
+                                                           @Query("perPage") int perPage,
                                                            @Query("page") int page);
+
+        @GET(MoldeRestfulApi.Feed.GET_FEED_BY_ID_API)
+        Call<MoldeFeedResponseInfoEntityList> getFeedById(@Query("reportId") int reportId);
 
         @Multipart
         @POST(MoldeRestfulApi.Feed.POST_FEED_API)
         Call<Result> reportNewFeed(@Part List<MultipartBody.Part> imageFiles,
                                    @PartMap Map<String, MoldeFeedResponseInfoEntity> feed);
 
+//        @Multipart
+//        @POST(MoldeRestfulApi.Feed.POST_FEED_API)
+//        Call<Result> reportNewFeed2(
+//                @Part("userId") String userId,
+//                @Part("userName") String userName,
+//                @Part("reportState") int reportState,
+//                @Part("reportContent") String reportContent,
+//                @Part("reportAddress") String reportAddress,
+//                @Part("reportDetailAddress") String reportDetailAddress,
+//                @Part("userEmail") String userEmail,
+//                @Part("reportLat") double reportLat,
+//                @Part("reportLng") double reportLng
+//               // @Part("reportDate") long reportDate
+//                //@Part MultipartBody.Part reportImageList
+////                @Part List<MultipartBody.Part> reportImageList
+//        );
+
         @Multipart
         @POST(MoldeRestfulApi.Feed.POST_FEED_API)
-        Call<Result> reportNewFeed2(
+        Call<Result> reportNewFeed3(
                 @Part("userId") String userId,
                 @Part("userName") String userName,
-                @Part("reportState") int reportState,
+                @Part("userEmail") String userEmail,
                 @Part("reportContent") String reportContent,
+                @Part("reportLat") double reportLat,
+                @Part("reportLng") double reportLng,
                 @Part("reportAddress") String reportAddress,
                 @Part("reportDetailAddress") String reportDetailAddress,
-                @Part("userEmail") String userEmail,
-                @Part("reportLat") String reportLat,
-                @Part("reportLng") String reportLng,
-                @Part("reportDate") Date reportDate,
+                @Part("reportState") int reportState,
+                @Part("reportDate") long reportDate,
+                //@Part MultipartBody.Part reportImageList
                 @Part List<MultipartBody.Part> reportImageList
         );
 
         @FormUrlEncoded
         @PUT(MoldeRestfulApi.Feed.UPDATE_FEED_API)
-        Call<Result> updateFeed(@Field("reportId") String userId,
+        Call<Result> updateFeed(@Field("reportId") int reportId,
                                 @Field("reportState") int state);
+
+        @FormUrlEncoded
+        @HTTP(method = "DELETE", path = MoldeRestfulApi.Feed.DELETE_FEED_API, hasBody = true)
+        Call<Result> deleteFeed(@Field("userId") String userId,
+                                @Field("reportId") int state);
     }
 
     interface Comment {
@@ -165,6 +194,7 @@ public interface MoldeRestfulService {
         @FormUrlEncoded
         @POST(MoldeRestfulApi.Favorite.POST_FAVORITE_API)
         Call<Result> addToMyFavorite(@Field("userId") String userId,
+                                     @Field("favoriteName") String name,
                                      @Field("favoriteAddress") String address,
                                      @Field("favoriteLat") double lat,
                                      @Field("favoriteLng") double lng);

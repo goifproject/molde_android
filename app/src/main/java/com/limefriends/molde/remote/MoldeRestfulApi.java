@@ -26,7 +26,11 @@ public class MoldeRestfulApi {
 
         public static final String GET_MY_FEED_API = "v1/pin2";
 
-        public static final String GET_PAGED_FEED_API = "v1/pin3";
+        public static final String GET_FEED_BY_DATE_API = "v1/pin3";
+
+        public static final String GET_FEED_BY_LOCATION_API = "v1/pin4";
+
+        public static final String GET_FEED_BY_ID_API = "v1/pin5";
 
         public static final String UPDATE_FEED_API = "v1/pin";
 
@@ -34,6 +38,8 @@ public class MoldeRestfulApi {
          * 따로 신고(report) API 를 두지 않고 피드 생성을 신고로 취급함
          */
         public static final String POST_FEED_API = "v1/pin";
+
+        public static final String DELETE_FEED_API = "v1/pin";
     }
 
     /**

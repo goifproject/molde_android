@@ -43,6 +43,13 @@ public class PreferenceUtil {
         editor.commit();
     }
 
+    public static void putLong(Context context, String key, long value) {
+        sp = getPreference(context);
+        editor = getPreferenceEditor(context);
+        editor.putLong(key, value);
+        editor.commit();
+    }
+
     public static void delete(Context context, String key) {
         sp = getPreference(context);
         editor = getPreferenceEditor(context);
@@ -63,6 +70,11 @@ public class PreferenceUtil {
     public static int getInt(Context context, String key) {
         sp = getPreference(context);
         return sp.getInt(key, 0);
+    }
+
+    public static long getLong(Context context, String key) {
+        sp = getPreference(context);
+        return sp.getLong(key, 0);
     }
 
 }

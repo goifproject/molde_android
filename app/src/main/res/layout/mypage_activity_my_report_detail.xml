@@ -1,38 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorMypageSettingDiv"
-    tools:context=".menu_mypage.report.MyPageMyReportDetailActivity">
+    android:background="@color/colorMypageSettingDiv">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <RelativeLayout
             android:id="@+id/mypage_detail_report_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:visibility="visible">
+
             <RelativeLayout
                 android:id="@+id/mypage_detail_report_image_container"
                 android:layout_width="match_parent"
                 android:layout_height="216dp"
                 android:layout_margin="14dp">
+
                 <android.support.v4.view.ViewPager
                     android:id="@+id/mypage_detail_report_image_pager"
                     android:layout_width="match_parent"
-                    android:layout_height="216dp"/>
+                    android:layout_height="216dp" />
+
                 <RelativeLayout
                     android:id="@+id/mypage_detail_report_image_indicator_container"
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
-                    android:background="@color/white"
+                    android:layout_alignParentBottom="true"
                     android:alpha="0.8"
-                    android:layout_alignParentBottom="true">
+                    android:background="@color/white">
+
                     <com.pm10.library.CircleIndicator
                         android:id="@+id/mypage_detail_report_image_indicator"
                         android:layout_width="144dp"
@@ -42,8 +46,11 @@
                         app:p_gap="16dp"
                         app:p_radius="5dp"
                         app:p_selectedColor="@color/black" />
+
                 </RelativeLayout>
+
             </RelativeLayout>
+
             <TextView
                 android:id="@+id/mypage_detail_report_location_title"
                 android:layout_width="wrap_content"
@@ -63,7 +70,6 @@
                 android:layout_below="@+id/mypage_detail_report_image_container"
                 android:layout_marginEnd="24dp"
                 android:layout_marginStart="90dp"
-                android:text="테스트 위치 asdfasdfsdfasdfasdf"
                 android:textColor="@color/colorDefaultText"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -73,9 +79,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/mypage_detail_report_location_content"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
                 android:text="신고내용 : "
                 android:textColor="@color/colorDefaultText"
                 android:textSize="14sp"
@@ -86,11 +92,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/mypage_detail_report_location_content"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginStart="90dp"
-                android:text="통신·방송의 시설기준과 신문의 기능을 보장하여 법률로 정한다.
-국회의원과 정부는 법률안을 제출할 수 있다. 국회는 상호원조 또는 안전보장에 관한 조약, 중요한 국제조직에 관한 조약, 우호통상항해조약, 주권의 제약에 관한 조약, 강화조약, 국가나 국민에게 중대한 재정적 부담을 지우는 조약 또는 입법사항에 관한 조약의 체결·비준에 대한 동의권을 가진다."
+                android:layout_marginTop="8dp"
                 android:textColor="@color/colorDefaultText"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -119,11 +123,13 @@
                 android:backgroundTint="@color/colorPrimary"
                 android:text="신고취소"
                 android:textColor="@color/colorInfoTextColor"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone" />
+
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/mypage_detail_report_status_layout"
+            android:id="@+id/report_detail_normal"
             android:layout_width="match_parent"
             android:layout_height="168dp"
             android:layout_marginTop="12dp"
@@ -148,39 +154,46 @@
                 android:layout_marginTop="16dp">
 
                 <ImageView
+                    android:id="@+id/siren_bad_status"
                     android:layout_width="48dp"
                     android:layout_height="32dp"
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="12dp"
-                    android:src="@drawable/ic_siren_red_dead"
                     android:contentDescription="@string/siren_red_dead"
-                    android:visibility="gone"/>
-                
+                    android:src="@drawable/ic_siren_red_dead"
+                    android:visibility="gone" />
+
                 <ImageView
+                    android:id="@+id/siren_receiving_status"
                     android:layout_width="32dp"
                     android:layout_height="48dp"
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="6dp"
-                    android:src="@drawable/ic_siren_red"
-                    android:contentDescription="@string/siren_red"/>
+                    android:visibility="gone"
+                    android:contentDescription="@string/siren_red"
+                    android:src="@drawable/ic_siren_red" />
 
                 <ImageView
+                    android:id="@+id/siren_clean_status"
                     android:layout_width="32dp"
                     android:layout_height="48dp"
+                    android:layout_gravity="end"
                     android:layout_marginEnd="12dp"
                     android:layout_marginTop="6dp"
-                    android:layout_gravity="end"
+                    android:contentDescription="@string/siren_green"
                     android:src="@drawable/ic_siren_green"
-                    android:contentDescription="@string/siren_green"/>
+                    android:visibility="gone" />
 
                 <ImageView
+                    android:id="@+id/siren_found_status"
                     android:layout_width="32dp"
                     android:layout_height="48dp"
+                    android:layout_gravity="end"
                     android:layout_marginEnd="12dp"
                     android:layout_marginTop="6dp"
-                    android:layout_gravity="end"
+                    android:contentDescription="@string/siren_white"
                     android:src="@drawable/ic_siren_white"
-                    android:contentDescription="@string/siren_white"/>
+                    android:visibility="gone" />
 
                 <RelativeLayout
                     android:layout_width="216dp"
@@ -194,12 +207,13 @@
                         android:backgroundTint="@color/colorResultMsgBox" />
 
                     <TextView
+                        android:id="@+id/report_detail_result_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:gravity="center"
-                        android:text="@string/reportFailStatus"
                         android:textSize="12sp" />
+
                 </RelativeLayout>
 
                 <View
@@ -208,6 +222,7 @@
                     android:layout_marginStart="30dp"
                     android:layout_marginTop="72dp"
                     android:background="@color/colorDivision" />
+
                 <View
                     android:layout_width="150dp"
                     android:layout_height="2dp"
@@ -254,7 +269,7 @@
                         android:id="@+id/mypage_detail_report_not_ing_first"
                         android:layout_width="8dp"
                         android:layout_height="8dp"
-                        android:src="@drawable/ic_mypage_detail_not_ing"/>
+                        android:src="@drawable/ic_mypage_detail_not_ing" />
 
                     <ImageView
                         android:id="@+id/mypage_detail_report_not_ing_second"
@@ -269,38 +284,223 @@
                         android:layout_height="8dp"
                         android:layout_alignParentEnd="true"
                         android:src="@drawable/ic_mypage_detail_not_ing" />
+
                 </RelativeLayout>
-                
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
-                    android:layout_marginBottom="16dp"
                     android:layout_gravity="bottom"
+                    android:layout_marginBottom="16dp"
                     android:gravity="center_vertical">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
                         android:text="접수중"
                         android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:layout_marginStart="12dp"/>
+                        android:textStyle="bold" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
                         android:text="접수완료"
                         android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:layout_centerInParent="true"/>
+                        android:textStyle="bold" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="12dp"
                         android:text="접수결과"
                         android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:layout_marginEnd="12dp"
-                        android:layout_alignParentEnd="true"/>
+                        android:textStyle="bold" />
+
                 </RelativeLayout>
+
             </FrameLayout>
+
         </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/report_detail_admin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/report_result_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="신고 결과"
+                android:textColor="@color/colorInfoTextColor"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <FrameLayout
+                android:id="@+id/progress_container_dot_admin"
+                android:layout_width="360dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/report_result_text"
+                android:layout_centerInParent="true">
+
+                <View
+                    android:layout_width="150dp"
+                    android:layout_height="2dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="21dp"
+                    android:background="@color/colorDivision" />
+
+                <View
+                    android:layout_width="150dp"
+                    android:layout_height="2dp"
+                    android:layout_marginStart="180dp"
+                    android:layout_marginTop="21dp"
+                    android:background="@color/colorDivision" />
+
+                <RelativeLayout
+                    android:layout_width="312dp"
+                    android:layout_height="12dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp">
+
+                    <ImageView
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:src="@drawable/ic_mypage_detail_ing" />
+
+                    <ImageView
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_mypage_detail_ing" />
+
+                    <ImageView
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/ic_mypage_detail_ing" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="308dp"
+                    android:layout_height="8dp"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="17dp">
+
+                    <ImageView
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:src="@drawable/ic_mypage_detail_not_ing" />
+
+                    <ImageView
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_mypage_detail_not_ing" />
+
+                    <ImageView
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/ic_mypage_detail_not_ing" />
+
+                </RelativeLayout>
+
+            </FrameLayout>
+
+            <RelativeLayout
+                android:id="@+id/progress_container_text_admin"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_below="@id/progress_container_dot_admin"
+                android:layout_gravity="bottom"
+                android:layout_marginTop="7dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:text="접수완료"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="제거완료"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="12dp"
+                    android:text="검사완료"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/progress_container_checkbox_admin"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_below="@id/progress_container_text_admin"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="7dp"
+                android:gravity="center_vertical">
+
+                <CheckBox
+                    android:id="@+id/progress_checkbox_admin_accepted"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <CheckBox
+                    android:id="@+id/progress_checkbox_admin_found"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <CheckBox
+                    android:id="@+id/progress_checkbox_admin_clean"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="12dp"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/report_confirm_admin"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_below="@id/progress_container_checkbox_admin"
+                android:layout_marginTop="12dp"
+                android:background="@color/colorPrimary"
+                android:text="확인"
+                android:textColor="@color/colorDeepDarkGray"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
     </LinearLayout>
+
 </ScrollView>

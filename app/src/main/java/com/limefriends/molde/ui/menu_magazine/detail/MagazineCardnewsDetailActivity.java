@@ -3,6 +3,7 @@ package com.limefriends.molde.ui.menu_magazine.detail;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -12,7 +13,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.limefriends.molde.R;
+import com.limefriends.molde.comm.MoldeApplication;
 import com.limefriends.molde.entity.news.MoldeCardNewsEntity;
 import com.limefriends.molde.entity.news.MoldeCardNewsResponseInfoEntity;
 import com.limefriends.molde.entity.news.MoldeCardNewsResponseInfoEntityList;
@@ -116,10 +119,15 @@ public class MagazineCardnewsDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // cardnews_scrap.setImageResource(R.drawable.ic_card_scrap_true);
                 // Toast.makeText(getApplicationContext(), "스크랩 추가", Toast.LENGTH_SHORT).show();
-                if (isScrap) {
-                    deleteFromScrap(cardNewsId, "lkj");
+                FirebaseAuth auth = ((MoldeApplication) getApplication()).getFireBaseAuth();
+                if (auth != null && auth.getUid() != null) {
+                    if (isScrap) {
+                        deleteFromScrap(cardNewsId, "lkj");
+                    } else {
+                        addToMyScrap(cardNewsId, "lkj");
+                    }
                 } else {
-                    addToMyScrap(cardNewsId, "lkj");
+                    Snackbar.make(cardnews_detail_layout, "몰디 로그인이 필요합니다!", Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
@@ -132,7 +140,13 @@ public class MagazineCardnewsDetailActivity extends AppCompatActivity {
         });
 
         loadCardNews(cardNewsId);
-        loadMyScrap(cardNewsId, "lkj");
+
+        // TODO 실제 아이디를 리턴받아서 받아온다. 데이터 넣을 때에도 아이디에 맞도록 데이터 추가할 것
+        FirebaseAuth auth = ((MoldeApplication) getApplication()).getFireBaseAuth();
+        if (auth != null && auth.getUid() != null) {
+            loadMyScrap(cardNewsId, "lkj");
+        }
+
     }
 
     public void loadCardNews(int cardNewsId) {

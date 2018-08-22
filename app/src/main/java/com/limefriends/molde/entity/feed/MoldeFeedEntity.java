@@ -20,6 +20,20 @@ public class MoldeFeedEntity {
     private List<MoldeFeedImageResponseInfoEntity> repImg = null;
     private int repState;
 
+    public MoldeFeedEntity(String userName, String userEmail, String userId, String repContents, double repLat, double repLon, String repAddr, String repDetailAddr, String repDate, List<MoldeFeedImageResponseInfoEntity> repImg, int repState) {
+        this.userName = userName;
+        this.userEmail = userEmail;
+        this.userId = userId;
+        this.repContents = repContents;
+        this.repLat = repLat;
+        this.repLon = repLon;
+        this.repAddr = repAddr;
+        this.repDetailAddr = repDetailAddr;
+        this.repDate = repDate;
+        this.repImg = repImg;
+        this.repState = repState;
+    }
+
     public MoldeFeedEntity(int repId, String userName, String userEmail, String userId, String repContents, double repLat, double repLon, String repAddr, String repDetailAddr, String repDate, List<MoldeFeedImageResponseInfoEntity> repImg, int repState) {
         this.repId = repId;
         this.userName = userName;

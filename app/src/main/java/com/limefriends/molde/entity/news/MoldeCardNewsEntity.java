@@ -1,5 +1,7 @@
 package com.limefriends.molde.entity.news;
 
+import com.limefriends.molde.entity.comment.MoldeCommentEntity;
+
 import java.util.List;
 
 public class MoldeCardNewsEntity {
@@ -9,15 +11,16 @@ public class MoldeCardNewsEntity {
     private String description;
     private String date;
     private List<MoldeCardNewsImageResponseInfoEntity> newsImg = null;
-    // private List<MoldeCommentEntity> comments;
 
-//    public List<MoldeCommentEntity> getComments() {
-//        return comments;
-//    }
-//
-//    public void addComments(MoldeCommentEntity comment) {
-//        comments.add(comment);
-//    }
+     private List<MoldeCommentEntity> comments;
+
+    public List<MoldeCommentEntity> getComments() {
+        return comments;
+    }
+
+    public void addComments(MoldeCommentEntity comment) {
+        comments.add(comment);
+    }
 
     public MoldeCardNewsEntity(int newsId, String postId, String description, String date,
                                List<MoldeCardNewsImageResponseInfoEntity> newsImg) {
@@ -26,6 +29,16 @@ public class MoldeCardNewsEntity {
         this.description = description;
         this.date = date;
         this.newsImg = newsImg;
+    }
+
+    public MoldeCardNewsEntity(int newsId, String postId, String description, String date,
+                               List<MoldeCardNewsImageResponseInfoEntity> newsImg, List<MoldeCommentEntity> commentList) {
+        this.newsId = newsId;
+        this.postId = postId;
+        this.description = description;
+        this.date = date;
+        this.newsImg = newsImg;
+        this.comments = commentList;
     }
 
     public int getNewsId() {

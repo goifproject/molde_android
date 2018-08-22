@@ -1,12 +1,45 @@
 package com.limefriends.molde.entity.favorite;
 
-public class MoldeFavoriteEntity {
+import java.io.Serializable;
+
+public class MoldeFavoriteEntity implements Serializable {
 
     private int favId;
     private String userId;
+    private String favName;
     private String favAddr;
     private double favLat;
     private double favLon;
+
+    private String content;
+    private boolean isActive;
+
+    public MoldeFavoriteEntity(String userId, String favName, String favAddr, double favLat, double favLon) {
+        this.userId = userId;
+        this.favName = favName;
+        this.favAddr = favAddr;
+        this.favLat = favLat;
+        this.favLon = favLon;
+    }
+
+    public MoldeFavoriteEntity(int favId, String userId, String favName, String favAddr, double favLat, double favLon) {
+        this.favId = favId;
+        this.userId = userId;
+        this.favName = favName;
+        this.favAddr = favAddr;
+        this.favLat = favLat;
+        this.favLon = favLon;
+    }
+
+    public MoldeFavoriteEntity(int favId, String userId, String favName, String favAddr, double favLat, double favLon, boolean isActive) {
+        this.favId = favId;
+        this.userId = userId;
+        this.favName = favName;
+        this.favAddr = favAddr;
+        this.favLat = favLat;
+        this.favLon = favLon;
+        this.isActive = isActive;
+    }
 
     public int getFavId() {
         return favId;
@@ -22,6 +55,14 @@ public class MoldeFavoriteEntity {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getFavName() {
+        return favName;
+    }
+
+    public void setFavName(String favName) {
+        this.favName = favName;
     }
 
     public String getFavAddr() {
@@ -46,6 +87,22 @@ public class MoldeFavoriteEntity {
 
     public void setFavLon(double favLon) {
         this.favLon = favLon;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
 }

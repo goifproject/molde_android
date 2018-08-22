@@ -8,7 +8,11 @@
     <string name="search_loc_bld">지역 또는 건물이름 검색</string>
     <string name="report_history">신고내역</string>
     <string name="report_content">신고내용</string>
+    <string name="report_result">신고결과</string>
+    <string name="report_deny">신고거절</string>
+    <string name="report_cancel">신고취소</string>
     <string name="my_favorite">즐겨찾기</string>
+    <string name="report">신고하기</string>
 
     <string name="reportRedhMarkerList">빨간색마커리스트</string>
     <string name="reportGreenhMarkerList">초록색마커리스트</string>
@@ -26,11 +30,22 @@
     <string name="siren_green">초록색 싸이렌</string>
     <string name="siren_white">흰색 싸이렌</string>
 
-    <string name="reportFailStatus">사진을 인식할 수 없거나 위치를\n확인할 수 없습니다. 다시 신고해주세요.</string>
+    <string name="reportReceivingStatus">신고해 주셔서 감사합니다. 운영자가 신고 내용을 확인중입니다</string>
+    <string name="reportAcceptedStatus">신고하신 내용을 운영자가 관할 지역에 전달하였습니다!</string>
+    <string name="reportFoundStatus">접수 결과 몰래카메라로 판정되어 제거하였습니다!</string>
+    <string name="reportCleanStatus">점검을 통해 몰래카메라가 없는 안전지역임을 확인했습니다.</string>
+    <string name="reportDeniedStatus">사진을 인식할 수 없거나 위치를\n확인할 수 없습니다. 다시 신고해주세요.</string>
+    <string name="reportGreen">점검을 통해 몰카가 없는 안전지역임을 확인하였습니다.</string>
 
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
-    <string name="facebook_app_id">971533716339908</string>
-    <string name="fb_login_protocol_scheme">fb971533716339908</string>
+    <!--<string name="facebook_app_id">971533716339908</string>-->
+    <!--<string name="fb_login_protocol_scheme">fb971533716339908</string>-->
+
+    <string name="facebook_app_id">640535656298047</string>
+    <string name="fb_login_protocol_scheme">fb640535656298047</string>
+
+
 
     <string name="internal_storage">Internal storage</string>
+
 </resources>

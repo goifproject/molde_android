@@ -6,11 +6,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.limefriends.molde.comm.custom.recyclerview.AddOnScrollRecyclerView
-        android:id="@+id/myComment_recyclerView"
+    <!--<com.limefriends.molde.comm.custom.recyclerview.AddOnScrollRecyclerView-->
+        <!--android:id="@+id/myComment_recyclerView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:visibility="invisible" />-->
+
+    <ExpandableListView
+        android:id="@+id/myComment_listView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="invisible" />
+        android:layout_height="match_parent"
+        android:groupIndicator="@null"
+        android:childIndicator="@null" />
 
     <ProgressBar
         android:id="@+id/progressBar2"

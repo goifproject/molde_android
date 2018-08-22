@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 public class MoldeFavoriteResponseInfoEntityList {
 
-    private ArrayList<MoldeFavoriteEntity> data;
+    private ArrayList<MoldeFavoriteResponseInfoEntity> data;
 
-    public ArrayList<MoldeFavoriteEntity> getData() {
+    public ArrayList<MoldeFavoriteResponseInfoEntity> getData() {
         return data;
     }
 
-    public void setData(ArrayList<MoldeFavoriteEntity> data) {
+    public void setData(ArrayList<MoldeFavoriteResponseInfoEntity> data) {
         this.data = data;
     }
 

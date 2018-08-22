@@ -23,8 +23,12 @@
           }
         },
         {
-          "client_id": "133210223530-jdcdndttq6l0o74d8l4ri6btnljk4fh7.apps.googleusercontent.com",
-          "client_type": 3
+          "client_id": "133210223530-squib7ql4uj7s22pmgllnf8tqp7cqiit.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.limefriends.molde",
+            "certificate_hash": "82bab1fb39ad49fd8868347ec61078b44589294c"
+          }
         },
         {
           "client_id": "133210223530-jdcdndttq6l0o74d8l4ri6btnljk4fh7.apps.googleusercontent.com",

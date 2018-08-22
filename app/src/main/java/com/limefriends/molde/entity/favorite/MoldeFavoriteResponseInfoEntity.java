@@ -11,6 +11,9 @@ public class MoldeFavoriteResponseInfoEntity {
     @SerializedName("user_id")
     @Expose
     private String userId;
+    @SerializedName("fav_name")
+    @Expose
+    private String favName;
     @SerializedName("fav_addr")
     @Expose
     private String favAddr;
@@ -35,6 +38,14 @@ public class MoldeFavoriteResponseInfoEntity {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getFavName() {
+        return favName;
+    }
+
+    public void setFavName(String favName) {
+        this.favName = favName;
     }
 
     public String getFavAddr() {

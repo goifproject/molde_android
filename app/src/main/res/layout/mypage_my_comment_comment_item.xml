@@ -9,8 +9,10 @@
 
     <View
         android:id="@+id/myComment_view"
-        android:layout_width="360dp"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:background="@color/colorDivision"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"

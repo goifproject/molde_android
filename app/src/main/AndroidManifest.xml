@@ -32,11 +32,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.molde_tutorial.MoldeTutorialActivity"
+            android:name=".ui.tutorial.main_tutorial.MoldeTutorialActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".ui.molde_sub_desc.MoldeSubDescActivity"
+            android:name=".ui.tutorial.sub_tutorial.MoldeSubDescActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
@@ -51,21 +51,21 @@
         <activity
             android:name=".ui.menu_map.report.MoldeReportActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppNoBarTheme" />
         <activity
             android:name=".ui.menu_map.favorite.MoldeMyFavoriteActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.menu_map.camera_manager.MoldeReportCameraActivity"
+            android:name=".comm.manager.camera_manager.MoldeReportCameraActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.menu_map.gallery_manager.MoldeReportGalleryActivity"
+            android:name=".comm.manager.gallery_manager.MoldeReportGalleryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.menu_map.camera_manager.MoldeReportCheckImageActivity"
+            android:name=".comm.manager.camera_manager.MoldeReportCheckImageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
 
@@ -93,35 +93,35 @@
 
         <!-- 마이페이지 관련 -->
         <activity
-            android:name=".ui.menu_mypage.settings.MyPageSettingsActivity"
+            android:name=".ui.menu_mypage.settings.SettingsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.menu_mypage.inquiry.MyPageInquiryActivity"
+            android:name=".ui.menu_mypage.inquiry.InquiryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.menu_mypage.faq.MoldeMyPageFaQActivity"
+            android:name=".ui.menu_mypage.faq.FaQActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.menu_mypage.report.MypageMyReportActivity"
+            android:name=".ui.menu_mypage.report.MyFeedActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.menu_mypage.report.MyPageMyReportDetailActivity"
+            android:name=".ui.menu_feed.FeedDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.menu_mypage.comment.MoldeMyPageMyCommentActivity"
+            android:name=".ui.menu_mypage.comment.MyCommentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.menu_mypage.scrap.MypageMyScrapActivity"
+            android:name=".ui.menu_mypage.scrap.ScrapActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".menu_mypage.login.MyPageLoginActivity"
+            android:name=".ui.menu_mypage.login.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
 
@@ -141,6 +141,7 @@
             android:label="@string/app_name"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
+
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
@@ -153,6 +154,7 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

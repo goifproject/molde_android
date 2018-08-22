@@ -1,7 +1,6 @@
 package com.limefriends.molde.ui.menu_magazine.comment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -18,13 +17,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.limefriends.molde.R;
+import com.limefriends.molde.comm.MoldeApplication;
 import com.limefriends.molde.comm.custom.recyclerview.AddOnScrollRecyclerView;
 import com.limefriends.molde.entity.comment.MoldeCommentEntity;
 import com.limefriends.molde.entity.comment.MoldeCommentResponseInfoEntity;
 import com.limefriends.molde.entity.comment.MoldeCommentResponseInfoEntityList;
 import com.limefriends.molde.entity.response.Result;
-import com.limefriends.molde.menu_mypage.login.MyPageLoginActivity;
 import com.limefriends.molde.remote.MoldeNetwork;
 import com.limefriends.molde.remote.MoldeRestfulService;
 
@@ -113,17 +113,24 @@ public class MagazineCommentActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // TODO 실제 로그인 상태 확인 구현
                 // 로그인 된 상태라면 -> 댓글 등록
-                if (isLoggedIn) {
+                FirebaseAuth auth = ((MoldeApplication)getApplication()).getFireBaseAuth();
+                if (auth != null && auth.getUid() != null) {
                     addToComment("lkj", "이기정", cardNewsId, comment_input.getText().toString(), String.valueOf(System.currentTimeMillis()));
                     comment_input.setText("");
                 } else {
-                    Intent intent = new Intent(MagazineCommentActivity.this, MyPageLoginActivity.class);
-                    startActivity(intent);
+                    Snackbar.make(comment_layout, "몰디 로그인이 필요합니다!", Snackbar.LENGTH_SHORT).show();
                 }
+//                if (isLoggedIn) {
+//                    addToComment("lkj", "이기정", cardNewsId, comment_input.getText().toString(), String.valueOf(System.currentTimeMillis()));
+//                    comment_input.setText("");
+//                } else {
+//                    Intent intent = new Intent(MagazineCommentActivity.this, LoginActivity.class);
+//                    startActivity(intent);
+//                }
                 // 로그인 안 된 상태라면 -> 로그인 화면으로 넘어가기
                 // 서버에 데이터 넘겨주고 콜백함수로 하위에 댓글item 추가
                 // 아래로 끌어당기면 새로고침 되도록 만들기
-                Toast.makeText(getApplicationContext(), "댓글 등록", Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -209,6 +216,7 @@ public class MagazineCommentActivity extends AppCompatActivity {
                     magazineCommentRecyclerAdapter.addData(new MoldeCommentEntity(
                             userId, userName, newsId, content, regiDate
                     ));
+                    Toast.makeText(getApplicationContext(), "댓글 등록", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -245,13 +253,19 @@ public class MagazineCommentActivity extends AppCompatActivity {
      * TODO 생명주기 관리가 전혀 안 됨. 왜 이게 어쩔 때는 저장되었다가 어쩔 때는 원상태인지 파악이 안 됨
      */
     // 5. 생명주기
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        setHasMoreToLoad(true);
+//        currentPage = 0;
+//    }
+
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onDestroy() {
+        super.onDestroy();
         setHasMoreToLoad(true);
         currentPage = 0;
     }
-
 
 
     @Override
