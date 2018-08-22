@@ -1,14 +1,14 @@
 package com.limefriends.molde.comm.utils.comparator;
 
 
-import com.limefriends.molde.entity.news.MoldeCardNewsEntity;
+import com.limefriends.molde.entity.news.CardNewsEntity;
 
 import java.util.Comparator;
 
-public class CardNewsComparator implements Comparator<MoldeCardNewsEntity> {
+public class CardNewsComparator implements Comparator<CardNewsEntity> {
 
     @Override
-    public int compare(MoldeCardNewsEntity entity, MoldeCardNewsEntity t1) {
+    public int compare(CardNewsEntity entity, CardNewsEntity t1) {
         return Integer.compare(entity.getNewsId(), t1.getNewsId());
     }
 }

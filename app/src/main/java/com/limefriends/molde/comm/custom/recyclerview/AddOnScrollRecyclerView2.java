@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.limefriends.molde.R;
-import com.limefriends.molde.ui.menu_magazine.MagazineCardNewsAdapter;
+import com.limefriends.molde.ui.magazine.CardNewsAdapter;
 
 public class AddOnScrollRecyclerView2 extends LinearLayout {
 
@@ -116,9 +116,9 @@ public class AddOnScrollRecyclerView2 extends LinearLayout {
         }
     };
 
-    MagazineCardNewsAdapter adapter;
+    CardNewsAdapter adapter;
 
-    public void setAdapter(MagazineCardNewsAdapter adatper) {
+    public void setAdapter(CardNewsAdapter adatper) {
         this.adapter  = adatper;
     }
 

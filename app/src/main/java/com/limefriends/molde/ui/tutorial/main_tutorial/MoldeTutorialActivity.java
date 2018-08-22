@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.limefriends.molde.R;
-import com.limefriends.molde.ui.menu_mypage.login.LoginActivity;
+import com.limefriends.molde.ui.mypage.login.LoginActivity;
 import com.limefriends.molde.ui.tutorial.sub_tutorial.MoldeSubDescActivity;
 
 import butterknife.BindView;

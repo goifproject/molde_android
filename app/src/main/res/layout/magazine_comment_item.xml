@@ -55,15 +55,17 @@
             android:textSize="13sp" />
     </RelativeLayout>
 
-    <ImageView
+    <ToggleButton
         android:id="@+id/comment_report"
         android:layout_width="48dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
+        android:textOn=""
+        android:textOff=""
         android:layout_marginBottom="8dp"
-        android:background="@drawable/ic_siren"
-        android:layout_centerVertical="true"/>
+        android:background="@drawable/ic_siren" />
 
     <View
         android:layout_width="match_parent"

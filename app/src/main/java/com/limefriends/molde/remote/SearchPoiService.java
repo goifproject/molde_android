@@ -4,10 +4,10 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.limefriends.molde.entity.map.MoldeSearchMapInfoEntity;
+import com.limefriends.molde.entity.map.SearchMapInfoEntity;
 import com.limefriends.molde.entity.map.poi.Poi;
 import com.limefriends.molde.entity.map.poi.TMapSearchInfo;
-import com.limefriends.molde.ui.menu_map.search.MoldeMapInfoAdapter;
+import com.limefriends.molde.ui.map.search.MoldeMapInfoAdapter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,29 +18,29 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 
 
-public class SearchPoiService extends AsyncTask<String, Void, ArrayList<MoldeSearchMapInfoEntity>> {
+public class SearchPoiService extends AsyncTask<String, Void, ArrayList<SearchMapInfoEntity>> {
     private final String TMAP_API_KEY = "846fd0ff-fac4-4e07-9c7c-1950cc0131dd";
     private final int SEARCH_COUNT = 20;  // minimum is 20
-    private ArrayList<MoldeSearchMapInfoEntity> searchMapListData;
+    private ArrayList<SearchMapInfoEntity> searchMapListData;
     private MoldeMapInfoAdapter mAdapter;
 
     public SearchPoiService(MoldeMapInfoAdapter adapter) {
         this.mAdapter = adapter;
-        searchMapListData = new ArrayList<MoldeSearchMapInfoEntity>();
+        searchMapListData = new ArrayList<SearchMapInfoEntity>();
     }
 
     @Override
-    protected ArrayList<MoldeSearchMapInfoEntity> doInBackground(String... word) {
+    protected ArrayList<SearchMapInfoEntity> doInBackground(String... word) {
         return getAutoComplete(word[0]);
     }
 
     @Override
-    protected void onPostExecute(ArrayList<MoldeSearchMapInfoEntity> autoCompleteItems) {
+    protected void onPostExecute(ArrayList<SearchMapInfoEntity> autoCompleteItems) {
         mAdapter.setData(autoCompleteItems);
         mAdapter.notifyDataSetChanged();
     }
 
-    public ArrayList<MoldeSearchMapInfoEntity> getAutoComplete(String word) {
+    public ArrayList<SearchMapInfoEntity> getAutoComplete(String word) {
 
         try {
             String encodeWord = URLEncoder.encode(word, "UTF-8");
@@ -92,7 +92,7 @@ public class SearchPoiService extends AsyncTask<String, Void, ArrayList<MoldeSea
                             " " + poi.get(i).getLowerAddrName().trim() + " " + poi.get(i).getDetailAddrName().trim() + " " + poi.get(i).getFirstNo().trim() + "-" + poi.get(i).getSecondNo().trim();
                 }
                 String streetAddr = poi.get(i).getRoadName().trim() + " " + poi.get(i).getFirstBuildNo().trim();
-                searchMapListData.add(new MoldeSearchMapInfoEntity(poi.get(i).getNoorLat(), poi.get(i).getNoorLon(), poi.get(i).getName(), mainAddr, streetAddr, poi.get(i).getLowerBizName(), poi.get(i).getTelNo()));
+                searchMapListData.add(new SearchMapInfoEntity(poi.get(i).getNoorLat(), poi.get(i).getNoorLon(), poi.get(i).getName(), mainAddr, streetAddr, poi.get(i).getLowerBizName(), poi.get(i).getTelNo()));
             }
 
         } catch (IOException e) {

@@ -1,15 +1,14 @@
 package com.limefriends.molde.remote;
 
-import com.limefriends.molde.entity.comment.MoldeCommentResponseInfoEntityList;
+import com.limefriends.molde.entity.comment.CommentResponseInfoEntityList;
 import com.limefriends.molde.entity.faq.FaqResponseInfoEntityList;
-import com.limefriends.molde.entity.favorite.MoldeFavoriteResponseInfoEntityList;
-import com.limefriends.molde.entity.feed.MoldeFeedResponseInfoEntity;
-import com.limefriends.molde.entity.feed.MoldeFeedResponseInfoEntityList;
-import com.limefriends.molde.entity.news.MoldeCardNewsResponseInfoEntityList;
+import com.limefriends.molde.entity.favorite.FavoriteResponseInfoEntityList;
+import com.limefriends.molde.entity.feed.FeedResponseInfoEntity;
+import com.limefriends.molde.entity.feed.FeedResponseInfoEntityList;
+import com.limefriends.molde.entity.news.CardNewsResponseInfoEntityList;
 import com.limefriends.molde.entity.response.Result;
 import com.limefriends.molde.entity.scrap.ScrapResponseInfoEntityList;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +16,6 @@ import okhttp3.MultipartBody;
 
 
 import retrofit2.Call;
-import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -34,43 +32,43 @@ public interface MoldeRestfulService {
     interface CardNews {
 
         @GET(MoldeRestfulApi.CardNews.GET_NEWS_API)
-        Call<MoldeCardNewsResponseInfoEntityList> getCardNewsList(@Query("perPage") int perPage,
-                                                                  @Query("page") int page);
+        Call<CardNewsResponseInfoEntityList> getCardNewsList(@Query("perPage") int perPage,
+                                                             @Query("page") int page);
 
         @GET(MoldeRestfulApi.CardNews.GET_NEWS_BY_ID_API)
-        Call<MoldeCardNewsResponseInfoEntityList> getCardNewsListById(@Query("cardNewsId") int newsId);
+        Call<CardNewsResponseInfoEntityList> getCardNewsListById(@Query("cardNewsId") int newsId);
     }
 
     interface Feed {
 
         // 현재 위치 1.5 반경 피드
         @GET(MoldeRestfulApi.Feed.GET_FEED_API)
-        Call<MoldeFeedResponseInfoEntityList> getFeedByDistance(@Query("reportLat") double lat,
-                                                                 @Query("reportLng") double lng);
+        Call<FeedResponseInfoEntityList> getFeedByDistance(@Query("reportLat") double lat,
+                                                           @Query("reportLng") double lng);
 
         // 내가 작성한 피드
         @GET(MoldeRestfulApi.Feed.GET_MY_FEED_API)
-        Call<MoldeFeedResponseInfoEntityList> getMyFeed(@Query("userId") String userId,
-                                                        @Query("perPage") int perPage,
-                                                        @Query("page") int page);
+        Call<FeedResponseInfoEntityList> getMyFeed(@Query("userId") String userId,
+                                                   @Query("perPage") int perPage,
+                                                   @Query("page") int page);
 
         @GET(MoldeRestfulApi.Feed.GET_FEED_BY_DATE_API)
-        Call<MoldeFeedResponseInfoEntityList> getPagedFeedByDate(@Query("perPage") int perPage,
+        Call<FeedResponseInfoEntityList> getPagedFeedByDate(@Query("perPage") int perPage,
                                                             @Query("page") int page);
 
         @GET(MoldeRestfulApi.Feed.GET_FEED_BY_LOCATION_API)
-        Call<MoldeFeedResponseInfoEntityList> getPagedFeedByDistance(@Query("reportLat") double lat,
-                                                           @Query("reportLng") double lng,
-                                                           @Query("perPage") int perPage,
-                                                           @Query("page") int page);
+        Call<FeedResponseInfoEntityList> getPagedFeedByDistance(@Query("reportLat") double lat,
+                                                                @Query("reportLng") double lng,
+                                                                @Query("perPage") int perPage,
+                                                                @Query("page") int page);
 
         @GET(MoldeRestfulApi.Feed.GET_FEED_BY_ID_API)
-        Call<MoldeFeedResponseInfoEntityList> getFeedById(@Query("reportId") int reportId);
+        Call<FeedResponseInfoEntityList> getFeedById(@Query("reportId") int reportId);
 
         @Multipart
         @POST(MoldeRestfulApi.Feed.POST_FEED_API)
         Call<Result> reportNewFeed(@Part List<MultipartBody.Part> imageFiles,
-                                   @PartMap Map<String, MoldeFeedResponseInfoEntity> feed);
+                                   @PartMap Map<String, FeedResponseInfoEntity> feed);
 
 //        @Multipart
 //        @POST(MoldeRestfulApi.Feed.POST_FEED_API)
@@ -125,14 +123,14 @@ public interface MoldeRestfulService {
          * @return
          */
         @GET(MoldeRestfulApi.Comment.GET_COMMENT_BY_NEWSID_API)
-        Call<MoldeCommentResponseInfoEntityList> getNewsComment(@Query("cardNewsId") int newsId,
-                                                                @Query("perPage") int perPage,
-                                                                @Query("page") int page);
+        Call<CommentResponseInfoEntityList> getNewsComment(@Query("cardNewsId") int newsId,
+                                                           @Query("perPage") int perPage,
+                                                           @Query("page") int page);
 
         @GET(MoldeRestfulApi.Comment.GET_COMMENT_BY_USERID_API)
-        Call<MoldeCommentResponseInfoEntityList> getMyComment(@Query("commentUserId") String userId,
-                                                              @Query("perPage") int perPage,
-                                                              @Query("page") int page);
+        Call<CommentResponseInfoEntityList> getMyComment(@Query("commentUserId") String userId,
+                                                         @Query("perPage") int perPage,
+                                                         @Query("page") int page);
 
         @FormUrlEncoded
         @POST(MoldeRestfulApi.Comment.POST_COMMENT_API)
@@ -187,9 +185,9 @@ public interface MoldeRestfulService {
     interface Favorite {
 
         @GET(MoldeRestfulApi.Favorite.GET_FAVORITE_API)
-        Call<MoldeFavoriteResponseInfoEntityList> getMyFavorite(@Query("userId") String userId,
-                                                                @Query("perPage") int perPage,
-                                                                @Query("page") int page);
+        Call<FavoriteResponseInfoEntityList> getMyFavorite(@Query("userId") String userId,
+                                                           @Query("perPage") int perPage,
+                                                           @Query("page") int page);
 
         @FormUrlEncoded
         @POST(MoldeRestfulApi.Favorite.POST_FAVORITE_API)

@@ -45,15 +45,15 @@
             android:theme="@style/AppNoBarTheme" />
         <!-- 지도 관련 -->
         <activity
-            android:name=".ui.menu_map.search.SearchMapInfoActivity"
+            android:name=".ui.map.search.SearchMapInfoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".ui.menu_map.report.MoldeReportActivity"
+            android:name=".ui.map.report.MoldeReportActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".ui.menu_map.favorite.MoldeMyFavoriteActivity"
+            android:name=".ui.map.favorite.MoldeMyFavoriteActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
@@ -71,57 +71,57 @@
 
         <!-- 매거진 관련 -->
         <activity
-            android:name=".ui.menu_magazine.report.MagazineReportMolcaDetailActivity"
+            android:name=".ui.magazine.info.RecentMolcaInfoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.menu_magazine.report.MagazineReportLocationDetailActivity"
+            android:name=".ui.magazine.info.HowToDetectActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.menu_magazine.report.MagazineReportSpreadDetailActivity"
+            android:name=".ui.magazine.info.HowToRespondActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.menu_magazine.detail.MagazineCardnewsDetailActivity"
+            android:name=".ui.magazine.detail.CardNewsDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".ui.menu_magazine.comment.MagazineCommentActivity"
+            android:name=".ui.magazine.comment.CardNewsCommentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
 
         <!-- 마이페이지 관련 -->
         <activity
-            android:name=".ui.menu_mypage.settings.SettingsActivity"
+            android:name=".ui.mypage.settings.SettingsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.menu_mypage.inquiry.InquiryActivity"
+            android:name=".ui.mypage.inquiry.InquiryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.menu_mypage.faq.FaQActivity"
+            android:name=".ui.mypage.faq.FaQActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.menu_mypage.report.MyFeedActivity"
+            android:name=".ui.mypage.report.MyFeedActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.menu_feed.FeedDetailActivity"
+            android:name=".ui.feed.FeedDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.menu_mypage.comment.MyCommentActivity"
+            android:name=".ui.mypage.comment.MyCommentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.menu_mypage.scrap.ScrapActivity"
+            android:name=".ui.mypage.scrap.ScrapActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.menu_mypage.login.LoginActivity"
+            android:name=".ui.mypage.login.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
 

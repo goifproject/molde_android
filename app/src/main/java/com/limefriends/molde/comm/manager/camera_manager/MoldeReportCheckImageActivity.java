@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.limefriends.molde.R;
-import com.limefriends.molde.ui.menu_map.report.MoldeReportActivity;
+import com.limefriends.molde.ui.map.report.MoldeReportActivity;
 
 import java.io.File;
 

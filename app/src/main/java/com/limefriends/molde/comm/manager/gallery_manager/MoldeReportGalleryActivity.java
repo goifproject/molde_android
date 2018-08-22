@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.limefriends.molde.R;
-import com.limefriends.molde.ui.menu_map.report.MoldeReportActivity;
+import com.limefriends.molde.ui.map.report.MoldeReportActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;

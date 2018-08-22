@@ -19,14 +19,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.limefriends.molde.comm.MoldeApplication;
 import com.limefriends.molde.R;
 import com.limefriends.molde.comm.helper.BottomNavigationViewHelper;
-import com.limefriends.molde.entity.favorite.MoldeFavoriteEntity;
-import com.limefriends.molde.entity.feed.MoldeFeedEntity;
-import com.limefriends.molde.ui.menu_feed.FeedFragment;
-import com.limefriends.molde.ui.menu_magazine.MoldeMagazineFragment;
-import com.limefriends.molde.ui.menu_map.main.MapFragment;
-import com.limefriends.molde.entity.map.MoldeSearchMapHistoryEntity;
-import com.limefriends.molde.entity.map.MoldeSearchMapInfoEntity;
-import com.limefriends.molde.ui.menu_mypage.MyPageFragment;
+import com.limefriends.molde.entity.favorite.FavoriteEntity;
+import com.limefriends.molde.entity.feed.FeedEntity;
+import com.limefriends.molde.entity.map.SearchMapHistoryEntity;
+import com.limefriends.molde.entity.map.SearchMapInfoEntity;
+import com.limefriends.molde.ui.feed.FeedFragment;
+import com.limefriends.molde.ui.magazine.CardNewsFragment;
+import com.limefriends.molde.ui.map.main.MapFragment;
+import com.limefriends.molde.ui.mypage.MyPageFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,10 +41,10 @@ public class MoldeMainActivity extends AppCompatActivity {
     private long lastTimeBackPressed;
     private FragmentTransaction ft;
     private FragmentManager fm;
-    private MoldeSearchMapInfoEntity searchEntity;
-    private MoldeSearchMapHistoryEntity historyEntity;
-    private MoldeFavoriteEntity myFavoriteEntity;
-    private MoldeFeedEntity feedEntity;
+    private SearchMapInfoEntity searchEntity;
+    private SearchMapHistoryEntity historyEntity;
+    private FavoriteEntity myFavoriteEntity;
+    private FeedEntity feedEntity;
     private Fragment fragment;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -53,7 +53,7 @@ public class MoldeMainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.main_menu_magazine:
                     if (fragmentSparseArray.get(R.string.main_menu_magazine) == null) {
-                        fragment = MoldeMagazineFragment.newInstance();
+                        fragment = new CardNewsFragment();
                         fragmentSparseArray.append(R.string.main_menu_magazine, fragment);
                         replaceFragment(fragment);
                     } else {
@@ -157,9 +157,9 @@ public class MoldeMainActivity extends AppCompatActivity {
         Log.e("호출확인", "Main : onResume1");
         if (intent != null) {
             Log.e("호출확인", "Main : onResume2");
-            searchEntity = (MoldeSearchMapInfoEntity) intent.getSerializableExtra("mapSearchInfo");
-            historyEntity = (MoldeSearchMapHistoryEntity) intent.getSerializableExtra("mapHistoryInfo");
-            myFavoriteEntity = (MoldeFavoriteEntity) intent.getSerializableExtra("mapFavoriteInfo");
+            searchEntity = (SearchMapInfoEntity) intent.getSerializableExtra("mapSearchInfo");
+            historyEntity = (SearchMapHistoryEntity) intent.getSerializableExtra("mapHistoryInfo");
+            myFavoriteEntity = (FavoriteEntity) intent.getSerializableExtra("mapFavoriteInfo");
 
             //Log.e("호출확인", "Main : searchEntity - "+searchEntity.toString());
             //Log.e("호출확인", "Main : historyEntity - "+historyEntity.toString());
@@ -169,15 +169,15 @@ public class MoldeMainActivity extends AppCompatActivity {
         }
     }
 
-    public MoldeSearchMapInfoEntity getMapInfoResultData() {
+    public SearchMapInfoEntity getMapInfoResultData() {
         return this.searchEntity;
     }
 
-    public MoldeSearchMapHistoryEntity getMapHistoryResultData() {
+    public SearchMapHistoryEntity getMapHistoryResultData() {
         return this.historyEntity;
     }
 
-    public MoldeFavoriteEntity getMyFavoriteEntity() {
+    public FavoriteEntity getMyFavoriteEntity() {
         return this.myFavoriteEntity;
     }
 
@@ -215,11 +215,11 @@ public class MoldeMainActivity extends AppCompatActivity {
         fragment.onActivityResult(requestCode, resultCode, data);
     }
 
-    public MoldeFeedEntity getFeedEntity() {
+    public FeedEntity getFeedEntity() {
         return feedEntity;
     }
 
-    public void setFeedEntity(MoldeFeedEntity feedEntity) {
+    public void setFeedEntity(FeedEntity feedEntity) {
         this.feedEntity = feedEntity;
         ((MapFragment) fragmentSparseArray.get(R.string.main_menu_map)).setFromFeed(true);
     }

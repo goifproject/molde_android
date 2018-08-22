@@ -13,7 +13,7 @@ import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.limefriends.molde.R;
 import com.limefriends.molde.comm.Constant;
 import com.limefriends.molde.comm.utils.PreferenceUtil;
-import com.limefriends.molde.ui.menu_mypage.login.LoginActivity;
+import com.limefriends.molde.ui.mypage.login.LoginActivity;
 import com.limefriends.molde.ui.tutorial.main_tutorial.MoldeTutorialActivity;
 
 import butterknife.BindView;
