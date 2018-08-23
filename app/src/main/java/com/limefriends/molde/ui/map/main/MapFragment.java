@@ -90,10 +90,6 @@ public class MapFragment extends Fragment implements
 
     public static final int ZOOM_CUR_LOCATION = 17;
     public static final int ZOOM_FEED_MARKER = 15;
-    public static final int RED = 0;
-    public static final int GREEN = 2;
-    public static final int WHITE = 3;
-    public static final int NULL = 9;
     public static final int REQ_SEARCH_MAP = 999;
     public static final int REQ_FAVORITE = 996;
 

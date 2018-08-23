@@ -7,7 +7,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -19,8 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.limefriends.molde.R;
-import com.limefriends.molde.comm.Constant;
 import com.limefriends.molde.comm.utils.PreferenceUtil;
+import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.feed.FeedEntity;
 import com.limefriends.molde.entity.feed.FeedImageResponseInfoEntity;
 import com.limefriends.molde.entity.feed.FeedResponseInfoEntity;
@@ -39,22 +38,33 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.limefriends.molde.comm.Constant.Authority.*;
+import static com.limefriends.molde.comm.Constant.Feed.*;
 import static com.limefriends.molde.comm.Constant.ReportState.*;
 
+// TODO "lkj" 변경할 것
 public class FeedDetailActivity extends AppCompatActivity {
-    List<String> reportImageLinkList;
 
-    @BindView(R.id.mypage_detail_report_image_indicator)
-    CircleIndicator mypage_detail_report_image_indicator;
+    // 이미지 페이저
     @BindView(R.id.mypage_detail_report_image_pager)
     ViewPager mypage_detail_report_image_pager;
+    // 위치, 신고 내용
     @BindView(R.id.mypage_detail_report_location_content)
     TextView mypage_detail_report_location_content;
     @BindView(R.id.mypage_detail_report_content)
     TextView mypage_detail_report_content;
-    @BindView(R.id.report_detail_result_text)
-    TextView report_detail_result_text;
+    // 페이지 인디케이더
+    @BindView(R.id.mypage_detail_report_image_indicator_container)
+    RelativeLayout mypage_detail_report_image_indicator_container;
+    @BindView(R.id.mypage_detail_report_image_indicator)
+    CircleIndicator mypage_detail_report_image_indicator;
+    // 신고 취소
+    @BindView(R.id.mypage_detail_report_cancel_button)
+    Button mypage_detail_report_cancel_button;
 
+    // 신고 상태 이미지
+    @BindView(R.id.report_detail_normal)
+    RelativeLayout report_detail_normal;
     @BindView(R.id.siren_bad_status)
     ImageView siren_bad_status;
     @BindView(R.id.siren_receiving_status)
@@ -63,15 +73,13 @@ public class FeedDetailActivity extends AppCompatActivity {
     ImageView siren_found_status;
     @BindView(R.id.siren_clean_status)
     ImageView siren_clean_status;
-    @BindView(R.id.mypage_detail_report_cancel_button)
-    Button mypage_detail_report_cancel_button;
+    // 신고 상태 메시지
+    @BindView(R.id.report_detail_result_text)
+    TextView report_detail_result_text;
 
-    @BindView(R.id.report_detail_normal)
-    RelativeLayout report_detail_normal;
-
+    // 관리자용 신고 상태 체크박스
     @BindView(R.id.report_detail_admin)
     RelativeLayout report_detail_admin;
-
     @BindView(R.id.progress_checkbox_admin_accepted)
     CheckBox progress_checkbox_admin_accepted;
     @BindView(R.id.progress_checkbox_admin_found)
@@ -81,32 +89,21 @@ public class FeedDetailActivity extends AppCompatActivity {
     @BindView(R.id.report_confirm_admin)
     Button report_confirm_admin;
 
-    @BindView(R.id.mypage_detail_report_image_indicator_container)
-    RelativeLayout mypage_detail_report_image_indicator_container;
+    private FeedImageAdapter feedImageAdapter;
+    private MoldeRestfulService.Feed feedService;
 
-
-    FeedImageAdapter feedImageAdapter;
-
-    int reportId;
-    int position;
-    String activity;
-    long authority;
-    boolean isMyFeed;
+    private String activityName;
+    private int reportId;
+    private int position;
+    private long authority;
+    private boolean isMyFeed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mypage_activity_my_report_detail);
 
-        // TODO 권한 인증해서 어떤 화면을 보여줄지 결정한다
-
-        activity = getIntent().getStringExtra("activity");
-
-        reportId = getIntent().getIntExtra("feedId", 0);
-
-        position = getIntent().getIntExtra("position", 0);
-
-        authority = PreferenceUtil.getLong(this, "authority");
+        prepare();
 
         setupViews();
 
@@ -117,6 +114,20 @@ public class FeedDetailActivity extends AppCompatActivity {
         loadReport(reportId);
     }
 
+    //-----
+    // View
+    //-----
+
+    private void prepare() {
+        activityName = getIntent().getStringExtra(INTENT_KEY_ACTIVITY_NAME);
+
+        reportId = getIntent().getIntExtra(INTENT_KEY_FEED_ID, 0);
+
+        position = getIntent().getIntExtra(INTENT_KEY_POSITION, 0);
+
+        authority = PreferenceUtil.getLong(this, PREF_KEY_AUTHORITY);
+    }
+
     private void setupViews() {
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -125,33 +136,31 @@ public class FeedDetailActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         TextView toolbar_title = getSupportActionBar().getCustomView().findViewById(R.id.toolbar_title);
-        toolbar_title.setText("신고 상세 내역");
+        toolbar_title.setText(getText(R.string.feed_detail));
 
-        if (authority == Constant.Authority.ADMIN && activity != null && activity.equals("MyFeed")) {
+        if (authority == ADMIN && activityName != null && activityName.equals(INTENT_VALUE_MY_FEED)) {
             report_detail_normal.setVisibility(View.GONE);
             report_detail_admin.setVisibility(View.VISIBLE);
-            mypage_detail_report_cancel_button.setText(getText(R.string.report_deny));
+            mypage_detail_report_cancel_button.setText(getText(R.string.deny_report));
             isMyFeed = true;
         }
     }
 
     private void setupListener() {
-
         mypage_detail_report_cancel_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (mypage_detail_report_cancel_button.getText().equals(getText(R.string.report_cancel))) {
+                if (mypage_detail_report_cancel_button.getText().equals(getText(R.string.cancel_report))) {
                     AlertDialog dialog = new AlertDialog.Builder(v.getContext())
-                            .setTitle("신고 취소")
-                            .setMessage("신고를 취소하시겠습니까?")
-                            .setPositiveButton("예", new DialogInterface.OnClickListener() {
+                            .setTitle(getText(R.string.cancel_report))
+                            .setMessage(getText(R.string.cancel_message))
+                            .setPositiveButton(getText(R.string.yes), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     deleteReport(reportId);
                                 }
                             })
-                            .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                            .setNegativeButton(getText(R.string.no), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
@@ -159,17 +168,17 @@ public class FeedDetailActivity extends AppCompatActivity {
                             })
                             .create();
                     dialog.show();
-                } else if (mypage_detail_report_cancel_button.getText().equals(getText(R.string.report_deny))) {
+                } else if (mypage_detail_report_cancel_button.getText().equals(getText(R.string.deny_report))) {
                     AlertDialog dialog = new AlertDialog.Builder(v.getContext())
-                            .setTitle("신고 취소")
-                            .setMessage("신고를 취소하시겠습니까?")
-                            .setPositiveButton("예", new DialogInterface.OnClickListener() {
+                            .setTitle(getText(R.string.cancel_report))
+                            .setMessage(getText(R.string.cancel_message))
+                            .setPositiveButton(getText(R.string.yes), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     refuseReport(reportId, DENIED);
                                 }
                             })
-                            .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                            .setNegativeButton(getText(R.string.no), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
@@ -198,11 +207,6 @@ public class FeedDetailActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(FeedDetailActivity.this, "진행중인 신고입니다", Toast.LENGTH_SHORT).show();
                 }
-
-                // 체크된 거로 이미지 바꿔주자
-
-                // 체크된 거로 데이터 바꿔주자
-
             }
         });
 
@@ -239,8 +243,7 @@ public class FeedDetailActivity extends AppCompatActivity {
     }
 
     private void setImagePager() {
-        reportImageLinkList = new ArrayList<>();
-        feedImageAdapter = new FeedImageAdapter(getApplicationContext(), reportImageLinkList);
+        feedImageAdapter = new FeedImageAdapter(getApplicationContext());
         mypage_detail_report_image_pager.setAdapter(feedImageAdapter);
         mypage_detail_report_image_indicator.setupWithViewPager(mypage_detail_report_image_pager);
     }
@@ -254,22 +257,69 @@ public class FeedDetailActivity extends AppCompatActivity {
         return false;
     }
 
-    public void loadReport(int reportId) {
+    private void setSirenInvisible() {
+        siren_bad_status.setVisibility(View.INVISIBLE);
+        siren_receiving_status.setVisibility(View.INVISIBLE);
+        siren_clean_status.setVisibility(View.INVISIBLE);
+        siren_found_status.setVisibility(View.INVISIBLE);
+    }
 
-        MoldeRestfulService.Feed feedService
-                = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Feed.class);
+    private void setSirenState(int state) {
+        setSirenInvisible();
+        String resultText = "";
+        switch (state) {
+            case RECEIVING:
+                resultText = getText(R.string.report_status_receiving).toString();
+                siren_receiving_status.setVisibility(View.VISIBLE);
+                // 접수중일 때만 삭제 가능
+                if (isMyFeed) mypage_detail_report_cancel_button.setVisibility(View.VISIBLE);
+                break;
+            case ACCEPTED:
+                siren_receiving_status.setVisibility(View.VISIBLE);
+                resultText = getText(R.string.report_status_accepted).toString();
+                progress_checkbox_admin_accepted.setChecked(true);
+                break;
+            case FOUND:
+                siren_found_status.setVisibility(View.VISIBLE);
+                resultText = getText(R.string.report_status_found).toString();
+                progress_checkbox_admin_accepted.setChecked(true);
+                break;
+            case CLEAN:
+                siren_clean_status.setVisibility(View.VISIBLE);
+                resultText = getText(R.string.report_status_clean).toString();
+                progress_checkbox_admin_accepted.setChecked(true);
+                break;
+            case DENIED:
+                resultText = getText(R.string.report_status_denied).toString();
+                break;
+        }
+        report_detail_result_text.setText(resultText);
+    }
 
-        Call<FeedResponseInfoEntityList> call = feedService.getFeedById(reportId);
+    //-----
+    // Network
+    //-----
 
+    private MoldeRestfulService.Feed getFeedService() {
+        if (feedService == null) {
+            feedService = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Feed.class);
+        }
+        return feedService;
+    }
+
+    private void loadReport(int reportId) {
+        Call<FeedResponseInfoEntityList> call = getFeedService().getFeedById(reportId);
         call.enqueue(new Callback<FeedResponseInfoEntityList>() {
             @Override
-            public void onResponse(Call<FeedResponseInfoEntityList> call, Response<FeedResponseInfoEntityList> response) {
+            public void onResponse(Call<FeedResponseInfoEntityList> call,
+                                   Response<FeedResponseInfoEntityList> response) {
                 if (response.isSuccessful()) {
                     List<FeedResponseInfoEntity> entityList = response.body().getData();
                     if (entityList != null && entityList.size() != 0) {
-                        FeedEntity entity = fromSchemaToLocalEntity(response.body().getData()).get(0);
+                        FeedEntity entity = FromSchemaToEntitiy.feed(response.body().getData()).get(0);
                         // 위치
-                        mypage_detail_report_location_content.setText(entity.getRepAddr() + " " + entity.getRepDetailAddr());
+                        mypage_detail_report_location_content.setText(
+                                String.format("%s %s", entity.getRepAddr(), entity.getRepDetailAddr()));
                         // 내용
                         mypage_detail_report_content.setText(entity.getRepContents());
                         // 신고 상태
@@ -278,7 +328,6 @@ public class FeedDetailActivity extends AppCompatActivity {
                         List<FeedImageResponseInfoEntity> imageList = entity.getRepImg();
                         List<String> imageUrls = new ArrayList<>();
                         for (int i = 0; i < imageList.size(); i++) {
-                            Log.e("이미지", imageList.get(i).getFilepath());
                             imageUrls.add(imageList.get(i).getFilepath());
                         }
                         feedImageAdapter.setData(imageUrls);
@@ -295,24 +344,16 @@ public class FeedDetailActivity extends AppCompatActivity {
     }
 
     public void deleteReport(int reportId) {
-
-        MoldeRestfulService.Feed feedService
-                = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Feed.class);
-
-        Call<Result> call = feedService.deleteFeed("lkj", reportId);
-
+        Call<Result> call = getFeedService().deleteFeed("lkj", reportId);
         call.enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(FeedDetailActivity.this, "신고를 취소했습니다.", Toast.LENGTH_LONG).show();
-
                     Intent intent = new Intent();
-                    intent.putExtra("position", position);
+                    intent.putExtra(INTENT_KEY_POSITION, position);
                     setResult(RESULT_OK, intent);
-
                     finish();
-
                 }
             }
 
@@ -324,19 +365,12 @@ public class FeedDetailActivity extends AppCompatActivity {
     }
 
     public void updateReport(int reportId, final int state) {
-
-        MoldeRestfulService.Feed feedService
-                = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Feed.class);
-
-        Call<Result> call = feedService.updateFeed(reportId, state);
-
+        Call<Result> call = getFeedService().updateFeed(reportId, state);
         call.enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(FeedDetailActivity.this, "신고 상태가 변경되었습니다.", Toast.LENGTH_LONG).show();
-                    // 사실 현재 페이지에서는 할 필요 없음
-                    // setSirenState(state);
                 }
             }
 
@@ -347,96 +381,8 @@ public class FeedDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void setSirenState(int state) {
-        setSirenInvisible();
-        String resultText = "";
-        switch (state) {
-            case RECEIVING:
-                resultText = getText(R.string.reportReceivingStatus).toString();
-                siren_receiving_status.setVisibility(View.VISIBLE);
-                // 접수중일 때만 삭제 가능
-                if (isMyFeed) mypage_detail_report_cancel_button.setVisibility(View.VISIBLE);
-                break;
-            case ACCEPTED:
-                siren_receiving_status.setVisibility(View.VISIBLE);
-                resultText = getText(R.string.reportAcceptedStatus).toString();
-                progress_checkbox_admin_accepted.setChecked(true);
-                break;
-            case FOUND:
-                siren_found_status.setVisibility(View.VISIBLE);
-                resultText = getText(R.string.reportFoundStatus).toString();
-                progress_checkbox_admin_accepted.setChecked(true);
-                break;
-            case CLEAN:
-                siren_clean_status.setVisibility(View.VISIBLE);
-                resultText = getText(R.string.reportCleanStatus).toString();
-                progress_checkbox_admin_accepted.setChecked(true);
-                break;
-            case DENIED:
-                resultText = getText(R.string.reportDeniedStatus).toString();
-                break;
-        }
-        report_detail_result_text.setText(resultText);
-    }
-
     public void refuseReport(int reportId, final int state) {
         // 체크된 거로 데이터 바꿔주자
         updateReport(reportId, state);
     }
-
-    private void setSirenInvisible() {
-        siren_bad_status.setVisibility(View.INVISIBLE);
-        siren_receiving_status.setVisibility(View.INVISIBLE);
-        siren_clean_status.setVisibility(View.INVISIBLE);
-        siren_found_status.setVisibility(View.INVISIBLE);
-    }
-
-    private List<FeedEntity> fromSchemaToLocalEntity(List<FeedResponseInfoEntity> entities) {
-        List<FeedEntity> data = new ArrayList<>();
-        for (FeedResponseInfoEntity entity : entities) {
-            data.add(new FeedEntity(
-                    entity.getRepId(),
-                    entity.getUserName(),
-                    entity.getUserEmail(),
-                    entity.getUserId(),
-                    entity.getRepContents(),
-                    entity.getRepLat(),
-                    entity.getRepLon(),
-                    entity.getRepAddr(),
-                    entity.getRepDetailAddr(),
-                    entity.getRepDate(),
-                    entity.getRepImg(),
-                    entity.getRepState()
-            ));
-        }
-        return data;
-    }
-
-//    private void loadData(int cardNewsId, String userId) {
-//        MoldeRestfulService.Scrap scrapService
-//                = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Scrap.class);
-//
-//        // TODO 로그인 할 때 받아놓고 없으면 로그인 페이지로 넘어가도록 해야 한다.
-//        Call<Result> call = scrapService.deleteMyScrap(userId, cardNewsId);
-//
-//        call.enqueue(new Callback<Result>() {
-//            @Override
-//            public void onResponse(Call<Result> call, Response<Result> response) {
-//                if (response.body().getResult() == 1) {
-//                    Toast.makeText(MagazineCardnewsDetailActivity.this, "삭제완료", Toast.LENGTH_LONG).show();
-//                    cardnews_scrap.setImageResource(R.drawable.ic_card_scrap_false);
-//                    isScrap = false;
-//                } else {
-//                    cardnews_scrap.setImageResource(R.drawable.ic_card_scrap_true);
-//                    isScrap = true;
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Result> call, Throwable t) {
-//
-//            }
-//        });
-//    }
-
 }

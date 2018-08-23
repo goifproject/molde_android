@@ -1,4 +1,20 @@
 <resources>
+
+    <!-- FeedDetailActivity -->
+    <string name="feed_detail">신고 상세 내역</string>
+    <string name="deny_report">신고 거절</string>
+    <string name="cancel_report">신고 취소</string>
+    <string name="cancel_message">신고를 취소하시겠습니까?</string>
+    <string name="report_status_receiving">신고해 주셔서 감사합니다. 운영자가 신고 내용을 확인중입니다</string>
+    <string name="report_status_accepted">신고하신 내용을 운영자가 관할 지역에 전달하였습니다!</string>
+    <string name="report_status_found">접수 결과 몰래카메라로 판정되어 제거하였습니다!</string>
+    <string name="report_status_clean">점검을 통해 몰래카메라가 없는 안전지역임을 확인했습니다.</string>
+    <string name="report_status_denied">사진을 인식할 수 없거나 위치를\n 확인할 수 없습니다. 다시 신고해주세요.</string>
+
+    <!-- Dialog -->
+    <string name="yes">예</string>
+    <string name="no">아니오</string>
+
     <string name="app_name">Molde</string>
     <string name="main_menu_map">지도  </string>
     <string name="main_menu_magazine">매거진</string>
@@ -30,16 +46,8 @@
     <string name="siren_green">초록색 싸이렌</string>
     <string name="siren_white">흰색 싸이렌</string>
 
-    <string name="reportReceivingStatus">신고해 주셔서 감사합니다. 운영자가 신고 내용을 확인중입니다</string>
-    <string name="reportAcceptedStatus">신고하신 내용을 운영자가 관할 지역에 전달하였습니다!</string>
-    <string name="reportFoundStatus">접수 결과 몰래카메라로 판정되어 제거하였습니다!</string>
-    <string name="reportCleanStatus">점검을 통해 몰래카메라가 없는 안전지역임을 확인했습니다.</string>
-    <string name="reportDeniedStatus">사진을 인식할 수 없거나 위치를\n확인할 수 없습니다. 다시 신고해주세요.</string>
-    <string name="reportGreen">점검을 통해 몰카가 없는 안전지역임을 확인하였습니다.</string>
 
-    <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
-    <!--<string name="facebook_app_id">971533716339908</string>-->
-    <!--<string name="fb_login_protocol_scheme">fb971533716339908</string>-->
+
 
     <string name="facebook_app_id">640535656298047</string>
     <string name="fb_login_protocol_scheme">fb640535656298047</string>

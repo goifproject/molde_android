@@ -74,7 +74,7 @@ public class MoldeMainActivity extends AppCompatActivity {
                     return true;
                 case R.id.main_menu_feed:
                     if (fragmentSparseArray.get(R.string.main_menu_report_list) == null) {
-                        fragment = FeedFragment.newInstance();
+                        fragment = new FeedFragment();
                         fragmentSparseArray.append(R.string.main_menu_report_list, fragment);
                         replaceFragment(fragment);
                     } else {

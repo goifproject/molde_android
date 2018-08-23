@@ -19,4 +19,17 @@ public class Constant {
         public static final int ADMIN = 2;
     }
 
+    public static class Feed {
+        public static final String FEED_BY_DISTANCE = "거리순";
+        public static final String FEED_BY_LAST = "최신순";
+        // Intent Key
+        public static final String INTENT_KEY_ACTIVITY_NAME = "activityName";
+        public static final String INTENT_KEY_FEED_ID = "feedId";
+        public static final String INTENT_KEY_POSITION = "position";
+        // Preference Key
+        public static final String PREF_KEY_AUTHORITY = "authority";
+        // Value
+        public static final String INTENT_VALUE_MY_FEED = "MyFeed";
+    }
+
 }

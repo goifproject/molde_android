@@ -47,7 +47,7 @@ public class CardNewsFragment extends Fragment {
     private static final int FIRST_PAGE = 0;
     private int currentPage = FIRST_PAGE;
     private boolean hasMoreToLoad = true;
-    private boolean isFirst = true;
+    private boolean isFirstOnCreateView = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,7 +63,7 @@ public class CardNewsFragment extends Fragment {
         setupMagazineList();
 
         // 처음 한 번만 호출된다
-        if (isFirst) loadMagazine(PER_PAGE, FIRST_PAGE);
+        if (isFirstOnCreateView) loadMagazine(PER_PAGE, FIRST_PAGE);
 
         return rootView;
     }
@@ -194,7 +194,7 @@ public class CardNewsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        isFirst = false;
+        isFirstOnCreateView = false;
     }
 
 

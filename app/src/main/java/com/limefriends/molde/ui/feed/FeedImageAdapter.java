@@ -11,24 +11,24 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.limefriends.molde.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 public class FeedImageAdapter extends PagerAdapter{
-    private List<String> reportImageLinkList;
-    private Context context;
 
-    public FeedImageAdapter(Context context, List<String> reportImageLinkList) {
+    private Context context;
+    private List<String> reportImageLinkList = new ArrayList<>();
+
+    public FeedImageAdapter(Context context) {
         this.context = context;
-        this.reportImageLinkList = reportImageLinkList;
     }
 
     public void setData(List<String> imgUrl) {
         this.reportImageLinkList = imgUrl;
         notifyDataSetChanged();
     }
-
 
     @Override
     public int getCount() {
