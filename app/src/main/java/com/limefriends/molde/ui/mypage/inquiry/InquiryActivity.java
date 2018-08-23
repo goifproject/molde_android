@@ -2,6 +2,7 @@ package com.limefriends.molde.ui.mypage.inquiry;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -14,11 +15,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.limefriends.molde.comm.MoldeApplication;
 import com.limefriends.molde.comm.utils.pattern.RegexUtil;
 import com.limefriends.molde.R;
@@ -36,9 +39,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+// TODO "lkj" 변경할 것
 public class InquiryActivity extends AppCompatActivity {
 
-    private static final String TAG = InquiryActivity.class.getSimpleName();
     @BindView(R.id.faq_button)
     Button faq_button;
     @BindView(R.id.faq_content)
@@ -55,25 +58,40 @@ public class InquiryActivity extends AppCompatActivity {
     Button faq_send_button;
     @BindView(R.id.inquiry_progress)
     ProgressBar progressBar;
+    @BindView(R.id.inquire_container)
+    RelativeLayout inquire_container;
 
     private String faqEmail;
+    private String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mypage_activity_inquiry);
 
-        ButterKnife.bind(this);
+        setupViews();
 
+        setupListener();
+    }
+
+    //-----
+    // View
+    //-----
+
+    private void setupViews() {
+        ButterKnife.bind(this);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.default_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        TextView toolbar_title
+                = getSupportActionBar().getCustomView().findViewById(R.id.toolbar_title);
+        toolbar_title.setText(getText(R.string.inquire));
+    }
 
-        TextView toolbar_title = getSupportActionBar().getCustomView().findViewById(R.id.toolbar_title);
-        toolbar_title.setText("문의하기");
-
+    private void setupListener() {
+        // 자주 묻는 질문
         faq_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,8 +100,8 @@ public class InquiryActivity extends AppCompatActivity {
             }
         });
 
-        final InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        final ArrayAdapter emailArrayAdapter = ArrayAdapter.createFromResource(this, R.array.email_select, android.R.layout.simple_spinner_item);
+        ArrayAdapter emailArrayAdapter = ArrayAdapter.createFromResource(this,
+                R.array.email_select, android.R.layout.simple_spinner_item);
         faq_email_select.setAdapter(emailArrayAdapter);
         faq_email_select.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -92,7 +110,7 @@ public class InquiryActivity extends AppCompatActivity {
                     faq_email_select.setSelected(false);
                     return;
                 }
-                if (position == emailArrayAdapter.getCount() - 1) {
+                if (position == faq_email_select.getAdapter().getCount() - 1) {
                     faq_email_select.setVisibility(View.GONE);
                     faq_email_self_input.setVisibility(View.VISIBLE);
                     faq_self_close_button.setVisibility(View.VISIBLE);
@@ -104,88 +122,58 @@ public class InquiryActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+        // 뒤로가기
         faq_self_close_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                InputMethodManager inputMethodManager
+                        = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(faq_email_select.getWindowToken(), 0);
                 faq_email_self_input.setVisibility(View.GONE);
                 faq_self_close_button.setVisibility(View.GONE);
                 faq_email_self_input.setText("");
-                inputMethodManager.hideSoftInputFromWindow(faq_email_select.getWindowToken(), 0);
                 faq_email_select.setVisibility(View.VISIBLE);
                 faq_email_select.bringToFront();
                 faq_email_select.setSelection(0);
             }
         });
 
+        // 전송하기
         faq_send_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (faq_email_select.getVisibility() == View.GONE && faq_email_self_input.getVisibility() == View.VISIBLE) {
-                    faqEmail = faq_email_input.getText().toString() + "@" + faq_email_self_input.toString();
-                } else if (faq_email_select.getVisibility() == View.VISIBLE && faq_email_self_input.getVisibility() == View.GONE) {
-                    faqEmail = faq_email_input.getText().toString() + "@" + faq_email_select.getSelectedItem().toString();
+                if (faq_email_select.getVisibility() == View.GONE &&
+                        faq_email_self_input.getVisibility() == View.VISIBLE) {
+                    faqEmail = faq_email_input.getText().toString()
+                            + "@" + faq_email_self_input.toString();
+                } else if (faq_email_select.getVisibility() == View.VISIBLE &&
+                        faq_email_self_input.getVisibility() == View.GONE) {
+                    faqEmail = faq_email_input.getText().toString()
+                            + "@" + faq_email_select.getSelectedItem().toString();
                 }
-
-                // TODO 로그인 처리를 한 후 다시 작업
-                FirebaseAuth firebaseAuth = ((MoldeApplication) getApplication()).getFireBaseAuth();
-
+                FirebaseAuth auth = ((MoldeApplication) getApplication()).getFireBaseAuth();
+                FirebaseUser user = auth.getCurrentUser();
                 String faqContent = faq_content.getText().toString();
 
-                if (faqEmail.equals("")) {
-                    toast("이메일 주소가 없잖아 임마. 신고가 장난이냐");
-                    return;
-                }
-
                 if (faqContent.equals("")) {
-                    toast("내용이 없잖아 임마. 문의가 장난이냐");
+                    snackBar(getText(R.string.snackbar_content_absent).toString());
                     return;
                 }
-
-                if (RegexUtil.validateEmail(faqEmail)) {
-
-                    MoldeRestfulService.Faq faqService
-                            = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Faq.class);
-
-                    // TODO 로그인 할 때 받아놓고 없으면 로그인 페이지로 넘어가도록 해야 한다.
-
-                    Call<Result> call = faqService.createNewFaq(
-                            "lkj",
-                            "이기정",
-                            faqContent,
-                            faqEmail
-                    );
-
-                    progressBar.setVisibility(View.VISIBLE);
-
-                    call.enqueue(new Callback<Result>() {
-                        @Override
-                        public void onResponse(Call<Result> call, Response<Result> response) {
-                            if (response.isSuccessful()) {
-                                Toast.makeText(getApplicationContext(), "데이터 전송 성공", Toast.LENGTH_SHORT).show();
-                                Log.e("로그 자 보자", response.body().getResult() + "");
-                                // TODO 여기서 finish() 잠시 두고 3-5대 열어놓고 연속으로 누르면서 부하를 얼만큼 버티는지 알아보자
-                                progressBar.setVisibility(View.INVISIBLE);
-                                toast("문의가 접수됬습니다. 감사합니다");
-                                finish();
-                            } else {
-                                try {
-                                    Log.e("로그 자 보자", response.errorBody().string());
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<Result> call, Throwable t) {
-
-                        }
-                    });
-
+                if (!faq_email_input.getText().toString().equals("")) {
+                    if (!RegexUtil.validateEmail(faqEmail)) {
+                        snackBar(getText(R.string.snackbar_invalid_email).toString());
+                        return;
+                    }
                 } else {
-                    Toast.makeText(InquiryActivity.this, "이메일 양식에 맞지 않습니다. 확인해주세요", Toast.LENGTH_LONG).show();
+                    faqEmail = user.getEmail();
                 }
+                if (auth.getCurrentUser().getDisplayName() == null) {
+                    userName = "무명";
+                } else {
+                    userName = auth.getCurrentUser().getDisplayName();
+                }
+                inquire(auth.getUid(), userName, faqContent, faqEmail);
             }
         });
     }
@@ -199,8 +187,37 @@ public class InquiryActivity extends AppCompatActivity {
         return false;
     }
 
-    private void toast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    private void snackBar(String message) {
+        Snackbar.make(inquire_container, message, Snackbar.LENGTH_SHORT).show();
     }
+
+    //-----
+    // Network
+    //-----
+
+    private void inquire(String userId, String userName, String content, String email) {
+        MoldeRestfulService.Faq faqService
+                = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Faq.class);
+        Call<Result> call = faqService.createNewFaq("lkj", "이기정", content, email);
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        call.enqueue(new Callback<Result>() {
+            @Override
+            public void onResponse(Call<Result> call, Response<Result> response) {
+                if (response.isSuccessful()) {
+                    progressBar.setVisibility(View.INVISIBLE);
+                    snackBar(getText(R.string.snackbar_inquire_accepted).toString());
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result> call, Throwable t) {
+
+            }
+        });
+    }
+
 }
 

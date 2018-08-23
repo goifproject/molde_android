@@ -41,6 +41,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 // TODO "lkj" 변경할 것
+// TODO auth Application 에서 가져다 쓸 것
 // TODO swipe refresh 적용할까
 // TODO snack 에서 showSnack 이 아니라 댓글 신고로 넘어가야 함
 public class CardNewsCommentActivity extends AppCompatActivity {

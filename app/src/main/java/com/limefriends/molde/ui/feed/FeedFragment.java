@@ -1,13 +1,8 @@
 package com.limefriends.molde.ui.feed;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,15 +15,12 @@ import com.limefriends.molde.comm.MoldeApplication;
 import com.limefriends.molde.comm.custom.recyclerview.AddOnScrollRecyclerView;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.feed.FeedEntity;
-import com.limefriends.molde.entity.feed.FeedResponseInfoEntity;
 import com.limefriends.molde.entity.feed.FeedResponseInfoEntityList;
 import com.limefriends.molde.ui.MoldeMainActivity;
 import com.limefriends.molde.R;
 import com.limefriends.molde.remote.MoldeRestfulService;
 import com.limefriends.molde.remote.MoldeNetwork;
-import com.limefriends.molde.ui.map.main.MapFragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;

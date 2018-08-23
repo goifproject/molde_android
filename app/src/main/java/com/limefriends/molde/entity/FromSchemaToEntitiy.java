@@ -2,10 +2,14 @@ package com.limefriends.molde.entity;
 
 import com.limefriends.molde.entity.comment.CommentEntity;
 import com.limefriends.molde.entity.comment.CommentResponseInfoEntity;
+import com.limefriends.molde.entity.faq.FaqEntitiy;
+import com.limefriends.molde.entity.faq.FaqResponseInfoEntity;
 import com.limefriends.molde.entity.feed.FeedEntity;
 import com.limefriends.molde.entity.feed.FeedResponseInfoEntity;
 import com.limefriends.molde.entity.news.CardNewsEntity;
 import com.limefriends.molde.entity.news.CardNewsResponseInfoEntity;
+import com.limefriends.molde.entity.scrap.ScrapEntity;
+import com.limefriends.molde.entity.scrap.ScrapResponseInfoEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +63,16 @@ public class FromSchemaToEntitiy {
         return entities;
     }
 
+    public static CommentEntity comment(CommentResponseInfoEntity entity) {
+        return new CommentEntity(
+                entity.getCommId(),
+                entity.getUserId(),
+                entity.getUserName(),
+                entity.getNewsId(),
+                entity.getComment(),
+                entity.getCommDate());
+    }
+
     /**
      * 피드
      */
@@ -82,4 +96,37 @@ public class FromSchemaToEntitiy {
         }
         return data;
     }
+
+    /**
+     * 스크랩
+     */
+    public static List<ScrapEntity> scrap(List<ScrapResponseInfoEntity> schemas) {
+        List<ScrapEntity> entities = new ArrayList<>();
+        for (ScrapResponseInfoEntity schema : schemas) {
+            entities.add(new ScrapEntity(
+                    schema.getScrapId(),
+                    schema.getUserId(),
+                    schema.getNewsId()
+            ));
+        }
+        return entities;
+    }
+
+    /**
+     * faq
+     */
+    public static List<FaqEntitiy> faq(List<FaqResponseInfoEntity> schemas) {
+        List<FaqEntitiy> entities = new ArrayList<>();
+        for (FaqResponseInfoEntity schema : schemas) {
+            entities.add(new FaqEntitiy(
+                    schema.getFaqId(),
+                    schema.getUserId(),
+                    schema.getUserName(),
+                    schema.getFaqContents(),
+                    schema.getFaqEmail()
+            ));
+        }
+        return entities;
+    }
+
 }

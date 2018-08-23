@@ -29,8 +29,8 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.mypage_activity_settings);
         ButterKnife.bind(this);
 
-        Intent intent = getIntent();
-        String title = intent.getStringExtra("title");
+
+
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.default_toolbar);
@@ -38,7 +38,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         TextView toolbar_title = getSupportActionBar().getCustomView().findViewById(R.id.toolbar_title);
-        toolbar_title.setText(title);
+        toolbar_title.setText(getText(R.string.settings));
 
 
         findViewById(R.id.mypage_made_by).setOnClickListener(this);

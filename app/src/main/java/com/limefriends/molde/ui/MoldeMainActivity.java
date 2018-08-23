@@ -84,7 +84,7 @@ public class MoldeMainActivity extends AppCompatActivity {
                     return true;
                 case R.id.main_menu_mypage:
                     if (fragmentSparseArray.get(R.string.main_menu_mypage) == null) {
-                        fragment = MyPageFragment.newInstance();
+                        fragment = new MyPageFragment();
                         fragmentSparseArray.append(R.string.main_menu_mypage, fragment);
                         replaceFragment(fragment);
                     } else {

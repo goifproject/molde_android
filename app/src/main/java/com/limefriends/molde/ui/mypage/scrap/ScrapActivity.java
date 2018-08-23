@@ -1,9 +1,7 @@
 package com.limefriends.molde.ui.mypage.scrap;
 
-import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,16 +12,16 @@ import android.widget.TextView;
 
 import com.limefriends.molde.R;
 import com.limefriends.molde.comm.custom.recyclerview.AddOnScrollRecyclerView;
+import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.news.CardNewsEntity;
 import com.limefriends.molde.entity.news.CardNewsResponseInfoEntity;
 import com.limefriends.molde.entity.news.CardNewsResponseInfoEntityList;
 import com.limefriends.molde.entity.scrap.ScrapEntity;
-import com.limefriends.molde.entity.scrap.ScrapResponseInfoEntity;
 import com.limefriends.molde.entity.scrap.ScrapResponseInfoEntityList;
 import com.limefriends.molde.remote.MoldeRestfulService;
 import com.limefriends.molde.remote.MoldeNetwork;
+import com.limefriends.molde.ui.magazine.detail.CardNewsDetailActivity;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,88 +31,69 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ScrapActivity extends AppCompatActivity {
+import static com.limefriends.molde.comm.Constant.Common.EXTRA_KEY_ACTIVITY_NAME;
+import static com.limefriends.molde.comm.Constant.Common.EXTRA_KEY_CARDNEWS_ID;
+import static com.limefriends.molde.comm.Constant.Scrap.*;
 
-    private static final int PER_PAGE = 10;
-    private static final int FIRST_PAGE = 0;
-    private int currentPage = FIRST_PAGE;
+// TODO "lkj" 바꿀 것
+public class ScrapActivity extends AppCompatActivity {
 
     @BindView(R.id.myScrap_recyclerView)
     AddOnScrollRecyclerView myScrap_recyclerView;
-
     @BindView(R.id.progressBar3)
     ProgressBar progressBar;
 
-    ScrapAdapter adapter;
+    private ScrapAdapter adapter;
+    private List<CardNewsEntity> cardNewsEntities = new ArrayList<>();
+    private MoldeRestfulService.CardNews newsService;
+    private MoldeRestfulService.Scrap scrapService;
 
-    // 스크랩 목록
-    List<ScrapEntity> scrapEntities = new ArrayList<>();
-
-    // 뉴스 목록
-    List<CardNewsEntity> cardNewsEntities = new ArrayList<>();
+    private final int PER_PAGE = 10;
+    private final int FIRST_PAGE = 0;
+    private int currentPage = FIRST_PAGE;
     private boolean hasMoreToLoad = true;
-
+    private int fetchCount = 0;
+    private int responseCount = 0;
+    private int selectedNewsPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mypage_activity_my_scrap);
 
-        ButterKnife.bind(this);
+        setupViews();
 
+        setupScrapList();
+
+        loadMyScrap(PER_PAGE, currentPage);
+    }
+
+    //-----
+    // View
+    //-----
+
+    private void setupViews() {
+        ButterKnife.bind(this);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.default_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
         TextView toolbar_title = getSupportActionBar().getCustomView().findViewById(R.id.toolbar_title);
-        toolbar_title.setText("내 스크랩");
+        toolbar_title.setText(getText(R.string.myscrap));
+    }
 
-
-//        myPageMyScrapEntityList.add(new ScrapEntity(R.drawable.mypage_image,
-//                "에어비앤*에서 다시 몰카 발각"));
-//
-//        myPageMyScrapEntityList.add(new ScrapEntity(R.drawable.mypage_image,
-//                "몰카발각 법적 처벌 강화…"));
-//
-//        myPageMyScrapEntityList.add(new ScrapEntity(R.drawable.mypage_image,
-//                "최신 몰카트렌드"));
-//
-//        myPageMyScrapEntityList.add(new ScrapEntity(R.drawable.mypage_image,
-//                "몰카범 지하철역에서 잡혀…"));
-//
-//        myPageMyScrapEntityList.add(new ScrapEntity(R.drawable.mypage_image,
-//                "제목제목"));
-//
-//        myPageMyScrapEntityList.add(new ScrapEntity(R.drawable.mypage_image,
-//                "제-목"));
-//
-//        myPageMyScrapEntityList.add(new ScrapEntity(R.drawable.mypage_image,
-//                "제목!!"));
-//
-//        myPageMyScrapEntityList.add(new ScrapEntity(R.drawable.mypage_image,
-//                "제목??"));
-
-
-        adapter = new ScrapAdapter(getApplicationContext(),
-                R.layout.mypage_activity_my_scrap, scrapEntities);
-
-        // 1. 어댑터
+    private void setupScrapList() {
+        adapter = new ScrapAdapter(this);
         myScrap_recyclerView.setAdapter(adapter);
-
-        // 2. 레이아웃 매니저
-        myScrap_recyclerView.setLayoutManager(new GridLayoutManager(this, 2), true);
-
-        // 3. loadMore
+        myScrap_recyclerView.setLayoutManager(
+                new GridLayoutManager(this, 2), true);
         myScrap_recyclerView.setOnLoadMoreListener(new AddOnScrollRecyclerView.OnLoadMoreListener() {
             @Override
             public void loadMore() {
                 loadMyScrap(PER_PAGE, currentPage);
             }
         });
-
-        loadMyScrap(PER_PAGE, FIRST_PAGE);
     }
 
     @Override
@@ -126,47 +105,45 @@ public class ScrapActivity extends AppCompatActivity {
         return false;
     }
 
+    //-----
+    // Network
+    //-----
+
+    private MoldeRestfulService.Scrap getScrapService() {
+        if (scrapService == null) {
+            scrapService = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Scrap.class);
+        }
+        return scrapService;
+    }
+
+    private MoldeRestfulService.CardNews getNewsService() {
+        if (newsService == null) {
+            newsService = MoldeNetwork.getInstance().generateService(MoldeRestfulService.CardNews.class);
+        }
+        return newsService;
+    }
+
     private void loadMyScrap(int perPage, int page) {
 
-        // 1. 더 이상 불러올 데이터가 없는지 확인
         if (!hasMoreToLoad) return;
 
-        // 2. 불러온다면 프로그래스바를 띄움
-        // adapter.setProgressMore(true);
-
-        // 3. 스크롤에 의해서 다시 호출될 수 있기 때문에 로딩중임을 명시해 줌
         myScrap_recyclerView.setIsLoading(true);
 
         progressBar.setVisibility(View.VISIBLE);
 
-        MoldeRestfulService.Scrap scrapService
-                = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Scrap.class);
-
-        // TODO 로그인 할 때 받아놓고 없으면 로그인 페이지로 넘어가도록 해야 한다.
-        Call<ScrapResponseInfoEntityList> call = scrapService.getMyScrapList("lkj", perPage, page);
+        Call<ScrapResponseInfoEntityList> call
+                = getScrapService().getMyScrapList("lkj", perPage, page);
 
         call.enqueue(new Callback<ScrapResponseInfoEntityList>() {
             @Override
-            public void onResponse(Call<ScrapResponseInfoEntityList> call, Response<ScrapResponseInfoEntityList> response) {
+            public void onResponse(Call<ScrapResponseInfoEntityList> call,
+                                   Response<ScrapResponseInfoEntityList> response) {
                 if (response.isSuccessful()) {
-                    final List<ScrapEntity> entities = fromScrapSchemaToLocalEntity(response.body().getData());
-
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            for (ScrapEntity scrapEntity : entities) {
-                                Response<CardNewsResponseInfoEntityList> responseSync =
-                                        loadNewsPreview(scrapEntity.getNewsId());
-
-                                List<CardNewsResponseInfoEntity> newsSchema = responseSync.body().getData();
-                                if (newsSchema.size() != 0) {
-                                    CardNewsEntity newsEntity = fromNewsSchemaToLocalEntity(newsSchema.get(0));
-                                    cardNewsEntities.add(newsEntity);
-                                }
-                            }
-                            mHandler.sendEmptyMessage(0);
-                        }
-                    }.start();
+                    List<ScrapEntity> entities = FromSchemaToEntitiy.scrap(response.body().getData());
+                    fetchCount = entities.size();
+                    for (ScrapEntity scrapEntity : entities) {
+                        loadCardNews(scrapEntity.getNewsId());
+                    }
                 }
             }
 
@@ -177,75 +154,72 @@ public class ScrapActivity extends AppCompatActivity {
         });
     }
 
-    @SuppressLint("HandlerLeak")
-    Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            progressBar.setVisibility(View.GONE);
-            adapter.setData(cardNewsEntities);
-            // 7. 추가 완료 후 다음 페이지로 넘어가도록 세팅
-            currentPage++;
-            // 8. 더 이상 데이터를 세팅중이 아님을 명시
-            myScrap_recyclerView.setIsLoading(false);
-            if (cardNewsEntities.size() < PER_PAGE) {
-                // Log.e("호출확인5", "magazine fragment");
-                setHasMoreToLoad(false);
+    private void loadCardNews(int newsId) {
+
+        Call<CardNewsResponseInfoEntityList> call = getNewsService().getCardNewsListById(newsId);
+
+        call.enqueue(new Callback<CardNewsResponseInfoEntityList>() {
+            @Override
+            public void onResponse(Call<CardNewsResponseInfoEntityList> call,
+                                   Response<CardNewsResponseInfoEntityList> response) {
+                if (response.isSuccessful()) {
+                    addResponseCount();
+                    List<CardNewsResponseInfoEntity> newsSchema = response.body().getData();
+                    if (newsSchema.size() != 0) {
+                        CardNewsEntity newsEntity = FromSchemaToEntitiy.cardNews(newsSchema.get(0));
+                        cardNewsEntities.add(newsEntity);
+                    }
+                    if (fetchCount == responseCount) {
+                        progressBar.setVisibility(View.GONE);
+                        adapter.setData(cardNewsEntities);
+                        currentPage++;
+                        myScrap_recyclerView.setIsLoading(false);
+                        if (cardNewsEntities.size() < PER_PAGE) {
+                            hasMoreToLoad(false);
+                        }
+                    }
+                }
             }
-        }
-    };
 
-    private Response<CardNewsResponseInfoEntityList> loadNewsPreview(int newsId) {
+            @Override
+            public void onFailure(Call<CardNewsResponseInfoEntityList> call, Throwable t) {
 
-        MoldeRestfulService.CardNews newsService
-                = MoldeNetwork.getInstance().generateService(MoldeRestfulService.CardNews.class);
-
-        // TODO 로그인 할 때 받아놓고 없으면 로그인 페이지로 넘어가도록 해야 한다.
-        Call<CardNewsResponseInfoEntityList> call = newsService.getCardNewsListById(newsId);
-
-        try {
-            return call.execute();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+            }
+        });
     }
 
-
-
-
-
-    private List<ScrapEntity> fromScrapSchemaToLocalEntity(List<ScrapResponseInfoEntity> schemas) {
-        List<ScrapEntity> entities = new ArrayList<>();
-        for (ScrapResponseInfoEntity schema : schemas) {
-            entities.add(new ScrapEntity(
-                    schema.getScrapId(),
-                    schema.getUserId(),
-                    schema.getNewsId()
-            ));
-        }
-        return entities;
+    private synchronized void addResponseCount() {
+        responseCount++;
     }
 
-    private CardNewsEntity fromNewsSchemaToLocalEntity(CardNewsResponseInfoEntity schema) {
-
-
-        return new CardNewsEntity(
-                schema.getNewsId(),
-                schema.getPostId(),
-                schema.getDescription(),
-                schema.getDate(),
-                schema.getNewsImg());
-
-    }
-
-    private void setHasMoreToLoad(boolean hasMore) {
+    private void hasMoreToLoad(boolean hasMore) {
         hasMoreToLoad = hasMore;
     }
+
+    public void onCardNewsSelected(int newsId, int position) {
+        selectedNewsPosition = position;
+        Intent intent = new Intent(this, CardNewsDetailActivity.class);
+        intent.putExtra(EXTRA_KEY_CARDNEWS_ID, newsId);
+        intent.putExtra(EXTRA_KEY_ACTIVITY_NAME, INTENT_VALUE_SCRAP);
+        startActivityForResult(intent, INTENT_KEY_CARDNEWS_DETAIL);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == INTENT_KEY_CARDNEWS_DETAIL) {
+            adapter.removeItem(selectedNewsPosition);
+        }
+    }
+
+    //-----
+    // lifecycle
+    //-----
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        setHasMoreToLoad(true);
+        hasMoreToLoad(true);
         currentPage = 0;
     }
 

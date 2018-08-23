@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.limefriends.molde.R;
+import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.comment.CommentEntity;
 import com.limefriends.molde.entity.comment.CommentResponseInfoEntity;
 import com.limefriends.molde.entity.comment.CommentResponseInfoEntityList;
@@ -34,6 +35,9 @@ import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.limefriends.molde.comm.Constant.Comment.EXTRA_KEY_COMMENT_DESCRIPTION;
+import static com.limefriends.molde.comm.Constant.Common.EXTRA_KEY_CARDNEWS_ID;
 
 
 /**
@@ -89,43 +93,31 @@ import retrofit2.Response;
  * <p>
  * 마지막으로 Rx 를 사용하면 정말 편하게 개발할 수 있을 것 같다는 생각이 듬
  */
-public class MyCommentActivity extends AppCompatActivity implements MyCommentExpandableAdapter.OnItemClickCallback{
-
-//    @BindView(R.id.myComment_recyclerView)
-//    AddOnScrollRecyclerView myComment_recyclerView;
+// TODO responsecount로 처리하는 애들 중에 만약 중간에 네트워크가 끊기거나 하나 못 받아오면 어떻게 되는거임
+// TODO addOnScroll 추가 구현할 것
+public class MyCommentActivity extends AppCompatActivity implements MyCommentExpandableAdapter.OnItemClickCallback {
 
     @BindView(R.id.myComment_listView)
     ExpandableListView myComment_listView;
-
-    // MyCardNewsCommentAdapter commentAdapter;
-
-    MyCommentExpandableAdapter commentExpandableAdapter;
-
-    private static final int PER_PAGE = 100;
-    private static final int FIRST_PAGE = 0;
-    private int currentPage = FIRST_PAGE;
-
-    // 댓글 목록
-    List<CommentResponseInfoEntity> commentSchemas = new ArrayList<>();
-    List<CommentEntity> commentEntities = new ArrayList<>();
-
-    // 카드뉴스 목록
-    List<CardNewsEntity> newsEntities = new ArrayList<>();
-
-    // 마지막에 추가된 카드뉴스
-    List myCommentList = new ArrayList();
-
-    int count = 0;
-
-    int fetchCount = 0;
-    int responseCount = 0;
-
     @BindView(R.id.progressBar2)
     ProgressBar progressBar;
 
+    private final int PER_PAGE = 20;
+    private final int FIRST_PAGE = 0;
+    private int currentPage = FIRST_PAGE;
 
-    private int lastAddedCommentNewsId = -1;
+    private MyCommentExpandableAdapter commentExpandableAdapter;
+    private MoldeRestfulService.Comment commentService;
+    private MoldeRestfulService.CardNews newsService;
+
+    // 댓글 목록
+    private List<CommentResponseInfoEntity> commentSchemas = new ArrayList<>();
+    private List<CommentEntity> commentEntities = new ArrayList<>();
+    // 카드뉴스 목록
+    private List<CardNewsEntity> newsEntities = new ArrayList<>();
     private boolean hasMoreToLoad = true;
+    private int fetchCount = 0;
+    private int responseCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,337 +128,33 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
 
         setupList();
 
-        loadCommentData(PER_PAGE, FIRST_PAGE);
+        loadCommentData(PER_PAGE, currentPage);
     }
+
+    //-----
+    // View
+    //-----
 
     private void setupViews() {
         ButterKnife.bind(this);
-
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.default_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        TextView toolbar_title = getSupportActionBar().getCustomView().findViewById(R.id.toolbar_title);
-        toolbar_title.setText("내가 쓴 댓글");
-
+        TextView toolbar_title
+                = getSupportActionBar().getCustomView().findViewById(R.id.toolbar_title);
+        toolbar_title.setText(getText(R.string.my_comment));
     }
 
     private void setupList() {
-//        commentAdapter = new MyCardNewsCommentAdapter(this);
-//
-//        // 1. 어댑터
-//        myComment_recyclerView.setAdapter(commentAdapter);
-//
-//        // 2. 레이아웃 매니저
-//        myComment_recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()), false);
-//
-//        // 3. loadMore
-//        myComment_recyclerView.setOnLoadMoreListener(new AddOnScrollRecyclerView.OnLoadMoreListener() {
-//            @Override
-//            public void loadMore() {
-//                loadCommentData(PER_PAGE, currentPage);
-//            }
-//        });
-
         commentExpandableAdapter = new MyCommentExpandableAdapter(this);
-
         myComment_listView.setAdapter(commentExpandableAdapter);
-
         myComment_listView.setGroupIndicator(null);
         myComment_listView.setChildIndicator(null);
         myComment_listView.setChildDivider(getResources().getDrawable(R.color.white));
         myComment_listView.setDivider(getResources().getDrawable(R.color.white));
         myComment_listView.setDividerHeight(0);
-
-    }
-
-
-    private void loadCommentData(int perPage, int page) {
-
-        progressBar.setVisibility(View.VISIBLE);
-
-        // 1. 더 이상 불러올 데이터가 없는지 확인
-        if (!hasMoreToLoad) return;
-
-        // 2. 불러온다면 프로그래스바를 띄움 -> 이렇게 할 경우 GridLayout 에서 처리가 안 됨
-        // commentAdapter.setProgressMore(true);
-
-        // 3. 스크롤에 의해서 다시 호출될 수 있기 때문에 로딩중임을 명시해 줌
-        // myComment_recyclerView.setIsLoading(true);
-
-        MoldeRestfulService.Comment commentService
-                = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Comment.class);
-
-        final MoldeRestfulService.CardNews newsService
-                = MoldeNetwork.getInstance().generateService(MoldeRestfulService.CardNews.class);
-
-        // TODO 로그인 할 때 받아놓고 없으면 로그인 페이지로 넘어가도록 해야 한다.
-        Call<CommentResponseInfoEntityList> call = commentService.getMyComment("lkj", perPage, page);
-
-        call.enqueue(new Callback<CommentResponseInfoEntityList>() {
-            @Override
-            public void onResponse(Call<CommentResponseInfoEntityList> call, Response<CommentResponseInfoEntityList> response) {
-
-                // 같은 뉴스의 댓글들을 모으기 위해 오름차순 정렬
-                commentSchemas = response.body().getData();
-                Collections.sort(commentSchemas, new CommentComparator());
-
-                for (CommentResponseInfoEntity commentSchema : commentSchemas) {
-                    Log.e("소팅 확인", commentSchema.getCommId() + "");
-                }
-
-                CommentEntity lastAddedComment = null;
-
-                outer : for (int i = 0; i < commentSchemas.size(); i++) {
-
-                    // 꺼내고
-                    CommentEntity commentEntity = fromSchemaToLocalEntity(commentSchemas.get(i));
-
-                    // 이전 뉴스 소속이 아닌지 확인해본다
-//                     if (newsEntities.size() != 0) {
-//                        for (CardNewsEntity newsEntity : newsEntities) {
-//                            if (newsEntity.getNewsId() == commentEntity.getNewsId()) {
-//                                newsEntity.addComments(commentEntity);
-//                                continue outer;
-//                            }
-//
-//                        }
-//                    }
-
-
-                    // 처음이거나 바로 이전 댓글과 소속 뉴스가 같으면 더해준다
-                    if (lastAddedComment == null || lastAddedComment.getNewsId() == commentEntity.getNewsId()) {
-                        commentEntities.add(commentEntity);
-                        if (i == commentSchemas.size() - 1) {
-                            loadCardNewsData(newsService, commentEntities);
-                            commentEntities = new ArrayList<>();
-                            return;
-                        }
-                    } else if (lastAddedComment.getNewsId() != commentEntity.getNewsId()) {
-                        // 만약 다를 경우 바로 이전 댓글까지의 모음 해당하는 뉴스를 호출한다
-                        loadCardNewsData(newsService, commentEntities);
-                        commentEntities = new ArrayList<>();
-                        commentEntities.add(commentEntity);
-                        if (i == commentSchemas.size() - 1) {
-                            loadCardNewsData(newsService, commentEntities);
-                            commentEntities = new ArrayList<>();
-                            return;
-                        }
-                    }
-                    lastAddedComment = commentEntity;
-                }
-
-//                for (CommentResponseInfoEntity commentSchema : commentSchemas) {
-//
-//                    // 꺼내고
-//                    CommentEntity commentEntity = fromSchemaToLocalEntity(commentSchema);
-//
-//                    // 처음이거나 바로 이전 댓글과 소속 뉴스가 같으면 더해준다
-//                    if (lastAddedComment == null || lastAddedComment.getNewsId() == commentEntity.getNewsId()) {
-//                        commentEntities.add(commentEntity);
-//                    } else {
-//                        // 만약 다를 경우 바로 이전 댓글까지의 모음 해당하는 뉴스를 호출한다
-//                        loadCardNewsData(newsService, commentEntities);
-//                    }
-//
-//                    lastAddedComment = commentEntity;
-//
-//                    if (lastAddedCommentNewsId == commentEntity.getNewsId()) {
-//                        addCount();
-//                        Log.e("카운트1", count+"");
-//                        continue;
-//                    }
-//                    lastAddedCommentNewsId = commentEntity.getNewsId();
-//                    loadCardNewsData(newsService, commentEntity);
-//                }
-                // 비동기로 진행되기 때문에 마지막 데이터가 세팅되지 않고 호출될 수 있다.
-                // adapter.setData(fromSchemaToLocalEntity(data));
-            }
-
-            @Override
-            public void onFailure(Call<CommentResponseInfoEntityList> call, Throwable t) {
-
-            }
-        });
-    }
-
-
-    private synchronized void addFetchCount() {
-        fetchCount++;
-    }
-
-    private synchronized void addResponseCount() {
-        responseCount++;
-    }
-
-    private void loadCardNewsData(MoldeRestfulService.CardNews newsService, final List<CommentEntity> entityList) {
-
-        for (CommentEntity entity : entityList) {
-            Log.e("뭐 넘어왔는지 확인", entity.getCommId() + "");
-        }
-
-        addFetchCount();
-        Log.e("fetchCount", fetchCount + "");
-
-//        Log.e("뉴스 번호 확인-last", lastAddedCommentNewsId+"");
-//        Log.e("뉴스 번호 확인-current", commentEntity.getNewsId()+"");
-
-        // 같은 뉴스이면 뉴스만 추가하고 넘어감
-        // 비동기로 처리하기 때문에 for문을 돌면서 무조건 호출이 되고, 나머지는 리턴될때까지 기다렸다가 lastAddedCommentNewsId
-        // 를 세팅하기 때문에 당연히 여기서
-//        if (lastAddedCommentNewsId == commentEntity.getNewsId()) {
-//            Log.e("댓글만 추가", lastAddedCommentNewsId+"");
-//            myCommentList.add(commentEntity);
-//            return;
-//        }
-
-        Call<CardNewsResponseInfoEntityList> newsCall = newsService.getCardNewsListById(entityList.get(0).getNewsId());
-
-        newsCall.enqueue(new Callback<CardNewsResponseInfoEntityList>() {
-            @Override
-            public void onResponse(Call<CardNewsResponseInfoEntityList> call, Response<CardNewsResponseInfoEntityList> response) {
-                if (response.isSuccessful()) {
-
-                    // TODO 네트워크 통신을 신뢰하면 안 됨
-
-                    List<CardNewsResponseInfoEntity> newsSchemas = response.body().getData();
-
-                    if (newsSchemas.size() != 0) {
-                        CardNewsResponseInfoEntity schema = response.body().getData().get(0);
-
-                        CardNewsEntity cardNewsEntity = new CardNewsEntity(
-                                schema.getNewsId(),
-                                schema.getPostId(),
-                                schema.getDescription(),
-                                schema.getDate(),
-                                schema.getNewsImg(),
-                                entityList
-                        );
-
-                        newsEntities.add(cardNewsEntity);
-
-                        addResponseCount();
-//                        Log.e("responseCount", responseCount + "");
-
-                        if (fetchCount == responseCount) {
-
-                            Collections.sort(newsEntities, new CardNewsComparator());
-
-//                            Log.e("newsEntities", newsEntities.size() + "");
-//
-//                            for (CardNewsEntity entity : newsEntities) {
-//                                Log.e("newsEntities", entity.getComments().size() + "");
-//                            }
-
-                            commentExpandableAdapter.setData(newsEntities);
-
-                            for (int i = 0; i < newsEntities.size(); i++) {
-                                myComment_listView.expandGroup(i);
-                            }
-
-                            progressBar.setVisibility(View.GONE);
-
-                        }
-                    }
-
-
-                    // 카드 뉴스 저장
-//                    if (lastAddedCommentNewsId != commentEntity.getNewsId()) {
-//                        myCommentList.add(cardNewsEntity);
-//                    }
-
-                    // 뉴스 불러온 댓글 저장
-                    // myCommentList.add(commentEntity);
-
-                    // cardNewsEntity.addComments(commentEntity);
-
-                    // lastAddedCommentNewsId = commentEntity.getNewsId();
-
-//
-//                    addCount();
-//
-//
-//                    Log.e("카운트2", count + "");
-////                    Log.e("둘다 추가", lastAddedCommentNewsId+"");
-////                    Log.e("뉴스 번호 확인2-last", lastAddedCommentNewsId+"");
-////                    Log.e("뉴스 번호 확인2-current", commentEntity.getNewsId()+"");
-//
-//                    // newsEntities.add(cardNewsEntity);
-//
-//                    if (commentSchemas.size() == count) {
-//
-//                        Collections.sort(newsEntities, new CardNewsComparator());
-//
-//                        for (CardNewsEntity cardNews : newsEntities) {
-//                            myCommentList.add(cardNews);
-//                            for (CommentEntity commentEntity : commentEntities) {
-//                                if (cardNews.getNewsId() == commentEntity.getNewsId()) {
-//                                    myCommentList.add(commentEntity);
-//                                }
-//                            }
-//                        }
-//                        // 데이터 추가
-//                        commentAdapter.addAll(myCommentList);
-//                        // 추가 완료 후 다음 페이지로 넘어가도록 세팅
-//                        currentPage++;
-//                        // 더 이상 데이터를 세팅중이 아님을 명시
-//                        //myComment_recyclerView.setIsLoading(false);
-//                        // 만약 불러온 데이터가 하나의 페이지에 들어가야 할 수보다 작으면 마지막 데이터인 것이므로 더 이상 데이터를 불러오지 않는다
-//                        if (myCommentList.size() < PER_PAGE) {
-//                            setHasMoreToLoad(false);
-//                        }
-//
-//                        myComment_recyclerView.setVisibility(View.VISIBLE);
-//
-//                        progressBar.setVisibility(View.GONE);
-//                    }
-
-//                    if (myCommentList.size() == commentSchemas.size()) {
-//                        adapter.setData(myCommentList);
-//                        myComment_recyclerView.setVisibility(View.VISIBLE);
-//                        progressBar.setVisibility(View.GONE);
-//                    }
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CardNewsResponseInfoEntityList> call, Throwable t) {
-
-            }
-        });
-    }
-
-
-    private synchronized void addCount() {
-        count++;
-    }
-
-    private CommentEntity fromSchemaToLocalEntity(CommentResponseInfoEntity entity) {
-        return new CommentEntity(
-                entity.getCommId(),
-                entity.getUserId(),
-                entity.getUserName(),
-                entity.getNewsId(),
-                entity.getComment(),
-                entity.getCommDate());
-    }
-
-    private List<CommentEntity> fromSchemaToLocalEntity(List<CommentResponseInfoEntity> data) {
-        List<CommentEntity> comments = new ArrayList<>();
-        for (CommentResponseInfoEntity entity : data) {
-            comments.add(new CommentEntity(
-                    entity.getCommId(),
-                    entity.getUserId(),
-                    entity.getUserName(),
-                    entity.getNewsId(),
-                    entity.getComment(),
-                    entity.getCommDate()
-            ));
-        }
-        return comments;
     }
 
     @Override
@@ -478,18 +166,162 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
         return false;
     }
 
-    // setHasMoreToLoad
+    //-----
+    // Network
+    //-----
+
+    private MoldeRestfulService.CardNews getNewsService() {
+        if (newsService == null) {
+            newsService
+                    = MoldeNetwork.getInstance().generateService(MoldeRestfulService.CardNews.class);
+        }
+        return newsService;
+    }
+
+    private MoldeRestfulService.Comment getCommentService() {
+        if (commentService == null) {
+            commentService
+                    = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Comment.class);
+        }
+        return commentService;
+    }
+
+    private void loadCommentData(int perPage, int page) {
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        Call<CommentResponseInfoEntityList> call = getCommentService().getMyComment("lkj", perPage, page);
+
+        call.enqueue(new Callback<CommentResponseInfoEntityList>() {
+            @Override
+            public void onResponse(Call<CommentResponseInfoEntityList> call, Response<CommentResponseInfoEntityList> response) {
+                // 같은 뉴스의 댓글들을 모으기 위해 오름차순 정렬
+                commentSchemas = response.body().getData();
+                Collections.sort(commentSchemas, new CommentComparator());
+                CommentEntity lastAddedComment = null;
+                outer:
+                for (int i = 0; i < commentSchemas.size(); i++) {
+                    // 꺼내고
+                    CommentEntity commentEntity = FromSchemaToEntitiy.comment(commentSchemas.get(i));
+
+                    // 이전 뉴스 소속이 아닌지 확인해본다
+//                     if (newsEntities.size() != 0) {
+//                        for (CardNewsEntity newsEntity : newsEntities) {
+//                            if (newsEntity.getNewsId() == commentEntity.getNewsId()) {
+//                                newsEntity.addComments(commentEntity);
+//                                Log.e("호출확인", newsEntity.getNewsId()+"");
+//                                continue outer;
+//                            }
+//
+//                        }
+//                    }
+                    // 처음이거나 바로 이전 댓글과 소속 뉴스가 같으면 더해준다
+                    if (lastAddedComment == null || lastAddedComment.getNewsId() == commentEntity.getNewsId()) {
+                        commentEntities.add(commentEntity);
+                        if (i == commentSchemas.size() - 1) {
+                            loadCardNewsData(commentEntities);
+                            commentEntities = new ArrayList<>();
+                            return;
+                        }
+                    } else if (lastAddedComment.getNewsId() != commentEntity.getNewsId()) {
+                        // 만약 다를 경우 바로 이전 댓글까지의 모음 해당하는 뉴스를 호출한다
+                        loadCardNewsData(commentEntities);
+                        commentEntities = new ArrayList<>();
+                        commentEntities.add(commentEntity);
+                        if (i == commentSchemas.size() - 1) {
+                            loadCardNewsData(commentEntities);
+                            commentEntities = new ArrayList<>();
+                            return;
+                        }
+                    }
+                    lastAddedComment = commentEntity;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CommentResponseInfoEntityList> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void loadCardNewsData(final List<CommentEntity> entityList) {
+
+        addFetchCount();
+
+        Call<CardNewsResponseInfoEntityList> newsCall = getNewsService().getCardNewsListById(entityList.get(0).getNewsId());
+
+        newsCall.enqueue(new Callback<CardNewsResponseInfoEntityList>() {
+            @Override
+            public void onResponse(Call<CardNewsResponseInfoEntityList> call, Response<CardNewsResponseInfoEntityList> response) {
+                if (response.isSuccessful()) {
+                    List<CardNewsResponseInfoEntity> newsSchemas = response.body().getData();
+
+                    if (newsSchemas.size() == 0) return;
+                    CardNewsResponseInfoEntity schema = response.body().getData().get(0);
+                    CardNewsEntity cardNewsEntity = new CardNewsEntity(
+                            schema.getNewsId(),
+                            schema.getPostId(),
+                            schema.getDescription(),
+                            schema.getDate(),
+                            schema.getNewsImg(),
+                            entityList
+                    );
+                    newsEntities.add(cardNewsEntity);
+                    addResponseCount();
+
+                    if (fetchCount == responseCount) {
+                        Collections.sort(newsEntities, new CardNewsComparator());
+                        commentExpandableAdapter.setData(newsEntities);
+                        for (int i = 0; i < newsEntities.size(); i++) {
+                            myComment_listView.expandGroup(i);
+                        }
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<CardNewsResponseInfoEntityList> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private synchronized void addFetchCount() {
+        fetchCount++;
+    }
+
+    private synchronized void addResponseCount() {
+        responseCount++;
+    }
+
     private void setHasMoreToLoad(boolean hasMore) {
         hasMoreToLoad = hasMore;
     }
 
-    // 생명주기 관리
-//  @Override
-//    public void onPause() {
-//        super.onPause();
-//        setHasMoreToLoad(true);
-//        currentPage = 0;
-//    }
+    @Override
+    public void onParentItemClick(int groupPosition, int newsId) {
+        myComment_listView.expandGroup(groupPosition);
+        Intent intent = new Intent();
+        intent.setClass(this, CardNewsDetailActivity.class);
+        intent.putExtra(EXTRA_KEY_CARDNEWS_ID, newsId);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onChildItemClick(int childPosition, int newsId, String description) {
+        Intent intent = new Intent();
+        intent.setClass(this, CardNewsCommentActivity.class);
+        intent.putExtra(EXTRA_KEY_CARDNEWS_ID, newsId);
+        intent.putExtra(EXTRA_KEY_COMMENT_DESCRIPTION, description);
+        startActivity(intent);
+    }
+
+    //-----
+    // lifecycle
+    //-----
 
     @Override
     public void onDestroy() {
@@ -498,21 +330,5 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
         currentPage = 0;
     }
 
-    @Override
-    public void onParentItemClick(int groupPosition, int newsId) {
-        myComment_listView.expandGroup(groupPosition);
-        Intent intent = new Intent();
-        intent.setClass(this, CardNewsDetailActivity.class);
-        intent.putExtra("cardNewsId", newsId);
-        startActivity(intent);
-    }
 
-    @Override
-    public void onChildItemClick(int childPosition, int newsId, String description) {
-        Intent intent = new Intent();
-        intent.setClass(this, CardNewsCommentActivity.class);
-        intent.putExtra("cardNewsId", newsId);
-        intent.putExtra("description", description);
-        startActivity(intent);
-    }
 }

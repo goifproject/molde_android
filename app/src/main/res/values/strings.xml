@@ -11,6 +11,38 @@
     <string name="report_status_clean">점검을 통해 몰래카메라가 없는 안전지역임을 확인했습니다.</string>
     <string name="report_status_denied">사진을 인식할 수 없거나 위치를\n 확인할 수 없습니다. 다시 신고해주세요.</string>
 
+    <!-- MyPage -->
+    <string name="snackbar_require_signin">몰디 로그인이 필요합니다!</string>
+    <string name="snackbar_signed_out">계정 로그아웃 되었습니다.</string>
+    <string name="signin">로그인</string>
+    <string name="signout">로그아웃</string>
+    <string name="signin_google">구글 로그인 되었습니다.</string>
+    <string name="signin_facebook">페이스북 로그인 되었습니다.</string>
+
+    <!-- MyPage - Scrap -->
+    <string name="myscrap">내 스크랩</string>
+
+    <!-- MyPage - Report -->
+    <string name="myreport">내 신고내역</string>
+
+    <!-- MyPage - Inquiry-->
+    <string name="inquire">문의하기</string>
+    <string name="snackbar_invalid_email">유효한 이메일이 아닙니다</string>
+    <string name="snackbar_inquire_accepted">문의가 접수됬습니다. 감사합니다</string>
+    <string name="snackbar_content_absent">내용이 없습니다.</string>
+
+    <!-- MyPage - FaQ-->
+    <string name="faq">자주 묻는 질문</string>
+
+    <!-- MyPage - Comment -->
+    <string name="my_comment">내가 쓴 댓글</string>
+
+    <!-- MyPage - Setting-->
+    <string name="settings">설정</string>
+
+    <!-- CardNews -->
+    <string name="scrap_delete_message">스크랩을 삭제하시겠습니까?</string>
+
     <!-- Dialog -->
     <string name="yes">예</string>
     <string name="no">아니오</string>

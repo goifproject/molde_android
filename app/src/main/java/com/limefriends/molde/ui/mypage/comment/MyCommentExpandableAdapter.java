@@ -17,7 +17,6 @@ import java.util.List;
 
 public class MyCommentExpandableAdapter extends BaseExpandableListAdapter {
 
-
     List<CardNewsEntity> newsEntityList = new ArrayList<>();
 
     private OnItemClickCallback callback;

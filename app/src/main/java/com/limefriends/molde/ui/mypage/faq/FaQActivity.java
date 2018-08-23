@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.limefriends.molde.R;
+import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.faq.FaqEntitiy;
 import com.limefriends.molde.entity.faq.FaqResponseInfoEntity;
 import com.limefriends.molde.entity.faq.FaqResponseInfoEntityList;
@@ -46,32 +47,36 @@ public class FaQActivity extends AppCompatActivity implements View.OnClickListen
     @BindView(R.id.answer5)
     TextView answer5;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mypage_activity_faq);
 
+        setupViews();
+
+        loadFaq();
+    }
+
+    //-----
+    // View
+    //-----
+
+    private void setupViews() {
         ButterKnife.bind(this);
-
-
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.default_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        TextView toolbar_title = getSupportActionBar().getCustomView().findViewById(R.id.toolbar_title);
-        toolbar_title.setText("자주 묻는 질문");
+        TextView toolbar_title
+                = getSupportActionBar().getCustomView().findViewById(R.id.toolbar_title);
+        toolbar_title.setText(getText(R.string.faq));
 
         findViewById(R.id.faq1).setOnClickListener(this);
         findViewById(R.id.faq2).setOnClickListener(this);
         findViewById(R.id.faq3).setOnClickListener(this);
         findViewById(R.id.faq4).setOnClickListener(this);
         findViewById(R.id.faq5).setOnClickListener(this);
-
-        loadFaq();
-
     }
 
     @Override
@@ -116,7 +121,6 @@ public class FaQActivity extends AppCompatActivity implements View.OnClickListen
                 answer4.setVisibility(View.GONE);
                 answer5.setVisibility(View.VISIBLE);
                 break;
-
         }
     }
 
@@ -129,20 +133,22 @@ public class FaQActivity extends AppCompatActivity implements View.OnClickListen
         return false;
     }
 
+    //-----
+    // Network
+    //-----
+
     private void loadFaq() {
 
         MoldeRestfulService.Faq faqService
                 = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Faq.class);
 
-        // TODO 로그인 할 때 받아놓고 없으면 로그인 페이지로 넘어가도록 해야 한다.
         Call<FaqResponseInfoEntityList> call = faqService.getMyFaqList();
 
         call.enqueue(new Callback<FaqResponseInfoEntityList>() {
             @Override
             public void onResponse(Call<FaqResponseInfoEntityList> call, Response<FaqResponseInfoEntityList> response) {
                 if (response.isSuccessful()) {
-                    List<FaqEntitiy> entitiys = fromSchemaToLocalEntity(response.body().getData());
-
+                    List<FaqEntitiy> entitiys = FromSchemaToEntitiy.faq(response.body().getData());
                 }
             }
 
@@ -151,21 +157,5 @@ public class FaQActivity extends AppCompatActivity implements View.OnClickListen
 
             }
         });
-
     }
-
-    private List<FaqEntitiy> fromSchemaToLocalEntity(List<FaqResponseInfoEntity> schemas) {
-        List<FaqEntitiy> entities = new ArrayList<>();
-        for (FaqResponseInfoEntity schema : schemas) {
-            entities.add(new FaqEntitiy(
-                    schema.getFaqId(),
-                    schema.getUserId(),
-                    schema.getUserName(),
-                    schema.getFaqContents(),
-                    schema.getFaqEmail()
-            ));
-        }
-        return entities;
-    }
-
 }

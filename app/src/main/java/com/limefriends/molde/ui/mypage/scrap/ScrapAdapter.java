@@ -25,66 +25,81 @@ import butterknife.ButterKnife;
  * Created by user on 2018-05-19.
  */
 
-public class ScrapAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ScrapAdapter extends RecyclerView.Adapter<ScrapAdapter.MyPageMyScrapViewHolder> {
 
-    private Context context;
-    private int resourceId;
-    // private List<ScrapEntity> myPageMyScrapEntityList;
+    private ScrapActivity view;
+    private List<CardNewsEntity> cardNewsEntities = new ArrayList<>();
 
-    private List<CardNewsEntity> entities = new ArrayList<>();
-
-    public ScrapAdapter(Context context, int resourceId, List<ScrapEntity> scrapEntityList) {
-        this.context = context;
-        this.resourceId = resourceId;
-        // this.scrapEntityList = scrapEntityList;
-    }
-
-    public class MyPageMyScrapViewHorder extends RecyclerView.ViewHolder {
-
-        @BindView(R.id.myScrap_image)
-        ImageView myScrap_image;
-
-        @BindView(R.id.myScrap_text)
-        TextView myScrap_text;
-
-        public MyPageMyScrapViewHorder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
+    public ScrapAdapter(ScrapActivity view) {
+        this.view = view;
     }
 
     public void setData(List<CardNewsEntity> entities) {
-        this.entities = entities;
+        this.cardNewsEntities = entities;
+        notifyDataSetChanged();
+    }
+
+    public void removeItem(int position) {
+        cardNewsEntities.remove(position);
         notifyDataSetChanged();
     }
 
     @Override
-    public ScrapAdapter.MyPageMyScrapViewHorder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.mypage_my_scrap_item, parent, false);
-        return new ScrapAdapter.MyPageMyScrapViewHorder(view);
+    public MyPageMyScrapViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.mypage_my_scrap_item, parent, false);
+        return new ScrapAdapter.MyPageMyScrapViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        final ScrapAdapter.MyPageMyScrapViewHorder viewHorder = (ScrapAdapter.MyPageMyScrapViewHorder) holder;
-        if (entities.get(position).getNewsImg() != null && entities.get(position).getNewsImg().size() != 0) {
-            Glide.with(context).load(entities.get(position).getNewsImg().get(0).getUrl()).into(viewHorder.myScrap_image);
+    public void onBindViewHolder(MyPageMyScrapViewHolder viewHolder, int position) {
+
+        CardNewsEntity cardNews = cardNewsEntities.get(position);
+
+        if (cardNews.getNewsImg() != null && cardNews.getNewsImg().size() != 0) {
+            Glide.with(view)
+                    .load(cardNews.getNewsImg().get(0).getUrl())
+                    .placeholder(R.drawable.img_cardnews_dummy)
+                    .into(viewHolder.myScrap_image);
+        } else {
+            Glide.with(view)
+                    .load(R.drawable.img_cardnews_dummy)
+                    .into(viewHolder.myScrap_image);
         }
-        viewHorder.myScrap_text.setText(entities.get(position).getDescription());
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO 분리
-                Intent intent = new Intent(context, CardNewsDetailActivity.class);
-                intent.putExtra("cardNewsId", entities.get(position).getNewsId());
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-            }
-        });
+        viewHolder.myScrap_text.setText(cardNews.getDescription());
+        viewHolder.newsId = cardNews.getNewsId();
+        viewHolder.position = position;
     }
 
     @Override
     public int getItemCount() {
-        return entities.size();
+        return cardNewsEntities.size();
+    }
+
+    public class MyPageMyScrapViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.myScrap_image)
+        ImageView myScrap_image;
+        @BindView(R.id.myScrap_text)
+        TextView myScrap_text;
+
+        int newsId;
+        int position;
+
+        MyPageMyScrapViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+            setupListener();
+        }
+
+        private void setupListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    view.onCardNewsSelected(newsId, position);
+                }
+            });
+        }
+
     }
 }

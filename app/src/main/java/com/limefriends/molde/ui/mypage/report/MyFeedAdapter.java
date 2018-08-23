@@ -20,26 +20,65 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MyFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MyFeedAdapter extends RecyclerView.Adapter<MyFeedAdapter.MyPageMyReportViewHolder> {
 
     private Context context;
-    // private List<MyPageMyReportEntity> myPageMyReportEntityList;
-
-    private List<FeedEntity> entities = new ArrayList<>();
-
+    private List<FeedEntity> feedEntities = new ArrayList<>();
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
         void OnItemClick(int feedId, int position);
     }
 
-
-    public MyFeedAdapter(Context context, OnItemClickListener listener) {
+    MyFeedAdapter(Context context, OnItemClickListener listener) {
         this.context = context;
         this.listener = listener;
     }
 
-    public class MyPageMyReportViewHorder extends RecyclerView.ViewHolder {
+    public void addData(List<FeedEntity> data) {
+        feedEntities.addAll(data);
+        notifyDataSetChanged();
+    }
+
+    public void removeItem(int position) {
+        feedEntities.remove(position);
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public MyPageMyReportViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context)
+                .inflate(R.layout.mypage_my_report_item, parent, false);
+        return new MyPageMyReportViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(MyPageMyReportViewHolder viewHorder, int position) {
+        FeedEntity feed = feedEntities.get(position);
+        if (feed.getRepImg() != null &&
+                feed.getRepImg().size() != 0) {
+            Glide.with(context)
+                    .load(feed.getRepImg().get(0).getFilepath())
+                    .placeholder(R.drawable.report_map_img)
+                    .into(viewHorder.mypage_report_map);
+        } else {
+            Glide.with(context)
+                    .load(R.drawable.report_map_img)
+                    .into(viewHorder.mypage_report_map);
+        }
+        viewHorder.mypage_report_date.setText(feed.getRepDate());
+        viewHorder.mypage_report_location.setText(feed.getRepAddr());
+        viewHorder.position = position;
+    }
+
+
+    @Override
+    public int getItemCount() {
+        return feedEntities.size();
+    }
+
+    class MyPageMyReportViewHolder extends RecyclerView.ViewHolder {
+
         @BindView(R.id.mypage_report_layout)
         RelativeLayout mypage_report_layout;
         @BindView(R.id.mypage_report_map)
@@ -49,54 +88,21 @@ public class MyFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         @BindView(R.id.mypage_report_location)
         TextView mypage_report_location;
 
-        public MyPageMyReportViewHorder(View itemView) {
+        int position;
+
+        MyPageMyReportViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-        }
-    }
-
-    public void addData(List<FeedEntity> data) {
-        entities.addAll(data);
-        notifyDataSetChanged();
-    }
-
-    @Override
-    public MyPageMyReportViewHorder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.mypage_my_report_item, parent, false);
-        return new MyPageMyReportViewHorder(view);
-    }
-
-
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        Log.e("데이터 확인", entities.get(position).getRepDate());
-        final MyPageMyReportViewHorder viewHorder = (MyPageMyReportViewHorder) holder;
-
-        if (entities.get(position).getRepImg() != null && entities.get(position).getRepImg().size() != 0) {
-            Glide.with(context).load(entities.get(position).getRepImg().get(0).getFilepath()).into(viewHorder.mypage_report_map);
-        } else {
-            Glide.with(context).load(R.drawable.report_map_img).into(viewHorder.mypage_report_map);
+            setupListener();
         }
 
-
-        viewHorder.mypage_report_date.setText(entities.get(position).getRepDate());
-        viewHorder.mypage_report_location.setText(entities.get(position).getRepAddr());
-
-        viewHorder.mypage_report_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.OnItemClick(entities.get(position).getRepId(), position);
-            }
-        });
-    }
-
-    public void removeItem(int position) {
-        entities.remove(position);
-        notifyDataSetChanged();
-    }
-
-    @Override
-    public int getItemCount() {
-        return entities.size();
+        private void setupListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.OnItemClick(feedEntities.get(position).getRepId(), position);
+                }
+            });
+        }
     }
 }

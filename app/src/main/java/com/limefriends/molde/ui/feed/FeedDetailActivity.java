@@ -39,10 +39,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.limefriends.molde.comm.Constant.Authority.*;
+import static com.limefriends.molde.comm.Constant.Common.EXTRA_KEY_ACTIVITY_NAME;
+import static com.limefriends.molde.comm.Constant.Common.EXTRA_KEY_POSITION;
+import static com.limefriends.molde.comm.Constant.Common.PREF_KEY_AUTHORITY;
 import static com.limefriends.molde.comm.Constant.Feed.*;
 import static com.limefriends.molde.comm.Constant.ReportState.*;
 
 // TODO "lkj" 변경할 것
+// TODO auth Application 에서 가져다 쓸 것
 public class FeedDetailActivity extends AppCompatActivity {
 
     // 이미지 페이저
@@ -93,7 +97,7 @@ public class FeedDetailActivity extends AppCompatActivity {
     private MoldeRestfulService.Feed feedService;
 
     private String activityName;
-    private int reportId;
+    private int feedId;
     private int position;
     private long authority;
     private boolean isMyFeed;
@@ -111,7 +115,7 @@ public class FeedDetailActivity extends AppCompatActivity {
 
         setImagePager();
 
-        loadReport(reportId);
+        loadReport(feedId);
     }
 
     //-----
@@ -119,11 +123,11 @@ public class FeedDetailActivity extends AppCompatActivity {
     //-----
 
     private void prepare() {
-        activityName = getIntent().getStringExtra(INTENT_KEY_ACTIVITY_NAME);
+        activityName = getIntent().getStringExtra(EXTRA_KEY_ACTIVITY_NAME);
 
-        reportId = getIntent().getIntExtra(INTENT_KEY_FEED_ID, 0);
+        feedId = getIntent().getIntExtra(EXTRA_KEY_FEED_ID, 0);
 
-        position = getIntent().getIntExtra(INTENT_KEY_POSITION, 0);
+        position = getIntent().getIntExtra(EXTRA_KEY_POSITION, 0);
 
         authority = PreferenceUtil.getLong(this, PREF_KEY_AUTHORITY);
     }
@@ -157,7 +161,7 @@ public class FeedDetailActivity extends AppCompatActivity {
                             .setPositiveButton(getText(R.string.yes), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    deleteReport(reportId);
+                                    deleteReport(feedId);
                                 }
                             })
                             .setNegativeButton(getText(R.string.no), new DialogInterface.OnClickListener() {
@@ -175,7 +179,7 @@ public class FeedDetailActivity extends AppCompatActivity {
                             .setPositiveButton(getText(R.string.yes), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    refuseReport(reportId, DENIED);
+                                    refuseReport(feedId, DENIED);
                                 }
                             })
                             .setNegativeButton(getText(R.string.no), new DialogInterface.OnClickListener() {
@@ -199,11 +203,11 @@ public class FeedDetailActivity extends AppCompatActivity {
                 boolean clean = progress_checkbox_admin_clean.isChecked();
 
                 if (accepted) {
-                    updateReport(reportId, ACCEPTED);
+                    updateReport(feedId, ACCEPTED);
                 } else if (found) {
-                    updateReport(reportId, FOUND);
+                    updateReport(feedId, FOUND);
                 } else if (clean) {
-                    updateReport(reportId, CLEAN);
+                    updateReport(feedId, CLEAN);
                 } else {
                     Toast.makeText(FeedDetailActivity.this, "진행중인 신고입니다", Toast.LENGTH_SHORT).show();
                 }
@@ -351,7 +355,7 @@ public class FeedDetailActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     Toast.makeText(FeedDetailActivity.this, "신고를 취소했습니다.", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent();
-                    intent.putExtra(INTENT_KEY_POSITION, position);
+                    intent.putExtra(EXTRA_KEY_POSITION, position);
                     setResult(RESULT_OK, intent);
                     finish();
                 }

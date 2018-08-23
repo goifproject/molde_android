@@ -1,10 +1,12 @@
 package com.limefriends.molde.ui.magazine.detail;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -29,8 +31,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.limefriends.molde.comm.Constant.Common.EXTRA_KEY_ACTIVITY_NAME;
+import static com.limefriends.molde.comm.Constant.Scrap.INTENT_VALUE_SCRAP;
+
 
 // TODO "lkj" getUid()로 변경할 것
+// TODO auth Application 에서 가져다 쓸 것
 public class CardNewsDetailActivity extends AppCompatActivity {
 
     @BindView(R.id.cardnews_detail_layout)
@@ -53,6 +59,7 @@ public class CardNewsDetailActivity extends AppCompatActivity {
     private CardNewsImagePagerAdapter cardNewsImagePagerAdapter;
     private FirebaseAuth mFirebaseAuth;
 
+    private String activityName;
     private boolean isLoading;
     private boolean isScrap;
     private int cardNewsId;
@@ -95,7 +102,17 @@ public class CardNewsDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (mFirebaseAuth != null && mFirebaseAuth.getUid() != null) {
                     if (!isLoading && isScrap) {
-                        deleteFromScrap(cardNewsId, "lkj");
+                        AlertDialog dialog = new AlertDialog.Builder(CardNewsDetailActivity.this)
+                                .setMessage(getText(R.string.scrap_delete_message))
+                                .setPositiveButton(getText(R.string.yes), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        deleteFromScrap(cardNewsId, "lkj");
+                                    }
+                                })
+                                .setNegativeButton(getText(R.string.no), null)
+                                .create();
+                        dialog.show();
                     } else {
                         addToMyScrap(cardNewsId, "lkj");
                     }
@@ -139,6 +156,7 @@ public class CardNewsDetailActivity extends AppCompatActivity {
     //-----
 
     private void setupData() {
+        activityName = getIntent().getStringExtra(EXTRA_KEY_ACTIVITY_NAME);
         cardNewsId = getIntent().getIntExtra("cardNewsId", 0);
         mFirebaseAuth = FirebaseAuth.getInstance();
         loadCardNews(cardNewsId);
@@ -236,6 +254,10 @@ public class CardNewsDetailActivity extends AppCompatActivity {
                     Log.e("호출 확인", "삭제 완료");
                     cardnews_scrap.setImageResource(R.drawable.ic_card_scrap_false);
                     isScrap = false;
+                    if (activityName != null && activityName.equals(INTENT_VALUE_SCRAP)){
+                        setResult(RESULT_OK);
+                        finish();
+                    }
                 } else {
                     cardnews_scrap.setImageResource(R.drawable.ic_card_scrap_true);
                     isScrap = true;
