@@ -49,7 +49,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MoldeReportCameraActivity extends AppCompatActivity {
-    public static final int TAKE_PICTURE_FOR_ADD_IMAGE = 994;
+
+
     @BindView(R.id.molde_camera_layout)
     FrameLayout molde_camera_layout;
     @BindView(R.id.molde_camera_view)
@@ -58,6 +59,8 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
     ImageButton molde_camera_capture_button;
     @BindView(R.id.molde_gallary_button)
     ImageButton molde_gallary_button;
+
+    public static final int TAKE_PICTURE_FOR_ADD_IMAGE = 994;
 
     CameraPreview cameraPreview;
     Camera camera;
@@ -69,16 +72,6 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
     private AppCompatActivity mActivity;
     private int imageArraySize;
     private int imageSeq = 0;
-//
-    // TODO 이거 왜 필요한거임
-    private String reportContent;
-    private String reportAddress;
-    private String reportDetailAddress;
-    private String reportEmailName;
-    private String reportEmailDomainPosition;
-    private String reportLat;
-    private String reportLng;
-
     public Bitmap bitmap;
 
     public static void doRestart(Context c) {
@@ -168,14 +161,6 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
         Intent intent = getIntent();
         imageSeq = intent.getIntExtra("imageSeq", 1);
         imageArraySize = intent.getIntExtra("imageArraySize", 1);
-        reportContent = getIntent().getStringExtra("reportContent");
-        reportAddress = getIntent().getStringExtra("reportAddress");
-        reportDetailAddress = getIntent().getStringExtra("reportDetailAddress");
-        reportEmailName = getIntent().getStringExtra("reportEmailName");
-        reportEmailDomainPosition = getIntent().getStringExtra("reportEmailDomainPosition");
-//        reportLat = getIntent().getStringExtra("reportLat");
-//        reportLng = getIntent().getStringExtra("reportLng");
-
         ctx = this;
         mActivity = this;
 
@@ -196,13 +181,6 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
                 intent.setClass(getApplicationContext(), MoldeReportGalleryActivity.class);
                 intent.putExtra("imageSeq", imageSeq);
                 intent.putExtra("imageArraySize", imageArraySize);
-                intent.putExtra("reportContent", reportContent);
-                intent.putExtra("reportAddress", reportAddress);
-                intent.putExtra("reportDetailAddress", reportDetailAddress);
-                intent.putExtra("reportEmailName", reportEmailName);
-                intent.putExtra("reportEmailDomainPosition", reportEmailDomainPosition);
-                intent.putExtra("reportLat", reportLat);
-                intent.putExtra("reportLng", reportLng);
                 startActivityForResult(intent, TAKE_PICTURE_FOR_ADD_IMAGE);
             }
         });
@@ -317,15 +295,8 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
         sendBroadcast(mediaScanIntent);
         Intent intent = new Intent();
         intent.setClass(getApplicationContext(), MoldeReportCheckImageActivity.class);
-        intent.putExtra("imagePath", Uri.fromFile(file));
         intent.putExtra("imageSeq", imageSeq);
-        intent.putExtra("reportContent", reportContent);
-        intent.putExtra("reportAddress", reportAddress);
-        intent.putExtra("reportDetailAddress", reportDetailAddress);
-        intent.putExtra("reportEmailName", reportEmailName);
-        intent.putExtra("reportEmailDomainPosition", reportEmailDomainPosition);
-        intent.putExtra("reportLat", reportLat);
-        intent.putExtra("reportLng", reportLng);
+        intent.putExtra("imagePath", Uri.fromFile(file));
         startActivity(intent);
     }
 

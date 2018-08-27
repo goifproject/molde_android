@@ -119,14 +119,14 @@ public class SearchMapInfoActivity extends AppCompatActivity implements
     }
 
     private void initDataFromMapFragment() {
-        String name = getIntent().getStringExtra("searchName");
-        if (name != null && name.equals("검색하기")) {
-            loc_map_info_search_input.setText("");
-            delete_all_button.setVisibility(View.INVISIBLE);
-        } else {
-            loc_map_info_search_input.setText(name);
-            delete_all_button.setVisibility(View.VISIBLE);
-        }
+//        String name = getIntent().getStringExtra("searchTitle");
+//        if (name != null && name.equals("검색하기")) {
+//            loc_map_info_search_input.setText("");
+//            delete_all_button.setVisibility(View.INVISIBLE);
+//        } else {
+//            loc_map_info_search_input.setText(name);
+//            delete_all_button.setVisibility(View.VISIBLE);
+//        }
     }
 
     private void setMapInfoRecyclerView() {

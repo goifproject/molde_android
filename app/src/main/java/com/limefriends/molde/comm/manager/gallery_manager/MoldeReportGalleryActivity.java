@@ -36,15 +36,6 @@ public class MoldeReportGalleryActivity extends AppCompatActivity {
     public int lastImageSize = 0;
     public GalleryManager mGalleryManager;
     public int imageArraySize;
-    public int imageSeq = 0;
-
-    private String reportContent;
-    private String reportAddress;
-    private String reportDetailAddress;
-    private String reportEmailName;
-    private String reportEmailDomainPosition;
-    private String reportLat;
-    private String reportLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,15 +58,6 @@ public class MoldeReportGalleryActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.setClass(getApplicationContext(), MoldeReportActivity.class);
                 intent.putStringArrayListExtra("imagePathList", pathList);
-
-                intent.putExtra("reportContent", reportContent);
-                intent.putExtra("reportAddress", reportAddress);
-                intent.putExtra("reportDetailAddress", reportDetailAddress);
-                intent.putExtra("reportEmailName", reportEmailName);
-                intent.putExtra("reportEmailDomainPosition", reportEmailDomainPosition);
-                intent.putExtra("reportLat", reportLat);
-                intent.putExtra("reportLng", reportLng);
-
                 setResult(RESULT_OK, intent);
                 finish();
 
@@ -88,17 +70,10 @@ public class MoldeReportGalleryActivity extends AppCompatActivity {
         //gallery_toolbar_title.setText("갤러리");
 
         Intent intent = getIntent();
-        imageSeq = intent.getIntExtra("imageSeq", 1);
         imageArraySize = intent.getIntExtra("imageArraySize", 1);
+
         lastImageSize = allImageSize - imageArraySize;
         gallery_toolbar_title.setText(lastImageSize + "장 추가 가능");
-        reportContent = intent.getStringExtra("reportContent");
-        reportAddress = intent.getStringExtra("reportAddress");
-        reportDetailAddress = intent.getStringExtra("reportDetailAddress");
-        reportEmailName = intent.getStringExtra("reportEmailName");
-        reportEmailDomainPosition = intent.getStringExtra("reportEmailDomainPosition");
-        reportLat = intent.getStringExtra("reportLat");
-        reportLng = intent.getStringExtra("reportLng");
         initRecyclerGallery();
     }
 

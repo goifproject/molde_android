@@ -47,7 +47,6 @@ public class Constant {
     }
 
     public static class Scrap {
-
         public static final int INTENT_KEY_CARDNEWS_DETAIL = 993;
         public static final String INTENT_VALUE_SCRAP = "ScrapActivity";
     }

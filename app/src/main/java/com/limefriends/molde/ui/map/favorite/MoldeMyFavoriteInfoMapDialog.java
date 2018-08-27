@@ -9,12 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
 import com.google.android.gms.maps.model.Marker;
 import com.limefriends.molde.R;
 import com.limefriends.molde.entity.response.Result;
@@ -51,46 +53,44 @@ public class MoldeMyFavoriteInfoMapDialog extends BottomSheetDialogFragment {
     @BindView(R.id.my_favorite_modify_button)
     Button my_favorite_modify_button;
 
-
-    private static final int PER_PAGE = 10;
-    private static final int FIRST_PAGE = 0;
-    private int currentPage = FIRST_PAGE;
-    private boolean hasMoreToLoad = true;
-
     private double markerLat;
     private double markerLng;
 
-    private Context context;
     public MoldeApplyMyFavoriteInfoCallback moldeApplyMyFavoriteInfoCallback;
-
     public Marker myFavoriteMarker;
 
-    public interface MoldeApplyMyFavoriteInfoCallback{
+    public interface MoldeApplyMyFavoriteInfoCallback {
         void applyMyFavoriteInfo(String title, String info, Marker marker);
+
         void setMyFavoriteActive(boolean active);
     }
 
-    public static MoldeMyFavoriteInfoMapDialog getInstance() {
-        return new MoldeMyFavoriteInfoMapDialog();
-    }
-
     public void setCallback(MoldeApplyMyFavoriteInfoCallback moldeApplyMyFavoriteInfoCallback,
-                            Marker marker){
+                            Marker marker) {
         this.moldeApplyMyFavoriteInfoCallback = moldeApplyMyFavoriteInfoCallback;
         myFavoriteMarker = marker;
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.map_my_favorite_info_dialog, container,false);
-        ButterKnife.bind(this, view);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.map_my_favorite_info_dialog, container, false);
 
-        this.context = getContext();
+        setupViews(view);
+
+        setupListener();
+
+        return view;
+    }
+
+    private void setupViews(View view) {
+        ButterKnife.bind(this, view);
 
         Bundle bundle = getArguments();
 
-        if(bundle != null){
+        if (bundle != null) {
+
             my_favorite_marker_title.setText(bundle.getString("markerTitle"));
             my_favorite_marker_info.setText(bundle.getString("markerInfo"));
             my_favorite_toggle.setChecked(bundle.getBoolean("myFavoriteActive"));
@@ -98,22 +98,21 @@ public class MoldeMyFavoriteInfoMapDialog extends BottomSheetDialogFragment {
             markerLat = bundle.getDouble("markerLat");
             markerLng = bundle.getDouble("markerLng");
 
-            Log.e("호출확인", markerLat+":"+markerLng);
-
             if (my_favorite_toggle.isChecked()) {
                 my_favorite_toggle.setBackgroundResource(R.drawable.ic_star_on);
             } else {
                 my_favorite_toggle.setBackgroundResource(R.drawable.ic_star_off);
             }
         }
+    }
 
-        my_favorite_toggle.setOnClickListener(new View.OnClickListener() {
+    private void setupListener() {
+        my_favorite_toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                if(my_favorite_toggle.isChecked()){
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
                     my_favorite_toggle.setBackgroundResource(R.drawable.ic_star_on);
-
-                }else {
+                } else {
                     my_favorite_toggle.setBackgroundResource(R.drawable.ic_star_off);
                     moldeApplyMyFavoriteInfoCallback.setMyFavoriteActive(false);
                 }
@@ -133,7 +132,6 @@ public class MoldeMyFavoriteInfoMapDialog extends BottomSheetDialogFragment {
         my_favorite_modify_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Toast.makeText(getContext(), "수정버튼 눌림", Toast.LENGTH_SHORT).show();
                 my_favorite_content.setVisibility(View.VISIBLE);
                 my_favorite_content_modify.setVisibility(View.GONE);
                 my_favorite_marker_title.setText(my_favorite_modify_title.getText());
@@ -147,7 +145,6 @@ public class MoldeMyFavoriteInfoMapDialog extends BottomSheetDialogFragment {
             }
         });
 
-        return view;
     }
 
     private void addToMyFavorite() {
@@ -168,15 +165,7 @@ public class MoldeMyFavoriteInfoMapDialog extends BottomSheetDialogFragment {
             public void onResponse(Call<Result> call, Response<Result> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(getContext(), "즐겨찾기 추가 성공", Toast.LENGTH_SHORT).show();
-                    Log.e("로그 자 보자", response.body().getResult() + "");
-                    // TODO 여기서 finish() 잠시 두고 3-5대 열어놓고 연속으로 누르면서 부하를 얼만큼 버티는지 알아보자
                     dismiss();
-                } else {
-                    try {
-                        Log.e("로그 자 보자", response.errorBody().string());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
                 }
             }
 

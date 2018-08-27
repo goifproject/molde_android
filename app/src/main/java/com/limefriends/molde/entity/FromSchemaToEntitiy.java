@@ -4,6 +4,8 @@ import com.limefriends.molde.entity.comment.CommentEntity;
 import com.limefriends.molde.entity.comment.CommentResponseInfoEntity;
 import com.limefriends.molde.entity.faq.FaqEntitiy;
 import com.limefriends.molde.entity.faq.FaqResponseInfoEntity;
+import com.limefriends.molde.entity.favorite.FavoriteEntity;
+import com.limefriends.molde.entity.favorite.FavoriteResponseInfoEntity;
 import com.limefriends.molde.entity.feed.FeedEntity;
 import com.limefriends.molde.entity.feed.FeedResponseInfoEntity;
 import com.limefriends.molde.entity.news.CardNewsEntity;
@@ -124,6 +126,25 @@ public class FromSchemaToEntitiy {
                     schema.getUserName(),
                     schema.getFaqContents(),
                     schema.getFaqEmail()
+            ));
+        }
+        return entities;
+    }
+
+    /**
+     * favorite
+     */
+    public static List<FavoriteEntity> favorite(List<FavoriteResponseInfoEntity> schemas) {
+        List<FavoriteEntity> entities = new ArrayList<>();
+        for (FavoriteResponseInfoEntity schema : schemas) {
+            entities.add(new FavoriteEntity(
+                    schema.getFavId(),
+                    schema.getUserId(),
+                    schema.getFavName(),
+                    schema.getFavAddr(),
+                    schema.getFavLat(),
+                    schema.getFavLon(),
+                    true
             ));
         }
         return entities;

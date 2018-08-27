@@ -43,6 +43,33 @@
     <!-- CardNews -->
     <string name="scrap_delete_message">스크랩을 삭제하시겠습니까?</string>
 
+    <!-- Map -->
+    <string name="dialog_request_permission">권한 설정 필요</string>
+    <string name="dialog_go_settings">현재 기능을 사용하기 위해서는 해당 권한 설정이 필요합니다. 설정 페이지로 넘어가시겠습니까?</string>
+
+    <string name="toast_no_feed_place">신고된 몰래카메라가 없는 지역입니다</string>
+    <string name="toast_require_signin">몰디 로그인이 필요합니다!</string>
+    <string name="toast_network_error">인터넷 연결을 확인해주세요</string>
+    
+    <string name="marker_title_my_location">현재 위치</string>
+    <string name="marker_title_search_location">검색 위치</string>
+    <string name="marker_title_favorite_location">★</string>
+    <string name="marker_title_feed_location">피드 위치</string>
+
+    <!-- Map - Report -->
+    <string name="snackbar_no_image">이미지가 없습니다.</string>
+    <string name="snackbar_no_content">신고 내용을 입력해주세요.</string>
+    <string name="snackbar_no_address">신고 위치를 설정해주세요.</string>
+    <string name="snackbar_no_detail_address">신고 상세 위치를 입력해주세요.</string>
+    <string name="snackbar_no_email">이메일 주소를 입력해주세요.</string>
+    <string name="snackbar_network_error">데이터 전송 실패했습니다. 네트워크를 확인해주세요.</string>
+    <string name="snackbar_wrong_email_form">이메일 양식에 맞지 않습니다. 확인해주세요</string>
+    <string name="snackbar_report_success">신고가 접수됬습니다. 감사합니다.</string>
+    <string name="snackbar_permission_denied">권한얻는 데 실패했습니다. \n\n [설정] -> [어플리케이션] -> 해당앱에 들어가 권한을 켜주세요.</string>
+
+    <!-- Map - Favorite -->
+    <string name="my_favorite">즐겨찾기</string>
+
     <!-- Dialog -->
     <string name="yes">예</string>
     <string name="no">아니오</string>
@@ -59,7 +86,7 @@
     <string name="report_result">신고결과</string>
     <string name="report_deny">신고거절</string>
     <string name="report_cancel">신고취소</string>
-    <string name="my_favorite">즐겨찾기</string>
+
     <string name="report">신고하기</string>
 
     <string name="reportRedhMarkerList">빨간색마커리스트</string>

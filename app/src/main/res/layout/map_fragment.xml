@@ -1,6 +1,7 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/map_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,7 +12,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <fragment xmlns:map="http://schemas.android.com/apk/res-auto"
+        <fragment
             android:id="@+id/mapView"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
