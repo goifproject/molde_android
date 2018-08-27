@@ -26,6 +26,12 @@ public class Constant {
         public static final String EXTRA_KEY_CARDNEWS_ID = "cardNewsId";
     }
 
+    public static class Map {
+        public static final String EXTRA_KEY_SEARCH_MAP_INFO = "mapSearchInfo";
+        public static final String EXTRA_KEY_SEARCH_MAP_HISTORY = "mapHistoryInfo";
+        public static final String EXTRA_KEY_FAVORITE_INFO = "mapFavoriteInfo";
+    }
+
     public static class Feed {
         public static final String FEED_BY_DISTANCE = "거리순";
         public static final String FEED_BY_LAST = "최신순";

@@ -1,31 +1,32 @@
-package com.limefriends.molde.ui.map.main.card;
+package com.limefriends.molde.ui.map.main.reportCard;
 
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 
-import static com.limefriends.molde.ui.map.main.card.IReportCardPagerAdapter.MAX_ELEVATION_FACTOR;
+import static com.limefriends.molde.ui.map.main.reportCard.IMapReportCardPagerAdapter.MAX_ELEVATION_FACTOR;
 
-public class PageChangeListener implements ViewPager.OnPageChangeListener {
 
-    private ShadowTransformer.OnPageSelectedCallback callback;
-    private IReportCardPagerAdapter mAdapter;
+public class ShadowTransformer implements ViewPager.OnPageChangeListener {
+
     private ViewPager mViewPager;
+    private IMapReportCardPagerAdapter mAdapter;
+    private float mLastOffset;
     private boolean mScalingEnabled;
+
+    private OnPageSelectedCallback callback;
 
     public interface OnPageSelectedCallback {
         void applyReportCardInfo(int position);
     }
 
-    public PageChangeListener(ShadowTransformer.OnPageSelectedCallback callback, IReportCardPagerAdapter mAdapter, ViewPager mViewPager) {
+    public void setCallback(OnPageSelectedCallback callback) {
         this.callback = callback;
-        this.mAdapter = mAdapter;
-        this.mViewPager = mViewPager;
-
-        mViewPager.addOnPageChangeListener(this);
     }
 
-    public void setCallback(ShadowTransformer.OnPageSelectedCallback callback) {
+    public ShadowTransformer(ViewPager viewPager, IMapReportCardPagerAdapter adapter, OnPageSelectedCallback callback) {
+        mViewPager = viewPager;
+        viewPager.addOnPageChangeListener(this);
+        mAdapter = adapter;
         this.callback = callback;
     }
 
@@ -54,7 +55,6 @@ public class PageChangeListener implements ViewPager.OnPageChangeListener {
         int nextPosition;
         float baseElevation = mAdapter.getBaseElevation();
         float realOffset;
-        float mLastOffset = 0;
         boolean goingLeft = mLastOffset > positionOffset;
 
         // If we're going backwards, onPageScrolled receives the last position
@@ -75,8 +75,6 @@ public class PageChangeListener implements ViewPager.OnPageChangeListener {
             return;
         }
 
-        Log.e("onPageScrolled", "" + realCurrentPosition);
-
         CardView currentCard = mAdapter.getCardViewAt(realCurrentPosition);
 
         // This might be null if a fragment is being used
@@ -89,8 +87,6 @@ public class PageChangeListener implements ViewPager.OnPageChangeListener {
             currentCard.setCardElevation((baseElevation + baseElevation
                     * (MAX_ELEVATION_FACTOR - 1) * (1 - realOffset)));
         }
-
-        Log.e("onPageScrolled", "" + nextPosition);
 
         CardView nextCard = mAdapter.getCardViewAt(nextPosition);
 
@@ -109,7 +105,6 @@ public class PageChangeListener implements ViewPager.OnPageChangeListener {
 
     @Override
     public void onPageSelected(int position) {
-        Log.e("onPageSelected", "" + position);
         if (callback != null) {
             callback.applyReportCardInfo(position);
         }
@@ -117,8 +112,6 @@ public class PageChangeListener implements ViewPager.OnPageChangeListener {
 
     @Override
     public void onPageScrollStateChanged(int state) {
-
     }
-
 
 }

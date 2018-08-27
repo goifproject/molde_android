@@ -35,9 +35,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.limefriends.molde.comm.Constant.Common.EXTRA_KEY_ACTIVITY_NAME;
+
 public class SearchMapInfoActivity extends AppCompatActivity implements
-        MoldeMapInfoAdapter.MapInfoAdapterCallback,
-        MoldeMapHistroyAdapter.MapHistoryAdapterCallback {
+        SearchMapInfoAdapter.MapInfoAdapterCallback,
+        SearchMapHistoryAdapter.MapHistoryAdapterCallback {
 
     @BindView(R.id.loc_map_info_search_bar)
     LinearLayout loc_map_info_search_bar;
@@ -54,33 +56,17 @@ public class SearchMapInfoActivity extends AppCompatActivity implements
     @BindView(R.id.delete_search_history_button)
     Button delete_search_history_button;
 
-    // private FileCache fileCache;
-    public static boolean isCheckBackPressed = false;
-    private static final long DELAY = 100;
-    private MoldeMapInfoAdapter loc_map_info_list_adapter;
-    private MoldeMapHistroyAdapter history_map_info_list_adapter;
-    private Handler handler = new Handler(Looper.getMainLooper());
+    private SearchMapInfoAdapter loc_map_info_list_adapter;
+    private Handler handler = new Handler();
     private Runnable workRunnable;
     private Cache cache;
     private String keywordHistoryStr = "";
-    private String cmd = "";
-    private final static String cmdReport = "Report";
-//    private String reportContent;
-//    private String reportDetailAddress;
-//    private String reportEmailName;
-//    private String reportEmailDomainPosition;
-//    private String reportLat;
-//    private String reportLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setupViews();
-
-        initDataFromMapFragment();
-
-        initDataFromReportActivity();
 
         setMapInfoRecyclerView();
 
@@ -89,50 +75,26 @@ public class SearchMapInfoActivity extends AppCompatActivity implements
         historyFieldInit();
     }
 
+    /**
+     * 뷰 세팅
+     */
     private void setupViews() {
-
         setContentView(R.layout.map_activity_molde_search_info);
-
         ButterKnife.bind(this);
-
         setupWindowAnimations();
-
         loc_map_info_search_bar.setElevation(12);
     }
 
     private void setupWindowAnimations() {
-        Slide slide = (Slide) TransitionInflater.from(this).inflateTransition(R.transition.activity_slide);
+        Slide slide = (Slide) TransitionInflater
+                .from(this).inflateTransition(R.transition.activity_slide);
         getWindow().setExitTransition(slide);
-    }
-
-    private void initDataFromReportActivity() {
-        String activityName = getIntent().getStringExtra("activity");
-        if (activityName != null && activityName.equals(cmdReport)) {
-            cmd = cmdReport;
-//            reportContent = getIntent().getStringExtra("reportContent");
-//            reportDetailAddress = getIntent().getStringExtra("reportDetailAddress");
-//            reportEmailName = getIntent().getStringExtra("reportEmailName");
-//            reportEmailDomainPosition = getIntent().getStringExtra("reportEmailDomainPosition");
-//            reportLat = getIntent().getStringExtra("reportLat");
-//            reportLng = getIntent().getStringExtra("reportLng");
-        }
-    }
-
-    private void initDataFromMapFragment() {
-//        String name = getIntent().getStringExtra("searchTitle");
-//        if (name != null && name.equals("검색하기")) {
-//            loc_map_info_search_input.setText("");
-//            delete_all_button.setVisibility(View.INVISIBLE);
-//        } else {
-//            loc_map_info_search_input.setText(name);
-//            delete_all_button.setVisibility(View.VISIBLE);
-//        }
     }
 
     private void setMapInfoRecyclerView() {
         //검색 정보 띄우기
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        loc_map_info_list_adapter = new MoldeMapInfoAdapter(getApplicationContext(), cmd);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        loc_map_info_list_adapter = new SearchMapInfoAdapter();
         loc_map_info_list.setLayoutManager(layoutManager);
         loc_map_info_list.setAdapter(loc_map_info_list_adapter);
         loc_map_info_list_adapter.setMapInfoAdapterCallback(this);
@@ -171,15 +133,7 @@ public class SearchMapInfoActivity extends AppCompatActivity implements
 
             @Override
             public void afterTextChanged(Editable s) {
-                /*final String keyword = s.toString();
-                handler.removeCallbacks(workRunnable);
-                workRunnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        loc_map_info_list_adapter.filter(keyword);
-                    }
-                };
-                handler.postDelayed(workRunnable, DELAY);*/
+
             }
         });
 
@@ -205,7 +159,7 @@ public class SearchMapInfoActivity extends AppCompatActivity implements
                 Cache cache = new Cache(getApplicationContext());
                 try {
                     if (cache.delete()) {
-                        showToast("성공적으로 삭제 완료");
+                        showToast("삭제 완료");
                     } else {
                         showToast("삭제 실패");
                     }
@@ -215,8 +169,6 @@ public class SearchMapInfoActivity extends AppCompatActivity implements
             }
         });
     }
-
-
 
     /**
      * 입력된 키워드로 T-Map 장소 검색
@@ -230,7 +182,6 @@ public class SearchMapInfoActivity extends AppCompatActivity implements
                 loc_map_info_list_adapter.filter(keyword, keywordHistoryStr);
             }
         };
-//        handler.postDelayed(workRunnable, DELAY);
         handler.post(workRunnable);
     }
 
@@ -288,7 +239,8 @@ public class SearchMapInfoActivity extends AppCompatActivity implements
     private void setMapHistoryRecyclerView(List<SearchMapHistoryEntity> historyEntityList) {
         Collections.reverse(historyEntityList);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        history_map_info_list_adapter = new MoldeMapHistroyAdapter(historyEntityList, getApplicationContext(), cmd);
+        SearchMapHistoryAdapter history_map_info_list_adapter
+                = new SearchMapHistoryAdapter(historyEntityList, getApplicationContext());
         history_map_info_list.setLayoutManager(layoutManager);
         history_map_info_list.setAdapter(history_map_info_list_adapter);
         history_map_info_list_adapter.setMapHistoryAdapterCallback(this);
@@ -309,23 +261,13 @@ public class SearchMapInfoActivity extends AppCompatActivity implements
      * T-Map 에서 검색한 리스트 중 하나를 선택했을 경우
      */
     @Override
-    public void applySearchMapInfo(SearchMapInfoEntity searchEntity, String cmd) {
-        Log.e("호출확인", "applySearchMapInfo1");
+    public void applySearchMapInfo(SearchMapInfoEntity searchEntity) {
         Intent intent = new Intent();
-        if (cmd.equals(cmdReport)) {
-            Log.e("호출확인", "applySearchMapInfo2");
-            // intent.setClass(getApplicationContext(), MoldeReportActivity.class);
-            Log.e("호출확인", searchEntity.getMainAddress()+":"+searchEntity.getMapLat()+":"+searchEntity.getMapLng());
-
-            intent.putExtra("reportAddress", searchEntity.getMainAddress());
-            intent.putExtra("reportLat", searchEntity.getMapLat());
-            intent.putExtra("reportLng", searchEntity.getMapLng());
-        } else {
-            //intent.setClass(getApplicationContext(), MoldeMainActivity.class);
-            intent.putExtra("mapSearchInfo", searchEntity);
-        }
+        intent.putExtra("reportName", searchEntity.getName());
+        intent.putExtra("reportAddress", searchEntity.getMainAddress());
+        intent.putExtra("reportLat", searchEntity.getMapLat());
+        intent.putExtra("reportLng", searchEntity.getMapLng());
         setResult(RESULT_OK, intent);
-        //startActivity(intent);
         finish();
     }
 
@@ -333,36 +275,19 @@ public class SearchMapInfoActivity extends AppCompatActivity implements
      * 기존에 검색한 캐시 리스트 중 하나를 선택했을 경우
      */
     @Override
-    public void applyHistoryMapInfo(SearchMapHistoryEntity historyEntity, String cmd) {
-        Log.e("호출확인", "applyHistoryMapInfo");
+    public void applyHistoryMapInfo(SearchMapHistoryEntity historyEntity) {
         Intent intent = new Intent();
-        if (cmd.equals(cmdReport)) {
-            Log.e("호출확인", historyEntity.getMainAddress()+":"+historyEntity.getMapLat()+":"+historyEntity.getMapLng());
-            // intent.setClass(getApplicationContext(), MoldeReportActivity.class);
-            intent.putExtra("reportAddress", historyEntity.getMainAddress());
-            intent.putExtra("reportLat", historyEntity.getMapLat());
-            intent.putExtra("reportLng", historyEntity.getMapLng());
-        } else {
-            // intent.setClass(getApplicationContext(), MoldeMainActivity.class);
-            intent.putExtra("mapHistoryInfo", historyEntity);
-        }
-        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        //startActivity(intent);
+        intent.putExtra("reportName", historyEntity.getName());
+        intent.putExtra("reportAddress", historyEntity.getMainAddress());
+        intent.putExtra("reportLat", historyEntity.getMapLat());
+        intent.putExtra("reportLng", historyEntity.getMapLng());
         setResult(RESULT_OK, intent);
         finish();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        isCheckBackPressed = true;
     }
 
     @Override
     public void showToast(String toast) {
         Toast.makeText(this, toast, Toast.LENGTH_SHORT).show();
     }
-
-
 
 }

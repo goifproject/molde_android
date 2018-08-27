@@ -20,36 +20,34 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+// TODO 로컬 데이터베이스로 변경
+public class SearchMapHistoryAdapter extends RecyclerView.Adapter<SearchMapHistoryAdapter.MapHistoryViewHolder> {
 
-public class MoldeMapHistroyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<SearchMapHistoryEntity> historyList;
     private MapHistoryAdapterCallback mapHistoryAdapterCallback;
     private Context context;
     private Cache cache;
-    private String cmd;
 
     public interface MapHistoryAdapterCallback {
-        void applyHistoryMapInfo(SearchMapHistoryEntity historyEntity, String cmd);
+        void applyHistoryMapInfo(SearchMapHistoryEntity historyEntity);
     }
 
-
-    public MoldeMapHistroyAdapter(List<SearchMapHistoryEntity> historyList,
-                                  Context context, String cmd) {
+    public SearchMapHistoryAdapter(List<SearchMapHistoryEntity> historyList,
+                                   Context context) {
         this.historyList = historyList;
         this.context = context;
-        this.cmd = cmd;
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.map_history_info_item, parent, false);
+    public MapHistoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.map_history_info_item, parent, false);
         return new MapHistoryViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        //if (holder instanceof MapHistoryViewHolder) {
-        final MapHistoryViewHolder viewHolder = (MapHistoryViewHolder) holder;
+    public void onBindViewHolder(MapHistoryViewHolder viewHolder, final int position) {
+
         cache = new Cache(context);
         viewHolder.history_title.setText(historyList.get(position).getName());
         viewHolder.history_delete_button.setOnClickListener(new View.OnClickListener() {
@@ -99,30 +97,14 @@ public class MoldeMapHistroyAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                                     historyList.get(position).getMainAddress(),
                                     historyList.get(position).getBizName(),
                                     historyList.get(position).getTelNo()
-                            ), cmd
+                            )
                     );
                 } catch (IndexOutOfBoundsException e) {
-                    Log.e("맵 정보",
-                            historyList.get(0).getName() + ", " +
-                                    historyList.get(0).getMapLat() + ", " +
-                                    historyList.get(0).getMapLng() + ", " +
-                                    historyList.get(0).getBizName() + ", " +
-                                    historyList.get(0).getMainAddress() + ", " +
-                                    historyList.get(0).getTelNo());
-                    mapHistoryAdapterCallback.applyHistoryMapInfo(new SearchMapHistoryEntity(
-                                    historyList.get(0).getMapLat(),
-                                    historyList.get(0).getMapLng(),
-                                    historyList.get(0).getName(),
-                                    historyList.get(0).getMainAddress(),
-                                    historyList.get(0).getBizName(),
-                                    historyList.get(0).getTelNo()
-                            ), cmd
-                    );
+
                 }
-                SearchMapInfoActivity.isCheckBackPressed = false;
+
             }
         });
-        //}
     }
 
     @Override
@@ -134,13 +116,14 @@ public class MoldeMapHistroyAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         this.mapHistoryAdapterCallback = mapHistoryAdapterCallback;
     }
 
-    public class MapHistoryViewHolder extends RecyclerView.ViewHolder {
+    class MapHistoryViewHolder extends RecyclerView.ViewHolder {
+
         @BindView(R.id.history_title)
         TextView history_title;
         @BindView(R.id.history_delete_button)
         ImageButton history_delete_button;
 
-        public MapHistoryViewHolder(View itemView) {
+        MapHistoryViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

@@ -1,8 +1,8 @@
-package com.limefriends.molde.ui.map.main.card;
+package com.limefriends.molde.ui.map.main.reportCard;
 
 import android.support.v7.widget.CardView;
 
-public interface IReportCardPagerAdapter {
+public interface IMapReportCardPagerAdapter {
 
     int MAX_ELEVATION_FACTOR = 6;
 

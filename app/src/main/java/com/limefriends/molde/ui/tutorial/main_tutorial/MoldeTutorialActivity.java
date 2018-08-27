@@ -18,6 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MoldeTutorialActivity extends AppCompatActivity {
+
     private final int TUTORIAL_PAGE_CNT = 4;
     //로그인 요청 코드
     public static final int LOGIN_REQUEST_CODE = 1000;

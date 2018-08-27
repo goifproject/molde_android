@@ -7,7 +7,7 @@ import com.google.gson.Gson;
 import com.limefriends.molde.entity.map.SearchMapInfoEntity;
 import com.limefriends.molde.entity.map.poi.Poi;
 import com.limefriends.molde.entity.map.poi.TMapSearchInfo;
-import com.limefriends.molde.ui.map.search.MoldeMapInfoAdapter;
+import com.limefriends.molde.ui.map.search.SearchMapInfoAdapter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,9 +22,9 @@ public class SearchPoiService extends AsyncTask<String, Void, ArrayList<SearchMa
     private final String TMAP_API_KEY = "846fd0ff-fac4-4e07-9c7c-1950cc0131dd";
     private final int SEARCH_COUNT = 20;  // minimum is 20
     private ArrayList<SearchMapInfoEntity> searchMapListData;
-    private MoldeMapInfoAdapter mAdapter;
+    private SearchMapInfoAdapter mAdapter;
 
-    public SearchPoiService(MoldeMapInfoAdapter adapter) {
+    public SearchPoiService(SearchMapInfoAdapter adapter) {
         this.mAdapter = adapter;
         searchMapListData = new ArrayList<SearchMapInfoEntity>();
     }

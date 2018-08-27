@@ -52,16 +52,15 @@ import com.limefriends.molde.entity.favorite.FavoriteEntity;
 import com.limefriends.molde.entity.feed.FeedEntity;
 import com.limefriends.molde.entity.feed.FeedResponseInfoEntity;
 import com.limefriends.molde.entity.feed.FeedResponseInfoEntityList;
-import com.limefriends.molde.entity.map.SearchMapHistoryEntity;
-import com.limefriends.molde.entity.map.SearchMapInfoEntity;
 import com.limefriends.molde.remote.MoldeNetwork;
 import com.limefriends.molde.remote.MoldeRestfulService;
 import com.limefriends.molde.ui.MoldeMainActivity;
 import com.limefriends.molde.ui.map.favorite.MoldeMyFavoriteActivity;
 import com.limefriends.molde.ui.map.favorite.MoldeMyFavoriteInfoMapDialog;
-import com.limefriends.molde.ui.map.main.card.ReportCardItem;
-import com.limefriends.molde.ui.map.main.card.ReportCardPagerAdapter;
-import com.limefriends.molde.ui.map.main.card.ShadowTransformer;
+import com.limefriends.molde.ui.map.main.reportCard.MapReportCardListDialog;
+import com.limefriends.molde.ui.map.main.reportCard.MapReportCardPagerAdapter;
+import com.limefriends.molde.ui.map.main.reportCard.MapReportCardItem;
+import com.limefriends.molde.ui.map.main.reportCard.ShadowTransformer;
 import com.limefriends.molde.ui.map.report.MoldeReportActivity;
 import com.limefriends.molde.ui.map.search.SearchMapInfoActivity;
 
@@ -75,6 +74,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
+import static com.limefriends.molde.comm.Constant.Map.*;
 import static com.limefriends.molde.comm.Constant.ReportState.ACCEPTED;
 import static com.limefriends.molde.comm.Constant.ReportState.CLEAN;
 import static com.limefriends.molde.comm.Constant.ReportState.FOUND;
@@ -157,9 +157,6 @@ public class MapFragment extends Fragment implements
     public static final int MARKER_MY_LOCATION_HISTORY = -2;
     public static final int MARKER_MY_LOCATION_SEARCH = -3;
     public static final int MARKER_MY_LOCATION_FAVORITE = -4;
-    public static final String EXTRA_KEY_SEARCH_MAP_INFO = "mapSearchInfo";
-    public static final String EXTRA_KEY_SEARCH_MAP_HISTORY = "mapHistoryInfo";
-    public static final String EXTRA_KEY_FAVORITE_INFO = "mapFavoriteInfo";
 
     long a;
     private int currentMarkerPosition = -1;
@@ -171,13 +168,13 @@ public class MapFragment extends Fragment implements
     private boolean isMyFavoriteActive = false;
     private boolean fromFeed = false;
     private List<Marker> reportInfoMarkers;
-    private List<ReportCardItem> reportCardItemList;
+    private List<MapReportCardItem> mapReportCardItemList;
 
     private GoogleMap mMap;
     private FirebaseAuth mAuth;
     private LocationManager manager;
     private MyLocationListener myLocationListener;
-    private ReportCardPagerAdapter reportCardAdapter;
+    private MapReportCardPagerAdapter reportCardAdapter;
     private PermissionUtil mPermission;
 
     /**
@@ -200,7 +197,7 @@ public class MapFragment extends Fragment implements
         // 처음 생성시 호출되고 호출되지 않음 - 초기화 작업에 필요
         super.onCreate(savedInstanceState);
         reportInfoMarkers = new ArrayList<>();
-        reportCardItemList = new ArrayList<>();
+        mapReportCardItemList = new ArrayList<>();
     }
 
     @Override
@@ -231,7 +228,8 @@ public class MapFragment extends Fragment implements
     private void setupViews(View view) {
 
         ButterKnife.bind(this, view);
-        SupportMapFragment mapView = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapView);
+        SupportMapFragment mapView = (SupportMapFragment)
+                getChildFragmentManager().findFragmentById(R.id.mapView);
         mapView.getMapAsync(this);
 
         map_ui.bringToFront();
@@ -301,18 +299,20 @@ public class MapFragment extends Fragment implements
     // 하단 뷰페이저 세팅
     private void setCardViewPagerAdapter() {
         if (reportCardAdapter == null) {
-            reportCardAdapter = new ReportCardPagerAdapter(getContext());
+            reportCardAdapter = new MapReportCardPagerAdapter(this);
         }
-        ShadowTransformer reportCardShadowTransformer = new ShadowTransformer(report_card_view_pager, reportCardAdapter, this);
-        reportCardShadowTransformer.enableScaling(true);
+        ShadowTransformer shadowTransformer
+                = new ShadowTransformer(report_card_view_pager, reportCardAdapter, this);
+        shadowTransformer.enableScaling(true);
         report_card_view_pager.setAdapter(reportCardAdapter);
-        report_card_view_pager.setPageTransformer(false, reportCardShadowTransformer);
+        report_card_view_pager.setOnPageChangeListener(shadowTransformer);
     }
 
     // 하단 뷰페이저 숨기기
     private void hideCardView() {
         if (report_card_view_layout.getVisibility() == View.VISIBLE) {
-            Animation trans_to_down = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_down);
+            Animation trans_to_down
+                    = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_down);
             report_card_view_layout.startAnimation(trans_to_down);
             report_card_view_layout.setVisibility(View.INVISIBLE);
             report_card_view_layout.setClickable(false);
@@ -404,7 +404,8 @@ public class MapFragment extends Fragment implements
         bundle.putDouble("markerLng", marker.getPosition().longitude);
         bundle.putBoolean("myFavoriteActive", isMyFavoriteActive);
         moldeMyFavoriteInfoMapDialog.setArguments(bundle);
-        moldeMyFavoriteInfoMapDialog.show(((MoldeMainActivity) getContext()).getSupportFragmentManager(), "bottomSheet");
+        moldeMyFavoriteInfoMapDialog.show(
+                ((MoldeMainActivity) getContext()).getSupportFragmentManager(), "bottomSheet");
     }
 
     // 마커 클릭
@@ -416,7 +417,7 @@ public class MapFragment extends Fragment implements
                 showCardView();
             }
             applyReportCardInfo(tagNumber);
-            enlargeMarkerIcon(marker, reportCardItemList.get(tagNumber).getStatus());
+            enlargeMarkerIcon(marker, mapReportCardItemList.get(tagNumber).getStatus());
         } else {
             switch (tagNumber) {
                 case MARKER_MY_LOCATION:
@@ -442,7 +443,7 @@ public class MapFragment extends Fragment implements
         int tagNumber = (int) marker.getTag();
         if (tagNumber >= 0) {
             shrinkMarkerIcon(marker,
-                    reportCardItemList.get((int) marker.getTag()).getStatus());
+                    mapReportCardItemList.get((int) marker.getTag()).getStatus());
         } else {
             switch (tagNumber) {
                 case MARKER_MY_LOCATION:
@@ -493,7 +494,7 @@ public class MapFragment extends Fragment implements
         LatLng feedLocation = new LatLng(feedData.getRepLat(), feedData.getRepLon());
         Marker feedMarker = addMarker(
                 feedLocation,
-                getText(R.string.marker_title_my_location).toString(),
+                getText(R.string.marker_title_feed_location).toString(),
                 feedData.getRepDetailAddr(),
                 R.drawable.my_location_icon,
                 MARKER_MY_LOCATION);
@@ -518,13 +519,16 @@ public class MapFragment extends Fragment implements
         switch (status) {
             case RECEIVING:
             case ACCEPTED:
-                marker.setIcon(BitmapDescriptorFactory.fromBitmap(sizeUpMapIcon(R.drawable.ic_marker_red)));
+                marker.setIcon(BitmapDescriptorFactory
+                        .fromBitmap(sizeUpMapIcon(R.drawable.ic_marker_red)));
                 break;
             case FOUND:
-                marker.setIcon(BitmapDescriptorFactory.fromBitmap(sizeUpMapIcon(R.drawable.ic_marker_white)));
+                marker.setIcon(BitmapDescriptorFactory
+                        .fromBitmap(sizeUpMapIcon(R.drawable.ic_marker_white)));
                 break;
             case CLEAN:
-                marker.setIcon(BitmapDescriptorFactory.fromBitmap(sizeUpMapIcon(R.drawable.ic_marker_green)));
+                marker.setIcon(BitmapDescriptorFactory
+                        .fromBitmap(sizeUpMapIcon(R.drawable.ic_marker_green)));
                 break;
         }
     }
@@ -534,13 +538,16 @@ public class MapFragment extends Fragment implements
         switch (status) {
             case RECEIVING:
             case ACCEPTED:
-                marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_red));
+                marker.setIcon(BitmapDescriptorFactory
+                        .fromResource(R.drawable.ic_marker_red));
                 break;
             case FOUND:
-                marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_white));
+                marker.setIcon(BitmapDescriptorFactory
+                        .fromResource(R.drawable.ic_marker_white));
                 break;
             case CLEAN:
-                marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_green));
+                marker.setIcon(BitmapDescriptorFactory
+                        .fromResource(R.drawable.ic_marker_green));
                 break;
         }
     }
@@ -558,7 +565,8 @@ public class MapFragment extends Fragment implements
         else if (fromFeed) {
             isLoading(true);
             FeedEntity feedEntity = ((MoldeMainActivity) getActivity()).getFeedEntity();
-            moveCamera(new LatLng(feedEntity.getRepLat(), feedEntity.getRepLon()), ZOOM_FEED_MARKER);
+            moveCamera(new LatLng(feedEntity.getRepLat(),
+                    feedEntity.getRepLon()), ZOOM_FEED_MARKER);
             addFeedMarkers(feedEntity);
             showCardView();
             fromFeed = false;
@@ -566,7 +574,7 @@ public class MapFragment extends Fragment implements
         // 한 번 데이터를 불러온 후 외부에서 접근할 경우
         else {
             hideProgress();
-            if (currentMarkerPosition != -1 && reportCardItemList.size() != 0) {
+            if (currentMarkerPosition != -1 && mapReportCardItemList.size() != 0) {
                 applyReportCardInfo(currentMarkerPosition);
                 showCardView();
             }
@@ -617,10 +625,15 @@ public class MapFragment extends Fragment implements
                         }
                         marker.setTag(i);
                         reportInfoMarkers.add(marker);
-                        reportCardItemList.add(new ReportCardItem(marker.getTitle(), marker.getSnippet(), entity.getRepState(), entity.getRepId()));
+                        mapReportCardItemList.add(
+                                new MapReportCardItem(
+                                        marker.getTitle(),
+                                        marker.getSnippet(),
+                                        entity.getRepState(),
+                                        entity.getRepId()));
                     }
 
-                    updateData(reportCardItemList);
+                    updateData(mapReportCardItemList);
 
                     applyReportCardInfo(0);
 
@@ -654,21 +667,21 @@ public class MapFragment extends Fragment implements
     }
 
     // 받아온 데이터로 하단 뷰페이저 갱신
-    private void updateData(List<ReportCardItem> data) {
+    private void updateData(List<MapReportCardItem> data) {
         reportCardAdapter.setData(data);
     }
 
     // 새로 받아올 때 기존 데이터 캐시 제거
     public void clearReportInfoDataAndMarkers() {
         mMap.clear();
-        if (reportInfoMarkers.size() > 0 || reportCardItemList.size() > 0) {
+        if (reportInfoMarkers.size() > 0 || mapReportCardItemList.size() > 0) {
             for (Marker marker : reportInfoMarkers) {
                 marker.remove();
             }
             reportInfoMarkers.clear();
-            reportCardItemList.clear();
+            mapReportCardItemList.clear();
 
-            reportCardAdapter.removeAllCardItem(reportCardItemList);
+            reportCardAdapter.removeAllCardItem(mapReportCardItemList);
             /**
              * makeRandomMarker 와 바꾸기만 하면 안 되길래 뭐가 문제인지 파악하지 못했는데
              * 결국 어떤 차이가 있었던 것이 아니라 데이터가 유동적으로 변경된 것이 문제였음
@@ -685,36 +698,21 @@ public class MapFragment extends Fragment implements
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == REQ_SEARCH_MAP) {
-            SearchMapInfoEntity searchEntity
-                    = (SearchMapInfoEntity) data.getSerializableExtra(EXTRA_KEY_SEARCH_MAP_INFO);
-            SearchMapHistoryEntity historyEntity
-                    = (SearchMapHistoryEntity) data.getSerializableExtra(EXTRA_KEY_SEARCH_MAP_HISTORY);
-            if (historyEntity != null) {
-                lat = historyEntity.getMapLat();
-                lng = historyEntity.getMapLng();
-                loc_search_input.setText(historyEntity.getName());
-                clearReportInfoDataAndMarkers();
-                addMarker(
-                        new LatLng(lat, lng),
-                        getText(R.string.marker_title_my_location).toString(),
-                        "",
-                        R.drawable.my_location_icon,
-                        MARKER_MY_LOCATION_HISTORY);
+            LatLng defaultLoc = ((MoldeApplication)
+                    getActivity().getApplication()).getCurrLocation();
+            lat = data.getDoubleExtra("reportLat", defaultLoc.latitude);
+            lng = data.getDoubleExtra("reportLng", defaultLoc.longitude);
+            String reportName = data.getStringExtra("reportName");
+            loc_search_input.setText(reportName);
+            clearReportInfoDataAndMarkers();
+            addMarker(
+                    new LatLng(lat, lng),
+                    getText(R.string.marker_title_search_location).toString(),
+                    "",
+                    R.drawable.my_location_icon,
+                    MARKER_MY_LOCATION_HISTORY);
 
-                loadData(lat, lng);
-            } else if (searchEntity != null) {
-                lat = searchEntity.getMapLat();
-                lng = searchEntity.getMapLng();
-                loc_search_input.setText(searchEntity.getName());
-                clearReportInfoDataAndMarkers();
-                addMarker(
-                        new LatLng(lat, lng),
-                        getText(R.string.marker_title_search_location).toString(),
-                        "",
-                        R.drawable.my_location_icon,
-                        MARKER_MY_LOCATION_SEARCH);
-                loadData(lat, lng);
-            }
+            loadData(lat, lng);
         } else if (resultCode == RESULT_OK && requestCode == REQ_FAVORITE) {
             FavoriteEntity myFavoriteEntity
                     = (FavoriteEntity) data.getSerializableExtra(EXTRA_KEY_FAVORITE_INFO);
@@ -739,7 +737,7 @@ public class MapFragment extends Fragment implements
     @Override
     public void applyReportCardInfo(int position) {
         currentMarkerPosition = position;
-        ReportCardItem item = reportCardItemList.get(position);
+        MapReportCardItem item = mapReportCardItemList.get(position);
         Marker marker = reportInfoMarkers.get(position);
         moveCamera(marker.getPosition(), ZOOM_FEED_MARKER);
         marker.showInfoWindow();
@@ -795,7 +793,8 @@ public class MapFragment extends Fragment implements
                     android.Manifest.permission.ACCESS_COARSE_LOCATION,
                     android.Manifest.permission.ACCESS_FINE_LOCATION});
         } else {
-            Toast.makeText(getContext(), "GPS를 사용할 수 있도록 켜주셔야 사용이 가능합니다.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "GPS를 사용할 수 있도록 켜주셔야 사용이 가능합니다.",
+                    Toast.LENGTH_LONG).show();
             hideProgress();
         }
     }
@@ -849,8 +848,10 @@ public class MapFragment extends Fragment implements
         if (myLocationListener == null) {
             myLocationListener = new MyLocationListener();
         }
-        manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, myLocationListener);
-        manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, myLocationListener);
+        manager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                minTime, minDistance, myLocationListener);
+        manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+                minTime, minDistance, myLocationListener);
     }
 
     // 리스너 제거하기
@@ -944,5 +945,11 @@ public class MapFragment extends Fragment implements
         if (!isBackBtnClicked && !isInit) {
             hideCardView();
         }
+    }
+
+    public void showReportCardListDialog(int reportId) {
+        MapReportCardListDialog mapReportCardListDialog = new MapReportCardListDialog();
+        mapReportCardListDialog.show(getActivity().getSupportFragmentManager(), "bottomSheet");
+        mapReportCardListDialog.setData(reportId);
     }
 }

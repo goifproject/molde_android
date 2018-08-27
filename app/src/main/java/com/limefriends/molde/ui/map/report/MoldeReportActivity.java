@@ -60,6 +60,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.limefriends.molde.comm.Constant.Authority.*;
+import static com.limefriends.molde.comm.Constant.Common.EXTRA_KEY_ACTIVITY_NAME;
 import static com.limefriends.molde.comm.Constant.Common.PREF_KEY_AUTHORITY;
 
 public class MoldeReportActivity extends AppCompatActivity implements View.OnClickListener {
@@ -262,7 +263,7 @@ public class MoldeReportActivity extends AppCompatActivity implements View.OnCli
             case R.id.find_map_loc_button:
                 Intent intent = new Intent();
                 intent.setClass(getApplicationContext(), SearchMapInfoActivity.class);
-                intent.putExtra("activity", "Report");
+                intent.putExtra(EXTRA_KEY_ACTIVITY_NAME, "Report");
                 startActivityForResult(intent, REQ_REPORT_LOCATION);
                 break;
             case R.id.send_report_button:
