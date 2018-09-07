@@ -1,10 +1,12 @@
 package com.limefriends.molde.ui.mypage.comment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -12,13 +14,20 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.limefriends.molde.R;
+import com.limefriends.molde.comm.Constant;
+import com.limefriends.molde.comm.MoldeApplication;
+import com.limefriends.molde.comm.custom.recyclerview.AddOnScrollRecyclerView;
+import com.limefriends.molde.comm.utils.PreferenceUtil;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.comment.CommentEntity;
 import com.limefriends.molde.entity.comment.CommentResponseInfoEntity;
 import com.limefriends.molde.entity.comment.CommentResponseInfoEntityList;
+import com.limefriends.molde.entity.comment.ReportedCommentEntity;
+import com.limefriends.molde.entity.comment.ReportedCommentResponseInfoEntityList;
 import com.limefriends.molde.entity.news.CardNewsEntity;
 import com.limefriends.molde.entity.news.CardNewsResponseInfoEntity;
 import com.limefriends.molde.entity.news.CardNewsResponseInfoEntityList;
+import com.limefriends.molde.entity.response.Result;
 import com.limefriends.molde.remote.MoldeRestfulService;
 import com.limefriends.molde.remote.MoldeNetwork;
 import com.limefriends.molde.comm.utils.comparator.CardNewsComparator;
@@ -38,6 +47,7 @@ import retrofit2.Response;
 
 import static com.limefriends.molde.comm.Constant.Comment.EXTRA_KEY_COMMENT_DESCRIPTION;
 import static com.limefriends.molde.comm.Constant.Common.EXTRA_KEY_CARDNEWS_ID;
+import static com.limefriends.molde.comm.Constant.Common.PREF_KEY_AUTHORITY;
 
 
 /**
@@ -95,20 +105,24 @@ import static com.limefriends.molde.comm.Constant.Common.EXTRA_KEY_CARDNEWS_ID;
  */
 // TODO responsecount로 처리하는 애들 중에 만약 중간에 네트워크가 끊기거나 하나 못 받아오면 어떻게 되는거임
 // TODO addOnScroll 추가 구현할 것
+// TODO 어드민 페이지랑 delete api 추가할 것
 public class MyCommentActivity extends AppCompatActivity implements MyCommentExpandableAdapter.OnItemClickCallback {
 
     @BindView(R.id.myComment_listView)
     ExpandableListView myComment_listView;
+    @BindView(R.id.myComment_reported_comment_listview)
+    AddOnScrollRecyclerView myComment_reported_comment_listview;
     @BindView(R.id.progressBar2)
     ProgressBar progressBar;
 
-    private final int PER_PAGE = 20;
-    private final int FIRST_PAGE = 0;
+    private static final int PER_PAGE = 20;
+    private static final int FIRST_PAGE = 0;
     private int currentPage = FIRST_PAGE;
 
     private MyCommentExpandableAdapter commentExpandableAdapter;
     private MoldeRestfulService.Comment commentService;
     private MoldeRestfulService.CardNews newsService;
+    private ReportedCommentAdapter reportedCommentAdapter;
 
     // 댓글 목록
     private List<CommentResponseInfoEntity> commentSchemas = new ArrayList<>();
@@ -119,16 +133,20 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
     private int fetchCount = 0;
     private int responseCount = 0;
 
+    private long authority;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.mypage_activity_my_comment);
+        setContentView(R.layout.activity_my_comment);
+
+        authority = PreferenceUtil.getLong(this, PREF_KEY_AUTHORITY);
 
         setupViews();
 
         setupList();
 
-        loadCommentData(PER_PAGE, currentPage);
+        loadData();
     }
 
     //-----
@@ -138,23 +156,34 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
     private void setupViews() {
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.default_toolbar);
+        getSupportActionBar().setCustomView(R.layout.custom_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         TextView toolbar_title
                 = getSupportActionBar().getCustomView().findViewById(R.id.toolbar_title);
-        toolbar_title.setText(getText(R.string.my_comment));
+        if (authority == Constant.Authority.ADMIN) {
+            toolbar_title.setText(getText(R.string.reported_comment));
+        } else {
+            toolbar_title.setText(getText(R.string.my_comment));
+        }
     }
 
     private void setupList() {
-        commentExpandableAdapter = new MyCommentExpandableAdapter(this);
-        myComment_listView.setAdapter(commentExpandableAdapter);
-        myComment_listView.setGroupIndicator(null);
-        myComment_listView.setChildIndicator(null);
-        myComment_listView.setChildDivider(getResources().getDrawable(R.color.white));
-        myComment_listView.setDivider(getResources().getDrawable(R.color.white));
-        myComment_listView.setDividerHeight(0);
+        if (authority == Constant.Authority.ADMIN) {
+            reportedCommentAdapter = new ReportedCommentAdapter(this, this);
+            myComment_reported_comment_listview.setAdapter(reportedCommentAdapter);
+            myComment_reported_comment_listview
+                    .setLayoutManager(new LinearLayoutManager(this));
+        } else {
+            commentExpandableAdapter = new MyCommentExpandableAdapter(this);
+            myComment_listView.setAdapter(commentExpandableAdapter);
+            myComment_listView.setGroupIndicator(null);
+            myComment_listView.setChildIndicator(null);
+            myComment_listView.setChildDivider(getResources().getDrawable(R.color.white));
+            myComment_listView.setDivider(getResources().getDrawable(R.color.white));
+            myComment_listView.setDividerHeight(0);
+        }
     }
 
     @Override
@@ -186,11 +215,21 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
         return commentService;
     }
 
+    private void loadData() {
+        if (authority == Constant.Authority.ADMIN) {
+            loadReportedCommentService(PER_PAGE, currentPage);
+        } else {
+            loadCommentData(PER_PAGE, currentPage);
+        }
+    }
+
     private void loadCommentData(int perPage, int page) {
 
         progressBar.setVisibility(View.VISIBLE);
 
-        Call<CommentResponseInfoEntityList> call = getCommentService().getMyComment("lkj", perPage, page);
+        String uId = ((MoldeApplication) getApplication()).getFireBaseAuth().getCurrentUser().getUid();
+
+        Call<CommentResponseInfoEntityList> call = getCommentService().getMyComment(uId, perPage, page);
 
         call.enqueue(new Callback<CommentResponseInfoEntityList>() {
             @Override
@@ -236,6 +275,7 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
                     }
                     lastAddedComment = commentEntity;
                 }
+                if (commentEntities.size() == 0) progressBar.setVisibility(View.GONE);
             }
 
             @Override
@@ -289,6 +329,139 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
         });
     }
 
+    private void loadReportedCommentService(int perPage, int page) {
+
+        if (!hasMoreToLoad) return;
+
+        myComment_reported_comment_listview.setIsLoading(true);
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        Call<ReportedCommentResponseInfoEntityList> call
+                = getCommentService().getReportedComment(perPage, page);
+
+        call.enqueue(new Callback<ReportedCommentResponseInfoEntityList>() {
+            @Override
+            public void onResponse(Call<ReportedCommentResponseInfoEntityList> call, Response<ReportedCommentResponseInfoEntityList> response) {
+                if (response.isSuccessful()) {
+                    List<ReportedCommentEntity> entities
+                            = FromSchemaToEntitiy.reportedComment(response.body().getData());
+                    fetchCount = entities.size();
+                    for (ReportedCommentEntity commentEntity : entities) {
+                        loadCardNewsComment(commentEntity.getCommId());
+                    }
+                    if (fetchCount == 0) {
+                        progressBar.setVisibility(View.GONE);
+                        myComment_reported_comment_listview.setIsLoading(false);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ReportedCommentResponseInfoEntityList> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void loadCardNewsComment(int commentId) {
+
+        Call<CommentResponseInfoEntityList> call = getCommentService().getComment(commentId);
+
+        call.enqueue(new Callback<CommentResponseInfoEntityList>() {
+            @Override
+            public void onResponse(Call<CommentResponseInfoEntityList> call, Response<CommentResponseInfoEntityList> response) {
+                if (response.isSuccessful()) {
+                    addResponseCount();
+                    List<CommentResponseInfoEntity> commentSchema = response.body().getData();
+                    if (commentSchema.size() != 0) {
+                        CommentEntity newsEntity = FromSchemaToEntitiy.comment(commentSchema.get(0));
+                        commentEntities.add(newsEntity);
+                    }
+                    if (fetchCount == responseCount) {
+                        progressBar.setVisibility(View.GONE);
+                        reportedCommentAdapter.addData(commentEntities);
+                        currentPage++;
+                        myComment_reported_comment_listview.setIsLoading(false);
+                        if (commentEntities.size() < PER_PAGE) {
+                            hasMoreToLoad(false);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CommentResponseInfoEntityList> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void deleteComment(int commentId) {
+
+        String uId = ((MoldeApplication) getApplication()).getFireBaseAuth().getCurrentUser().getUid();
+
+        Call<Result> call = getCommentService().deleteComment(uId, commentId);
+
+        call.enqueue(new Callback<Result>() {
+            @Override
+            public void onResponse(Call<Result> call, Response<Result> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<Result> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void deleteReportedComment(int commentId) {
+
+        String uId = ((MoldeApplication) getApplication()).getFireBaseAuth().getCurrentUser().getUid();
+
+        Call<Result> call = getCommentService().deleteReportedComment(uId, commentId);
+
+        call.enqueue(new Callback<Result>() {
+            @Override
+            public void onResponse(Call<Result> call, Response<Result> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<Result> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void showDeleteCommentDialog(final int commentId) {
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle(getText(R.string.dialog_title_change_status))
+                .setMessage(getText(R.string.dialog_msg_delete_comment))
+                .setPositiveButton(getText(R.string.refuse_report), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteReportedComment(commentId);
+                    }
+                })
+                .setNegativeButton(getText(R.string.delete_comment), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteComment(commentId);
+                    }
+                })
+                .setNeutralButton(getText(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .create();
+        dialog.show();
+    }
+
+
     private synchronized void addFetchCount() {
         fetchCount++;
     }
@@ -297,7 +470,7 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
         responseCount++;
     }
 
-    private void setHasMoreToLoad(boolean hasMore) {
+    private void hasMoreToLoad(boolean hasMore) {
         hasMoreToLoad = hasMore;
     }
 
@@ -326,7 +499,7 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
     @Override
     public void onDestroy() {
         super.onDestroy();
-        setHasMoreToLoad(true);
+        hasMoreToLoad(true);
         currentPage = 0;
     }
 

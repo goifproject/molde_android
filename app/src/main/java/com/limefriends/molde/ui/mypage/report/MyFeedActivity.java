@@ -53,7 +53,7 @@ public class MyFeedActivity extends AppCompatActivity implements MyFeedAdapter.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.mypage_activity_my_report);
+        setContentView(R.layout.activity_my_feed);
 
         authority = PreferenceUtil.getLong(this, PREF_KEY_AUTHORITY);
 
@@ -73,7 +73,7 @@ public class MyFeedActivity extends AppCompatActivity implements MyFeedAdapter.O
     private void setupViews() {
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.default_toolbar);
+        getSupportActionBar().setCustomView(R.layout.custom_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);

@@ -33,6 +33,8 @@ import android.util.Log;
 import android.view.SurfaceView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,13 +54,13 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
 
 
     @BindView(R.id.molde_camera_layout)
-    FrameLayout molde_camera_layout;
+    RelativeLayout molde_camera_layout;
     @BindView(R.id.molde_camera_view)
     SurfaceView molde_camera_view;
     @BindView(R.id.molde_camera_capture_button)
-    ImageButton molde_camera_capture_button;
+    ImageView molde_camera_capture_button;
     @BindView(R.id.molde_gallary_button)
-    ImageButton molde_gallary_button;
+    ImageView molde_gallary_button;
 
     public static final int TAKE_PICTURE_FOR_ADD_IMAGE = 994;
 
@@ -156,7 +158,7 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.map_activity_molde_report_camera);
+        setContentView(R.layout.activity_report_camera);
         ButterKnife.bind(this);
         Intent intent = getIntent();
         imageSeq = intent.getIntExtra("imageSeq", 1);
@@ -166,7 +168,7 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
 
         //액션바 구현
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.default_toolbar);
+        getSupportActionBar().setCustomView(R.layout.custom_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);

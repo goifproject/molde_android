@@ -44,7 +44,7 @@ public class FeedImageAdapter extends PagerAdapter{
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.mypage_my_report_detail_image_item, null);
+        View view = inflater.inflate(R.layout.item_my_feed_image, null);
         ImageView mypage_detail_report_image = view.findViewById(R.id.mypage_detail_report_image);
         Glide.with(context).load(reportImageLinkList.get(position)).into(mypage_detail_report_image);
         container.addView(view);
@@ -53,7 +53,8 @@ public class FeedImageAdapter extends PagerAdapter{
 
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-        super.destroyItem(container, position, object);
+
+        container.removeView((View)object);
     }
 
 }

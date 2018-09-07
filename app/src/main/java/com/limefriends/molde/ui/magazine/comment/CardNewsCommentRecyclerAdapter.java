@@ -12,6 +12,7 @@ import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
 import com.limefriends.molde.R;
+import com.limefriends.molde.comm.utils.DateUitl;
 import com.limefriends.molde.entity.comment.CommentEntity;
 
 import java.util.ArrayList;
@@ -46,18 +47,20 @@ public class CardNewsCommentRecyclerAdapter
     @Override
     public MagazineCommentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new MagazineCommentViewHolder(LayoutInflater.from(context)
-                .inflate(R.layout.magazine_comment_item, parent, false));
+                .inflate(R.layout.item_cardnews_comment, parent, false));
     }
 
     @Override
     public void onBindViewHolder(MagazineCommentViewHolder holder, int position) {
         CommentEntity cardNewsCommentEntity = dataList.get(position);
-        Glide.with(context).load(R.drawable.img_dummy_profile)
+        Glide.with(context).load(R.drawable.img_placeholder_profile)
                 .bitmapTransform(new CropCircleTransformation(context))
                 .into(holder.img_comment_profile);
         holder.txt_comment_user.setText(cardNewsCommentEntity.getUserName());
-        holder.txt_comment_date.setText(cardNewsCommentEntity.getCommDate());
+        holder.txt_comment_date.setText(
+                DateUitl.fromLongToDate(cardNewsCommentEntity.getCommDate()));
         holder.txt_comment_content.setText(cardNewsCommentEntity.getComment());
+        holder.commentId = dataList.get(position).getCommId();
     }
 
     @Override
@@ -78,6 +81,8 @@ public class CardNewsCommentRecyclerAdapter
         @BindView(R.id.comment_report)
         ToggleButton img_comment_siren;
 
+        int commentId;
+
         MagazineCommentViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -89,16 +94,9 @@ public class CardNewsCommentRecyclerAdapter
                     .setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            if (isChecked) {
-                                img_comment_siren.setBackgroundResource(R.drawable.ic_siren_true);
-                                view.showSnack("댓글이 신고되었습니다.");
-                            } else {
-                                img_comment_siren.setBackgroundResource(R.drawable.ic_siren);
-                                view.showSnack("댓글이 신고가 취소되었습니다.");
-                            }
+                            view.reportComment(commentId);
                         }
                     });
         }
-
     }
 }

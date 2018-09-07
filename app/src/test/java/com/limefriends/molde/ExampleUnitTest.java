@@ -2,6 +2,7 @@ package com.limefriends.molde;
 
 import org.junit.Test;
 
+import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.*;
 
 /**

@@ -32,11 +32,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.tutorial.main_tutorial.MoldeTutorialActivity"
+            android:name=".ui.tutorial.MoldeTutorialActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".ui.tutorial.sub_tutorial.MoldeSubDescActivity"
+            android:name=".ui.tutorial.MoldeSubDescActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
@@ -49,11 +49,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".ui.map.report.MoldeReportActivity"
+            android:name=".ui.map.report.ReportActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".ui.map.favorite.MoldeMyFavoriteActivity"
+            android:name=".ui.map.favorite.MapFavoriteActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
@@ -99,7 +99,8 @@
         <activity
             android:name=".ui.mypage.inquiry.InquiryActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.mypage.faq.FaQActivity"
             android:screenOrientation="portrait"
@@ -134,6 +135,11 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"
             tools:replace="android:value" />
+
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider640535656298047"
+            android:exported="true" />
 
         <activity
             android:name="com.facebook.FacebookActivity"

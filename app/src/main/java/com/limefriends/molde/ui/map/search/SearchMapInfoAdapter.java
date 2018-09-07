@@ -41,7 +41,7 @@ public class SearchMapInfoAdapter extends RecyclerView.Adapter<SearchMapInfoAdap
     @Override
     public MapInfoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.map_search_info_item, parent, false);
+                .inflate(R.layout.item_search_info, parent, false);
         return new MapInfoViewHolder(view);
     }
 
@@ -205,9 +205,9 @@ public class SearchMapInfoAdapter extends RecyclerView.Adapter<SearchMapInfoAdap
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
-                        check_favorite_toggle.setBackgroundResource(R.drawable.ic_star_on);
+                        check_favorite_toggle.setBackgroundResource(R.drawable.ic_favorite_star_on);
                     } else {
-                        check_favorite_toggle.setBackgroundResource(R.drawable.ic_star_off);
+                        check_favorite_toggle.setBackgroundResource(R.drawable.ic_favorite_star_off);
                     }
                 }
             });

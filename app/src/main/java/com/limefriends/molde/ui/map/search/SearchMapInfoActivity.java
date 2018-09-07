@@ -7,7 +7,6 @@ import com.limefriends.molde.entity.map.SearchMapInfoEntity;
 
 import android.content.Intent;
 import android.os.Handler;
-import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,6 +21,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
@@ -35,8 +35,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.limefriends.molde.comm.Constant.Common.EXTRA_KEY_ACTIVITY_NAME;
-
 public class SearchMapInfoActivity extends AppCompatActivity implements
         SearchMapInfoAdapter.MapInfoAdapterCallback,
         SearchMapHistoryAdapter.MapHistoryAdapterCallback {
@@ -46,13 +44,13 @@ public class SearchMapInfoActivity extends AppCompatActivity implements
     @BindView(R.id.loc_map_info_search_input)
     EditText loc_map_info_search_input;
     @BindView(R.id.loc_map_info_search_button)
-    ImageButton loc_map_info_search_button;
+    ImageView loc_map_info_search_button;
     @BindView(R.id.history_map_info_list)
     RecyclerView history_map_info_list;
     @BindView(R.id.loc_map_info_list)
     RecyclerView loc_map_info_list;
     @BindView(R.id.delete_all_button)
-    ImageButton delete_all_button;
+    ImageView delete_all_button;
     @BindView(R.id.delete_search_history_button)
     Button delete_search_history_button;
 
@@ -79,7 +77,7 @@ public class SearchMapInfoActivity extends AppCompatActivity implements
      * 뷰 세팅
      */
     private void setupViews() {
-        setContentView(R.layout.map_activity_molde_search_info);
+        setContentView(R.layout.activity_search_location);
         ButterKnife.bind(this);
         setupWindowAnimations();
         loc_map_info_search_bar.setElevation(12);

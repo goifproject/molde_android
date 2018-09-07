@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TODO 폰트 사이즈, 크기, 색상 공통으로 적용할 것 -->
+<!-- TODO 각종 색깔 공통으로 관리할 것 - 배경 등 -->
+<!-- TODO 아이콘 크기 공통 조절, 위젯 스타일 적용 -->
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sub_desc_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/molde_sub_desc_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_layout_height"
+        android:layout_gravity="bottom"
+        android:background="@color/colorPrimary">
+
+        <com.pm10.library.CircleIndicator
+            android:id="@+id/sub_desc_indicator"
+            android:layout_width="172dp"
+            android:layout_height="8dp"
+            android:layout_gravity="center"
+            app:p_defaultColor="@color/colorLittleDarkGray"
+            app:p_gap="16dp"
+            app:p_radius="4dp"
+            app:p_selectedColor="@color/colorSubDescSelect" />
+
+        <Button
+            android:id="@+id/go_to_start_button"
+            android:layout_width="72dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:background="@color/fui_transparent"
+            android:text="@string/confirm"
+            android:textSize="16sp"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+</FrameLayout>

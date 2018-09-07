@@ -1,6 +1,5 @@
 package com.limefriends.molde.ui.map.main.reportCard;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,12 +15,10 @@ import android.view.ViewGroup;
 import com.limefriends.molde.R;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.feed.FeedEntity;
-import com.limefriends.molde.entity.feed.FeedResponseInfoEntity;
 import com.limefriends.molde.entity.feed.FeedResponseInfoEntityList;
 import com.limefriends.molde.remote.MoldeNetwork;
 import com.limefriends.molde.remote.MoldeRestfulService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -51,7 +48,7 @@ public class MapReportCardListDialog extends BottomSheetDialogFragment {
             }
         });
 
-        View view = inflater.inflate(R.layout.map_report_card_dialog, container,false);
+        View view = inflater.inflate(R.layout.dialog_feed_list, container,false);
         ButterKnife.bind(this, view);
 
         report_history_list_view.setLayoutManager(new LinearLayoutManager(getContext()));

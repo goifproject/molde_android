@@ -25,12 +25,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,13 +52,13 @@ import com.limefriends.molde.entity.feed.FeedResponseInfoEntityList;
 import com.limefriends.molde.remote.MoldeNetwork;
 import com.limefriends.molde.remote.MoldeRestfulService;
 import com.limefriends.molde.ui.MoldeMainActivity;
-import com.limefriends.molde.ui.map.favorite.MoldeMyFavoriteActivity;
-import com.limefriends.molde.ui.map.favorite.MoldeMyFavoriteInfoMapDialog;
+import com.limefriends.molde.ui.map.favorite.MapFavoriteActivity;
+import com.limefriends.molde.ui.map.favorite.MapFavoriteDialog;
 import com.limefriends.molde.ui.map.main.reportCard.MapReportCardListDialog;
 import com.limefriends.molde.ui.map.main.reportCard.MapReportCardPagerAdapter;
 import com.limefriends.molde.ui.map.main.reportCard.MapReportCardItem;
 import com.limefriends.molde.ui.map.main.reportCard.ShadowTransformer;
-import com.limefriends.molde.ui.map.report.MoldeReportActivity;
+import com.limefriends.molde.ui.map.report.ReportActivity;
 import com.limefriends.molde.ui.map.search.SearchMapInfoActivity;
 
 import java.util.ArrayList;
@@ -84,7 +81,7 @@ import static com.limefriends.molde.comm.utils.PermissionUtil.REQ_CODE;
 public class MapFragment extends Fragment implements
         OnMapReadyCallback, MoldeMainActivity.OnKeyBackPressedListener,
         ShadowTransformer.OnPageSelectedCallback,
-        MoldeMyFavoriteInfoMapDialog.MoldeApplyMyFavoriteInfoCallback,
+        MapFavoriteDialog.MoldeApplyMyFavoriteInfoCallback,
         PermissionUtil.PermissionCallback, View.OnClickListener,
         GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener,
         GoogleMap.OnInfoWindowCloseListener, GoogleMap.OnMarkerClickListener {
@@ -96,10 +93,6 @@ public class MapFragment extends Fragment implements
     /**
      * 지도
      */
-    // 지도 fragment 담고 있는 레이아웃
-    @BindView(R.id.map_view_layout)
-    LinearLayout map_view_layout;
-
     // 지도 위에 올라가는 검색창, 하단 옵션, 로딩중 레이아웃을 담는 레이아웃
     @BindView(R.id.map_ui)
     RelativeLayout map_ui;
@@ -119,32 +112,28 @@ public class MapFragment extends Fragment implements
     RelativeLayout map_option_layout;
     // 현재 위치
     @BindView(R.id.my_loc_button)
-    ImageButton my_loc_button;
+    ImageView my_loc_button;
     // 즐겨찾기
     @BindView(R.id.favorite_button)
-    ImageButton favorite_button;
+    ImageView favorite_button;
     // 즐겨찾기 추가된 거 있는지
     @BindView(R.id.favorite_new)
     ImageView favorite_new;
     // 신고하기
     @BindView(R.id.report_button)
-    ImageButton report_button;
+    ImageView report_button;
 
     /**
      * 만약 로딩 중이거나 권한이 없을 때
      */
     @BindView(R.id.map_view_progress)
-    RelativeLayout map_view_progress;
-    @BindView(R.id.progress_loading)
-    ProgressBar progress_loading;
-    @BindView(R.id.request_gps_button)
-    Button request_gps_button;
+    FrameLayout map_view_progress;
 
     /**
      * 하단 카드뷰
      */
-    @BindView(R.id.report_card_view)
-    FrameLayout report_card_view_layout;
+//    @BindView(R.id.report_card_view)
+//    FrameLayout report_card_view_layout;
     @BindView(R.id.report_card_view_pager)
     ViewPager report_card_view_pager;
 
@@ -167,6 +156,7 @@ public class MapFragment extends Fragment implements
     private boolean isInit = false;
     private boolean isMyFavoriteActive = false;
     private boolean fromFeed = false;
+    private boolean hasMoreToLoad = true;
     private List<Marker> reportInfoMarkers;
     private List<MapReportCardItem> mapReportCardItemList;
 
@@ -176,6 +166,7 @@ public class MapFragment extends Fragment implements
     private MyLocationListener myLocationListener;
     private MapReportCardPagerAdapter reportCardAdapter;
     private PermissionUtil mPermission;
+    private MoldeRestfulService.Feed feedService;
 
     /**
      * 초기화 작업 - 생명주기
@@ -205,7 +196,7 @@ public class MapFragment extends Fragment implements
                              @Nullable Bundle savedInstanceState) {
         // replace 할 때마다 호출됨. 매니저에 add, replace 되는 순간 반드시 호출되는 듯
         // TODO 캐싱 문제를 좀 더 살펴보자. 일단은 안드로이드에서 처리해 주고 있다고 하니 굳이 추가로 캐싱을 하지 않아도 될 듯
-        View view = inflater.inflate(R.layout.map_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_map, container, false);
 
         // 뷰
         setupViews(view);
@@ -233,7 +224,7 @@ public class MapFragment extends Fragment implements
         mapView.getMapAsync(this);
 
         map_ui.bringToFront();
-        report_card_view_layout.setVisibility(View.INVISIBLE);
+        report_card_view_pager.setVisibility(View.GONE);
         favorite_new.setElevation(12);
         my_loc_button.setElevation(8);
         report_button.setElevation(8);
@@ -252,9 +243,6 @@ public class MapFragment extends Fragment implements
 
         // 현재 위치 찾기
         my_loc_button.setOnClickListener(this);
-
-        // gps 권한 설정하기
-        request_gps_button.setOnClickListener(this);
     }
 
     @Override
@@ -270,7 +258,7 @@ public class MapFragment extends Fragment implements
             case R.id.favorite_button:
                 if (getFirebaseAuth() != null && getFirebaseAuth().getUid() != null) {
                     intent = new Intent();
-                    intent.setClass(v.getContext(), MoldeMyFavoriteActivity.class);
+                    intent.setClass(v.getContext(), MapFavoriteActivity.class);
                     startActivityForResult(intent, REQ_FAVORITE);
                 } else {
                     snackBar(getText(R.string.toast_require_signin).toString());
@@ -279,7 +267,7 @@ public class MapFragment extends Fragment implements
             case R.id.report_button:
                 if (getFirebaseAuth() != null && getFirebaseAuth().getUid() != null) {
                     intent = new Intent();
-                    intent.setClass(v.getContext(), MoldeReportActivity.class);
+                    intent.setClass(v.getContext(), ReportActivity.class);
                     startActivity(intent);
                 } else {
                     snackBar(getText(R.string.toast_require_signin).toString());
@@ -287,11 +275,6 @@ public class MapFragment extends Fragment implements
                 break;
             case R.id.my_loc_button:
                 getMyLocation();
-                break;
-            case R.id.request_gps_button:
-                getPermission().checkPermission(new String[]{
-                        android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                        android.Manifest.permission.ACCESS_FINE_LOCATION});
                 break;
         }
     }
@@ -310,12 +293,12 @@ public class MapFragment extends Fragment implements
 
     // 하단 뷰페이저 숨기기
     private void hideCardView() {
-        if (report_card_view_layout.getVisibility() == View.VISIBLE) {
+        if (report_card_view_pager.getVisibility() == View.VISIBLE) {
             Animation trans_to_down
                     = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_down);
-            report_card_view_layout.startAnimation(trans_to_down);
-            report_card_view_layout.setVisibility(View.INVISIBLE);
-            report_card_view_layout.setClickable(false);
+            report_card_view_pager.startAnimation(trans_to_down);
+            report_card_view_pager.setVisibility(View.GONE);
+            report_card_view_pager.setClickable(false);
             map_option_layout.setVisibility(View.VISIBLE);
             isBackBtnClicked = true;
         }
@@ -324,9 +307,9 @@ public class MapFragment extends Fragment implements
     // 하단 뷰페이저 보이기
     private void showCardView() {
         Animation trans_to_up = AnimationUtils.loadAnimation(getContext(), R.anim.trans_to_up);
-        report_card_view_layout.setVisibility(View.VISIBLE);
-        report_card_view_layout.startAnimation(trans_to_up);
-        report_card_view_layout.bringToFront();
+        report_card_view_pager.setVisibility(View.VISIBLE);
+        report_card_view_pager.startAnimation(trans_to_up);
+        report_card_view_pager.bringToFront();
         map_option_layout.setVisibility(View.INVISIBLE);
         isBackBtnClicked = false;
     }
@@ -395,16 +378,16 @@ public class MapFragment extends Fragment implements
 
     // 즐겨찾기 마커 클릭시 보여줄 대화상자
     private void showFavoriteDialog(Marker marker) {
-        MoldeMyFavoriteInfoMapDialog moldeMyFavoriteInfoMapDialog = new MoldeMyFavoriteInfoMapDialog();
-        moldeMyFavoriteInfoMapDialog.setCallback(MapFragment.this, marker);
+        MapFavoriteDialog mapFavoriteDialog = new MapFavoriteDialog();
+        mapFavoriteDialog.setCallback(this, marker);
         Bundle bundle = new Bundle();
         bundle.putString("markerTitle", marker.getTitle().replace("★", ""));
         bundle.putString("markerInfo", marker.getSnippet());
         bundle.putDouble("markerLat", marker.getPosition().latitude);
         bundle.putDouble("markerLng", marker.getPosition().longitude);
         bundle.putBoolean("myFavoriteActive", isMyFavoriteActive);
-        moldeMyFavoriteInfoMapDialog.setArguments(bundle);
-        moldeMyFavoriteInfoMapDialog.show(
+        mapFavoriteDialog.setArguments(bundle);
+        mapFavoriteDialog.show(
                 ((MoldeMainActivity) getContext()).getSupportFragmentManager(), "bottomSheet");
     }
 
@@ -413,7 +396,7 @@ public class MapFragment extends Fragment implements
     public boolean onMarkerClick(Marker marker) {
         int tagNumber = (int) marker.getTag();
         if (tagNumber >= 0) {
-            if (report_card_view_layout.getVisibility() == View.INVISIBLE) {
+            if (report_card_view_pager.getVisibility() == View.GONE) {
                 showCardView();
             }
             applyReportCardInfo(tagNumber);
@@ -424,7 +407,7 @@ public class MapFragment extends Fragment implements
                 case MARKER_MY_LOCATION_HISTORY:
                 case MARKER_MY_LOCATION_SEARCH:
                     marker.setIcon(BitmapDescriptorFactory
-                            .fromBitmap(sizeUpMapIcon(R.drawable.my_location_icon)));
+                            .fromBitmap(sizeUpMapIcon(R.drawable.ic_map_marker_cur_location)));
                     break;
                 case MARKER_MY_LOCATION_FAVORITE:
                     marker.setIcon(BitmapDescriptorFactory
@@ -450,7 +433,7 @@ public class MapFragment extends Fragment implements
                 case MARKER_MY_LOCATION_HISTORY:
                 case MARKER_MY_LOCATION_SEARCH:
                     marker.setIcon(BitmapDescriptorFactory
-                            .fromResource(R.drawable.my_location_icon));
+                            .fromResource(R.drawable.ic_map_marker_cur_location));
                     break;
                 case MARKER_MY_LOCATION_FAVORITE:
                     marker.setIcon(BitmapDescriptorFactory
@@ -496,11 +479,13 @@ public class MapFragment extends Fragment implements
                 feedLocation,
                 getText(R.string.marker_title_feed_location).toString(),
                 feedData.getRepDetailAddr(),
-                R.drawable.my_location_icon,
+                R.drawable.ic_map_marker_cur_location,
                 MARKER_MY_LOCATION);
         feedMarker.showInfoWindow();
         loadData(feedLocation.latitude, feedLocation.longitude);
     }
+
+
 
     // 마커 아이콘 사이즈업
     private Bitmap sizeUpMapIcon(int imageId) {
@@ -520,15 +505,15 @@ public class MapFragment extends Fragment implements
             case RECEIVING:
             case ACCEPTED:
                 marker.setIcon(BitmapDescriptorFactory
-                        .fromBitmap(sizeUpMapIcon(R.drawable.ic_marker_red)));
+                        .fromBitmap(sizeUpMapIcon(R.drawable.ic_map_marker_red)));
                 break;
             case FOUND:
                 marker.setIcon(BitmapDescriptorFactory
-                        .fromBitmap(sizeUpMapIcon(R.drawable.ic_marker_white)));
+                        .fromBitmap(sizeUpMapIcon(R.drawable.ic_map_marker_white)));
                 break;
             case CLEAN:
                 marker.setIcon(BitmapDescriptorFactory
-                        .fromBitmap(sizeUpMapIcon(R.drawable.ic_marker_green)));
+                        .fromBitmap(sizeUpMapIcon(R.drawable.ic_map_marker_green)));
                 break;
         }
     }
@@ -539,19 +524,18 @@ public class MapFragment extends Fragment implements
             case RECEIVING:
             case ACCEPTED:
                 marker.setIcon(BitmapDescriptorFactory
-                        .fromResource(R.drawable.ic_marker_red));
+                        .fromResource(R.drawable.ic_map_marker_red));
                 break;
             case FOUND:
                 marker.setIcon(BitmapDescriptorFactory
-                        .fromResource(R.drawable.ic_marker_white));
+                        .fromResource(R.drawable.ic_map_marker_white));
                 break;
             case CLEAN:
                 marker.setIcon(BitmapDescriptorFactory
-                        .fromResource(R.drawable.ic_marker_green));
+                        .fromResource(R.drawable.ic_map_marker_green));
                 break;
         }
     }
-
 
     /**
      * 데이터 세팅
@@ -568,12 +552,10 @@ public class MapFragment extends Fragment implements
             moveCamera(new LatLng(feedEntity.getRepLat(),
                     feedEntity.getRepLon()), ZOOM_FEED_MARKER);
             addFeedMarkers(feedEntity);
-            showCardView();
             fromFeed = false;
         }
         // 한 번 데이터를 불러온 후 외부에서 접근할 경우
         else {
-            hideProgress();
             if (currentMarkerPosition != -1 && mapReportCardItemList.size() != 0) {
                 applyReportCardInfo(currentMarkerPosition);
                 showCardView();
@@ -582,14 +564,19 @@ public class MapFragment extends Fragment implements
         }
     }
 
+    private MoldeRestfulService.Feed getFeedService() {
+        if (feedService == null) {
+            feedService
+                    = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Feed.class);
+        }
+        return feedService;
+    }
+
     // 네트워크에서 피드 데이터 받아옴
     private void loadData(final double lat, final double lng) {
 
-        MoldeRestfulService.Feed feedService
-                = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Feed.class);
-
         Call<FeedResponseInfoEntityList> call
-                = feedService.getFeedByDistance(lat, lng);
+                = getFeedService().getFeedByDistance(lat, lng);
 
         call.enqueue(new Callback<FeedResponseInfoEntityList>() {
             @Override
@@ -607,37 +594,51 @@ public class MapFragment extends Fragment implements
                         switch (entityList.get(i).getRepState()) {
                             // TODO 데이터 제대로 들어가면 변경할 것
                             case RECEIVING:
+                                Log.e("호출 확인", "RECEIVING");
+                                continue;
                             case ACCEPTED:
-                                marker = addMarker(location, entity.getRepContents(),
+                                marker = addMarker(location, entity.getRepDetailAddr(),
                                         location.latitude + ", " + location.longitude,
-                                        R.drawable.ic_marker_red, i);
+                                        R.drawable.ic_map_marker_red, i);
                                 break;
                             case FOUND:
                                 marker = addMarker(location, entity.getRepContents(),
                                         location.latitude + ", " + location.longitude,
-                                        R.drawable.ic_marker_white, i);
+                                        R.drawable.ic_map_marker_white, i);
                                 break;
                             case CLEAN:
                                 marker = addMarker(location, entity.getRepContents(),
                                         location.latitude + ", " + location.longitude,
-                                        R.drawable.ic_marker_green, i);
+                                        R.drawable.ic_map_marker_green, i);
                                 break;
                         }
-                        marker.setTag(i);
                         reportInfoMarkers.add(marker);
+                        marker.setTag(reportInfoMarkers.size()-1);
                         mapReportCardItemList.add(
                                 new MapReportCardItem(
-                                        marker.getTitle(),
-                                        marker.getSnippet(),
+                                        entity.getRepContents(),
+                                        entity.getRepDetailAddr(),
                                         entity.getRepState(),
-                                        entity.getRepId()));
+                                        entity.getRepId(),
+                                        entity.getRepDate(),
+                                        entity.getRepImg().get(0).getFilepath()));
                     }
 
-                    updateData(mapReportCardItemList);
+                    if (reportInfoMarkers.size() != 0) {
 
-                    applyReportCardInfo(0);
+                        updateData(mapReportCardItemList);
 
-                    showCardView();
+                        applyReportCardInfo(0);
+
+                        showCardView();
+
+                    } else {
+
+                        snackBar(getText(R.string.toast_no_feed_place).toString());
+
+                        moveCamera(new LatLng(lat, lng), ZOOM_CUR_LOCATION);
+
+                    }
 
                 } else {
 
@@ -648,18 +649,13 @@ public class MapFragment extends Fragment implements
 
                 isFirst(false);
 
-                hideProgress();
-
                 isLoading(false);
-
 
             }
 
             @Override
             public void onFailure(Call<FeedResponseInfoEntityList> call, Throwable t) {
                 snackBar(getText(R.string.toast_network_error).toString());
-
-                hideProgress();
 
                 isLoading(false);
             }
@@ -709,7 +705,7 @@ public class MapFragment extends Fragment implements
                     new LatLng(lat, lng),
                     getText(R.string.marker_title_search_location).toString(),
                     "",
-                    R.drawable.my_location_icon,
+                    R.drawable.ic_map_marker_cur_location,
                     MARKER_MY_LOCATION_HISTORY);
 
             loadData(lat, lng);
@@ -772,8 +768,6 @@ public class MapFragment extends Fragment implements
 
         isLoading(true);
 
-        showProgress();
-
         a = System.currentTimeMillis();
 
         if (manager == null) {
@@ -820,7 +814,7 @@ public class MapFragment extends Fragment implements
                     currLocation,
                     getText(R.string.marker_title_my_location).toString(),
                     "",
-                    R.drawable.my_location_icon,
+                    R.drawable.ic_map_marker_cur_location,
                     MARKER_MY_LOCATION);
             loadData(lat, lng);
             removeLocationListener();
@@ -895,8 +889,6 @@ public class MapFragment extends Fragment implements
 
     @Override
     public void onPermissionDenied() {
-        progress_loading.setVisibility(View.INVISIBLE);
-        request_gps_button.setVisibility(View.VISIBLE);
         showAskAgainDialog();
     }
 
@@ -937,6 +929,11 @@ public class MapFragment extends Fragment implements
     }
 
     private void isLoading(boolean isLoading) {
+        if (isLoading) {
+            showProgress();
+        }  else {
+            hideProgress();
+        }
         isInit = isLoading;
     }
 

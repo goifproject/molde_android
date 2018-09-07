@@ -1,28 +1,19 @@
 package com.limefriends.molde.ui;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.Slide;
 import android.transition.TransitionInflater;
-import android.util.Log;
 import android.view.MenuItem;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.limefriends.molde.comm.MoldeApplication;
 import com.limefriends.molde.R;
 import com.limefriends.molde.comm.helper.BottomNavigationViewHelper;
-import com.limefriends.molde.entity.favorite.FavoriteEntity;
 import com.limefriends.molde.entity.feed.FeedEntity;
-import com.limefriends.molde.entity.map.SearchMapHistoryEntity;
-import com.limefriends.molde.entity.map.SearchMapInfoEntity;
 import com.limefriends.molde.ui.feed.FeedFragment;
 import com.limefriends.molde.ui.magazine.CardNewsFragment;
 import com.limefriends.molde.ui.map.main.MapFragment;
@@ -54,7 +45,7 @@ public class MoldeMainActivity extends AppCompatActivity
     }
 
     private void setupView() {
-        setContentView(R.layout.activity_molde_main);
+        setContentView(R.layout.activity_main);
         setupWindowAnimations();
         ButterKnife.bind(this);
         BottomNavigationViewHelper.disableShiftMode(navigation);

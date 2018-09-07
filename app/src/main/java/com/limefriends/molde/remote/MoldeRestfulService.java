@@ -1,6 +1,7 @@
 package com.limefriends.molde.remote;
 
 import com.limefriends.molde.entity.comment.CommentResponseInfoEntityList;
+import com.limefriends.molde.entity.comment.ReportedCommentResponseInfoEntityList;
 import com.limefriends.molde.entity.faq.FaqResponseInfoEntityList;
 import com.limefriends.molde.entity.favorite.FavoriteResponseInfoEntityList;
 import com.limefriends.molde.entity.feed.FeedResponseInfoEntity;
@@ -122,6 +123,9 @@ public interface MoldeRestfulService {
          *
          * @return
          */
+        @GET(MoldeRestfulApi.Comment.GET_COMMENT_BY_USERID_API)
+        Call<CommentResponseInfoEntityList> getComment(@Query("commentId") int commentId);
+
         @GET(MoldeRestfulApi.Comment.GET_COMMENT_BY_NEWSID_API)
         Call<CommentResponseInfoEntityList> getNewsComment(@Query("cardNewsId") int newsId,
                                                            @Query("perPage") int perPage,
@@ -132,6 +136,11 @@ public interface MoldeRestfulService {
                                                          @Query("perPage") int perPage,
                                                          @Query("page") int page);
 
+        @GET(MoldeRestfulApi.Comment.GET_REPORTED_COMMENT_API)
+        Call<ReportedCommentResponseInfoEntityList> getReportedComment(
+                @Query("perPage") int perPage,
+                @Query("page") int page);
+
         @FormUrlEncoded
         @POST(MoldeRestfulApi.Comment.POST_COMMENT_API)
         Call<Result> createNewComment(@Field("userId") String userId,
@@ -141,9 +150,19 @@ public interface MoldeRestfulService {
                                       @Field("commentRegiDate") String regiDate);
 
         @FormUrlEncoded
+        @PUT(MoldeRestfulApi.Comment.PUT_COMMENT_API)
+        Call<Result> reportComment(@Field("commentUserId") String uId,
+                                   @Field("commentId") int commentId);
+
+        @FormUrlEncoded
         @HTTP(method = "DELETE", path = MoldeRestfulApi.Comment.DELETE_COMMENT_API, hasBody = true)
         Call<Result> deleteComment(@Field("commentUserId") String commentUserId,
                                    @Field("commentId") int commentId);
+
+        @FormUrlEncoded
+        @HTTP(method = "DELETE", path = MoldeRestfulApi.Comment.DELETE_COMMENT_API, hasBody = true)
+        Call<Result> deleteReportedComment(@Field("commentUserId") String commentUserId,
+                                           @Field("commentId") int commentId);
     }
 
     interface Faq {

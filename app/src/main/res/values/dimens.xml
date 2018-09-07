@@ -1,8 +1,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <dimen name="design_bottom_navigation_text_size" tools:override="true">10sp</dimen>
     <dimen name="design_bottom_navigation_active_text_size" tools:override="true">10sp</dimen>
     <dimen name="report_card_padding">32dp</dimen>
     <dimen name="design_navigation_icon_size" tools:override="true">40dp</dimen>
 
-    <!-- TODO 페이지별로 dp 맞추고 스타일로 통일-->
+    <!-- TutorialActivity -->
+    <dimen name="bottom_layout_height">56dp</dimen>
+
+    <!-- Feed -->
+    <dimen name="feed_item_address_text_size">11sp</dimen>
+    <dimen name="feed_item_detail_address_text_size">11sp</dimen>
+    <dimen name="feed_item_regi_date_text_size">8sp</dimen>
+
 </resources>

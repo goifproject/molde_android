@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TODO 좀 불안한데 프로그래스 커스터마이징 해야 할 듯 -->
+<!-- TODO 폰트 사이즈, 크기, 색상 공통으로 적용할 것 -->
+<!-- TODO 아이콘 크기 공통 조절, 위젯 스타일 적용 -->
+<!-- TODO 각종 색깔 공통으로 관리할 것-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mypage_report_layout"
+    android:layout_width="match_parent"
+    android:layout_height="130dp"
+    android:layout_marginTop="10dp"
+    android:background="@color/colorWhite">
+
+    <ImageView
+        android:id="@+id/mypage_report_map"
+        android:layout_width="136dp"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/img_placeholder_my_feed" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toEndOf="@id/mypage_report_map">
+
+        <TextView
+            android:id="@+id/mypage_report_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="42dp"
+            android:layout_marginTop="24dp"
+            android:text="날짜 데이터 안 넘어옴"
+            android:textColor="@color/colorInfoTextColor"
+            android:textSize="11sp" />
+
+        <TextView
+            android:id="@+id/mypage_report_location"
+            android:layout_width="144dp"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/mypage_report_date"
+            android:layout_below="@+id/mypage_report_date"
+            android:layout_marginTop="7dp"
+            android:text="장소 데이터 안 넘어옴"
+            android:textColor="@color/colorInfoTextColor"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/mypage_report_address"
+            android:layout_width="144dp"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/mypage_report_date"
+            android:layout_below="@+id/mypage_report_location"
+            android:text="장소 데이터 안 넘어옴"
+            android:textColor="@color/colorInfoTextColor"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:id="@+id/report_progress_container"
+            android:layout_width="184dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="36dp"
+            android:layout_below="@id/mypage_report_address"
+            android:layout_marginTop="13dp"
+            android:paddingEnd="12dp"
+            android:paddingStart="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true">
+
+                <View
+                    android:id="@+id/report_progress_line_first"
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorDivision" />
+
+                <View
+                    android:id="@+id/report_progress_line_second"
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorDivision" />
+
+            </LinearLayout>
+
+
+            <ImageView
+                android:id="@+id/report_progress_dot_first"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_feed_dot_yellow" />
+
+            <ImageView
+                android:id="@+id/report_progress_dot_second"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_feed_dot_grey" />
+
+            <ImageView
+                android:id="@+id/report_progress_dot_third"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_feed_dot_grey" />
+
+            <ImageView
+                android:id="@+id/report_progress_dot_second_yellow"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_feed_dot_yellow"
+                android:visibility="invisible" />
+
+            <ImageView
+                android:id="@+id/report_progress_dot_third_yellow"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_feed_dot_yellow"
+                android:visibility="invisible" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="186dp"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/report_progress_container"
+            android:layout_below="@+id/report_progress_container"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="2dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:text="@string/report_status_receiving"
+                android:textSize="8sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/report_status_accepted"
+                android:textSize="8sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="@string/report_status_result"
+                android:textSize="8sp" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

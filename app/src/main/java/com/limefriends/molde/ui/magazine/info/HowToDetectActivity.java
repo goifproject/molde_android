@@ -57,7 +57,7 @@ public class HowToDetectActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.magazine_activity_location_report_detail);
+        setContentView(R.layout.activity_info_prevent);
 
         setupViews();
 
@@ -70,7 +70,7 @@ public class HowToDetectActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         String title = getIntent().getStringExtra("title");
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.default_toolbar);
+        getSupportActionBar().setCustomView(R.layout.custom_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -115,14 +115,14 @@ public class HowToDetectActivity extends AppCompatActivity {
         txt_molca_by_location_05.setText(txt05);
 
 
-        Glide.with(this).load(R.drawable.img_02_01).into(img_molca_by_location_01);
-        Glide.with(this).load(R.drawable.img_02_02).into(img_molca_by_location_02);
-        Glide.with(this).load(R.drawable.img_02_03).into(img_molca_by_location_03);
-        Glide.with(this).load(R.drawable.img_02_04).into(img_molca_by_location_04);
-        Glide.with(this).load(R.drawable.img_02_05).into(img_molca_by_location_05);
-        Glide.with(this).load(R.drawable.img_02_06).into(img_molca_by_location_06);
-        Glide.with(this).load(R.drawable.img_02_07).into(img_molca_by_location_07);
-        Glide.with(this).load(R.drawable.img_02_08).into(img_molca_by_location_08);
+        Glide.with(this).load(R.drawable.img_prevent_info_01).into(img_molca_by_location_01);
+        Glide.with(this).load(R.drawable.img_prevent_info_02).into(img_molca_by_location_02);
+        Glide.with(this).load(R.drawable.img_prevent_info_03).into(img_molca_by_location_03);
+        Glide.with(this).load(R.drawable.img_prevent_info_04).into(img_molca_by_location_04);
+        Glide.with(this).load(R.drawable.img_prevent_info_05).into(img_molca_by_location_05);
+        Glide.with(this).load(R.drawable.img_prevent_info_06).into(img_molca_by_location_06);
+        Glide.with(this).load(R.drawable.img_prevent_info_07).into(img_molca_by_location_07);
+        Glide.with(this).load(R.drawable.img_prevent_info_08).into(img_molca_by_location_08);
     }
 
     @Override

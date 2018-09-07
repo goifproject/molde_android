@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -14,11 +13,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,8 +29,6 @@ import com.limefriends.molde.remote.MoldeRestfulService;
 import com.limefriends.molde.remote.MoldeNetwork;
 import com.limefriends.molde.ui.mypage.faq.FaQActivity;
 
-import java.io.IOException;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -39,7 +36,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-// TODO "lkj" 변경할 것
+// TODO "lkj" 변경할 것 -> uId
 public class InquiryActivity extends AppCompatActivity {
 
     @BindView(R.id.faq_button)
@@ -53,7 +50,7 @@ public class InquiryActivity extends AppCompatActivity {
     @BindView(R.id.faq_email_select)
     Spinner faq_email_select;
     @BindView(R.id.faq_self_close_button)
-    ImageButton faq_self_close_button;
+    ImageView faq_self_close_button;
     @BindView(R.id.faq_send_button)
     Button faq_send_button;
     @BindView(R.id.inquiry_progress)
@@ -67,7 +64,7 @@ public class InquiryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.mypage_activity_inquiry);
+        setContentView(R.layout.activity_inquiry);
 
         setupViews();
 
@@ -81,7 +78,7 @@ public class InquiryActivity extends AppCompatActivity {
     private void setupViews() {
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.default_toolbar);
+        getSupportActionBar().setCustomView(R.layout.custom_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -196,9 +193,13 @@ public class InquiryActivity extends AppCompatActivity {
     //-----
 
     private void inquire(String userId, String userName, String content, String email) {
+
         MoldeRestfulService.Faq faqService
                 = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Faq.class);
-        Call<Result> call = faqService.createNewFaq("lkj", "이기정", content, email);
+
+        String uId = ((MoldeApplication)getApplication()).getFireBaseAuth().getCurrentUser().getUid();
+
+        Call<Result> call = faqService.createNewFaq(uId, "이기정", content, email);
 
         progressBar.setVisibility(View.VISIBLE);
 

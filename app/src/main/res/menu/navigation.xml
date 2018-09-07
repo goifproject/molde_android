@@ -3,21 +3,21 @@
 
     <item
         android:id="@+id/main_menu_magazine"
-        android:icon="@drawable/tab_magazine"
+        android:icon="@drawable/ic_tab_magazine_off"
         android:title="@string/main_menu_magazine" />
 
     <item
         android:id="@+id/main_menu_map"
-        android:icon="@drawable/tab_map"
+        android:icon="@drawable/ic_tab_map_off"
         android:title="@string/main_menu_map" />
 
     <item
         android:id="@+id/main_menu_feed"
-        android:icon="@drawable/tab_feed"
+        android:icon="@drawable/ic_tab_feed_off"
         android:title="@string/main_menu_report_list" />
 
     <item
         android:id="@+id/main_menu_mypage"
-        android:icon="@drawable/tab_mypage"
+        android:icon="@drawable/ic_tab_mypage_off"
         android:title="@string/main_menu_mypage" />
 </menu>

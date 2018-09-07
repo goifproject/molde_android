@@ -3,6 +3,25 @@
     <color name="colorPrimary">#fff176</color>
     <color name="colorPrimaryDark">#FFEB33</color>
     <color name="colorAccent">#fff176</color>
+
+    <!-- MainActivity -->
+    <!-- Text Color -->
+    <color name="colorBottomTabText">#323232</color>
+    <color name="colorBottomTabBackground">#80949494</color>
+
+    <!-- SplashActivity -->
+    <color name="colorSplashBackground">#FEF07E</color>
+
+    <!-- SubTutorialActivity -->
+    <color name="colorSubTutorialBackground">#dddddd</color>
+
+    <!-- CardNews - Comment -->
+    <color name="colorDivider">#d8d8d8</color>
+
+    <!-- Map -->
+    <!-- Text -->
+    <color name="colorLittleDarkGrayText">#5a595b</color>
+
     <color name="colorWhite">#ffffff</color>
     <color name="colorDeepDarkGray">#323232</color>
     <color name="colorLittleDarkGray">#5a595b</color>
@@ -16,7 +35,8 @@
     <color name="colorDefaultText">#4a4a4a</color>
     <color name="colorFrameGrayRounded">#c1c1c1</color>
     <color name="colorSubDescSelect">#4db6ac</color>
-    <color name="colorSplashBG">#FEF07E</color>
+
     <color name="colorDivision">#d8d8d8</color>
     <color name="colorResultMsgBox">#f6f6f6</color>
+
 </resources>

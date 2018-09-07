@@ -10,12 +10,10 @@ import android.widget.TextView;
 import com.limefriends.molde.R;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.faq.FaqEntitiy;
-import com.limefriends.molde.entity.faq.FaqResponseInfoEntity;
 import com.limefriends.molde.entity.faq.FaqResponseInfoEntityList;
 import com.limefriends.molde.remote.MoldeRestfulService;
 import com.limefriends.molde.remote.MoldeNetwork;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -50,7 +48,7 @@ public class FaQActivity extends AppCompatActivity implements View.OnClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.mypage_activity_faq);
+        setContentView(R.layout.activity_faq);
 
         setupViews();
 
@@ -64,7 +62,7 @@ public class FaQActivity extends AppCompatActivity implements View.OnClickListen
     private void setupViews() {
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.default_toolbar);
+        getSupportActionBar().setCustomView(R.layout.custom_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);

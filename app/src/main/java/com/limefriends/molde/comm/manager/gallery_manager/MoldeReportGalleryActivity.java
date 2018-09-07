@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.limefriends.molde.R;
-import com.limefriends.molde.ui.map.report.MoldeReportActivity;
+import com.limefriends.molde.ui.map.report.ReportActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,11 +40,11 @@ public class MoldeReportGalleryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.map_activity_molde_report_gallery);
+        setContentView(R.layout.activity_report_gallery);
         ButterKnife.bind(this);
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.default_toolbar);
+        getSupportActionBar().setCustomView(R.layout.custom_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -56,7 +56,7 @@ public class MoldeReportGalleryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ArrayList<String> pathList = selectDone();
                 Intent intent = new Intent();
-                intent.setClass(getApplicationContext(), MoldeReportActivity.class);
+                intent.setClass(getApplicationContext(), ReportActivity.class);
                 intent.putStringArrayListExtra("imagePathList", pathList);
                 setResult(RESULT_OK, intent);
                 finish();
@@ -114,12 +114,12 @@ public class MoldeReportGalleryActivity extends AppCompatActivity {
      * 갤러리 리사이클러뷰 초기화
      */
     private void initRecyclerGallery() {
-        galleryAdapter = new GalleryAdapter(MoldeReportGalleryActivity.this, initGalleryPathList(), R.layout.map_gallery_item);
+        galleryAdapter = new GalleryAdapter(MoldeReportGalleryActivity.this, initGalleryPathList(), R.layout.item_gallery);
         galleryAdapter.setOnItemClickListener(mOnItemClickListener);
         recyclerGallery.setAdapter(galleryAdapter);
         recyclerGallery.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerGallery.setItemAnimator(new DefaultItemAnimator());
-        recyclerGallery.addItemDecoration(new GridDividerDecoration(getResources(), R.drawable.frame_gallery));
+        recyclerGallery.addItemDecoration(new GridDividerDecoration(getResources(), R.drawable.bg_frame_gallery));
     }
 
 

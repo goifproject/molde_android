@@ -1,7 +1,5 @@
 package com.limefriends.molde.ui.mypage.scrap;
 
-import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +10,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.limefriends.molde.R;
 import com.limefriends.molde.entity.news.CardNewsEntity;
-import com.limefriends.molde.entity.scrap.ScrapEntity;
-import com.limefriends.molde.ui.magazine.detail.CardNewsDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +43,7 @@ public class ScrapAdapter extends RecyclerView.Adapter<ScrapAdapter.MyPageMyScra
     @Override
     public MyPageMyScrapViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.mypage_my_scrap_item, parent, false);
+                .inflate(R.layout.item_cardnews, parent, false);
         return new ScrapAdapter.MyPageMyScrapViewHolder(view);
     }
 
@@ -59,14 +55,14 @@ public class ScrapAdapter extends RecyclerView.Adapter<ScrapAdapter.MyPageMyScra
         if (cardNews.getNewsImg() != null && cardNews.getNewsImg().size() != 0) {
             Glide.with(view)
                     .load(cardNews.getNewsImg().get(0).getUrl())
-                    .placeholder(R.drawable.img_cardnews_dummy)
-                    .into(viewHolder.myScrap_image);
+                    .placeholder(R.drawable.img_placeholder_magazine)
+                    .into(viewHolder.cardnews_thumbnail);
         } else {
             Glide.with(view)
-                    .load(R.drawable.img_cardnews_dummy)
-                    .into(viewHolder.myScrap_image);
+                    .load(R.drawable.img_placeholder_magazine)
+                    .into(viewHolder.cardnews_thumbnail);
         }
-        viewHolder.myScrap_text.setText(cardNews.getDescription());
+        viewHolder.cardnews_title.setText(cardNews.getDescription());
         viewHolder.newsId = cardNews.getNewsId();
         viewHolder.position = position;
     }
@@ -76,12 +72,12 @@ public class ScrapAdapter extends RecyclerView.Adapter<ScrapAdapter.MyPageMyScra
         return cardNewsEntities.size();
     }
 
-    public class MyPageMyScrapViewHolder extends RecyclerView.ViewHolder {
+    class MyPageMyScrapViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.myScrap_image)
-        ImageView myScrap_image;
-        @BindView(R.id.myScrap_text)
-        TextView myScrap_text;
+        @BindView(R.id.cardnews_thumbnail)
+        ImageView cardnews_thumbnail;
+        @BindView(R.id.cardnews_title)
+        TextView cardnews_title;
 
         int newsId;
         int position;

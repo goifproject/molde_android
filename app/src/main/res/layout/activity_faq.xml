@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TODO 폰트 사이즈, 크기, 색상 공통으로 적용할 것 -->
+<!-- TODO 각종 색깔 공통으로 관리할 것 - 배경 등 -->
+<!-- TODO 아이콘 크기 공통 조절, 위젯 스타일 적용 -->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f6f6f6">
+
+    <TextView
+        android:id="@+id/faq1"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="1dp"
+        android:background="@color/colorWhite"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:text="@string/faq_q_1"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        tools:ignore="RtlSymmetry" />
+
+    <TextView
+        android:id="@+id/answer1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/faq1"
+        android:background="#f6f6f6"
+        android:padding="17dp"
+        android:text="@string/faq_a_1"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/faq2"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_below="@+id/answer1"
+        android:layout_marginTop="1dp"
+        android:background="@color/colorWhite"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:text="@string/faq_q_2"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        tools:ignore="RtlSymmetry" />
+
+    <TextView
+        android:id="@+id/answer2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/faq2"
+        android:background="#f6f6f6"
+        android:padding="17dp"
+        android:text="@string/faq_a_2"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/faq3"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/answer2"
+        android:background="@color/colorWhite"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:text="@string/faq_q_3"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        tools:ignore="RtlSymmetry" />
+
+    <TextView
+        android:id="@+id/answer3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/faq3"
+        android:background="#f6f6f6"
+        android:padding="17dp"
+        android:text="@string/faq_a_3"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/faq4"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_below="@+id/answer3"
+        android:layout_marginTop="1dp"
+        android:background="@color/colorWhite"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:text="@string/faq_q_4"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        tools:ignore="RtlSymmetry" />
+
+    <TextView
+        android:id="@+id/answer4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/faq4"
+        android:background="#f6f6f6"
+        android:padding="17dp"
+        android:text="@string/faq_a_4"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/faq5"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_below="@+id/answer4"
+        android:layout_marginTop="1dp"
+        android:background="@color/colorWhite"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:text="@string/faq_q_5"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        tools:ignore="RtlSymmetry" />
+
+    <TextView
+        android:id="@+id/answer5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/faq5"
+        android:background="#f6f6f6"
+        android:padding="17dp"
+        android:text="@string/faq_a_5"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        android:visibility="gone" />
+
+</RelativeLayout>

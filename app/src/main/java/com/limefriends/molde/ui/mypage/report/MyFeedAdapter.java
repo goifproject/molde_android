@@ -2,7 +2,6 @@ package com.limefriends.molde.ui.mypage.report;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.limefriends.molde.R;
+import com.limefriends.molde.comm.Constant;
+import com.limefriends.molde.comm.utils.DateUitl;
 import com.limefriends.molde.entity.feed.FeedEntity;
 
 import java.util.ArrayList;
@@ -48,27 +49,61 @@ public class MyFeedAdapter extends RecyclerView.Adapter<MyFeedAdapter.MyPageMyRe
     @Override
     public MyPageMyReportViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context)
-                .inflate(R.layout.mypage_my_report_item, parent, false);
+                .inflate(R.layout.item_my_feed, parent, false);
         return new MyPageMyReportViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(MyPageMyReportViewHolder viewHorder, int position) {
+    public void onBindViewHolder(MyPageMyReportViewHolder viewHolder, int position) {
         FeedEntity feed = feedEntities.get(position);
         if (feed.getRepImg() != null &&
                 feed.getRepImg().size() != 0) {
             Glide.with(context)
                     .load(feed.getRepImg().get(0).getFilepath())
-                    .placeholder(R.drawable.report_map_img)
-                    .into(viewHorder.mypage_report_map);
+                    .placeholder(R.drawable.img_placeholder_my_feed)
+                    .into(viewHolder.mypage_report_map);
         } else {
             Glide.with(context)
-                    .load(R.drawable.report_map_img)
-                    .into(viewHorder.mypage_report_map);
+                    .load(R.drawable.img_placeholder_my_feed)
+                    .into(viewHolder.mypage_report_map);
         }
-        viewHorder.mypage_report_date.setText(feed.getRepDate());
-        viewHorder.mypage_report_location.setText(feed.getRepAddr());
-        viewHorder.position = position;
+        switch (feed.getRepState()) {
+            case Constant.ReportState.RECEIVING:
+                viewHolder.report_progress_dot_second_yellow
+                        .setVisibility(View.INVISIBLE);
+                viewHolder.report_progress_dot_third_yellow
+                        .setVisibility(View.INVISIBLE);
+                viewHolder.report_progress_line_first.setBackgroundColor(
+                        context.getResources().getColor(R.color.colorDivision));
+                viewHolder.report_progress_line_second.setBackgroundColor(
+                        context.getResources().getColor(R.color.colorDivision));
+                break;
+            case Constant.ReportState.ACCEPTED:
+                viewHolder.report_progress_dot_second_yellow
+                        .setVisibility(View.VISIBLE);
+                viewHolder.report_progress_dot_third_yellow
+                        .setVisibility(View.INVISIBLE);
+                viewHolder.report_progress_line_first.setBackgroundColor(
+                        context.getResources().getColor(R.color.colorAccent));
+                viewHolder.report_progress_line_second.setBackgroundColor(
+                        context.getResources().getColor(R.color.colorDivision));
+                break;
+            case Constant.ReportState.FOUND:
+            case Constant.ReportState.CLEAN:
+                viewHolder.report_progress_dot_second_yellow
+                        .setVisibility(View.VISIBLE);
+                viewHolder.report_progress_dot_third_yellow
+                        .setVisibility(View.VISIBLE);
+                viewHolder.report_progress_line_first.setBackgroundColor(
+                        context.getResources().getColor(R.color.colorAccent));
+                viewHolder.report_progress_line_second.setBackgroundColor(
+                        context.getResources().getColor(R.color.colorAccent));
+                break;
+        }
+        viewHolder.mypage_report_date.setText(DateUitl.fromLongToDate(feed.getRepDate()));
+        viewHolder.mypage_report_location.setText(feed.getRepAddr());
+        viewHolder.mypage_report_address.setText(feed.getRepDetailAddr());
+        viewHolder.position = position;
     }
 
 
@@ -87,6 +122,19 @@ public class MyFeedAdapter extends RecyclerView.Adapter<MyFeedAdapter.MyPageMyRe
         TextView mypage_report_date;
         @BindView(R.id.mypage_report_location)
         TextView mypage_report_location;
+        @BindView(R.id.mypage_report_address)
+        TextView mypage_report_address;
+
+        @BindView(R.id.report_progress_line_first)
+        View report_progress_line_first;
+        @BindView(R.id.report_progress_line_second)
+        View report_progress_line_second;
+        @BindView(R.id.report_progress_dot_first)
+        ImageView report_progress_dot_first;
+        @BindView(R.id.report_progress_dot_second_yellow)
+        ImageView report_progress_dot_second_yellow;
+        @BindView(R.id.report_progress_dot_third_yellow)
+        ImageView report_progress_dot_third_yellow;
 
         int position;
 

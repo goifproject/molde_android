@@ -54,7 +54,7 @@ public class CardNewsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         ViewGroup rootView = (ViewGroup) inflater
-                .inflate(R.layout.magazine_fragment, container, false);
+                .inflate(R.layout.fragment_cardnews, container, false);
 
         setupViews(rootView);
 

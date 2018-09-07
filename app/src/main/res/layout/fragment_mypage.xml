@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TODO 폰트 사이즈, 크기, 색상 공통으로 적용할 것 -->
+<!-- TODO 각종 색깔 공통으로 관리할 것 - 배경 등 -->
+<!-- TODO 아이콘 크기 공통 조절, 위젯 스타일 적용 -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mypage_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorAccent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
+        android:layout_margin="16dp"
+        android:elevation="4dp"
+        android:background="@drawable/bg_frame_rounded">
+
+        <ImageView
+            android:id="@+id/mypage_profile_image"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="19dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/bg_img_circle" />
+
+        <TextView
+            android:id="@+id/mypage_profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="36dp"
+            android:layout_toEndOf="@+id/mypage_profile_image"
+            android:text="로그인"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/mypage_setting_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/ic_mypage_setting" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/mypage_report_button"
+                android:layout_alignTop="@+id/setting_div_first"
+                android:layout_marginStart="21dp"
+                android:text="@string/my_report"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:id="@+id/mypage_report_button"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginEnd="22dp"
+                android:layout_toStartOf="@+id/setting_div_first"
+                android:src="@drawable/ic_mypage_report" />
+
+            <View
+                android:id="@+id/setting_div_first"
+                android:layout_width="1dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="23dp"
+                android:layout_marginTop="8dp"
+                android:layout_toStartOf="@+id/mypage_comment_button"
+                android:background="@color/colorMypageSettingDiv" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/mypage_comment_button"
+                android:layout_alignTop="@+id/setting_div_first"
+                android:layout_marginStart="21dp"
+                android:text="@string/mycomment"
+                android:textSize="12sp" />
+
+
+            <ImageView
+                android:id="@+id/mypage_comment_button"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_mypage_comment" />
+
+            <View
+                android:id="@+id/setting_div_second"
+                android:layout_width="1dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="23dp"
+                android:layout_marginTop="8dp"
+                android:layout_toEndOf="@+id/mypage_comment_button"
+                android:background="@color/colorMypageSettingDiv" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/mypage_scrap_button"
+                android:layout_alignTop="@+id/setting_div_second"
+                android:layout_marginStart="15dp"
+                android:text="@string/my_scrap"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:id="@+id/mypage_scrap_button"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="22dp"
+                android:layout_toEndOf="@+id/setting_div_second"
+                android:src="@drawable/ic_mypage_scrap" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/mypage_faq_button"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:text="@string/inquiry"
+            android:textColor="@color/colorDeepDarkGray"
+            android:textSize="14sp"
+            tools:ignore="RtlSymmetry" />
+
+        <View
+            android:id="@+id/mypage_option_div"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorDivision" />
+
+        <TextView
+            android:id="@+id/mypage_log_in_out_button"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:text="@string/signin"
+            android:textColor="@color/colorDeepDarkGray"
+            android:textSize="14sp"
+            tools:ignore="RtlSymmetry" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -61,7 +61,7 @@ public class RecentMolcaInfoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.magazine_activity_molca_report_detail);
+        setContentView(R.layout.activity_info_recent);
 
         setupViews();
 
@@ -74,7 +74,7 @@ public class RecentMolcaInfoActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         String title = getIntent().getStringExtra("title");
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.default_toolbar);
+        getSupportActionBar().setCustomView(R.layout.custom_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -136,14 +136,14 @@ public class RecentMolcaInfoActivity extends AppCompatActivity {
         txt_new_molca_06.setText(txt06);
         txt_new_molca_07.setText(txt07);
 
-        Glide.with(this).load(R.drawable.img_01_01).into(img_new_molca_01);
-        Glide.with(this).load(R.drawable.img_01_02).into(img_new_molca_02);
-        Glide.with(this).load(R.drawable.img_01_03).into(img_new_molca_03);
-        Glide.with(this).load(R.drawable.img_01_04).into(img_new_molca_04);
-        Glide.with(this).load(R.drawable.img_01_05).into(img_new_molca_05);
-        Glide.with(this).load(R.drawable.img_01_06).into(img_new_molca_06);
-        Glide.with(this).load(R.drawable.img_01_07).into(img_new_molca_07);
-        Glide.with(this).load(R.drawable.img_01_08).into(img_new_molca_08);
+        Glide.with(this).load(R.drawable.img_recent_info_01).into(img_new_molca_01);
+        Glide.with(this).load(R.drawable.img_recent_info_02).into(img_new_molca_02);
+        Glide.with(this).load(R.drawable.img_recent_info_03).into(img_new_molca_03);
+        Glide.with(this).load(R.drawable.img_recent_info_04).into(img_new_molca_04);
+        Glide.with(this).load(R.drawable.img_recent_info_05).into(img_new_molca_05);
+        Glide.with(this).load(R.drawable.img_recent_info_06).into(img_new_molca_06);
+        Glide.with(this).load(R.drawable.img_recent_info_07).into(img_new_molca_07);
+        Glide.with(this).load(R.drawable.img_recent_info_08).into(img_new_molca_08);
     }
 
     @Override

@@ -11,10 +11,8 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.limefriends.molde.R;
-import com.limefriends.molde.comm.Constant;
 import com.limefriends.molde.comm.utils.PreferenceUtil;
-import com.limefriends.molde.ui.mypage.login.LoginActivity;
-import com.limefriends.molde.ui.tutorial.main_tutorial.MoldeTutorialActivity;
+import com.limefriends.molde.ui.tutorial.MoldeTutorialActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,7 +27,7 @@ public class MoldeSplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_molde_splash);
+        setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
         GlideDrawableImageViewTarget gifSplashImg = new GlideDrawableImageViewTarget(molde_splash_img);
         Glide.with(this).load(R.drawable.molde_splash).into(gifSplashImg);
@@ -43,15 +41,12 @@ public class MoldeSplashActivity extends AppCompatActivity {
                     PreferenceUtil.putLong(MoldeSplashActivity.this, "authority", GUEST);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putBoolean("isFirst", false);
-                    editor.commit();
+                    editor.apply();
                     Intent intent = new Intent(getApplicationContext(), MoldeTutorialActivity.class);
                     startActivity(intent);
                     finish();
                     return;
                 }
-
-                // TODO 임시로 어드민 설정한 것이니 바로 지울 것
-                PreferenceUtil.putLong(MoldeSplashActivity.this, "authority", ADMIN);
 
                 Intent intent = new Intent(getApplicationContext(), MoldeMainActivity.class);
                 startActivity(intent);

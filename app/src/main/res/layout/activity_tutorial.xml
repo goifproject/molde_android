@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TODO 폰트 사이즈, 크기, 색상 공통으로 적용할 것 -->
+<!-- TODO 각종 색깔 공통으로 관리할 것 - 배경 등 -->
+<!-- TODO 아이콘 크기 공통 조절, 위젯 스타일 적용 -->
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/molde_tutorial_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <Button
+        android:id="@+id/molde_tutorial_end_button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_layout_height"
+        android:layout_gravity="bottom"
+        android:background="@color/colorPrimary"
+        android:text="@string/start"
+        android:textSize="16sp" />
+
+</FrameLayout>

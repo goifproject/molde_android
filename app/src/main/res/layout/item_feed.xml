@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TODO 폰트 사이즈, 크기, 색상 공통으로 적용할 것 -->
+<!-- TODO 각종 색깔 공통으로 관리할 것 - 배경 등 -->
+<!-- TODO 아이콘 크기 공통 조절, 위젯 스타일 적용 -->
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="228dp"
+    android:layout_marginTop="1dp"
+    android:layout_marginBottom="10dp"
+    android:background="@color/colorBG">
+
+    <ImageView
+        android:id="@+id/feed_image"
+        android:layout_width="match_parent"
+        android:layout_height="194dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="2dp"
+        android:src="@drawable/img_placeholder_my_comment"
+        android:background="@drawable/bg_frame_rounded"
+        android:scaleType="centerCrop" />
+
+    <RelativeLayout
+        android:id="@+id/feed_content"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginStart="18dp"
+        android:background="@drawable/bg_frame_rounded"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/feed_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="9dp"
+            android:text="주소 안 넘어옴"
+            android:textColor="@color/colorInfoTextColor"
+            android:textSize="@dimen/feed_item_address_text_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/feed_detail_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/feed_address"
+            android:layout_marginBottom="9dp"
+            android:layout_marginStart="16dp"
+            android:text="상세 주소 안 넘어옴"
+            android:textColor="@color/colorInfoTextColor"
+            android:textSize="@dimen/feed_item_detail_address_text_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/feed_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toStartOf="@id/feed_div"
+            android:text="날짜 안 넘어옴"
+            android:textColor="@color/colorInfoTextColor"
+            android:textSize="@dimen/feed_item_regi_date_text_size"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/feed_div"
+            android:layout_width="1dp"
+            android:layout_height="38dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginTop="4dp"
+            android:layout_toStartOf="@id/feed_state"
+            android:background="@color/colorDivision" />
+
+        <ImageView
+            android:id="@+id/feed_state"
+            android:layout_width="24dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="12dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_map_marker_green" />
+
+    </RelativeLayout>
+
+</FrameLayout>

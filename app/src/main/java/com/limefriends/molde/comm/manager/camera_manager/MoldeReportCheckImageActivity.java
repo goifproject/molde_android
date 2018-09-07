@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.limefriends.molde.R;
-import com.limefriends.molde.ui.map.report.MoldeReportActivity;
+import com.limefriends.molde.ui.map.report.ReportActivity;
 
 import java.io.File;
 
@@ -39,11 +39,11 @@ public class MoldeReportCheckImageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.map_activity_molde_report_check_image);
+        setContentView(R.layout.activity_report_check_image);
         ButterKnife.bind(this);
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.default_toolbar);
+        getSupportActionBar().setCustomView(R.layout.custom_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -70,7 +70,7 @@ public class MoldeReportCheckImageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.setClass(getApplicationContext(), MoldeReportActivity.class);
+                intent.setClass(getApplicationContext(), ReportActivity.class);
                 intent.putExtra("imagePath", imagePath);
                 intent.putExtra("imageSeq", imageSeq);
                 intent.putExtra("reportContent", reportContent);

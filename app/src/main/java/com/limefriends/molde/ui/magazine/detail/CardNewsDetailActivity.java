@@ -2,6 +2,9 @@ package com.limefriends.molde.ui.magazine.detail;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -15,8 +18,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.share.model.ShareContent;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.model.ShareMediaContent;
+import com.facebook.share.model.ShareOpenGraphAction;
+import com.facebook.share.model.ShareOpenGraphContent;
+import com.facebook.share.model.ShareOpenGraphObject;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.ShareStoryContent;
+import com.facebook.share.widget.ShareDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.limefriends.molde.R;
+import com.limefriends.molde.comm.MoldeApplication;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.news.CardNewsEntity;
 import com.limefriends.molde.entity.news.CardNewsResponseInfoEntityList;
@@ -35,7 +50,7 @@ import static com.limefriends.molde.comm.Constant.Common.EXTRA_KEY_ACTIVITY_NAME
 import static com.limefriends.molde.comm.Constant.Scrap.INTENT_VALUE_SCRAP;
 
 
-// TODO "lkj" getUid()로 변경할 것
+// TODO "lkj" getUid()로 변경할 것 -> uId
 // TODO auth Application 에서 가져다 쓸 것
 public class CardNewsDetailActivity extends AppCompatActivity {
 
@@ -58,6 +73,7 @@ public class CardNewsDetailActivity extends AppCompatActivity {
 
     private CardNewsImagePagerAdapter cardNewsImagePagerAdapter;
     private FirebaseAuth mFirebaseAuth;
+    private CardNewsEntity mCardNewsEntity;
 
     private String activityName;
     private boolean isLoading;
@@ -67,7 +83,10 @@ public class CardNewsDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.magazine_activity_cardnews_detail);
+        setContentView(R.layout.activity_cardnews_detail);
+
+        FacebookSdk.sdkInitialize(this);
+        AppEventsLogger.activateApp(this);
 
         setupViews();
 
@@ -101,20 +120,21 @@ public class CardNewsDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (mFirebaseAuth != null && mFirebaseAuth.getUid() != null) {
+                    final String uId = mFirebaseAuth.getCurrentUser().getUid();
                     if (!isLoading && isScrap) {
                         AlertDialog dialog = new AlertDialog.Builder(CardNewsDetailActivity.this)
                                 .setMessage(getText(R.string.scrap_delete_message))
                                 .setPositiveButton(getText(R.string.yes), new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        deleteFromScrap(cardNewsId, "lkj");
+                                        deleteFromScrap(cardNewsId, uId);
                                     }
                                 })
                                 .setNegativeButton(getText(R.string.no), null)
                                 .create();
                         dialog.show();
                     } else {
-                        addToMyScrap(cardNewsId, "lkj");
+                        addToMyScrap(cardNewsId, uId);
                     }
                 } else {
                     Snackbar.make(cardnews_detail_layout,
@@ -122,10 +142,41 @@ public class CardNewsDetailActivity extends AppCompatActivity {
                 }
             }
         });
+
         cardnews_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "공유하기", Toast.LENGTH_SHORT).show();
+
+                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.img_sub_tutorial_1);
+
+                SharePhoto sharePhoto = new SharePhoto.Builder()
+                        .setBitmap(bitmap)
+                        .setUserGenerated(true)
+                        .build();
+
+//                SharePhoto sharePhoto = new SharePhoto.Builder()
+//                        .setImageUrl(Uri.parse(mCardNewsEntity.getNewsImg().get(0).getUrl()))
+//                        .build();
+
+                ShareOpenGraphObject object = new ShareOpenGraphObject.Builder()
+                        .putString("og:type", "article")
+                        .putString("og:title", "가나다라마바")
+                        .build();
+
+                ShareOpenGraphAction action = new ShareOpenGraphAction.Builder()
+                        .setActionType("news.publishes")
+                        .putObject("book", object)
+                        .putPhoto("image", sharePhoto)
+                        .build();
+
+                ShareOpenGraphContent content = new ShareOpenGraphContent.Builder()
+                        .setPreviewPropertyName("book")
+                        .setAction(action)
+                        .build();
+
+                ShareDialog.show(CardNewsDetailActivity.this, content);
+
+
             }
         });
     }
@@ -158,9 +209,9 @@ public class CardNewsDetailActivity extends AppCompatActivity {
     private void setupData() {
         activityName = getIntent().getStringExtra(EXTRA_KEY_ACTIVITY_NAME);
         cardNewsId = getIntent().getIntExtra("cardNewsId", 0);
-        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseAuth = ((MoldeApplication) getApplication()).getFireBaseAuth();
         loadCardNews(cardNewsId);
-        loadMyScrap(cardNewsId, "lkj");
+        loadMyScrap(cardNewsId, mFirebaseAuth.getCurrentUser().getUid());
     }
 
     private void loadCardNews(int cardNewsId) {
@@ -172,14 +223,14 @@ public class CardNewsDetailActivity extends AppCompatActivity {
             public void onResponse(Call<CardNewsResponseInfoEntityList> call,
                                    Response<CardNewsResponseInfoEntityList> response) {
                 if (response.isSuccessful()) {
-                    CardNewsEntity entity
+                    mCardNewsEntity
                             = FromSchemaToEntitiy.cardNews(response.body().getData().get(0));
                     // 카드뉴스 이미지 개수 세팅
-                    if (entity.getNewsImg() != null) {
-                        setImageCount(entity.getNewsImg().size());
+                    if (mCardNewsEntity.getNewsImg() != null) {
+                        setImageCount(mCardNewsEntity.getNewsImg().size());
                     }
-                    cardnews_description.setText(entity.getDescription());
-                    cardNewsImagePagerAdapter.setData(entity.getNewsImg());
+                    cardnews_description.setText(mCardNewsEntity.getDescription());
+                    cardNewsImagePagerAdapter.setData(mCardNewsEntity.getNewsImg());
                 }
             }
 
@@ -200,11 +251,10 @@ public class CardNewsDetailActivity extends AppCompatActivity {
             public void onResponse(Call<Result> call, Response<Result> response) {
                 if (response.isSuccessful()) {
                     if (response.body().getResult() == 0) {
-                        Log.e("호출 확인", "가져오기 완료");
-                        cardnews_scrap.setImageResource(R.drawable.ic_card_scrap_false);
+                        cardnews_scrap.setImageResource(R.drawable.ic_news_scrap_off);
                         isScrap = false;
                     } else {
-                        cardnews_scrap.setImageResource(R.drawable.ic_card_scrap_true);
+                        cardnews_scrap.setImageResource(R.drawable.ic_news_scrap_on);
                         isScrap = true;
                     }
                     isLoading = false;
@@ -227,11 +277,11 @@ public class CardNewsDetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
                 if (response.body().getResult() == 1) {
-                    Log.e("호출 확인", "댓글 추가 완료");
-                    cardnews_scrap.setImageResource(R.drawable.ic_card_scrap_true);
+                    snack(getText(R.string.snack_scrap_added).toString());
+                    cardnews_scrap.setImageResource(R.drawable.ic_news_scrap_on);
                     isScrap = true;
                 } else {
-                    cardnews_scrap.setImageResource(R.drawable.ic_card_scrap_false);
+                    cardnews_scrap.setImageResource(R.drawable.ic_news_scrap_off);
                     isScrap = false;
                 }
             }
@@ -251,15 +301,15 @@ public class CardNewsDetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
                 if (response.body().getResult() == 1) {
-                    Log.e("호출 확인", "삭제 완료");
-                    cardnews_scrap.setImageResource(R.drawable.ic_card_scrap_false);
+                    snack(getText(R.string.snack_scrap_deleted).toString());
+                    cardnews_scrap.setImageResource(R.drawable.ic_news_scrap_off);
                     isScrap = false;
-                    if (activityName != null && activityName.equals(INTENT_VALUE_SCRAP)){
+                    if (activityName != null && activityName.equals(INTENT_VALUE_SCRAP)) {
                         setResult(RESULT_OK);
                         finish();
                     }
                 } else {
-                    cardnews_scrap.setImageResource(R.drawable.ic_card_scrap_true);
+                    cardnews_scrap.setImageResource(R.drawable.ic_news_scrap_on);
                     isScrap = true;
                 }
             }
@@ -273,6 +323,10 @@ public class CardNewsDetailActivity extends AppCompatActivity {
 
     private void setImageCount(int size) {
         total_page_no.setText(String.valueOf(size));
+    }
+
+    private void snack(String msg) {
+        Snackbar.make(cardnews_detail_layout, msg, Snackbar.LENGTH_LONG).show();
     }
 
 }

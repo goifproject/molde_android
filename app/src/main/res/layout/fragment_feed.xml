@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TODO 폰트 사이즈, 크기, 색상 공통으로 적용할 것 -->
+<!-- TODO 각종 색깔 공통으로 관리할 것 - 배경 등 -->
+<!-- TODO 아이콘 크기 공통 조절, 위젯 스타일 적용 -->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBG">
+
+    <TextView
+        android:id="@+id/feed_update_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="최신 업데이트 날짜 안 넘어옴"
+        android:textColor="@color/colorInfoTextColor"
+        android:textSize="10sp"
+        android:textStyle="bold" />
+
+    <ToggleButton
+        android:id="@+id/feed_sort_toggle"
+        android:layout_width="120dp"
+        android:layout_height="24dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/ic_feed_toggle_off"
+        android:checked="false"
+        android:textColor="@color/colorInfoTextColor"
+        android:textOff="@string/feedSortCategory"
+        android:textOn="@string/feedSortCategory"
+        android:textSize="10sp"
+        android:textStyle="bold" />
+
+    <com.limefriends.molde.comm.custom.recyclerview.AddOnScrollRecyclerView
+        android:id="@+id/feed_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/feed_sort_toggle"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="@dimen/bottom_layout_height"
+        tools:listitem="@layout/item_feed" />
+
+</RelativeLayout>

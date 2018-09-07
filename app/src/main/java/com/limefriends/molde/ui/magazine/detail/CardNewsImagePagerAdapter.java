@@ -45,11 +45,11 @@ public class CardNewsImagePagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
 
-        View view = inflater.inflate(R.layout.magazine_cardnews_detail_item,
+        View view = inflater.inflate(R.layout.item_cardnews_image,
                 container, false);
         ButterKnife.bind(this, view);
         Glide.with(view.getContext()).load(newsImg.get(position).getUrl())
-                .placeholder(R.drawable.img_cardnews_dummy).into(cardnews_image);
+                .placeholder(R.drawable.img_placeholder_magazine).into(cardnews_image);
         container.addView(view);
         return view;
     }

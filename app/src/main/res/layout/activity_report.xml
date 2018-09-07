@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TODO 폰트 사이즈, 크기, 색상 공통으로 적용할 것 -->
+<!-- TODO 각종 색깔 공통으로 관리할 것 - 배경 등 -->
+<!-- TODO 아이콘 크기 공통 조절, 위젯 스타일 적용 -->
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/report_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- 툴바 -->
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/report_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/white"
+            android:elevation="4dp">
+
+            <TextView
+                android:id="@+id/report_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/report"
+                android:textColor="@color/colorInfoTextColor"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <Switch
+                android:id="@+id/switch_green_zone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp" />
+
+        </android.support.v7.widget.Toolbar>
+
+        <!-- 프로그래스바 -->
+        <ProgressBar
+            android:id="@+id/report_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:elevation="2dp"
+            android:indeterminate="true"
+            android:visibility="invisible" />
+
+        <!-- 이미지 추가/삭제 버튼 -->
+        <LinearLayout
+            android:id="@+id/image_list"
+            android:layout_width="match_parent"
+            android:layout_height="76dp"
+            android:layout_below="@id/report_toolbar"
+            android:background="@color/colorBG"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:focusableInTouchMode="true"
+            android:paddingBottom="8dp"
+            android:paddingEnd="12dp"
+            android:paddingStart="12dp"
+            android:paddingTop="8dp">
+
+            <FrameLayout
+                android:layout_width="60dp"
+                android:layout_height="60dp">
+
+                <ImageView
+                    android:id="@+id/first_iamge"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_report_add" />
+
+                <ImageView
+                    android:id="@+id/first_iamge_delete_button"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/bg_frame_rounded"
+                    android:backgroundTint="@color/colorDivision"
+                    android:src="@drawable/ic_report_remove"
+                    android:visibility="invisible" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="8dp">
+
+                <ImageView
+                    android:id="@+id/second_iamge"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_report_add" />
+
+                <ImageView
+                    android:id="@+id/second_iamge_delete_button"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/bg_frame_rounded"
+                    android:backgroundTint="@color/colorDivision"
+                    android:src="@drawable/ic_report_remove"
+                    android:visibility="invisible" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="8dp">
+
+                <ImageView
+                    android:id="@+id/third_iamge"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_report_add" />
+
+                <ImageView
+                    android:id="@+id/third_iamge_delete_button"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/bg_frame_rounded"
+                    android:backgroundTint="@color/colorDivision"
+                    android:src="@drawable/ic_report_remove"
+                    android:visibility="invisible" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="8dp">
+
+                <ImageView
+                    android:id="@+id/forth_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_report_add" />
+
+                <ImageView
+                    android:id="@+id/forth_iamge_delete_button"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/bg_frame_rounded"
+                    android:backgroundTint="@color/colorDivision"
+                    android:src="@drawable/ic_report_remove"
+                    android:visibility="invisible" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="8dp">
+
+                <ImageView
+                    android:id="@+id/fifth_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_report_add" />
+
+                <ImageView
+                    android:id="@+id/fifth_iamge_delete_button"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/bg_frame_rounded"
+                    android:backgroundTint="@color/colorDivision"
+                    android:src="@drawable/ic_report_remove"
+                    android:visibility="invisible" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <!-- 신고 내용 -->
+        <TextView
+            android:id="@+id/report_content_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/image_list"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/report_content"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/report_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/report_content_title"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_frame_gray_rounded"
+            android:gravity="start"
+            android:inputType="textMultiLine"
+            android:lines="7"
+            android:padding="4dp"
+            android:scrollHorizontally="false" />
+
+        <!-- 안심신고 -->
+        <LinearLayout
+            android:id="@+id/green_zone_admin"
+            android:layout_width="match_parent"
+            android:layout_height="174dp"
+            android:layout_below="@id/report_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="17dp"
+            android:background="#f8f8f8"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <EditText
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="33dp"
+                android:layout_marginRight="33dp"
+                android:layout_marginTop="17dp"
+                android:background="@drawable/bg_btn_rounded_l"
+                android:clickable="false"
+                android:inputType="textMultiLine"
+                android:paddingBottom="7dp"
+                android:paddingLeft="17dp"
+                android:paddingRight="17dp"
+                android:paddingTop="7dp"
+                android:text="@string/report_message_clean"
+                android:textSize="11dp" />
+
+            <ImageView
+                android:layout_width="57dp"
+                android:layout_height="81dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="19dp"
+                app:srcCompat="@drawable/ic_report_green" />
+
+
+        </LinearLayout>
+
+        <!-- 신고 위치 검색 -->
+        <RelativeLayout
+            android:id="@+id/report_loc_bar"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_below="@id/green_zone_admin"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_frame_gray_rounded">
+
+            <TextView
+                android:id="@+id/report_loc_title"
+                android:layout_width="64dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_frame_rounded"
+                android:backgroundTint="@color/colorFrameGrayRounded"
+                android:gravity="center"
+                android:padding="4dp"
+                android:text="@string/report_location"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/search_loc_input"
+                android:layout_width="236dp"
+                android:layout_height="match_parent"
+                android:layout_toEndOf="@+id/report_loc_title"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:text="@string/report_search_to_set"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:ignore="RtlSymmetry" />
+
+            <ImageView
+                android:id="@+id/find_map_loc_button"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_alignParentEnd="true"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_report_my_location" />
+
+        </RelativeLayout>
+
+        <!-- 상세 주소 입력 -->
+        <RelativeLayout
+            android:id="@+id/detail_address_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/report_loc_bar"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_frame_gray_rounded">
+
+            <TextView
+                android:id="@+id/detail_address_title"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="4dp"
+                android:gravity="center"
+                android:text="@string/report_detail_address"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/detail_address"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toEndOf="@+id/detail_address_title"
+                android:layout_centerVertical="true"
+                android:inputType="textMultiLine"
+                android:maxLines="2"
+                android:background="@null"
+                android:paddingStart="8dp"
+                android:textSize="12sp"
+                tools:ignore="RtlSymmetry" />
+
+        </RelativeLayout>
+
+        <!-- 이메일 입력 -->
+        <TextView
+            android:id="@+id/report_email_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/detail_address_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/report_reply_email"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:id="@+id/report_email_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_below="@+id/report_email_title"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_frame_gray_rounded">
+
+            <EditText
+                android:id="@+id/report_email_input"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:hint="@string/report_hint_input_email"
+                android:maxLength="30"
+                android:paddingStart="8dp"
+                android:singleLine="true"
+                android:textSize="14sp"
+                tools:ignore="RtlSymmetry" />
+
+            <TextView
+                android:layout_width="32dp"
+                android:layout_height="match_parent"
+                android:layout_toEndOf="@id/report_email_input"
+                android:gravity="center"
+                android:text="\@"
+                android:textStyle="bold" />
+
+            <FrameLayout
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/bg_frame_rounded"
+                android:backgroundTint="@color/colorLittleWhiteGray">
+
+                <Spinner
+                    android:id="@+id/report_email_select"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_frame_rounded"
+                    android:backgroundTint="@color/colorLittleWhiteGray" />
+
+                <ImageView
+                    android:id="@+id/report_self_close_button"
+                    android:layout_width="25dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end"
+                    android:background="@drawable/ic_close"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/report_email_self_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_frame_rounded"
+                    android:backgroundTint="@color/colorLittleWhiteGray"
+                    android:maxLength="18"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="4dp"
+                    android:textSize="14sp"
+                    android:visibility="gone" />
+
+            </FrameLayout>
+
+        </RelativeLayout>
+
+        <!-- 제출 -->
+        <Button
+            android:id="@+id/send_report_button"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/report_email_spinner"
+            android:layout_marginTop="46dp"
+            android:background="@color/colorPrimary"
+            android:text="@string/report_send"
+            android:textColor="@color/colorLittleDarkGray"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+</ScrollView>
+

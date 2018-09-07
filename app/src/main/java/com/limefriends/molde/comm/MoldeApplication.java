@@ -46,7 +46,7 @@ public class MoldeApplication extends Application {
 
     public LatLng getCurrLocation() {
         if (myLocation == null) {
-            new LatLng(DEFAULT_LAT, DEFAULT_LNG);
+            myLocation = new LatLng(DEFAULT_LAT, DEFAULT_LNG);
         }
         return myLocation;
     }

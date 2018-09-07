@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TODO 폰트 사이즈, 크기, 색상 공통으로 적용할 것 -->
+<!-- TODO 각종 색깔 공통으로 관리할 것 - 배경 등 -->
+<!-- TODO 아이콘 크기 공통 조절, 위젯 스타일 적용 -->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/my_favorite_layout"
+    android:layout_width="match_parent"
+    android:layout_height="104dp"
+    android:layout_marginTop="8dp"
+    android:background="@color/colorWhite">
+
+    <ImageView
+        android:id="@+id/my_favorite_view_new"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_map_new"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/my_favorite_view_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/my_favorite_view_new"
+        android:layout_marginBottom="4dp"
+        android:layout_marginStart="36dp"
+        android:text="건물이름 안 넘어옴"
+        android:textColor="@color/colorInfoTextColor"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/my_favorite_view_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/my_favorite_view_title"
+        android:layout_marginStart="36dp"
+        android:text="세부주소 안 넘어옴"
+        android:textColor="@color/colorInfoTextColor"
+        android:textSize="12sp" />
+
+    <ImageView
+        android:id="@+id/my_favorite_star"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/ic_favorite_star_on_t" />
+
+</RelativeLayout>

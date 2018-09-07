@@ -31,7 +31,7 @@ import retrofit2.Response;
 
 import static com.limefriends.molde.comm.Constant.Feed.*;
 
-public class FeedFragment extends Fragment implements FeedRecyclerAdapter.OnClickFeedItemListener {
+public class FeedFragment extends Fragment implements FeedAdapter.OnClickFeedItemListener {
 
     @BindView(R.id.feed_sort_toggle)
     ToggleButton feed_sort_toggle;
@@ -41,7 +41,7 @@ public class FeedFragment extends Fragment implements FeedRecyclerAdapter.OnClic
     AddOnScrollRecyclerView feed_list;
 
     private MoldeRestfulService.Feed feedService;
-    private FeedRecyclerAdapter feedAdapter;
+    private FeedAdapter feedAdapter;
 
     private final int PER_PAGE = 10;
     private final int FIRST_PAGE = 0;
@@ -53,7 +53,7 @@ public class FeedFragment extends Fragment implements FeedRecyclerAdapter.OnClic
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.feed_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_feed, container, false);
 
         setupViews(view);
 
@@ -106,7 +106,8 @@ public class FeedFragment extends Fragment implements FeedRecyclerAdapter.OnClic
 
     private void setupFeedList() {
         if (feedAdapter == null) {
-            feedAdapter = new FeedRecyclerAdapter(getContext(), this);
+            feedAdapter = new FeedAdapter(getContext(), this,
+                    getFragmentManager());
         }
         feed_list.setAdapter(feedAdapter);
         feed_list.setLayoutManager(new LinearLayoutManager(getContext()), false);
@@ -152,7 +153,7 @@ public class FeedFragment extends Fragment implements FeedRecyclerAdapter.OnClic
             @Override
             public void onResponse(Call<FeedResponseInfoEntityList> call, Response<FeedResponseInfoEntityList> response) {
                 if (response.isSuccessful()) {
-                    List<FeedEntity> entities = FromSchemaToEntitiy.feed(response.body().getData());
+                    List<FeedEntity> entities = FromSchemaToEntitiy.feed2(response.body().getData());
                     feedAdapter.addAll(entities);
                     currentPage++;
                     feed_list.setIsLoading(false);
@@ -177,7 +178,7 @@ public class FeedFragment extends Fragment implements FeedRecyclerAdapter.OnClic
             @Override
             public void onResponse(Call<FeedResponseInfoEntityList> call, Response<FeedResponseInfoEntityList> response) {
                 if (response.isSuccessful()) {
-                    List<FeedEntity> entities = FromSchemaToEntitiy.feed(response.body().getData());
+                    List<FeedEntity> entities = FromSchemaToEntitiy.feed2(response.body().getData());
                     feedAdapter.addAll(entities);
                     currentPage++;
                     feed_list.setIsLoading(false);

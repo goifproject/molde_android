@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.limefriends.molde.R;
+import com.limefriends.molde.comm.Constant;
 import com.limefriends.molde.entity.comment.CommentEntity;
 import com.limefriends.molde.entity.news.CardNewsEntity;
 
@@ -20,14 +21,16 @@ public class MyCommentExpandableAdapter extends BaseExpandableListAdapter {
     List<CardNewsEntity> newsEntityList = new ArrayList<>();
 
     private OnItemClickCallback callback;
+    private long authority;
 
     public interface OnItemClickCallback {
         void onParentItemClick(int groupPosition, int newsId);
         void onChildItemClick(int childPosition, int newsId, String description);
     }
 
-    public MyCommentExpandableAdapter(OnItemClickCallback callback) {
+    MyCommentExpandableAdapter(OnItemClickCallback callback) {
         this.callback = callback;
+        this.authority = authority;
     }
 
     public void setData(List<CardNewsEntity> newsEntityList) {
@@ -73,7 +76,7 @@ public class MyCommentExpandableAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.mypage_my_comment_cardnews_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_my_comment_news, parent, false);
 
         TextView myComment_title = view.findViewById(R.id.myComment_title);
 
@@ -97,7 +100,7 @@ public class MyCommentExpandableAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.mypage_my_comment_comment_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_my_comment_comment, parent, false);
 
         TextView myComment_date = view.findViewById(R.id.myComment_date);
 

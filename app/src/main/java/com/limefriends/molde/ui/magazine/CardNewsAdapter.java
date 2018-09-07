@@ -2,6 +2,7 @@ package com.limefriends.molde.ui.magazine;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +29,7 @@ public class CardNewsAdapter extends RecyclerView.Adapter<CardNewsAdapter.Magazi
 
     private List<CardNewsEntity> entities = new ArrayList<>();
 
-    public CardNewsAdapter(Context context) {
+    CardNewsAdapter(Context context) {
         this.context = context;
     }
 
@@ -40,7 +41,7 @@ public class CardNewsAdapter extends RecyclerView.Adapter<CardNewsAdapter.Magazi
     @Override
     public MagazineCardNewsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new MagazineCardNewsHolder(LayoutInflater.from(context)
-                .inflate(R.layout.magazine_cardnews_item, parent, false));
+                .inflate(R.layout.item_cardnews, parent, false));
     }
 
     @Override
@@ -48,9 +49,9 @@ public class CardNewsAdapter extends RecyclerView.Adapter<CardNewsAdapter.Magazi
         CardNewsEntity cardNewsEntity = entities.get(position);
         if (cardNewsEntity.getNewsImg().size() != 0) {
             Glide.with(context).load(cardNewsEntity.getNewsImg().get(0).getUrl())
-                    .placeholder(R.drawable.img_cardnews_dummy).into(holder.cardnews_thumbnail);
+                    .placeholder(R.drawable.img_placeholder_magazine).into(holder.cardnews_thumbnail);
         } else {
-            Glide.with(context).load(R.drawable.img_cardnews_dummy).into(holder.cardnews_thumbnail);
+            Glide.with(context).load(R.drawable.img_placeholder_magazine).into(holder.cardnews_thumbnail);
         }
         holder.cardnews_title.setText(cardNewsEntity.getDescription());
         holder.cardNewsId = cardNewsEntity.getNewsId();
@@ -64,7 +65,7 @@ public class CardNewsAdapter extends RecyclerView.Adapter<CardNewsAdapter.Magazi
     class MagazineCardNewsHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.cardnews_layout)
-        RelativeLayout cardnews_layout;
+        CardView cardnews_layout;
         @BindView(R.id.cardnews_thumbnail)
         ImageView cardnews_thumbnail;
         @BindView(R.id.cardnews_title)

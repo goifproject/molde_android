@@ -3,6 +3,7 @@ package com.limefriends.molde.ui.feed;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -12,13 +13,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.limefriends.molde.R;
+import com.limefriends.molde.comm.Constant;
+import com.limefriends.molde.comm.MoldeApplication;
 import com.limefriends.molde.comm.utils.PreferenceUtil;
+import com.limefriends.molde.comm.utils.StringUtil;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.feed.FeedEntity;
 import com.limefriends.molde.entity.feed.FeedImageResponseInfoEntity;
@@ -49,6 +56,8 @@ import static com.limefriends.molde.comm.Constant.ReportState.*;
 // TODO auth Application 에서 가져다 쓸 것
 public class FeedDetailActivity extends AppCompatActivity {
 
+    @BindView(R.id.feed_detail_container)
+    LinearLayout feed_detail_container;
     // 이미지 페이저
     @BindView(R.id.mypage_detail_report_image_pager)
     ViewPager mypage_detail_report_image_pager;
@@ -59,7 +68,7 @@ public class FeedDetailActivity extends AppCompatActivity {
     TextView mypage_detail_report_content;
     // 페이지 인디케이더
     @BindView(R.id.mypage_detail_report_image_indicator_container)
-    RelativeLayout mypage_detail_report_image_indicator_container;
+    FrameLayout mypage_detail_report_image_indicator_container;
     @BindView(R.id.mypage_detail_report_image_indicator)
     CircleIndicator mypage_detail_report_image_indicator;
     // 신고 취소
@@ -93,6 +102,27 @@ public class FeedDetailActivity extends AppCompatActivity {
     @BindView(R.id.report_confirm_admin)
     Button report_confirm_admin;
 
+    // 진행 경과 프로그래스
+    @BindView(R.id.myfeed_progress_line_first)
+    View myfeed_progress_line_first;
+    @BindView(R.id.myfeed_progress_line_second)
+    View myfeed_progress_line_second;
+    @BindView(R.id.myfeed_progress_dot_second_yellow)
+    ImageView myfeed_progress_dot_second_yellow;
+    @BindView(R.id.myfeed_progress_dot_third_yellow)
+    ImageView myfeed_progress_dot_third_yellow;
+
+    // 진행 경과 프로그래스 어드민
+    @BindView(R.id.myfeed_progress_line_first_admin)
+    View myfeed_progress_line_first_admin;
+    @BindView(R.id.myfeed_progress_line_second_admin)
+    View myfeed_progress_line_second_admin;
+    @BindView(R.id.myfeed_progress_dot_second_yellow_admin)
+    ImageView myfeed_progress_dot_second_yellow_admin;
+    @BindView(R.id.myfeed_progress_dot_third_yellow_admin)
+    ImageView myfeed_progress_dot_third_yellow_admin;
+
+
     private FeedImageAdapter feedImageAdapter;
     private MoldeRestfulService.Feed feedService;
 
@@ -105,7 +135,7 @@ public class FeedDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.mypage_activity_my_report_detail);
+        setContentView(R.layout.activity_feed_detail);
 
         prepare();
 
@@ -135,7 +165,7 @@ public class FeedDetailActivity extends AppCompatActivity {
     private void setupViews() {
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.default_toolbar);
+        getSupportActionBar().setCustomView(R.layout.custom_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -273,28 +303,28 @@ public class FeedDetailActivity extends AppCompatActivity {
         String resultText = "";
         switch (state) {
             case RECEIVING:
-                resultText = getText(R.string.report_status_receiving).toString();
+                resultText = getText(R.string.report_message_receiving).toString();
                 siren_receiving_status.setVisibility(View.VISIBLE);
                 // 접수중일 때만 삭제 가능
                 if (isMyFeed) mypage_detail_report_cancel_button.setVisibility(View.VISIBLE);
                 break;
             case ACCEPTED:
                 siren_receiving_status.setVisibility(View.VISIBLE);
-                resultText = getText(R.string.report_status_accepted).toString();
+                resultText = getText(R.string.report_message_accepted).toString();
                 progress_checkbox_admin_accepted.setChecked(true);
                 break;
             case FOUND:
                 siren_found_status.setVisibility(View.VISIBLE);
-                resultText = getText(R.string.report_status_found).toString();
+                resultText = getText(R.string.report_message_found).toString();
                 progress_checkbox_admin_accepted.setChecked(true);
                 break;
             case CLEAN:
                 siren_clean_status.setVisibility(View.VISIBLE);
-                resultText = getText(R.string.report_status_clean).toString();
+                resultText = getText(R.string.report_message_clean).toString();
                 progress_checkbox_admin_accepted.setChecked(true);
                 break;
             case DENIED:
-                resultText = getText(R.string.report_status_denied).toString();
+                resultText = getText(R.string.report_message_denied).toString();
                 break;
         }
         report_detail_result_text.setText(resultText);
@@ -325,7 +355,80 @@ public class FeedDetailActivity extends AppCompatActivity {
                         mypage_detail_report_location_content.setText(
                                 String.format("%s %s", entity.getRepAddr(), entity.getRepDetailAddr()));
                         // 내용
-                        mypage_detail_report_content.setText(entity.getRepContents());
+                        mypage_detail_report_content.setText(StringUtil.moveLine(entity.getRepContents()));
+                        //
+                        if (entity.getRepState() == RECEIVING) {
+                            mypage_detail_report_cancel_button.setVisibility(View.VISIBLE);
+                        }
+                        if (authority == ADMIN) {
+                            switch (entity.getRepState()) {
+                                case RECEIVING:
+                                case ACCEPTED:
+                                    myfeed_progress_dot_second_yellow_admin
+                                            .setVisibility(View.INVISIBLE);
+                                    myfeed_progress_dot_third_yellow_admin
+                                            .setVisibility(View.INVISIBLE);
+                                    myfeed_progress_line_first_admin.setBackgroundColor(
+                                            getResources().getColor(R.color.colorDivision));
+                                    myfeed_progress_line_second_admin.setBackgroundColor(
+                                            getResources().getColor(R.color.colorDivision));
+                                    break;
+                                case FOUND:
+                                    myfeed_progress_dot_second_yellow_admin
+                                            .setVisibility(View.VISIBLE);
+                                    myfeed_progress_dot_third_yellow_admin
+                                            .setVisibility(View.INVISIBLE);
+                                    myfeed_progress_line_first_admin.setBackgroundColor(
+                                            getResources().getColor(R.color.colorAccent));
+                                    myfeed_progress_line_second_admin.setBackgroundColor(
+                                            getResources().getColor(R.color.colorDivision));
+                                    break;
+                                case CLEAN:
+                                    myfeed_progress_dot_second_yellow_admin
+                                            .setVisibility(View.VISIBLE);
+                                    myfeed_progress_dot_third_yellow_admin
+                                            .setVisibility(View.VISIBLE);
+                                    myfeed_progress_line_first_admin.setBackgroundColor(
+                                            getResources().getColor(R.color.colorAccent));
+                                    myfeed_progress_line_second_admin.setBackgroundColor(
+                                            getResources().getColor(R.color.colorAccent));
+                                    break;
+                            }
+                        } else {
+                            switch (entity.getRepState()) {
+                                case RECEIVING:
+                                    myfeed_progress_dot_second_yellow
+                                            .setVisibility(View.INVISIBLE);
+                                    myfeed_progress_dot_third_yellow
+                                            .setVisibility(View.INVISIBLE);
+                                    myfeed_progress_line_first.setBackgroundColor(
+                                            getResources().getColor(R.color.colorDivision));
+                                    myfeed_progress_line_second.setBackgroundColor(
+                                            getResources().getColor(R.color.colorDivision));
+                                    break;
+                                case ACCEPTED:
+                                    myfeed_progress_dot_second_yellow
+                                            .setVisibility(View.VISIBLE);
+                                    myfeed_progress_dot_third_yellow
+                                            .setVisibility(View.INVISIBLE);
+                                    myfeed_progress_line_first.setBackgroundColor(
+                                            getResources().getColor(R.color.colorAccent));
+                                    myfeed_progress_line_second.setBackgroundColor(
+                                            getResources().getColor(R.color.colorDivision));
+                                    break;
+                                case FOUND:
+                                case CLEAN:
+                                    myfeed_progress_dot_second_yellow
+                                            .setVisibility(View.VISIBLE);
+                                    myfeed_progress_dot_third_yellow
+                                            .setVisibility(View.VISIBLE);
+                                    myfeed_progress_line_first.setBackgroundColor(
+                                            getResources().getColor(R.color.colorAccent));
+                                    myfeed_progress_line_second.setBackgroundColor(
+                                            getResources().getColor(R.color.colorAccent));
+                                    break;
+                            }
+                        }
                         // 신고 상태
                         setSirenState(entity.getRepState());
                         // 신고 이미지
@@ -348,7 +451,14 @@ public class FeedDetailActivity extends AppCompatActivity {
     }
 
     public void deleteReport(int reportId) {
-        Call<Result> call = getFeedService().deleteFeed("lkj", reportId);
+        FirebaseAuth auth = ((MoldeApplication) getApplication()).getFireBaseAuth();
+        if (auth == null || auth.getUid() == null) {
+            snack(getText(R.string.require_login).toString());
+            return;
+        }
+        String uId = auth.getCurrentUser().getUid();
+
+        Call<Result> call = getFeedService().deleteFeed(uId, reportId);
         call.enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
@@ -389,4 +499,9 @@ public class FeedDetailActivity extends AppCompatActivity {
         // 체크된 거로 데이터 바꿔주자
         updateReport(reportId, state);
     }
+
+    private void snack(String message) {
+        Snackbar.make(feed_detail_container, message, Snackbar.LENGTH_LONG).show();
+    }
+
 }

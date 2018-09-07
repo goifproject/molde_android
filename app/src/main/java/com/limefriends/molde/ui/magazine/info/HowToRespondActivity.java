@@ -60,7 +60,7 @@ public class HowToRespondActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.magazine_activity_spread_report_detail);
+        setContentView(R.layout.activity_info_respond);
 
         setupViews();
 
@@ -73,7 +73,7 @@ public class HowToRespondActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         String title = getIntent().getStringExtra("title");
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.default_toolbar);
+        getSupportActionBar().setCustomView(R.layout.custom_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -144,10 +144,10 @@ public class HowToRespondActivity extends AppCompatActivity {
         txt_molca_spreading_title_04.setText(title04);
 
 
-        Glide.with(this).load(R.drawable.img_03_01).into(img_molca_spreading_01);
-        Glide.with(this).load(R.drawable.img_03_02).into(img_molca_spreading_02);
-        Glide.with(this).load(R.drawable.img_03_03).into(img_molca_spreading_03);
-        Glide.with(this).load(R.drawable.img_03_04).into(img_molca_spreading_04);
+        Glide.with(this).load(R.drawable.img_respond_info_01).into(img_molca_spreading_01);
+        Glide.with(this).load(R.drawable.img_respond_info_02).into(img_molca_spreading_02);
+        Glide.with(this).load(R.drawable.img_respond_info_03).into(img_molca_spreading_03);
+        Glide.with(this).load(R.drawable.img_respond_info_04).into(img_molca_spreading_04);
     }
 
     @Override

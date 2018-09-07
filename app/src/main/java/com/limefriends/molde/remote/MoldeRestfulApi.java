@@ -68,7 +68,11 @@ public class MoldeRestfulApi {
 
         public static final String GET_COMMENT_BY_USERID_API = "/v1/commentu";
 
+        public static final String GET_REPORTED_COMMENT_API = "/v1/commreport";
+
         public static final String POST_COMMENT_API = "/v1/comment";
+
+        public static final String PUT_COMMENT_API = "/v1/comment";
 
         public static final String DELETE_COMMENT_API = "/v1/comment";
     }

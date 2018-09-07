@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.limefriends.molde.R;
+import com.limefriends.molde.comm.MoldeApplication;
 import com.limefriends.molde.comm.custom.recyclerview.AddOnScrollRecyclerView;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.news.CardNewsEntity;
@@ -35,7 +37,7 @@ import static com.limefriends.molde.comm.Constant.Common.EXTRA_KEY_ACTIVITY_NAME
 import static com.limefriends.molde.comm.Constant.Common.EXTRA_KEY_CARDNEWS_ID;
 import static com.limefriends.molde.comm.Constant.Scrap.*;
 
-// TODO "lkj" 바꿀 것
+// TODO "lkj" 바꿀 것 - > uId
 public class ScrapActivity extends AppCompatActivity {
 
     @BindView(R.id.myScrap_recyclerView)
@@ -59,7 +61,7 @@ public class ScrapActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.mypage_activity_my_scrap);
+        setContentView(R.layout.activity_my_scrap);
 
         setupViews();
 
@@ -75,7 +77,7 @@ public class ScrapActivity extends AppCompatActivity {
     private void setupViews() {
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.default_toolbar);
+        getSupportActionBar().setCustomView(R.layout.custom_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -131,8 +133,10 @@ public class ScrapActivity extends AppCompatActivity {
 
         progressBar.setVisibility(View.VISIBLE);
 
+        String uId = ((MoldeApplication)getApplication()).getFireBaseAuth().getCurrentUser().getUid();
+
         Call<ScrapResponseInfoEntityList> call
-                = getScrapService().getMyScrapList("lkj", perPage, page);
+                = getScrapService().getMyScrapList(uId, perPage, page);
 
         call.enqueue(new Callback<ScrapResponseInfoEntityList>() {
             @Override
@@ -144,6 +148,11 @@ public class ScrapActivity extends AppCompatActivity {
                     for (ScrapEntity scrapEntity : entities) {
                         loadCardNews(scrapEntity.getNewsId());
                     }
+                    if (fetchCount == 0) {
+                        progressBar.setVisibility(View.GONE);
+                        myScrap_recyclerView.setIsLoading(false);
+                    }
+
                 }
             }
 

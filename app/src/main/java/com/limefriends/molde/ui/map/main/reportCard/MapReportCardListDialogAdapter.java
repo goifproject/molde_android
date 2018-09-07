@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.limefriends.molde.R;
+import com.limefriends.molde.comm.utils.DateUitl;
 import com.limefriends.molde.entity.feed.FeedEntity;
 import com.limefriends.molde.ui.feed.FeedDetailActivity;
 
@@ -41,22 +42,25 @@ public class MapReportCardListDialogAdapter extends RecyclerView.Adapter<MapRepo
     @Override
     public ReportMapViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context)
-                .inflate(R.layout.map_report_info_item, parent, false);
+                .inflate(R.layout.item_feed_dialog, parent, false);
         return new ReportMapViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ReportMapViewHolder viewHolder, int position) {
-        viewHolder.report_info_date.setText(feedList.get(position).getRepDate());
+        viewHolder.report_info_date.setText(DateUitl.fromLongToDate(feedList.get(position).getRepDate()));
         viewHolder.report_info_address.setText(feedList.get(position).getRepAddr());
         viewHolder.report_info_detail_address.setText(feedList.get(position).getRepDetailAddr());
         if (feedList.get(0).getRepImg() != null && feedList.get(0).getRepImg().size() != 0) {
             Glide.with(context)
                     .load(feedList.get(0).getRepImg().get(0).getFilepath())
-                    .placeholder(R.drawable.img_cardnews_dummy)
+                    .placeholder(R.drawable.img_placeholder_magazine)
+                    .centerCrop()
                     .into(viewHolder.report_info_thumbnail_image);
         } else {
-            Glide.with(context).load(R.drawable.img_cardnews_dummy).into(viewHolder.report_info_thumbnail_image);
+            Glide.with(context)
+                    .load(R.drawable.img_placeholder_magazine)
+                    .into(viewHolder.report_info_thumbnail_image);
         }
         viewHolder.position = position;
     }

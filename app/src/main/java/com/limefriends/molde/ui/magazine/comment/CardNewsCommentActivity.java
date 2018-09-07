@@ -4,10 +4,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.limefriends.molde.R;
@@ -24,14 +23,11 @@ import com.limefriends.molde.comm.MoldeApplication;
 import com.limefriends.molde.comm.custom.recyclerview.AddOnScrollRecyclerView;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.comment.CommentEntity;
-import com.limefriends.molde.entity.comment.CommentResponseInfoEntity;
 import com.limefriends.molde.entity.comment.CommentResponseInfoEntityList;
 import com.limefriends.molde.entity.response.Result;
 import com.limefriends.molde.remote.MoldeNetwork;
-import com.limefriends.molde.remote.MoldeRestfulApi;
 import com.limefriends.molde.remote.MoldeRestfulService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -40,12 +36,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-// TODO "lkj" 변경할 것
+// TODO "lkj" 변경할 것 -> uId
 // TODO auth Application 에서 가져다 쓸 것
 // TODO swipe refresh 적용할까
 // TODO snack 에서 showSnack 이 아니라 댓글 신고로 넘어가야 함
 public class CardNewsCommentActivity extends AppCompatActivity {
 
+    public static final int REPORT_COMMENT_EXIST = 2;
+    public static final int REPORT_COMMENT_DONE = 1;
     @BindView(R.id.comment_layout)
     RelativeLayout comment_layout;
     @BindView(R.id.comment_list_view)
@@ -67,7 +65,7 @@ public class CardNewsCommentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.magazine_activity_comment);
+        setContentView(R.layout.activity_cardnews_comment);
 
         setupViews();
 
@@ -86,12 +84,14 @@ public class CardNewsCommentActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         String description = getIntent().getStringExtra("description");
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.default_toolbar);
+        getSupportActionBar().setCustomView(R.layout.custom_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         TextView toolbar_title
                 = getSupportActionBar().getCustomView().findViewById(R.id.toolbar_title);
+        toolbar_title.setSingleLine();
+        toolbar_title.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         toolbar_title.setText(description);
     }
 
@@ -110,9 +110,12 @@ public class CardNewsCommentActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // TODO 실제 로그인 상태 확인 구현
                 // 로그인 된 상태라면 -> 댓글 등록
-                FirebaseAuth auth = FirebaseAuth.getInstance();
+                FirebaseAuth auth = ((MoldeApplication)getApplication()).getFireBaseAuth();
                 if (auth != null && auth.getUid() != null) {
-                    addToComment("lkj", "이기정",
+                    String uId = auth.getCurrentUser().getUid();
+                    String name = auth.getCurrentUser().getDisplayName();
+                    if (name == null) name = auth.getCurrentUser().getEmail();
+                    addToComment(uId, name,
                             cardNewsId, comment_input.getText().toString(),
                             String.valueOf(System.currentTimeMillis()));
                     comment_input.setText("");
@@ -212,6 +215,36 @@ public class CardNewsCommentActivity extends AppCompatActivity {
                             userId, userName, newsId, content, regiDate
                     ));
                     Log.e("호출 확인", "댓글 등록 확인");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result> call, Throwable t) {
+
+            }
+        });
+    }
+    
+    public void reportComment(int commentId) {
+
+        String uId = ((MoldeApplication)getApplication()).getFireBaseAuth().getCurrentUser().getUid();
+        
+        Call<Result> call = getCommentService()
+                .reportComment(uId, commentId);
+        
+        call.enqueue(new Callback<Result>() {
+            @Override
+            public void onResponse(Call<Result> call, Response<Result> response) {
+                if (response.isSuccessful()) {
+                    int resultCode = response.body().getResult();
+                    switch (resultCode) {
+                        case REPORT_COMMENT_DONE:
+                            showSnack("댓글이 신고되었습니다.");
+                            break;
+                        case REPORT_COMMENT_EXIST:
+                            showSnack("이미 신고한 댓글입니다.");
+                            break;
+                    }
                 }
             }
 

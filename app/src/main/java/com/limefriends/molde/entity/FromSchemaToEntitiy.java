@@ -1,7 +1,10 @@
 package com.limefriends.molde.entity;
 
+import com.limefriends.molde.comm.Constant;
 import com.limefriends.molde.entity.comment.CommentEntity;
 import com.limefriends.molde.entity.comment.CommentResponseInfoEntity;
+import com.limefriends.molde.entity.comment.ReportedCommentEntity;
+import com.limefriends.molde.entity.comment.ReportedCommentResponseInfoEntity;
 import com.limefriends.molde.entity.faq.FaqEntitiy;
 import com.limefriends.molde.entity.faq.FaqResponseInfoEntity;
 import com.limefriends.molde.entity.favorite.FavoriteEntity;
@@ -75,12 +78,47 @@ public class FromSchemaToEntitiy {
                 entity.getCommDate());
     }
 
+    public static List<ReportedCommentEntity> reportedComment(List<ReportedCommentResponseInfoEntity> schemas) {
+        List<ReportedCommentEntity> entities = new ArrayList<>();
+        for (ReportedCommentResponseInfoEntity schema : schemas) {
+            entities.add(new ReportedCommentEntity(
+                    schema.getCommRepId(),
+                    schema.getCommId(),
+                    schema.getUserId(),
+                    schema.getCommRepDate()
+            ));
+        }
+        return entities;
+    }
+
     /**
      * 피드
      */
     public static List<FeedEntity> feed(List<FeedResponseInfoEntity> entities) {
         List<FeedEntity> data = new ArrayList<>();
         for (FeedResponseInfoEntity entity : entities) {
+            data.add(new FeedEntity(
+                    entity.getRepId(),
+                    entity.getUserName(),
+                    entity.getUserEmail(),
+                    entity.getUserId(),
+                    entity.getRepContents(),
+                    entity.getRepLat(),
+                    entity.getRepLon(),
+                    entity.getRepAddr(),
+                    entity.getRepDetailAddr(),
+                    entity.getRepDate(),
+                    entity.getRepImg(),
+                    entity.getRepState()
+            ));
+        }
+        return data;
+    }
+
+    public static List<FeedEntity> feed2(List<FeedResponseInfoEntity> entities) {
+        List<FeedEntity> data = new ArrayList<>();
+        for (FeedResponseInfoEntity entity : entities) {
+            if (entity.getRepState() == Constant.ReportState.RECEIVING) continue;
             data.add(new FeedEntity(
                     entity.getRepId(),
                     entity.getUserName(),

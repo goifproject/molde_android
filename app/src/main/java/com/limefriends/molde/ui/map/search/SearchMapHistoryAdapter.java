@@ -2,7 +2,6 @@ package com.limefriends.molde.ui.map.search;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +40,7 @@ public class SearchMapHistoryAdapter extends RecyclerView.Adapter<SearchMapHisto
     @Override
     public MapHistoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.map_history_info_item, parent, false);
+                .inflate(R.layout.item_search_history, parent, false);
         return new MapHistoryViewHolder(view);
     }
 

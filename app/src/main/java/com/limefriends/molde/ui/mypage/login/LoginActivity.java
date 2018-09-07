@@ -11,14 +11,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -36,11 +33,8 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.limefriends.molde.comm.MoldeApplication;
 import com.limefriends.molde.R;
 import com.limefriends.molde.comm.utils.PreferenceUtil;
 
@@ -63,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.login_to_facebook)
     TextView login_to_facebook;
     @BindView(R.id.skip_login_button)
-    Button skip_login_button;
+    TextView skip_login_button;
 
     ProgressDialog loginProgressDialog;
 
@@ -102,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.mypage_login_activity);
+        setContentView(R.layout.activity_login);
 
         setupViews();
 
@@ -207,7 +201,8 @@ public class LoginActivity extends AppCompatActivity {
                         // TODO 실패시 롤백
                         // 권한은 Preference에 저장, 나머지는 FirebaseAuth 를 통해 얻어오고,
                         // 리스너 설정해서 변화가 일어날 때마다 다시 데이터 받아오고 갱신해 준다.
-                        PreferenceUtil.putLong(LoginActivity.this, "authority", (long) userMap.get("authority"));
+                        int authority = (int) userMap.get("authority");
+                        PreferenceUtil.putLong(LoginActivity.this, "authority", authority);
                         loginProgressDialog.dismiss();
                         setResult(CONNECT_GOOGLE_AUTH_CODE);
                         finish();
@@ -298,24 +293,16 @@ public class LoginActivity extends AppCompatActivity {
                                 loadUserData(user.getEmail());
                             }
                         } else {
-
-                            // TODO 시도해보자
-                            if (task.getResult().getAdditionalUserInfo().isNewUser()) {
-
-                            } else {
-
-                            }
-
                             // TODO 기존에 존재하는 아이디일 경우
                             Log.e("facebook", task.getException().getMessage());
                             if (task.getException().getMessage().startsWith("An account already exists with the same email address")) {
                                 Log.e("facebook", "이미 있어");
+                                Snackbar.make(findViewById(R.id.mypage_login_layout), "이미 가입된 아이디입니다", Snackbar.LENGTH_SHORT).show();
+                            } else {
+                                Snackbar.make(findViewById(R.id.mypage_login_layout), "로그인이 정상적으로 처리되지 않았습니다.", Snackbar.LENGTH_SHORT).show();
                             }
-
                             Log.e("facebook", "signInWithCredential:failure", task.getException());
-                            Snackbar.make(findViewById(R.id.mypage_login_layout), "로그인이 정상적으로 처리되지 않았습니다.", Snackbar.LENGTH_SHORT).show();
                         }
-
                     }
                 });
     }

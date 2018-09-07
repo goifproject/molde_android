@@ -1,15 +1,27 @@
 <resources>
 
-    <!-- FeedDetailActivity -->
+    <string name="confirm">확인</string>
+    <string name="require_login">몰디 로그인이 필요합니다</string>
+
+    <!-- Tutorial -->
+    <string name="start">시작하기</string>
+
+    <!-- Feed -->
+    <string name="report_status_receiving">접수중</string>
+    <string name="report_status_accepted">접수 완료</string>
+    <string name="report_status_found">제거 완료</string>
+    <string name="report_status_clean">검사 완료</string>
+    <string name="report_status_result">접수 결과</string>
+
     <string name="feed_detail">신고 상세 내역</string>
     <string name="deny_report">신고 거절</string>
     <string name="cancel_report">신고 취소</string>
     <string name="cancel_message">신고를 취소하시겠습니까?</string>
-    <string name="report_status_receiving">신고해 주셔서 감사합니다. 운영자가 신고 내용을 확인중입니다</string>
-    <string name="report_status_accepted">신고하신 내용을 운영자가 관할 지역에 전달하였습니다!</string>
-    <string name="report_status_found">접수 결과 몰래카메라로 판정되어 제거하였습니다!</string>
-    <string name="report_status_clean">점검을 통해 몰래카메라가 없는 안전지역임을 확인했습니다.</string>
-    <string name="report_status_denied">사진을 인식할 수 없거나 위치를\n 확인할 수 없습니다. 다시 신고해주세요.</string>
+    <string name="report_message_receiving">신고해 주셔서 감사합니다. 운영자가 신고 내용을 확인중입니다</string>
+    <string name="report_message_accepted">신고하신 내용을 운영자가 관할 지역에 전달하였습니다!</string>
+    <string name="report_message_found">접수 결과 몰래카메라로 판정되어 제거하였습니다!</string>
+    <string name="report_message_clean">점검을 통해 몰래카메라가 없는 안전지역임을 확인했습니다.</string>
+    <string name="report_message_denied">사진을 인식할 수 없거나 위치를\n 확인할 수 없습니다. 다시 신고해주세요.</string>
 
     <!-- MyPage -->
     <string name="snackbar_require_signin">몰디 로그인이 필요합니다!</string>
@@ -18,6 +30,12 @@
     <string name="signout">로그아웃</string>
     <string name="signin_google">구글 로그인 되었습니다.</string>
     <string name="signin_facebook">페이스북 로그인 되었습니다.</string>
+    <string name="dialog_title_signout">로그아웃</string>
+    <string name="dialog_msg_signout">로그아웃하시겠습니까?</string>
+    <string name="inquiry">문의하기</string>
+    <string name="my_report">신고</string>
+    <string name="mycomment">댓글</string>
+    <string name="my_scrap">스크랩</string>
 
     <!-- MyPage - Scrap -->
     <string name="myscrap">내 스크랩</string>
@@ -33,15 +51,66 @@
 
     <!-- MyPage - FaQ-->
     <string name="faq">자주 묻는 질문</string>
+    <string name="faq_content">문의 내용</string>
+    <string name="faq_submit">전송하기</string>
+    <string name="faq_respond_email">답변 받을 이메일</string>
+
+    <string name="faq_q_1">Q. 내가 쓴 글을 삭제하고 싶을 때 어떻게 하나요?</string>
+    <string name="faq_q_2">Q. 회원탈퇴는 어떻게 하나요?</string>
+    <string name="faq_q_3">Q. 제가 쓴 글은 어디 가야 볼 수 있나요?</string>
+    <string name="faq_q_4">Q. 개인정보를 바꾸려면 어떻게 해야하나요?</string>
+    <string name="faq_q_5">Q. 탈퇴하고 싶습니다.</string>
+    <string name="faq_a_1">마이페이지에 들어가셔서 내가 쓴 글을 확인하신 후 내 프로필 옆의 … 버튼을 누르시면 삭제가 가능합니다. 한번 삭제하시면 다시 복구하기 어려우므로 신중한 판단 부탁드립니다. 내가 쓴 댓글 역시 마찬가지입니다.</string>
+    <string name="faq_a_2">탈퇴 \n 대답대답</string>
+    <string name="faq_a_3">내가쓴글 \n 대답대답</string>
+    <string name="faq_a_4">개인정보 \n 대답대답</string>
+    <string name="faq_a_5">탈퇴 \n 탈퇴</string>
 
     <!-- MyPage - Comment -->
     <string name="my_comment">내가 쓴 댓글</string>
+    <string name="reported_comment">신고된 댓글</string>
+    <string name="dialog_title_change_status">댓글 상태 변경</string>
+    <string name="dialog_msg_delete_comment">댓글을 상태를 변경하시겠습니까?</string>
+    <string name="delete_comment">댓글 삭제</string>
+    <string name="refuse_report">신고 거절</string>
+
+    <!-- MyPage - Main -->
 
     <!-- MyPage - Setting-->
     <string name="settings">설정</string>
 
     <!-- CardNews -->
     <string name="scrap_delete_message">스크랩을 삭제하시겠습니까?</string>
+    <string name="hint_input_comment">댓글을 입력하세요.</string>
+    <string name="post">게시</string>
+    <string name="useful_info">유용한 정보들</string>
+    <string name="news">새로운 정보들이에요</string>
+    <string name="info_recent">최신 몰카 정보</string>
+    <string name="info_prevent">장소별 예방법</string>
+    <string name="info_respond">몰카유포 대처</string>
+    <string name="snack_scrap_deleted">내 스크랩에서 삭제되었습니다.</string>
+    <string name="snack_scrap_added">내 스크랩에 추가되었습니다.</string>
+
+    <!-- Info -->
+    <string name="info_response_1">1. 관할 경찰서에 신고하기</string>
+    <string name="info_response_2">2. 영상 유포로 인한 피해 줄이기</string>
+    <string name="info_response_3">3. 법률상담 및 심리상담 지원</string>
+    <string name="info_response_4">4. 여성가족부</string>
+
+    <string name="info_prevent_1">화장실 몰카 예방법 1</string>
+    <string name="info_prevent_2">화장실 몰카 예방법 2</string>
+    <string name="info_prevent_3">지하철 몰카 예방법 1</string>
+    <string name="info_prevent_4">지하철 몰카 예방법 2</string>
+    <string name="info_prevent_5">숙소 몰카 예방법 1</string>
+
+    <string name="info_recent_1">시계 몰카 설명</string>
+    <string name="info_recent_2">안경 몰카 설명</string>
+    <string name="info_recent_3">볼펜 몰카 설명</string>
+    <string name="info_recent_4">차키 몰카 설명</string>
+    <string name="info_recent_5">기타 휴대용 몰카 설명</string>
+    <string name="info_recent_6">인테리어 몰카 설명</string>
+    <string name="info_recent_7">화장실 몰카 예방법 2</string>
+    <string name="info_recent_8">지하철 몰카 예방법 1</string>
 
     <!-- Map -->
     <string name="dialog_request_permission">권한 설정 필요</string>
@@ -56,6 +125,10 @@
     <string name="marker_title_favorite_location">★</string>
     <string name="marker_title_feed_location">피드 위치</string>
 
+    <string name="favorite_address">즐겨찾기 주소</string>
+    <string name="favorite_detail_address">상세 주소</string>
+    <string name="favorite_save">저장</string>
+
     <!-- Map - Report -->
     <string name="snackbar_no_image">이미지가 없습니다.</string>
     <string name="snackbar_no_content">신고 내용을 입력해주세요.</string>
@@ -66,6 +139,17 @@
     <string name="snackbar_wrong_email_form">이메일 양식에 맞지 않습니다. 확인해주세요</string>
     <string name="snackbar_report_success">신고가 접수됬습니다. 감사합니다.</string>
     <string name="snackbar_permission_denied">권한얻는 데 실패했습니다. \n\n [설정] -> [어플리케이션] -> 해당앱에 들어가 권한을 켜주세요.</string>
+    <string name="report_location">신고 위치</string>
+    <string name="report_search_to_set">검색해서 등록</string>
+    <string name="report_detail_address">상세 주소 : </string>
+    <string name="report_reply_email">답변 받을 이메일</string>
+    <string name="report_hint_input_email">이메일 입력</string>
+    <string name="report_send">신고하기</string>
+
+    <string name="login_skip">로그인 건너뛰기</string>
+    <string name="login_google">구글로 로그인하기</string>
+    <string name="login_facebook">페이스북으로 로그인하기</string>
+
 
     <!-- Map - Favorite -->
     <string name="my_favorite">즐겨찾기</string>
@@ -73,6 +157,10 @@
     <!-- Dialog -->
     <string name="yes">예</string>
     <string name="no">아니오</string>
+    <string name="cancel">취소</string>
+
+    <!-- custom -->
+    <string name="toolbar_confirm">확인</string>
 
     <string name="app_name">Molde</string>
     <string name="main_menu_map">지도  </string>
