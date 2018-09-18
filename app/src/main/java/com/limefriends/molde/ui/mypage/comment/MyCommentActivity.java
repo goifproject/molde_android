@@ -3,20 +3,26 @@ package com.limefriends.molde.ui.mypage.comment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ExpandableListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.limefriends.molde.R;
 import com.limefriends.molde.comm.Constant;
 import com.limefriends.molde.comm.MoldeApplication;
-import com.limefriends.molde.comm.custom.recyclerview.AddOnScrollRecyclerView;
+import com.limefriends.molde.comm.custom.addOnListview.AddOnScrollExpandableListView;
+import com.limefriends.molde.comm.custom.addOnListview.AddOnScrollRecyclerView;
+import com.limefriends.molde.comm.custom.addOnListview.OnLoadMoreListener;
 import com.limefriends.molde.comm.utils.PreferenceUtil;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.comment.CommentEntity;
@@ -108,14 +114,16 @@ import static com.limefriends.molde.comm.Constant.Common.PREF_KEY_AUTHORITY;
 // TODO 어드민 페이지랑 delete api 추가할 것
 public class MyCommentActivity extends AppCompatActivity implements MyCommentExpandableAdapter.OnItemClickCallback {
 
+    @BindView(R.id.myComment_container)
+    RelativeLayout myComment_container;
     @BindView(R.id.myComment_listView)
-    ExpandableListView myComment_listView;
+    AddOnScrollExpandableListView myComment_listView;
     @BindView(R.id.myComment_reported_comment_listview)
     AddOnScrollRecyclerView myComment_reported_comment_listview;
     @BindView(R.id.progressBar2)
     ProgressBar progressBar;
 
-    private static final int PER_PAGE = 20;
+    private static final int PER_PAGE = 10;
     private static final int FIRST_PAGE = 0;
     private int currentPage = FIRST_PAGE;
 
@@ -134,13 +142,13 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
     private int responseCount = 0;
 
     private long authority;
+    private boolean isLoading = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_comment);
 
-        authority = PreferenceUtil.getLong(this, PREF_KEY_AUTHORITY);
+        authority = PreferenceUtil.getLong(this, PREF_KEY_AUTHORITY, Constant.Authority.GUEST);
 
         setupViews();
 
@@ -154,6 +162,7 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
     //-----
 
     private void setupViews() {
+        setContentView(R.layout.activity_my_comment);
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.custom_toolbar);
@@ -170,14 +179,30 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
     }
 
     private void setupList() {
+//        TODO 풀어줘
         if (authority == Constant.Authority.ADMIN) {
+            myComment_reported_comment_listview.setVisibility(View.VISIBLE);
+            myComment_listView.setVisibility(View.INVISIBLE);
             reportedCommentAdapter = new ReportedCommentAdapter(this, this);
             myComment_reported_comment_listview.setAdapter(reportedCommentAdapter);
             myComment_reported_comment_listview
-                    .setLayoutManager(new LinearLayoutManager(this));
+                    .setLayoutManager(new LinearLayoutManager(this), false);
+            myComment_reported_comment_listview.setOnLoadMoreListener(new OnLoadMoreListener() {
+                @Override
+                public void loadMore() {
+                    Log.e("호출확인 ","loadMore3");
+                    loadReportedComment(PER_PAGE, currentPage);
+                }
+            });
         } else {
             commentExpandableAdapter = new MyCommentExpandableAdapter(this);
             myComment_listView.setAdapter(commentExpandableAdapter);
+            myComment_listView.setOnLoadMoreListener(new OnLoadMoreListener() {
+                @Override
+                public void loadMore() {
+                    loadComment(PER_PAGE, currentPage);
+                }
+            });
             myComment_listView.setGroupIndicator(null);
             myComment_listView.setChildIndicator(null);
             myComment_listView.setChildDivider(getResources().getDrawable(R.color.white));
@@ -193,6 +218,10 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
             return true;
         }
         return false;
+    }
+
+    private void snack(String message){
+        Snackbar.make(myComment_container, message, Snackbar.LENGTH_LONG).show();
     }
 
     //-----
@@ -217,23 +246,31 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
 
     private void loadData() {
         if (authority == Constant.Authority.ADMIN) {
-            loadReportedCommentService(PER_PAGE, currentPage);
+            loadReportedComment(PER_PAGE, currentPage);
         } else {
-            loadCommentData(PER_PAGE, currentPage);
+            loadComment(PER_PAGE, currentPage);
         }
     }
 
-    private void loadCommentData(int perPage, int page) {
+    // 1. 내가 작성한 댓글
+    private void loadComment(int perPage, int page) {
+
+        if (!hasMoreToLoad) return;
 
         progressBar.setVisibility(View.VISIBLE);
 
-        String uId = ((MoldeApplication) getApplication()).getFireBaseAuth().getCurrentUser().getUid();
+        myComment_listView.setIsLoading(true);
 
-        Call<CommentResponseInfoEntityList> call = getCommentService().getMyComment(uId, perPage, page);
+        String uId
+                = ((MoldeApplication) getApplication()).getFireBaseAuth().getCurrentUser().getUid();
+
+        Call<CommentResponseInfoEntityList> call
+                = getCommentService().getMyComment(uId, perPage, page);
 
         call.enqueue(new Callback<CommentResponseInfoEntityList>() {
             @Override
-            public void onResponse(Call<CommentResponseInfoEntityList> call, Response<CommentResponseInfoEntityList> response) {
+            public void onResponse(Call<CommentResponseInfoEntityList> call,
+                                   Response<CommentResponseInfoEntityList> response) {
                 // 같은 뉴스의 댓글들을 모으기 위해 오름차순 정렬
                 commentSchemas = response.body().getData();
                 Collections.sort(commentSchemas, new CommentComparator());
@@ -241,40 +278,71 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
                 outer:
                 for (int i = 0; i < commentSchemas.size(); i++) {
                     // 꺼내고
-                    CommentEntity commentEntity = FromSchemaToEntitiy.comment(commentSchemas.get(i));
+                    CommentEntity commentEntity
+                            = FromSchemaToEntitiy.comment(commentSchemas.get(i));
 
                     // 이전 뉴스 소속이 아닌지 확인해본다
-//                     if (newsEntities.size() != 0) {
-//                        for (CardNewsEntity newsEntity : newsEntities) {
-//                            if (newsEntity.getNewsId() == commentEntity.getNewsId()) {
-//                                newsEntity.addComments(commentEntity);
-//                                Log.e("호출확인", newsEntity.getNewsId()+"");
-//                                continue outer;
-//                            }
-//
-//                        }
-//                    }
+                    if (newsEntities.size() != 0) {
+
+                        int addCount = 0;
+
+                        for (CardNewsEntity newsEntity : newsEntities) {
+                            if (newsEntity.getNewsId() == commentEntity.getNewsId()) {
+                                newsEntity.addComments(commentEntity);
+
+                                addCount++;
+
+                                if (commentSchemas.size() == addCount) {
+
+                                    Collections.sort(newsEntities, new CardNewsComparator());
+                                    commentExpandableAdapter.addAll(newsEntities);
+
+                                    for (int j = 0; j < newsEntities.size(); j++) {
+                                        myComment_listView.expandGroup(j);
+                                    }
+                                    fetchCount = 0;
+                                    responseCount = 0;
+                                    currentPage++;
+                                    myComment_listView.setIsLoading(false);
+                                    if (commentSchemas.size() < PER_PAGE) {
+                                        hasMoreToLoad(false);
+                                    }
+                                    progressBar.setVisibility(View.GONE);
+                                }
+
+                                continue outer;
+                            }
+                        }
+                    }
+
+                    // TODO 동기화 해야 할 듯.
+                    // 1. 댓글 리스트를 먼저 다시 리스트에 담고
+                    // 2. 반복문으로 돌리면서 호출
+                    // 3. 리스트 개수 == responseCount 일 때 마지막 처리
+
                     // 처음이거나 바로 이전 댓글과 소속 뉴스가 같으면 더해준다
-                    if (lastAddedComment == null || lastAddedComment.getNewsId() == commentEntity.getNewsId()) {
+                    if (lastAddedComment == null ||
+                            lastAddedComment.getNewsId() == commentEntity.getNewsId()) {
                         commentEntities.add(commentEntity);
                         if (i == commentSchemas.size() - 1) {
-                            loadCardNewsData(commentEntities);
+                            loadCardNews(commentEntities);
                             commentEntities = new ArrayList<>();
                             return;
                         }
                     } else if (lastAddedComment.getNewsId() != commentEntity.getNewsId()) {
                         // 만약 다를 경우 바로 이전 댓글까지의 모음 해당하는 뉴스를 호출한다
-                        loadCardNewsData(commentEntities);
+                        loadCardNews(commentEntities);
                         commentEntities = new ArrayList<>();
                         commentEntities.add(commentEntity);
                         if (i == commentSchemas.size() - 1) {
-                            loadCardNewsData(commentEntities);
+                            loadCardNews(commentEntities);
                             commentEntities = new ArrayList<>();
                             return;
                         }
                     }
                     lastAddedComment = commentEntity;
                 }
+
                 if (commentEntities.size() == 0) progressBar.setVisibility(View.GONE);
             }
 
@@ -285,15 +353,18 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
         });
     }
 
-    private void loadCardNewsData(final List<CommentEntity> entityList) {
+    // 내가 댓글을 작성한 카드뉴스
+    private void loadCardNews(final List<CommentEntity> entityList) {
 
         addFetchCount();
 
-        Call<CardNewsResponseInfoEntityList> newsCall = getNewsService().getCardNewsListById(entityList.get(0).getNewsId());
+        Call<CardNewsResponseInfoEntityList> newsCall
+                = getNewsService().getCardNewsListById(entityList.get(0).getNewsId());
 
         newsCall.enqueue(new Callback<CardNewsResponseInfoEntityList>() {
             @Override
-            public void onResponse(Call<CardNewsResponseInfoEntityList> call, Response<CardNewsResponseInfoEntityList> response) {
+            public void onResponse(Call<CardNewsResponseInfoEntityList> call,
+                                   Response<CardNewsResponseInfoEntityList> response) {
                 if (response.isSuccessful()) {
                     List<CardNewsResponseInfoEntity> newsSchemas = response.body().getData();
 
@@ -312,14 +383,20 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
 
                     if (fetchCount == responseCount) {
                         Collections.sort(newsEntities, new CardNewsComparator());
-                        commentExpandableAdapter.setData(newsEntities);
+                        commentExpandableAdapter.addAll(newsEntities);
                         for (int i = 0; i < newsEntities.size(); i++) {
                             myComment_listView.expandGroup(i);
+                        }
+                        fetchCount = 0;
+                        responseCount = 0;
+                        currentPage++;
+                        myComment_listView.setIsLoading(false);
+                        if (commentSchemas.size() < PER_PAGE) {
+                            hasMoreToLoad(false);
                         }
                         progressBar.setVisibility(View.GONE);
                     }
                 }
-
             }
 
             @Override
@@ -329,7 +406,8 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
         });
     }
 
-    private void loadReportedCommentService(int perPage, int page) {
+    // 2. 관리자용 신고된 댓글
+    private void loadReportedComment(int perPage, int page) {
 
         if (!hasMoreToLoad) return;
 
@@ -342,7 +420,8 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
 
         call.enqueue(new Callback<ReportedCommentResponseInfoEntityList>() {
             @Override
-            public void onResponse(Call<ReportedCommentResponseInfoEntityList> call, Response<ReportedCommentResponseInfoEntityList> response) {
+            public void onResponse(Call<ReportedCommentResponseInfoEntityList> call,
+                                   Response<ReportedCommentResponseInfoEntityList> response) {
                 if (response.isSuccessful()) {
                     List<ReportedCommentEntity> entities
                             = FromSchemaToEntitiy.reportedComment(response.body().getData());
@@ -364,13 +443,17 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
         });
     }
 
+    // 신고된 댓글 내용
     private void loadCardNewsComment(int commentId) {
 
-        Call<CommentResponseInfoEntityList> call = getCommentService().getComment(commentId);
+        // TODO commentId 를 통해 하나씩 가져올 수 있어야 함
+        Call<CommentResponseInfoEntityList> call
+                = getCommentService().getReportedCommentDetail(commentId);
 
         call.enqueue(new Callback<CommentResponseInfoEntityList>() {
             @Override
-            public void onResponse(Call<CommentResponseInfoEntityList> call, Response<CommentResponseInfoEntityList> response) {
+            public void onResponse(Call<CommentResponseInfoEntityList> call,
+                                   Response<CommentResponseInfoEntityList> response) {
                 if (response.isSuccessful()) {
                     addResponseCount();
                     List<CommentResponseInfoEntity> commentSchema = response.body().getData();
@@ -382,10 +465,14 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
                         progressBar.setVisibility(View.GONE);
                         reportedCommentAdapter.addData(commentEntities);
                         currentPage++;
+                        fetchCount = 0;
+                        responseCount = 0;
                         myComment_reported_comment_listview.setIsLoading(false);
                         if (commentEntities.size() < PER_PAGE) {
                             hasMoreToLoad(false);
                         }
+                        // 순서 지키세요 위에서 제거하면 size가 0이 되어 hasMoreToLoad(false); 됨
+                        commentEntities.clear();
                     }
                 }
             }
@@ -397,16 +484,22 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
         });
     }
 
-    public void deleteComment(int commentId) {
+    // 3. 댓글 삭제
+    public void deleteComment(final int position, final int commentId) {
 
-        String uId = ((MoldeApplication) getApplication()).getFireBaseAuth().getCurrentUser().getUid();
+        String uId
+                = ((MoldeApplication) getApplication()).getFireBaseAuth().getCurrentUser().getUid();
 
         Call<Result> call = getCommentService().deleteComment(uId, commentId);
 
         call.enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
-
+                if (response.isSuccessful()) {
+                    // deleteReportedComment(position, commentId);
+                    snack("신고된 댓글을 삭제했습니다");
+                    reportedCommentAdapter.deleteComment(position);
+                }
             }
 
             @Override
@@ -416,16 +509,18 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
         });
     }
 
-    private void deleteReportedComment(int commentId) {
+    // 댓글 삭제시 신고된 댓글도 삭제
+    // TODO 아직 삭제가 안
+    private void deleteReportedComment(int position, int commentId) {
 
-        String uId = ((MoldeApplication) getApplication()).getFireBaseAuth().getCurrentUser().getUid();
-
-        Call<Result> call = getCommentService().deleteReportedComment(uId, commentId);
+        Call<Result> call = getCommentService().deleteReportedComment(commentId);
 
         call.enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
-
+                if (response.isSuccessful()) {
+                    // snack("신고를 취소했습니다");
+                }
             }
 
             @Override
@@ -435,20 +530,20 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
         });
     }
 
-    public void showDeleteCommentDialog(final int commentId) {
+    public void showDeleteCommentDialog(final int position, final int commentId) {
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(getText(R.string.dialog_title_change_status))
                 .setMessage(getText(R.string.dialog_msg_delete_comment))
                 .setPositiveButton(getText(R.string.refuse_report), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        deleteReportedComment(commentId);
+                        deleteReportedComment(position, commentId);
                     }
                 })
                 .setNegativeButton(getText(R.string.delete_comment), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        deleteComment(commentId);
+                        deleteComment(position, commentId);
                     }
                 })
                 .setNeutralButton(getText(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -460,7 +555,6 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
                 .create();
         dialog.show();
     }
-
 
     private synchronized void addFetchCount() {
         fetchCount++;

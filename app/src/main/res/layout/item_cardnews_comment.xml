@@ -4,6 +4,7 @@
 <!-- TODO 아이콘 크기 공통 조절, 위젯 스타일 적용 -->
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/comment_item_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorWhite">
@@ -35,6 +36,7 @@
             android:layout_height="wrap_content"
             android:text="댓글 작성자 안 넘어옴"
             android:textColor="@color/colorDefaultText"
+            android:focusable="false"
             android:textSize="14sp" />
 
         <TextView
@@ -45,15 +47,17 @@
             android:layout_marginStart="12dp"
             android:layout_toEndOf="@+id/comment_user_name"
             android:text="댓글작성일시 안 넘어옴"
+            android:focusable="false"
             android:textColor="@color/colorDefaultText"
             android:textSize="9sp" />
 
         <TextView
             android:id="@+id/comment_content"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/comment_user_name"
             android:text="댓글내용 안 넘어옴"
+            android:focusable="false"
             android:textColor="@color/colorDefaultText"
             android:textSize="13sp" />
     </RelativeLayout>

@@ -18,7 +18,7 @@
         android:elevation="4dp"
         android:background="@drawable/bg_frame_rounded">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/mypage_profile_image"
             android:layout_width="56dp"
             android:layout_height="56dp"
@@ -26,7 +26,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="19dp"
             android:layout_marginTop="20dp"
-            android:src="@drawable/bg_img_circle" />
+            android:src="@drawable/ic_profile" />
 
         <TextView
             android:id="@+id/mypage_profile_name"

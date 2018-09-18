@@ -10,7 +10,8 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.limefriends.molde.comm.custom.recyclerview.AddOnScrollRecyclerView;
+import com.limefriends.molde.comm.custom.addOnListview.AddOnScrollRecyclerView;
+import com.limefriends.molde.comm.custom.addOnListview.OnLoadMoreListener;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.favorite.FavoriteEntity;
 import com.limefriends.molde.entity.favorite.FavoriteResponseInfoEntityList;
@@ -73,7 +74,7 @@ public class MapFavoriteActivity extends AppCompatActivity implements
         myFavoriteAdapter.setMoldeMyFavoriteAdapterCallBack(this);
         my_favorite_list_view.setAdapter(myFavoriteAdapter);
         my_favorite_list_view.setLayoutManager(new LinearLayoutManager(getApplicationContext()), false);
-        my_favorite_list_view.setOnLoadMoreListener(new AddOnScrollRecyclerView.OnLoadMoreListener() {
+        my_favorite_list_view.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void loadMore() {
                 loadFavorite(PER_PAGE, currentPage);

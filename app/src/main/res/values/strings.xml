@@ -1,5 +1,7 @@
 <resources>
 
+    <string name="dummy">웅대한 설산에서 무엇을 있으며, 이것을 불어 속에 인류의 철환하였는가? 것이 현저하게 타오르고 인생에 같이, 위하여서 들어 부패뿐이다. 바로 더운지라 피가 남는 이것이다. 것이 그들의 갑 이상의 투명하되 있다. 유소년에게서 바이며, 우리의 이것을 운다. 이 충분히 불어 청춘은 피부가 그들은 싶이 산야에 사막이다. 이상의 착목한는 주는 싹이 끓는다. 싹이 아니더면, 쓸쓸한 천자만홍이 위하여서 광야에서 기쁘며, 것이다. 없으면 그들을 속잎나고, 어디 것이다.</string>
+
     <string name="confirm">확인</string>
     <string name="require_login">몰디 로그인이 필요합니다</string>
 
@@ -78,6 +80,53 @@
 
     <!-- MyPage - Setting-->
     <string name="settings">설정</string>
+    <string name="settings_favorite_push">즐겨찾기 주변 피드 생성 푸쉬알람</string>
+    <string name="settings_feed_change_push">신고한 피드 상태 변경 푸쉬알람</string>
+    <string name="producer">만든이</string>
+    <string name="producer_name">상호명</string>
+    <string name="producer_name_content">(주)라임프렌즈</string>
+    <string name="producer_ceo">대표</string>
+    <string name="producer_ceo_content">정영찬</string>
+    <string name="producer_project">[이유 있는 프로젝트 2기]</string>
+    <string name="producer_plan">기획</string>
+    <string name="producer_plan_content">김주현, 최로사, 이기정</string>
+    <string name="producer_design">디자인</string>
+    <string name="producer_design_content">김주현</string>
+    <string name="producer_developer">개발</string>
+    <string name="producer_developer_content">이기정, 최진성, 함성, 함은정, 주해연</string>
+    <string name="producer_developer_github">★이기정 깃헙주소★</string>
+    <string name="producer_developer_github_content">https://github.com/SODA1127</string>
+    <string name="opensource_license">오픈소스 라이센스</string>
+
+    <string name="opensource_licence_content">
+        Google Maps \nhttps://developers.google.com/android/guides/setup \n
+        Google Location \nhttps://developers.google.com/android/guides/setup \n
+        Google Auth \nhttps://developers.google.com/android/guides/setup \n
+        Google Map Utils \nhttps://developers.google.com/maps/documentation/android-sdk/utility \n
+        Google Gson \nhttps://github.com/google/gson \n
+        Firebase \nhttps://firebase.google.com/docs/android/setup?hl=ko \n\
+        Firebase Firestore \nhttps://firebase.google.com/docs/android/setup?hl=ko \n
+        Firebase Messaging \nhttps://firebase.google.com/docs/android/setup?hl=ko \n
+        Firebase Jobdispatcher \nhttps://github.com/firebase/firebase-jobdispatcher-android \n
+        Firebase UI Auth \nhttps://firebase.google.com/docs/auth/android/firebaseui?hl=ko \n
+        Firebase Auth \nhttps://firebase.google.com/docs/auth/android/start \n
+        Butterknife \nhttp://jakewharton.github.io/butterknife \n
+        Glide \nhttps://github.com/bumptech/glide \n
+        Glide Transformer \nhttps://github.com/wasabeef/glide-transformations \n
+        Pm10 Indicator \nhttps://github.com/PM-10/SimpleIndicator \n
+        CircleImageView \nhttps://github.com/hdodenhof/CircleImageView \n
+        TedPermission \nhttps://github.com/ParkSangGwon/TedPermission \n
+        OkHttp \nhttp://square.github.io/okhttp \n
+        Logging Interceptor \nhttps://github.com/square/okhttp/tree/master/okhttp-logging-interceptor \n
+        Retrofit2 \nhttps://square.github.io/retrofit \n
+        Retrofit2 Gson Converter \nhttps://github.com/square/retrofit/tree/master/retrofit-converters/gson \n
+        Facebook \nhttps://developers.facebook.com/docs/android/getting-started \
+        Constraint Layout \nhttps://developer.android.com/training/constraint-layout \n
+        RecyclerView \nhttps://developer.android.com/topic/libraries/support-library/features?hl=ko \n
+        CardView \nhttps://developer.android.com/topic/libraries/support-library/packages \n
+        Android Support Annotations \nhttps://developer.android.com/studio/write/annotations?hl=ko \n
+    </string>
+    <string name="version_info">버전 정보</string>
 
     <!-- CardNews -->
     <string name="scrap_delete_message">스크랩을 삭제하시겠습니까?</string>

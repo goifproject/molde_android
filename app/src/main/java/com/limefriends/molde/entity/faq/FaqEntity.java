@@ -1,6 +1,6 @@
 package com.limefriends.molde.entity.faq;
 
-public class FaqEntitiy {
+public class FaqEntity {
 
     private int faqId;
     private String userId;
@@ -8,7 +8,7 @@ public class FaqEntitiy {
     private String faqContents;
     private String faqEmail;
 
-    public FaqEntitiy(int faqId, String userId, String userName, String faqContents, String faqEmail) {
+    public FaqEntity(int faqId, String userId, String userName, String faqContents, String faqEmail) {
         this.faqId = faqId;
         this.userId = userId;
         this.userName = userName;

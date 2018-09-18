@@ -4,6 +4,11 @@ public class Constant {
 
     public static int PER_PAGE = 10;
 
+    public static class MoldeMain {
+        public static final int FROM_LAUNCHER = 0;
+        public static final int FROM_NOTIFICATION = 1;
+    }
+
     public static class ReportState {
         public static final int RECEIVING = 0;
         public static final int ACCEPTED = 1;
@@ -24,6 +29,13 @@ public class Constant {
         public static final String EXTRA_KEY_ACTIVITY_NAME = "activityName";
         public static final String PREF_KEY_AUTHORITY = "authority";
         public static final String EXTRA_KEY_CARDNEWS_ID = "cardNewsId";
+        public static final String PREF_KEY_FCM_TOKEN = "fcmToken";
+        public static final String PREF_KEY_FIRESTORE_TOKEN = "storeKey";
+        public static final String PREF_KEY_NEW_FEED_PUSH = "newFeedPush";
+        public static final String PREF_KEY_FEED_CHANGE_PUSH = "feedChangePush";
+
+        public static final int ALLOW_PUSH = 0;
+        public static final int DISALLOW_PUSH = 1;
     }
 
     public static class Map {
@@ -60,5 +72,6 @@ public class Constant {
     public static class Comment {
         public static final String EXTRA_KEY_COMMENT_DESCRIPTION = "description";
     }
+
 
 }

@@ -1,137 +1,295 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- TODO 폰트 사이즈, 크기, 색상 공통으로 적용할 것 -->
-<!-- TODO 각종 색깔 공통으로 관리할 것 - 배경 등 -->
-<!-- TODO 아이콘 크기 공통 조절, 위젯 스타일 적용 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><!-- TODO 폰트 사이즈, 크기, 색상 공통으로 적용할 것 --><!-- TODO 각종 색깔 공통으로 관리할 것 - 배경 등 --><!-- TODO 아이콘 크기 공통 조절, 위젯 스타일 적용 -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBG">
 
     <RelativeLayout
-        android:id="@+id/mypage_my_loc_push"
+        android:id="@+id/settings_container"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@color/colorWhite">
+        android:layout_height="match_parent"
+        android:background="@color/colorBG">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="16dp"
+        <RelativeLayout
+            android:id="@+id/mypage_my_loc_push"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/colorWhite">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="1dp"
+                android:gravity="center_vertical"
+                android:text="@string/settings_favorite_push"
+                android:textColor="@color/colorInfoTextColor"
+                android:textSize="14sp" />
+
+            <Switch
+                android:id="@+id/switch_favorite_push"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="28dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/mypage_my_favorite_push"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_below="@+id/mypage_my_loc_push"
             android:layout_marginTop="1dp"
+            android:background="@color/colorWhite">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:gravity="center_vertical"
+                android:text="@string/settings_feed_change_push"
+                android:textColor="@color/colorInfoTextColor"
+                android:textSize="14sp" />
+
+            <Switch
+                android:id="@+id/switch_feed_change_push"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="28dp" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/mypage_version_info"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_below="@+id/mypage_my_favorite_push"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorWhite"
             android:gravity="center_vertical"
-            android:text="내위치 주변 푸시알람"
+            android:paddingLeft="16dp"
+            android:text="@string/version_info"
             android:textColor="@color/colorInfoTextColor"
             android:textSize="14sp" />
-
-        <Switch
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="28dp" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/mypage_my_favorite_push"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_below="@+id/mypage_my_loc_push"
-        android:layout_marginTop="1dp"
-        android:background="@color/colorWhite">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="16dp"
+            android:id="@+id/mypage_version_answer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mypage_version_info"
+            android:background="#f6f6f6"
+            android:paddingHorizontal="17dp"
+            android:paddingVertical="14dp"
+            android:text="0.0.1"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/mypage_made_by"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_below="@+id/mypage_version_answer"
+            android:background="@color/colorWhite"
             android:gravity="center_vertical"
-            android:text="내 즐겨찾기 푸시알람"
+            android:layout_marginTop="1dp"
+            android:paddingLeft="16dp"
+            android:text="@string/producer"
             android:textColor="@color/colorInfoTextColor"
             android:textSize="14sp" />
 
-        <Switch
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/mypage_made_by_answer"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="28dp" />
+            android:layout_below="@+id/mypage_made_by"
+            android:background="#f6f6f6"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#f6f6f6"
+                android:paddingStart="17dp"
+                android:paddingTop="14dp"
+                android:text="@string/producer_name"
+                android:textColor="#000000"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#f6f6f6"
+                android:paddingStart="17dp"
+                android:text="@string/producer_name_content"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#f6f6f6"
+                android:paddingStart="17dp"
+                android:paddingTop="14dp"
+                android:text="@string/producer_ceo"
+                android:textColor="#000000"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#f6f6f6"
+                android:paddingStart="17dp"
+                android:text="@string/producer_ceo_content"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#f6f6f6"
+                android:paddingStart="17dp"
+                android:paddingTop="14dp"
+                android:text="@string/producer_project"
+                android:textColor="#000000"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#f6f6f6"
+                android:paddingStart="17dp"
+                android:paddingTop="14dp"
+                android:text="@string/producer_plan"
+                android:textColor="#000000"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#f6f6f6"
+                android:paddingStart="17dp"
+                android:text="@string/producer_plan_content"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#f6f6f6"
+                android:paddingStart="17dp"
+                android:paddingTop="14dp"
+                android:text="@string/producer_design"
+                android:textColor="#000000"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#f6f6f6"
+                android:paddingStart="17dp"
+                android:text="@string/producer_design_content"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#f6f6f6"
+                android:paddingStart="17dp"
+                android:paddingTop="14dp"
+                android:text="@string/producer_developer"
+                android:textColor="#000000"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#f6f6f6"
+                android:paddingStart="17dp"
+                android:text="@string/producer_developer_content"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#f6f6f6"
+                android:paddingStart="17dp"
+                android:paddingTop="14dp"
+                android:text="@string/producer_developer_github"
+                android:textColor="#000000"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:background="#f6f6f6"
+                android:paddingStart="17dp"
+                android:text="@string/producer_developer_github_content"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/mypage_provisions"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_below="@+id/mypage_made_by_answer"
+            android:layout_marginTop="1dp"
+            android:background="@color/colorWhite"
+            android:gravity="center_vertical"
+            android:paddingLeft="16dp"
+            android:text="이용 약관"
+            android:textColor="@color/colorInfoTextColor"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/mypage_provisions_answer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mypage_provisions"
+            android:background="#f6f6f6"
+            android:paddingHorizontal="17dp"
+            android:paddingVertical="14dp"
+            android:text="// 약관"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/mypage_license"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_below="@+id/mypage_provisions_answer"
+            android:layout_marginTop="1dp"
+            android:background="@color/colorWhite"
+            android:gravity="center_vertical"
+            android:paddingLeft="16dp"
+            android:text="@string/opensource_license"
+            android:textColor="@color/colorInfoTextColor"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/mypage_license_answer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mypage_license"
+            android:background="#f6f6f6"
+            android:paddingHorizontal="17dp"
+            android:paddingVertical="14dp"
+            android:autoLink="web"
+            android:text="@string/opensource_licence_content"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            android:visibility="gone" />
+
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/mypage_made_by"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_below="@+id/mypage_my_favorite_push"
-        android:layout_marginTop="10dp"
-        android:background="@color/colorWhite"
-        android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:text="만든이"
-        android:textColor="@color/colorInfoTextColor"
-        android:textSize="14sp" />
-
-    <TextView
-        android:id="@+id/mypage_made_by_answer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/mypage_made_by"
-        android:background="#f6f6f6"
-        android:paddingHorizontal="17dp"
-        android:paddingVertical="14dp"
-        android:text="// 만든사람"
-        android:textColor="#000000"
-        android:textSize="14sp"
-        android:visibility="gone" />
-
-    <Button
-        android:id="@+id/mypage_provisions"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_below="@+id/mypage_made_by_answer"
-        android:layout_marginTop="1dp"
-        android:background="@color/colorWhite"
-        android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:text="이용 약관"
-        android:textColor="@color/colorInfoTextColor"
-        android:textSize="14sp" />
-
-    <TextView
-        android:id="@+id/mypage_provisions_answer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/mypage_provisions"
-        android:background="#f6f6f6"
-        android:paddingHorizontal="17dp"
-        android:paddingVertical="14dp"
-        android:text="// 약관"
-        android:textColor="#000000"
-        android:textSize="14sp"
-        android:visibility="gone" />
-
-    <Button
-        android:id="@+id/mypage_license"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_below="@+id/mypage_provisions_answer"
-        android:layout_marginTop="1dp"
-        android:background="@color/colorWhite"
-        android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:text="라이센스"
-        android:textColor="@color/colorInfoTextColor"
-        android:textSize="14sp" />
-
-    <TextView
-        android:id="@+id/mypage_license_answer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/mypage_license"
-        android:background="#f6f6f6"
-        android:paddingHorizontal="17dp"
-        android:paddingVertical="14dp"
-        android:text="// 라이센스"
-        android:textColor="#000000"
-        android:textSize="14sp"
-        android:visibility="gone" />
-
-</RelativeLayout>
+</ScrollView>

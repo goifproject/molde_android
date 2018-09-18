@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#FFEB33</color>
     <color name="colorAccent">#fff176</color>
 
+    <color name="colorLicense">#3F51B5</color>
+
     <!-- MainActivity -->
     <!-- Text Color -->
     <color name="colorBottomTabText">#323232</color>

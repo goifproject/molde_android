@@ -1,16 +1,12 @@
-package com.limefriends.molde.comm.custom.recyclerview;
+package com.limefriends.molde.comm.custom.addOnListview;
 
 import android.content.Context;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.ViewTreeObserver;
-import android.widget.AdapterView;
 
 public class AddOnScrollRecyclerView extends RecyclerView {
 
@@ -19,15 +15,6 @@ public class AddOnScrollRecyclerView extends RecyclerView {
     private boolean isGridLayout;
     private LayoutManager layoutManager;
     private OnLoadMoreListener onLoadMoreListener;
-//    private AdapterView.OnItemClickListener onItemClickedListener;
-
-    public interface OnLoadMoreListener {
-        void loadMore();
-    }
-
-//    public interface OnItemClickedListener<T> {
-//        void itemClicked(T item);
-//    }
 
     public AddOnScrollRecyclerView(Context context) {
         super(context);
@@ -37,7 +24,6 @@ public class AddOnScrollRecyclerView extends RecyclerView {
         super(context, attrs);
 
         addOnScrollListener(scrollListener);
-
     }
 
     public void setLayoutManager(LayoutManager layout, boolean isGridLayout) {
@@ -58,10 +44,6 @@ public class AddOnScrollRecyclerView extends RecyclerView {
     public void setOnLoadMoreListener (OnLoadMoreListener listener) {
         this.onLoadMoreListener = listener;
     }
-
-//    public void setOnItemClickedListener(AdapterView.OnItemClickListener listener) {
-//        this.onItemClickedListener = listener;
-//    }
 
     public void setIsLoading(boolean isLoading) {
         this.isLoading = isLoading;
@@ -91,11 +73,28 @@ public class AddOnScrollRecyclerView extends RecyclerView {
                 // Log.d("tot:fir:vis:vis2-L", totalItemCount + ":" + firstVisibleItem + ":" + visibleItemCount+":"+layoutManager.getChildCount());
             }
 
-            if (totalItemCount == visibleItemCount) return;
+//            switch (recyclerView.getScrollState()) {
+//                case RecyclerView.SCROLL_STATE_DRAGGING:
+//                    Log.e("호출확인 ", "SCROLL_STATE_DRAGGING");
+//                    break;
+//                case RecyclerView.SCROLL_STATE_IDLE:
+//                    Log.e("호출확인 ", "SCROLL_STATE_IDLE");
+//                    break;
+//                case RecyclerView.SCROLL_STATE_SETTLING:
+//                    Log.e("호출확인 ", "SCROLL_STATE_SETTLING");
+//                    break;
+//            }
+
+            if (totalItemCount == visibleItemCount && !isLoading) {
+                Log.e("호출확인 ","loadMore1");
+                onLoadMoreListener.loadMore();
+                return;
+            }
 
             if (!isLoading &&
                     (totalItemCount - visibleItemCount) <= firstOrLastVisibleItem + visibleThreshold) {
                 if (onLoadMoreListener != null) {
+                    Log.e("호출확인 ","loadMore2");
                     onLoadMoreListener.loadMore();
                 }
                 isLoading = true;

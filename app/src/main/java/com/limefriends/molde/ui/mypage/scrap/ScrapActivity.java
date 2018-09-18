@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -13,7 +12,8 @@ import android.widget.TextView;
 
 import com.limefriends.molde.R;
 import com.limefriends.molde.comm.MoldeApplication;
-import com.limefriends.molde.comm.custom.recyclerview.AddOnScrollRecyclerView;
+import com.limefriends.molde.comm.custom.addOnListview.AddOnScrollRecyclerView;
+import com.limefriends.molde.comm.custom.addOnListview.OnLoadMoreListener;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.news.CardNewsEntity;
 import com.limefriends.molde.entity.news.CardNewsResponseInfoEntity;
@@ -90,7 +90,7 @@ public class ScrapActivity extends AppCompatActivity {
         myScrap_recyclerView.setAdapter(adapter);
         myScrap_recyclerView.setLayoutManager(
                 new GridLayoutManager(this, 2), true);
-        myScrap_recyclerView.setOnLoadMoreListener(new AddOnScrollRecyclerView.OnLoadMoreListener() {
+        myScrap_recyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void loadMore() {
                 loadMyScrap(PER_PAGE, currentPage);

@@ -67,14 +67,14 @@ public class PreferenceUtil {
         return sp.getBoolean(key, false);
     }
 
-    public static int getInt(Context context, String key) {
+    public static int getInt(Context context, String key, int def) {
         sp = getPreference(context);
-        return sp.getInt(key, 0);
+        return sp.getInt(key, def);
     }
 
-    public static long getLong(Context context, String key) {
+    public static long getLong(Context context, String key, int def) {
         sp = getPreference(context);
-        return sp.getLong(key, 0);
+        return sp.getLong(key, def);
     }
 
 }

@@ -37,23 +37,44 @@ public class MapReportCardPagerAdapter extends PagerAdapter implements IMapRepor
     private float mBaseElevation;
     private MapFragment fragment;
 
-    private CardView[] reportCardViewArray;
+    private CardView[] reportCardViewArrayOrigin;
+    private CardView[] reportCardViewArrayTemp;
 
     public MapReportCardPagerAdapter(MapFragment fragment) {
-        reportCardViewArray = new CardView[0];
+        reportCardViewArrayOrigin = new CardView[0];
+        reportCardViewArrayTemp = new CardView[0];
         reportCardDataList = new ArrayList<>();
         this.fragment = fragment;
     }
 
     public void setData(List<MapReportCardItem> data) {
         reportCardDataList = data;
-        reportCardViewArray = new CardView[data.size()];
+        reportCardViewArrayOrigin = new CardView[data.size()];
+        notifyDataSetChanged();
+    }
+
+    public void addAll(List<MapReportCardItem> data) {
+        reportCardDataList.addAll(data.subList(reportCardDataList.size(), data.size()));
+        reportCardViewArrayTemp = new CardView[reportCardViewArrayOrigin.length + data.size()];
+        System.arraycopy(
+                // 현재 저장된 카드뷰
+                reportCardViewArrayOrigin,
+                // 첫 항부터
+                0,
+                // 임시 저장소
+                reportCardViewArrayTemp,
+                // 첫 항에
+                0,
+                // 전부 복사해 넣는다
+                reportCardViewArrayOrigin.length);
+        reportCardViewArrayOrigin = reportCardViewArrayTemp;
+        reportCardViewArrayTemp = null;
         notifyDataSetChanged();
     }
 
     public void removeAllCardItem(List<MapReportCardItem> data) {
         reportCardDataList = data;
-        reportCardViewArray = new CardView[data.size()];
+        reportCardViewArrayOrigin = new CardView[data.size()];
         notifyDataSetChanged();
     }
 
@@ -63,8 +84,8 @@ public class MapReportCardPagerAdapter extends PagerAdapter implements IMapRepor
 
     @Override
     public CardView getCardViewAt(int position) {
-        if (reportCardViewArray.length == 0) return null;
-        return reportCardViewArray[position];
+        if (reportCardViewArrayOrigin.length == 0) return null;
+        return reportCardViewArrayOrigin[position];
     }
 
     @Override
@@ -95,7 +116,7 @@ public class MapReportCardPagerAdapter extends PagerAdapter implements IMapRepor
                 fragment.showReportCardListDialog(reportCardDataList.get(position).getRepId());
             }
         });
-        reportCardViewArray[position] = report_card_view;
+        reportCardViewArrayOrigin[position] = report_card_view;
         return view;
     }
 

@@ -5,7 +5,7 @@ import com.limefriends.molde.entity.comment.CommentEntity;
 import com.limefriends.molde.entity.comment.CommentResponseInfoEntity;
 import com.limefriends.molde.entity.comment.ReportedCommentEntity;
 import com.limefriends.molde.entity.comment.ReportedCommentResponseInfoEntity;
-import com.limefriends.molde.entity.faq.FaqEntitiy;
+import com.limefriends.molde.entity.faq.FaqEntity;
 import com.limefriends.molde.entity.faq.FaqResponseInfoEntity;
 import com.limefriends.molde.entity.favorite.FavoriteEntity;
 import com.limefriends.molde.entity.favorite.FavoriteResponseInfoEntity;
@@ -155,10 +155,10 @@ public class FromSchemaToEntitiy {
     /**
      * faq
      */
-    public static List<FaqEntitiy> faq(List<FaqResponseInfoEntity> schemas) {
-        List<FaqEntitiy> entities = new ArrayList<>();
+    public static List<FaqEntity> faq(List<FaqResponseInfoEntity> schemas) {
+        List<FaqEntity> entities = new ArrayList<>();
         for (FaqResponseInfoEntity schema : schemas) {
-            entities.add(new FaqEntitiy(
+            entities.add(new FaqEntity(
                     schema.getFaqId(),
                     schema.getUserId(),
                     schema.getUserName(),

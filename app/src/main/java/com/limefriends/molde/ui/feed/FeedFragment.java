@@ -12,7 +12,8 @@ import android.widget.ToggleButton;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.limefriends.molde.comm.MoldeApplication;
-import com.limefriends.molde.comm.custom.recyclerview.AddOnScrollRecyclerView;
+import com.limefriends.molde.comm.custom.addOnListview.AddOnScrollRecyclerView;
+import com.limefriends.molde.comm.custom.addOnListview.OnLoadMoreListener;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.feed.FeedEntity;
 import com.limefriends.molde.entity.feed.FeedResponseInfoEntityList;
@@ -111,7 +112,7 @@ public class FeedFragment extends Fragment implements FeedAdapter.OnClickFeedIte
         }
         feed_list.setAdapter(feedAdapter);
         feed_list.setLayoutManager(new LinearLayoutManager(getContext()), false);
-        feed_list.setOnLoadMoreListener(new AddOnScrollRecyclerView.OnLoadMoreListener() {
+        feed_list.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void loadMore() {
                 loadFeedData(feedStandard, PER_PAGE, currentPage);

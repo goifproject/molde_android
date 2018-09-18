@@ -16,7 +16,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.limefriends.molde.comm.MoldeApplication;
 import com.limefriends.molde.R;
 import com.limefriends.molde.ui.mypage.comment.MyCommentActivity;
@@ -28,6 +30,7 @@ import com.limefriends.molde.ui.mypage.settings.SettingsActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.limefriends.molde.comm.Constant.MyPage.*;
 
@@ -35,7 +38,7 @@ import static com.limefriends.molde.comm.Constant.MyPage.*;
 public class MyPageFragment extends Fragment {
 
     @BindView(R.id.mypage_profile_image)
-    ImageView mypage_profile_image;
+    CircleImageView mypage_profile_image;
     @BindView(R.id.mypage_profile_name)
     TextView mypage_profile_name;
     @BindView(R.id.mypage_setting_button)
@@ -77,13 +80,25 @@ public class MyPageFragment extends Fragment {
     private void setupViews(View view) {
         ButterKnife.bind(this, view);
         if (mAuth.getCurrentUser() != null) {
+            FirebaseUser user = mAuth.getCurrentUser();
             mypage_log_in_out_button.setText(getText(R.string.signout));
+            if (user.getDisplayName() != null) {
+                mypage_profile_name.setText(user.getDisplayName());
+            } else {
+                mypage_profile_name.setText(user.getEmail());
+            }
+            if (user.getPhotoUrl() != null) {
+                Glide.with(this)
+                        .load(user.getPhotoUrl())
+                        .into(mypage_profile_image);
+            }
         } else {
             mypage_log_in_out_button.setText(getText(R.string.signin));
         }
     }
 
     private void setupListeners() {
+
         // 설정페이지로 이동
         mypage_setting_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,7 +108,7 @@ public class MyPageFragment extends Fragment {
             }
         });
 
-        //문의하기 버튼
+        // 문의하기 버튼
         mypage_faq_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,7 +147,7 @@ public class MyPageFragment extends Fragment {
             }
         });
 
-        //내 스크랩
+        // 내 스크랩
         mypage_scrap_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,14 +160,14 @@ public class MyPageFragment extends Fragment {
             }
         });
 
-        //로그인 페이지 OR 로그아웃
+        // 로그인 페이지 OR 로그아웃
         mypage_log_in_out_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mypage_log_in_out_button.getText().equals(getText(R.string.signout))) {
                     AlertDialog dialog = new AlertDialog.Builder(getContext())
                             .setTitle(getText(R.string.dialog_title_signout))
-                            .setMessage(getText(R.string.dialog_title_signout))
+                            .setMessage(getText(R.string.dialog_msg_signout))
                             .setPositiveButton(getText(R.string.yes), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -161,6 +176,7 @@ public class MyPageFragment extends Fragment {
                                     snackBar(getText(R.string.snackbar_signed_out).toString());
                                 }
                             })
+                            .setNegativeButton("아니오", null)
                             .create();
                     dialog.show();
                 } else {
@@ -183,6 +199,17 @@ public class MyPageFragment extends Fragment {
                     break;
             }
             mypage_log_in_out_button.setText(getText(R.string.signout));
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            if (user.getDisplayName() != null) {
+                mypage_profile_name.setText(user.getDisplayName());
+            } else {
+                mypage_profile_name.setText(user.getEmail());
+            }
+            if (user.getPhotoUrl() != null) {
+                Glide.with(this)
+                        .load(user.getPhotoUrl())
+                        .into(mypage_profile_image);
+            }
         }
     }
 

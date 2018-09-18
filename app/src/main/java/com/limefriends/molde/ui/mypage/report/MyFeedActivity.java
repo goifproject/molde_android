@@ -11,7 +11,9 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.limefriends.molde.R;
-import com.limefriends.molde.comm.custom.recyclerview.AddOnScrollRecyclerView;
+import com.limefriends.molde.comm.Constant;
+import com.limefriends.molde.comm.custom.addOnListview.AddOnScrollRecyclerView;
+import com.limefriends.molde.comm.custom.addOnListview.OnLoadMoreListener;
 import com.limefriends.molde.comm.utils.PreferenceUtil;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.feed.FeedEntity;
@@ -55,7 +57,7 @@ public class MyFeedActivity extends AppCompatActivity implements MyFeedAdapter.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_feed);
 
-        authority = PreferenceUtil.getLong(this, PREF_KEY_AUTHORITY);
+        authority = PreferenceUtil.getLong(this, PREF_KEY_AUTHORITY, Constant.Authority.GUEST);
 
         userId = FirebaseAuth.getInstance().getUid();
 
@@ -85,7 +87,7 @@ public class MyFeedActivity extends AppCompatActivity implements MyFeedAdapter.O
         reportAdapter = new MyFeedAdapter(this, this);
         myReport_recyclerView.setAdapter(reportAdapter);
         myReport_recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()), false);
-        myReport_recyclerView.setOnLoadMoreListener(new AddOnScrollRecyclerView.OnLoadMoreListener() {
+        myReport_recyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void loadMore() {
                 loadMyReport(PER_PAGE, currentPage);

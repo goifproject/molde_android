@@ -2,6 +2,7 @@ package com.limefriends.molde.ui.map.main.reportCard;
 
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 
 import static com.limefriends.molde.ui.map.main.reportCard.IMapReportCardPagerAdapter.MAX_ELEVATION_FACTOR;
 
@@ -12,20 +13,25 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener {
     private IMapReportCardPagerAdapter mAdapter;
     private float mLastOffset;
     private boolean mScalingEnabled;
+    private int currentPage;
 
     private OnPageSelectedCallback callback;
 
     public interface OnPageSelectedCallback {
         void applyReportCardInfo(int position);
+        int getCardItemCount();
+        void loadData();
     }
 
     public void setCallback(OnPageSelectedCallback callback) {
         this.callback = callback;
     }
 
-    public ShadowTransformer(ViewPager viewPager, IMapReportCardPagerAdapter adapter, OnPageSelectedCallback callback) {
+    public ShadowTransformer(ViewPager viewPager,
+                             IMapReportCardPagerAdapter adapter,
+                             OnPageSelectedCallback callback) {
         mViewPager = viewPager;
-        viewPager.addOnPageChangeListener(this);
+        // viewPager.addOnPageChangeListener(this);
         mAdapter = adapter;
         this.callback = callback;
     }
@@ -112,6 +118,21 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener {
 
     @Override
     public void onPageScrollStateChanged(int state) {
+
+//        switch (state) {
+//            case ViewPager.SCROLL_STATE_SETTLING:
+//                Log.e("호출확인", "SCROLL_STATE_SETTLING");
+//                break;
+//            case ViewPager.SCROLL_STATE_IDLE:
+//                Log.e("호출확인", "SCROLL_STATE_IDLE");
+//                break;
+//        }
+
+        if (state == ViewPager.SCROLL_STATE_IDLE
+                && callback.getCardItemCount()-1 == mViewPager.getCurrentItem()) {
+            callback.loadData();
+
+        }
     }
 
 }

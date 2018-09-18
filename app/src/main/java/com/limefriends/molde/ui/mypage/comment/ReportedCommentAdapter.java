@@ -1,12 +1,14 @@
 package com.limefriends.molde.ui.mypage.comment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -15,6 +17,7 @@ import com.limefriends.molde.R;
 import com.limefriends.molde.comm.utils.DateUitl;
 import com.limefriends.molde.entity.comment.CommentEntity;
 import com.limefriends.molde.ui.magazine.comment.CardNewsCommentActivity;
+import com.limefriends.molde.ui.magazine.detail.CardNewsDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,13 +37,13 @@ public class ReportedCommentAdapter extends RecyclerView.Adapter<ReportedComment
         this.view = view;
     }
 
-    public void addData(CommentEntity data) {
-        dataList.add(data);
+    public void addData(List<CommentEntity> data) {
+        dataList.addAll(data);
         notifyDataSetChanged();
     }
 
-    public void addData(List<CommentEntity> data) {
-        dataList.addAll(data);
+    public void deleteComment(int position) {
+        dataList.remove(position);
         notifyDataSetChanged();
     }
 
@@ -53,7 +56,7 @@ public class ReportedCommentAdapter extends RecyclerView.Adapter<ReportedComment
     @Override
     public void onBindViewHolder(ReportedCommentAdapter.ViewHolder holder, int position) {
         CommentEntity cardNewsCommentEntity = dataList.get(position);
-        Glide.with(context).load(R.drawable.img_placeholder_profile)
+        Glide.with(context).load(R.drawable.molde_logo)
                 .bitmapTransform(new CropCircleTransformation(context))
                 .into(holder.img_comment_profile);
         holder.txt_comment_user.setText(cardNewsCommentEntity.getUserName());
@@ -61,6 +64,9 @@ public class ReportedCommentAdapter extends RecyclerView.Adapter<ReportedComment
                 DateUitl.fromLongToDate(cardNewsCommentEntity.getCommDate()));
         holder.txt_comment_content.setText(cardNewsCommentEntity.getComment());
         holder.commentId = dataList.get(position).getCommId();
+        holder.img_comment_siren.setBackgroundResource(R.drawable.ic_comment_siren_on);
+        holder.position = position;
+        holder.cardNewsId = cardNewsCommentEntity.getNewsId();
     }
 
     @Override
@@ -70,6 +76,8 @@ public class ReportedCommentAdapter extends RecyclerView.Adapter<ReportedComment
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.cardnews_comment_container)
+        RelativeLayout cardnews_comment_container;
         @BindView(R.id.comment_profile_image)
         ImageView img_comment_profile;
         @BindView(R.id.comment_user_name)
@@ -82,6 +90,8 @@ public class ReportedCommentAdapter extends RecyclerView.Adapter<ReportedComment
         ToggleButton img_comment_siren;
 
         int commentId;
+        int position;
+        int cardNewsId;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -94,9 +104,17 @@ public class ReportedCommentAdapter extends RecyclerView.Adapter<ReportedComment
                     .setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            view.showDeleteCommentDialog(commentId);
+                            view.showDeleteCommentDialog(position, commentId);
                         }
                     });
+            cardnews_comment_container.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), CardNewsDetailActivity.class);
+                    intent.putExtra("cardNewsId", cardNewsId);
+                }
+            });
         }
+
     }
 }

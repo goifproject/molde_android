@@ -8,19 +8,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.limefriends.molde.R;
-import com.limefriends.molde.entity.FromSchemaToEntitiy;
-import com.limefriends.molde.entity.faq.FaqEntitiy;
-import com.limefriends.molde.entity.faq.FaqResponseInfoEntityList;
-import com.limefriends.molde.remote.MoldeRestfulService;
-import com.limefriends.molde.remote.MoldeNetwork;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class FaQActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -51,8 +41,6 @@ public class FaQActivity extends AppCompatActivity implements View.OnClickListen
         setContentView(R.layout.activity_faq);
 
         setupViews();
-
-        loadFaq();
     }
 
     //-----
@@ -131,29 +119,4 @@ public class FaQActivity extends AppCompatActivity implements View.OnClickListen
         return false;
     }
 
-    //-----
-    // Network
-    //-----
-
-    private void loadFaq() {
-
-        MoldeRestfulService.Faq faqService
-                = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Faq.class);
-
-        Call<FaqResponseInfoEntityList> call = faqService.getMyFaqList();
-
-        call.enqueue(new Callback<FaqResponseInfoEntityList>() {
-            @Override
-            public void onResponse(Call<FaqResponseInfoEntityList> call, Response<FaqResponseInfoEntityList> response) {
-                if (response.isSuccessful()) {
-                    List<FaqEntitiy> entitiys = FromSchemaToEntitiy.faq(response.body().getData());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<FaqResponseInfoEntityList> call, Throwable t) {
-
-            }
-        });
-    }
 }

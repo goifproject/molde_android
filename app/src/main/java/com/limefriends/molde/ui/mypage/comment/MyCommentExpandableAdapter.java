@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.limefriends.molde.R;
 import com.limefriends.molde.comm.Constant;
+import com.limefriends.molde.comm.utils.DateUitl;
 import com.limefriends.molde.entity.comment.CommentEntity;
 import com.limefriends.molde.entity.news.CardNewsEntity;
 
@@ -21,7 +22,6 @@ public class MyCommentExpandableAdapter extends BaseExpandableListAdapter {
     List<CardNewsEntity> newsEntityList = new ArrayList<>();
 
     private OnItemClickCallback callback;
-    private long authority;
 
     public interface OnItemClickCallback {
         void onParentItemClick(int groupPosition, int newsId);
@@ -30,10 +30,10 @@ public class MyCommentExpandableAdapter extends BaseExpandableListAdapter {
 
     MyCommentExpandableAdapter(OnItemClickCallback callback) {
         this.callback = callback;
-        this.authority = authority;
     }
 
-    public void setData(List<CardNewsEntity> newsEntityList) {
+    public void addAll(List<CardNewsEntity> newsEntityList) {
+        // newsEntityList.addAll(newsEntityList);
         this.newsEntityList = newsEntityList;
         notifyDataSetChanged();
     }
@@ -106,10 +106,12 @@ public class MyCommentExpandableAdapter extends BaseExpandableListAdapter {
 
         TextView myComment_comment = view.findViewById(R.id.myComment_comment);
 
-        ImageView myComment_menu = view.findViewById(R.id.myComment_menu);
 
-        myComment_date.setText(newsEntityList.get(groupPosition).getComments().get(childPosition).getCommDate());
-        myComment_comment.setText(newsEntityList.get(groupPosition).getComments().get(childPosition).getComment());
+
+        CommentEntity comment = newsEntityList.get(groupPosition).getComments().get(childPosition);
+
+        myComment_date.setText(DateUitl.fromLongToDate(comment.getCommDate()));
+        myComment_comment.setText(comment.getComment());
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override

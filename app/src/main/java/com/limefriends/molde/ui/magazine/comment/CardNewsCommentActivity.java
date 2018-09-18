@@ -20,7 +20,8 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.limefriends.molde.R;
 import com.limefriends.molde.comm.MoldeApplication;
-import com.limefriends.molde.comm.custom.recyclerview.AddOnScrollRecyclerView;
+import com.limefriends.molde.comm.custom.addOnListview.AddOnScrollRecyclerView;
+import com.limefriends.molde.comm.custom.addOnListview.OnLoadMoreListener;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.comment.CommentEntity;
 import com.limefriends.molde.entity.comment.CommentResponseInfoEntityList;
@@ -131,7 +132,7 @@ public class CardNewsCommentActivity extends AppCompatActivity {
                 = new CardNewsCommentRecyclerAdapter(this, this);
         comment_list_view.setAdapter(cardNewsCommentRecyclerAdapter);
         comment_list_view.setLayoutManager(new LinearLayoutManager(this), false);
-        comment_list_view.setOnLoadMoreListener(new AddOnScrollRecyclerView.OnLoadMoreListener() {
+        comment_list_view.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void loadMore() {
                 loadComment(cardNewsId, PER_PAGE, currentPage);

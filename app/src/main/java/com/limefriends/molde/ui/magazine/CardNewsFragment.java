@@ -10,7 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.limefriends.molde.comm.custom.recyclerview.AddOnScrollRecyclerView;
+import com.limefriends.molde.comm.custom.addOnListview.AddOnScrollRecyclerView;
+import com.limefriends.molde.comm.custom.addOnListview.OnLoadMoreListener;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.news.CardNewsEntity;
 import com.limefriends.molde.entity.news.CardNewsResponseInfoEntityList;
@@ -122,7 +123,7 @@ public class CardNewsFragment extends Fragment {
                 new GridLayoutManager(getContext(), 2), true);
         // 3. loadMore
         cardnews_recyclerView.setOnLoadMoreListener(
-                new AddOnScrollRecyclerView.OnLoadMoreListener() {
+                new OnLoadMoreListener() {
                     @Override
                     public void loadMore() {
                         loadMagazine(PER_PAGE, currentPage);

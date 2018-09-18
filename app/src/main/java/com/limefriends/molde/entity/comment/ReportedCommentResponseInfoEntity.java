@@ -7,30 +7,30 @@ public class ReportedCommentResponseInfoEntity {
 
     @SerializedName("comm_rep_id")
     @Expose
-    private Integer commRepId;
+    private int commRepId;
     @SerializedName("comm_id")
     @Expose
-    private Integer commId;
+    private int commId;
     @SerializedName("user_id")
     @Expose
     private String userId;
     @SerializedName("comm_rep_date")
     @Expose
-    private Integer commRepDate;
+    private String commRepDate;
 
-    public Integer getCommRepId() {
+    public int getCommRepId() {
         return commRepId;
     }
 
-    public void setCommRepId(Integer commRepId) {
+    public void setCommRepId(int commRepId) {
         this.commRepId = commRepId;
     }
 
-    public Integer getCommId() {
+    public int getCommId() {
         return commId;
     }
 
-    public void setCommId(Integer commId) {
+    public void setCommId(int commId) {
         this.commId = commId;
     }
 
@@ -42,11 +42,11 @@ public class ReportedCommentResponseInfoEntity {
         this.userId = userId;
     }
 
-    public Integer getCommRepDate() {
+    public String getCommRepDate() {
         return commRepDate;
     }
 
-    public void setCommRepDate(Integer commRepDate) {
+    public void setCommRepDate(String commRepDate) {
         this.commRepDate = commRepDate;
     }
 

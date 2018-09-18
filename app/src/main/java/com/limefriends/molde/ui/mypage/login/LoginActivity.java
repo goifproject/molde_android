@@ -112,6 +112,7 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         loginProgressDialog = new ProgressDialog(LoginActivity.this);
         loginProgressDialog.setTitle("로그인 중입니다...");
+
     }
 
     private void setupListener() {
@@ -221,7 +222,8 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        PreferenceUtil.putLong(LoginActivity.this, "authority", (long) documentSnapshot.get("authority"));
+                        PreferenceUtil.putLong(LoginActivity.this,
+                                "authority", (long) documentSnapshot.get("authority"));
                         loginProgressDialog.dismiss();
                         setResult(CONNECT_GOOGLE_AUTH_CODE);
                         finish();
@@ -254,7 +256,8 @@ public class LoginActivity extends AppCompatActivity {
         facebookCallbackManager = CallbackManager.Factory.create();
         final LoginButton facebookLoginButton = findViewById(R.id.in_facebook_login_button);
         facebookLoginButton.setReadPermissions("email", "public_profile");
-        facebookLoginButton.registerCallback(facebookCallbackManager, new FacebookCallback<LoginResult>() {
+        facebookLoginButton.registerCallback(facebookCallbackManager,
+                new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult facebookLoginResult) {
                 Log.e("facebook", "facebook:onSuccess:" + facebookLoginResult);
@@ -295,11 +298,14 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             // TODO 기존에 존재하는 아이디일 경우
                             Log.e("facebook", task.getException().getMessage());
-                            if (task.getException().getMessage().startsWith("An account already exists with the same email address")) {
+                            if (task.getException().getMessage().startsWith(
+                                    "An account already exists with the same email address")) {
                                 Log.e("facebook", "이미 있어");
-                                Snackbar.make(findViewById(R.id.mypage_login_layout), "이미 가입된 아이디입니다", Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(findViewById(R.id.mypage_login_layout),
+                                        "이미 가입된 아이디입니다", Snackbar.LENGTH_SHORT).show();
                             } else {
-                                Snackbar.make(findViewById(R.id.mypage_login_layout), "로그인이 정상적으로 처리되지 않았습니다.", Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(findViewById(R.id.mypage_login_layout),
+                                        "로그인이 정상적으로 처리되지 않았습니다.", Snackbar.LENGTH_SHORT).show();
                             }
                             Log.e("facebook", "signInWithCredential:failure", task.getException());
                         }

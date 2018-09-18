@@ -35,7 +35,7 @@
         android:textSize="10sp"
         android:textStyle="bold" />
 
-    <com.limefriends.molde.comm.custom.recyclerview.AddOnScrollRecyclerView
+    <com.limefriends.molde.comm.custom.addOnListview.AddOnScrollRecyclerView
         android:id="@+id/feed_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

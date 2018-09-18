@@ -70,11 +70,15 @@ public class MoldeRestfulApi {
 
         public static final String GET_REPORTED_COMMENT_API = "/v1/commreport";
 
+        public static final String GET_COMMENT_BY_COMMENTID_API = "/v1/commenti";
+
         public static final String POST_COMMENT_API = "/v1/comment";
 
         public static final String PUT_COMMENT_API = "/v1/comment";
 
         public static final String DELETE_COMMENT_API = "/v1/comment";
+
+        public static final String DELETE_REPORTED_COMMENT_API = "/v1/commentadmin";
     }
 
     /**

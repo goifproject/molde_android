@@ -2,31 +2,31 @@ package com.limefriends.molde.entity.comment;
 
 public class ReportedCommentEntity {
 
-    private Integer commRepId;
-    private Integer commId;
+    private int commRepId;
+    private int commId;
     private String userId;
-    private Integer commRepDate;
+    private String commRepDate;
 
-    public ReportedCommentEntity(Integer commRepId, Integer commId, String userId, Integer commRepDate) {
+    public ReportedCommentEntity(int commRepId, int commId, String userId, String commRepDate) {
         this.commRepId = commRepId;
         this.commId = commId;
         this.userId = userId;
         this.commRepDate = commRepDate;
     }
 
-    public Integer getCommRepId() {
+    public int getCommRepId() {
         return commRepId;
     }
 
-    public void setCommRepId(Integer commRepId) {
+    public void setCommRepId(int commRepId) {
         this.commRepId = commRepId;
     }
 
-    public Integer getCommId() {
+    public int getCommId() {
         return commId;
     }
 
-    public void setCommId(Integer commId) {
+    public void setCommId(int commId) {
         this.commId = commId;
     }
 
@@ -38,11 +38,11 @@ public class ReportedCommentEntity {
         this.userId = userId;
     }
 
-    public Integer getCommRepDate() {
+    public String getCommRepDate() {
         return commRepDate;
     }
 
-    public void setCommRepDate(Integer commRepDate) {
+    public void setCommRepDate(String commRepDate) {
         this.commRepDate = commRepDate;
     }
 

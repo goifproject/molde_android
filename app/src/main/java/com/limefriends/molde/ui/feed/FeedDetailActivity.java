@@ -159,7 +159,7 @@ public class FeedDetailActivity extends AppCompatActivity {
 
         position = getIntent().getIntExtra(EXTRA_KEY_POSITION, 0);
 
-        authority = PreferenceUtil.getLong(this, PREF_KEY_AUTHORITY);
+        authority = PreferenceUtil.getLong(this, PREF_KEY_AUTHORITY, Constant.Authority.GUEST);
     }
 
     private void setupViews() {

@@ -11,6 +11,7 @@ import android.transition.Slide;
 import android.transition.TransitionInflater;
 import android.view.MenuItem;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.limefriends.molde.R;
 import com.limefriends.molde.comm.helper.BottomNavigationViewHelper;
 import com.limefriends.molde.entity.feed.FeedEntity;
@@ -22,8 +23,13 @@ import com.limefriends.molde.ui.mypage.MyPageFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.limefriends.molde.comm.Constant.MoldeMain.FROM_LAUNCHER;
+import static com.limefriends.molde.comm.Constant.MoldeMain.FROM_NOTIFICATION;
+
 public class MoldeMainActivity extends AppCompatActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener {
+
+
 
     public interface OnKeyBackPressedListener {
         void onBackKey();
@@ -40,7 +46,11 @@ public class MoldeMainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
+        fragmentSparseArray = new SparseArrayCompat();
+
         setupView();
     }
 
@@ -50,11 +60,15 @@ public class MoldeMainActivity extends AppCompatActivity
         ButterKnife.bind(this);
         BottomNavigationViewHelper.disableShiftMode(navigation);
         setupListener();
-        if (fragment == null && fragmentSparseArray == null) {
-            fragmentSparseArray = new SparseArrayCompat();
-            fragment = new MapFragment();
+
+        int origin = getIntent().getIntExtra("origin", 0);
+
+        if (origin == FROM_LAUNCHER) {
+            navigation.setSelectedItemId(R.id.main_menu_map);
         }
-        navigation.setSelectedItemId(R.id.main_menu_map);
+        else if (origin == FROM_NOTIFICATION) {
+            navigation.setSelectedItemId(R.id.main_menu_feed);
+        }
     }
 
     private void setupListener() {

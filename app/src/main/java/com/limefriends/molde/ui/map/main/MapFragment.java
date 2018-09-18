@@ -28,6 +28,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -128,6 +129,8 @@ public class MapFragment extends Fragment implements
      */
     @BindView(R.id.map_view_progress)
     FrameLayout map_view_progress;
+    @BindView(R.id.progress_loading)
+    ProgressBar progress_loading;
 
     /**
      * 하단 카드뷰
@@ -141,6 +144,8 @@ public class MapFragment extends Fragment implements
     public static final int ZOOM_FEED_MARKER = 15;
     public static final int REQ_SEARCH_MAP = 999;
     public static final int REQ_FAVORITE = 996;
+    private static final int PER_PAGE = 10;
+    private static final int FIRST_PAGE = 0;
 
     public static final int MARKER_MY_LOCATION = -1;
     public static final int MARKER_MY_LOCATION_HISTORY = -2;
@@ -149,11 +154,13 @@ public class MapFragment extends Fragment implements
 
     long a;
     private int currentMarkerPosition = -1;
+    private int currentPage = FIRST_PAGE;
+    private int reportCardPosition = 0;
     private double lat = 0.0;
     private double lng = 0.0;
     private boolean isFirst = true;
     private boolean isBackBtnClicked = false;
-    private boolean isInit = false;
+    private boolean isLoading = false;
     private boolean isMyFavoriteActive = false;
     private boolean fromFeed = false;
     private boolean hasMoreToLoad = true;
@@ -174,10 +181,10 @@ public class MapFragment extends Fragment implements
     @Override
     public void onAttach(Context context) {
         /*
-            * onAttach 에서는 context 를 넘겨받기 때문에 인터페이스 연결할 사항을 처리한다
-            * 다만 onCreateView 에서 View 를 binding 하기 이전까지는 모든 뷰가 null 이기 때문에 해당 사항을 처리하려면
-            * onViewCrated 에서 해야 함
-            * add 할 때 호출됨
+         * onAttach 에서는 context 를 넘겨받기 때문에 인터페이스 연결할 사항을 처리한다
+         * 다만 onCreateView 에서 View 를 binding 하기 이전까지는 모든 뷰가 null 이기 때문에 해당 사항을 처리하려면
+         * onViewCrated 에서 해야 함
+         * add 할 때 호출됨
          */
         super.onAttach(context);
         ((MoldeMainActivity) context).setOnKeyBackPressedListener(this);
@@ -288,7 +295,8 @@ public class MapFragment extends Fragment implements
                 = new ShadowTransformer(report_card_view_pager, reportCardAdapter, this);
         shadowTransformer.enableScaling(true);
         report_card_view_pager.setAdapter(reportCardAdapter);
-        report_card_view_pager.setOnPageChangeListener(shadowTransformer);
+        report_card_view_pager.addOnPageChangeListener(shadowTransformer);
+
     }
 
     // 하단 뷰페이저 숨기기
@@ -444,7 +452,6 @@ public class MapFragment extends Fragment implements
         }
     }
 
-
     /**
      * 맵 세팅2 - 동적 변화
      */
@@ -484,7 +491,6 @@ public class MapFragment extends Fragment implements
         feedMarker.showInfoWindow();
         loadData(feedLocation.latitude, feedLocation.longitude);
     }
-
 
 
     // 마커 아이콘 사이즈업
@@ -547,7 +553,7 @@ public class MapFragment extends Fragment implements
         }
         // 피드에서 데이터를 받아올 경우
         else if (fromFeed) {
-            isLoading(true);
+
             FeedEntity feedEntity = ((MoldeMainActivity) getActivity()).getFeedEntity();
             moveCamera(new LatLng(feedEntity.getRepLat(),
                     feedEntity.getRepLon()), ZOOM_FEED_MARKER);
@@ -572,11 +578,25 @@ public class MapFragment extends Fragment implements
         return feedService;
     }
 
+    @Override
+    public void loadData() {
+        loadData(lat, lng);
+    }
+
     // 네트워크에서 피드 데이터 받아옴
     private void loadData(final double lat, final double lng) {
 
+        if (!hasMoreToLoad) return;
+
+        if (isLoading) {
+            return;
+        } else {
+            isLoading(true);
+        }
+
         Call<FeedResponseInfoEntityList> call
-                = getFeedService().getFeedByDistance(lat, lng);
+                = getFeedService().getPagedFeedByDistance(lat, lng, PER_PAGE, currentPage);
+                // = getFeedService().getFeedByDistance(lat, lng);
 
         call.enqueue(new Callback<FeedResponseInfoEntityList>() {
             @Override
@@ -585,8 +605,10 @@ public class MapFragment extends Fragment implements
 
                 List<FeedResponseInfoEntity> entityList = response.body().getData();
 
+                // 피드가 존재하는 경우
                 if (entityList.size() != 0) {
-
+                    // 피드를 추가로 불러왔을 때 위치
+                    reportCardPosition = mapReportCardItemList.size();
                     for (int i = 0; i < entityList.size(); i++) {
                         FeedResponseInfoEntity entity = entityList.get(i);
                         LatLng location = new LatLng(entity.getRepLat(), entity.getRepLon());
@@ -594,7 +616,6 @@ public class MapFragment extends Fragment implements
                         switch (entityList.get(i).getRepState()) {
                             // TODO 데이터 제대로 들어가면 변경할 것
                             case RECEIVING:
-                                Log.e("호출 확인", "RECEIVING");
                                 continue;
                             case ACCEPTED:
                                 marker = addMarker(location, entity.getRepDetailAddr(),
@@ -613,7 +634,7 @@ public class MapFragment extends Fragment implements
                                 break;
                         }
                         reportInfoMarkers.add(marker);
-                        marker.setTag(reportInfoMarkers.size()-1);
+                        marker.setTag(reportInfoMarkers.size() - 1);
                         mapReportCardItemList.add(
                                 new MapReportCardItem(
                                         entity.getRepContents(),
@@ -623,16 +644,24 @@ public class MapFragment extends Fragment implements
                                         entity.getRepDate(),
                                         entity.getRepImg().get(0).getFilepath()));
                     }
-
+                    // 지도에 추가할 피드가 있는 경우
                     if (reportInfoMarkers.size() != 0) {
 
                         updateData(mapReportCardItemList);
 
-                        applyReportCardInfo(0);
+                        applyReportCardInfo(reportCardPosition);
 
-                        showCardView();
+                        if (reportCardPosition == 0) showCardView();
 
-                    } else {
+                        currentPage++;
+
+                        if (entityList.size() < PER_PAGE) {
+                            hasMoreToLoad(false);
+                        }
+
+                    }
+                    // 지도에 추가할 피드가 없는 경우
+                    else {
 
                         snackBar(getText(R.string.toast_no_feed_place).toString());
 
@@ -640,7 +669,9 @@ public class MapFragment extends Fragment implements
 
                     }
 
-                } else {
+                }
+                // 피드가 아예 없는 경우
+                else {
 
                     snackBar(getText(R.string.toast_no_feed_place).toString());
 
@@ -650,7 +681,6 @@ public class MapFragment extends Fragment implements
                 isFirst(false);
 
                 isLoading(false);
-
             }
 
             @Override
@@ -664,7 +694,7 @@ public class MapFragment extends Fragment implements
 
     // 받아온 데이터로 하단 뷰페이저 갱신
     private void updateData(List<MapReportCardItem> data) {
-        reportCardAdapter.setData(data);
+        reportCardAdapter.addAll(data);
     }
 
     // 새로 받아올 때 기존 데이터 캐시 제거
@@ -739,6 +769,13 @@ public class MapFragment extends Fragment implements
         marker.showInfoWindow();
         report_card_view_pager.setCurrentItem(currentMarkerPosition, false);
         enlargeMarkerIcon(marker, item.getStatus());
+
+
+    }
+
+    @Override
+    public int getCardItemCount() {
+        return reportInfoMarkers.size();
     }
 
     // 즐겨찾기 콜백 함수
@@ -766,7 +803,7 @@ public class MapFragment extends Fragment implements
     // gps 사용 여부, 권한확인 후 현재 위치 리스너 세팅
     public void getMyLocation() {
 
-        isLoading(true);
+        showProgress();
 
         a = System.currentTimeMillis();
 
@@ -852,7 +889,7 @@ public class MapFragment extends Fragment implements
     private void removeLocationListener() {
         if (manager != null && myLocationListener != null) {
             manager.removeUpdates(myLocationListener);
-            hideProgress();
+            // hideProgress();
         }
     }
 
@@ -931,15 +968,19 @@ public class MapFragment extends Fragment implements
     private void isLoading(boolean isLoading) {
         if (isLoading) {
             showProgress();
-        }  else {
+        } else {
             hideProgress();
         }
-        isInit = isLoading;
+        this.isLoading = isLoading;
+    }
+
+    private void hasMoreToLoad(boolean hasMoreToLoad) {
+        this.hasMoreToLoad = hasMoreToLoad;
     }
 
     @Override
     public void onBackKey() {
-        if (!isBackBtnClicked && !isInit) {
+        if (!isBackBtnClicked && !isLoading) {
             hideCardView();
         }
     }

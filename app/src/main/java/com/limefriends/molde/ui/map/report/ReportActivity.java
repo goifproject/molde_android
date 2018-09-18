@@ -140,7 +140,7 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_report);
 
         // 권한 설정
-        authority = (int) PreferenceUtil.getLong(this, PREF_KEY_AUTHORITY);
+        authority = (int) PreferenceUtil.getLong(this, PREF_KEY_AUTHORITY, Constant.Authority.GUEST);
 
         setupViews();
 

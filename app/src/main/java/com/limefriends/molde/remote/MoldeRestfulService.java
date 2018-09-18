@@ -123,9 +123,6 @@ public interface MoldeRestfulService {
          *
          * @return
          */
-        @GET(MoldeRestfulApi.Comment.GET_COMMENT_BY_USERID_API)
-        Call<CommentResponseInfoEntityList> getComment(@Query("commentId") int commentId);
-
         @GET(MoldeRestfulApi.Comment.GET_COMMENT_BY_NEWSID_API)
         Call<CommentResponseInfoEntityList> getNewsComment(@Query("cardNewsId") int newsId,
                                                            @Query("perPage") int perPage,
@@ -140,6 +137,10 @@ public interface MoldeRestfulService {
         Call<ReportedCommentResponseInfoEntityList> getReportedComment(
                 @Query("perPage") int perPage,
                 @Query("page") int page);
+
+        @GET(MoldeRestfulApi.Comment.GET_COMMENT_BY_COMMENTID_API)
+        Call<CommentResponseInfoEntityList> getReportedCommentDetail(
+                @Query("commentId") int commentId);
 
         @FormUrlEncoded
         @POST(MoldeRestfulApi.Comment.POST_COMMENT_API)
@@ -161,8 +162,7 @@ public interface MoldeRestfulService {
 
         @FormUrlEncoded
         @HTTP(method = "DELETE", path = MoldeRestfulApi.Comment.DELETE_COMMENT_API, hasBody = true)
-        Call<Result> deleteReportedComment(@Field("commentUserId") String commentUserId,
-                                           @Field("commentId") int commentId);
+        Call<Result> deleteReportedComment(@Field("commentId") int commentUserId);
     }
 
     interface Faq {
