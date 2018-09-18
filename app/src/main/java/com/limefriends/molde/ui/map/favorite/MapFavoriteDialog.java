@@ -7,14 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.google.android.gms.maps.model.Marker;
 import com.limefriends.molde.R;
@@ -53,17 +50,19 @@ public class MapFavoriteDialog extends BottomSheetDialogFragment {
 
     public MoldeApplyMyFavoriteInfoCallback moldeApplyMyFavoriteInfoCallback;
     public Marker myFavoriteMarker;
+    private String uId;
 
     public interface MoldeApplyMyFavoriteInfoCallback {
         void applyMyFavoriteInfo(String title, String info, Marker marker);
-
         void setMyFavoriteActive(boolean active);
     }
 
     public void setCallback(MoldeApplyMyFavoriteInfoCallback moldeApplyMyFavoriteInfoCallback,
-                            Marker marker) {
+                            Marker marker,
+                            String uId) {
         this.moldeApplyMyFavoriteInfoCallback = moldeApplyMyFavoriteInfoCallback;
-        myFavoriteMarker = marker;
+        this.myFavoriteMarker = marker;
+        this.uId = uId;
     }
 
     @Nullable
@@ -82,32 +81,28 @@ public class MapFavoriteDialog extends BottomSheetDialogFragment {
     private void setupViews(View view) {
 
         ButterKnife.bind(this, view);
-
         Bundle bundle = getArguments();
-
         if (bundle != null) {
-
             my_favorite_marker_title.setText(bundle.getString("markerTitle"));
             my_favorite_marker_info.setText(bundle.getString("markerInfo"));
-
-
             markerLat = bundle.getDouble("markerLat");
             markerLng = bundle.getDouble("markerLng");
-
         }
     }
 
     private void setupListener() {
 
-        my_favorite_marker_modify_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                my_favorite_content.setVisibility(View.GONE);
-                my_favorite_content_modify.setVisibility(View.VISIBLE);
-                my_favorite_modify_title.setText(my_favorite_marker_title.getText());
-                my_favorite_modify_info.setText(my_favorite_marker_info.getText());
-            }
-        });
+        if (my_favorite_marker_title.getText().toString().startsWith("★")) {
+            my_favorite_marker_modify_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    my_favorite_content.setVisibility(View.GONE);
+                    my_favorite_content_modify.setVisibility(View.VISIBLE);
+                    my_favorite_modify_title.setText(my_favorite_marker_title.getText());
+                    my_favorite_modify_info.setText(my_favorite_marker_info.getText());
+                }
+            });
+        }
 
         my_favorite_modify_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,7 +119,6 @@ public class MapFavoriteDialog extends BottomSheetDialogFragment {
                 addToMyFavorite();
             }
         });
-
     }
 
     private void addToMyFavorite() {
@@ -132,9 +126,8 @@ public class MapFavoriteDialog extends BottomSheetDialogFragment {
         MoldeRestfulService.Favorite favoriteService
                 = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Favorite.class);
 
-        // TODO 로그인 할 때 받아놓고 없으면 로그인 페이지로 넘어가도록 해야 한다.
         Call<Result> call = favoriteService.addToMyFavorite(
-                "lkj",
+                uId,
                 my_favorite_marker_title.getText().toString(),
                 my_favorite_marker_info.getText().toString(),
                 markerLat,
@@ -152,7 +145,6 @@ public class MapFavoriteDialog extends BottomSheetDialogFragment {
             @Override
             public void onFailure(Call<Result> call, Throwable t) {
                 Toast.makeText(getContext(), "데이터 전송 실패", Toast.LENGTH_SHORT).show();
-
             }
         });
     }

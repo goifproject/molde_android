@@ -18,7 +18,8 @@
         android:text="최신 업데이트 날짜 안 넘어옴"
         android:textColor="@color/colorInfoTextColor"
         android:textSize="10sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:visibility="gone"/>
 
     <ToggleButton
         android:id="@+id/feed_sort_toggle"
@@ -32,8 +33,7 @@
         android:textColor="@color/colorInfoTextColor"
         android:textOff="@string/feedSortCategory"
         android:textOn="@string/feedSortCategory"
-        android:textSize="10sp"
-        android:textStyle="bold" />
+        android:textSize="10sp" />
 
     <com.limefriends.molde.comm.custom.addOnListview.AddOnScrollRecyclerView
         android:id="@+id/feed_list"

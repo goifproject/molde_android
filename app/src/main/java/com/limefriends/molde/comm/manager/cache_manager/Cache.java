@@ -19,12 +19,13 @@ public class Cache {
 
     public File getCacheDir(Context context) {
         File cacheDir = null;
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            cacheDir = new File(Environment.getExternalStorageDirectory(), "moldeCache");
-            if (!cacheDir.isDirectory()) {
-                cacheDir.mkdirs();
-            }
-        }
+//        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+//            cacheDir = new File(Environment.getExternalStorageDirectory(), "moldeCache");
+//            if (!cacheDir.isDirectory()) {
+//                cacheDir.mkdirs();
+//            }
+//        }
+        cacheDir = new File("moldeCache");
         if (!cacheDir.isDirectory()) {
             cacheDir = context.getCacheDir();
         }
@@ -58,8 +59,7 @@ public class Cache {
     public boolean delete() throws IOException {
         File cacheDir = getCacheDir(context);
         File file = new File(cacheDir, cacheFileName);
-        file.delete();
-        return cacheDir.delete();
+        return file.delete();
     }
 
 }

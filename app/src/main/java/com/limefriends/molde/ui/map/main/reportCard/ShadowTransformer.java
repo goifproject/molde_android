@@ -21,6 +21,7 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener {
         void applyReportCardInfo(int position);
         int getCardItemCount();
         void loadData();
+        void snack(String message);
     }
 
     public void setCallback(OnPageSelectedCallback callback) {
@@ -130,6 +131,7 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener {
 
         if (state == ViewPager.SCROLL_STATE_IDLE
                 && callback.getCardItemCount()-1 == mViewPager.getCurrentItem()) {
+            callback.snack("피드 데이터가 추가되었습니다.");
             callback.loadData();
 
         }

@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="댓글 작성자 안 넘어옴"
-            android:textColor="@color/colorDefaultText"
+            android:textColor="#de000000"
             android:focusable="false"
             android:textSize="14sp" />
 
@@ -48,7 +48,7 @@
             android:layout_toEndOf="@+id/comment_user_name"
             android:text="댓글작성일시 안 넘어옴"
             android:focusable="false"
-            android:textColor="@color/colorDefaultText"
+            android:textColor="#de000000"
             android:textSize="9sp" />
 
         <TextView
@@ -58,7 +58,7 @@
             android:layout_below="@+id/comment_user_name"
             android:text="댓글내용 안 넘어옴"
             android:focusable="false"
-            android:textColor="@color/colorDefaultText"
+            android:textColor="#de000000"
             android:textSize="13sp" />
     </RelativeLayout>
 

@@ -11,7 +11,7 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
         android:layout_margin="4dp"
         android:background="@android:color/transparent"
         android:src="@drawable/ic_map_search_delete" />
@@ -25,9 +25,8 @@
         android:layout_centerInParent="true"
         android:layout_marginStart="16dp"
         android:text="이름 데이터 안 넘어옴"
-        android:textColor="@color/colorLittleDarkGray"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textColor="#646464"
+        android:textSize="12sp" />
 
     <View
         android:layout_width="match_parent"

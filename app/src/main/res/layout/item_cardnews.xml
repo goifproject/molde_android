@@ -32,6 +32,6 @@
         android:layout_gravity="bottom"
         android:text="뉴스 데이터 안 넘어옴"
         android:textColor="@color/colorWhite"
-        android:textSize="13sp" />
+        android:textSize="14sp" />
 
 </android.support.v7.widget.CardView>

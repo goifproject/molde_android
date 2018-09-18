@@ -77,6 +77,10 @@ public class MyFeedAdapter extends RecyclerView.Adapter<MyFeedAdapter.MyPageMyRe
                         context.getResources().getColor(R.color.colorDivision));
                 viewHolder.report_progress_line_second.setBackgroundColor(
                         context.getResources().getColor(R.color.colorDivision));
+                viewHolder.report_progress_text_accepted
+                        .setTextColor(context.getResources().getColor(R.color.colorDivision));
+                viewHolder.report_progress_text_completed
+                        .setTextColor(context.getResources().getColor(R.color.colorDivision));
                 break;
             case Constant.ReportState.ACCEPTED:
                 viewHolder.report_progress_dot_second_yellow
@@ -87,6 +91,10 @@ public class MyFeedAdapter extends RecyclerView.Adapter<MyFeedAdapter.MyPageMyRe
                         context.getResources().getColor(R.color.colorAccent));
                 viewHolder.report_progress_line_second.setBackgroundColor(
                         context.getResources().getColor(R.color.colorDivision));
+                viewHolder.report_progress_text_accepted
+                        .setTextColor(context.getResources().getColor(R.color.colorInfoTextColor));
+                viewHolder.report_progress_text_completed
+                        .setTextColor(context.getResources().getColor(R.color.colorDivision));
                 break;
             case Constant.ReportState.FOUND:
             case Constant.ReportState.CLEAN:
@@ -98,6 +106,10 @@ public class MyFeedAdapter extends RecyclerView.Adapter<MyFeedAdapter.MyPageMyRe
                         context.getResources().getColor(R.color.colorAccent));
                 viewHolder.report_progress_line_second.setBackgroundColor(
                         context.getResources().getColor(R.color.colorAccent));
+                viewHolder.report_progress_text_accepted
+                        .setTextColor(context.getResources().getColor(R.color.colorInfoTextColor));
+                viewHolder.report_progress_text_completed
+                        .setTextColor(context.getResources().getColor(R.color.colorInfoTextColor));
                 break;
         }
         viewHolder.mypage_report_date.setText(DateUitl.fromLongToDate(feed.getRepDate()));
@@ -135,6 +147,11 @@ public class MyFeedAdapter extends RecyclerView.Adapter<MyFeedAdapter.MyPageMyRe
         ImageView report_progress_dot_second_yellow;
         @BindView(R.id.report_progress_dot_third_yellow)
         ImageView report_progress_dot_third_yellow;
+
+        @BindView(R.id.report_progress_text_accepted)
+        TextView report_progress_text_accepted;
+        @BindView(R.id.report_progress_text_completed)
+        TextView report_progress_text_completed;
 
         int position;
 

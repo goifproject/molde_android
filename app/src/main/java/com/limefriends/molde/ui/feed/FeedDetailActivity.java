@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -111,6 +112,16 @@ public class FeedDetailActivity extends AppCompatActivity {
     ImageView myfeed_progress_dot_second_yellow;
     @BindView(R.id.myfeed_progress_dot_third_yellow)
     ImageView myfeed_progress_dot_third_yellow;
+
+    @BindView(R.id.myfeed_progress_text_receiving)
+    TextView myfeed_progress_text_receiving;
+    @BindView(R.id.myfeed_progress_text_accepted)
+    TextView myfeed_progress_text_accepted;
+    @BindView(R.id.myfeed_progress_text_completed)
+    TextView myfeed_progress_text_completed;
+
+    @BindView(R.id.report_detail_response_msg_background)
+    ImageView report_detail_response_msg_background;
 
     // 진행 경과 프로그래스 어드민
     @BindView(R.id.myfeed_progress_line_first_admin)
@@ -298,6 +309,7 @@ public class FeedDetailActivity extends AppCompatActivity {
         siren_found_status.setVisibility(View.INVISIBLE);
     }
 
+
     private void setSirenState(int state) {
         setSirenInvisible();
         String resultText = "";
@@ -316,12 +328,17 @@ public class FeedDetailActivity extends AppCompatActivity {
             case FOUND:
                 siren_found_status.setVisibility(View.VISIBLE);
                 resultText = getText(R.string.report_message_found).toString();
-                progress_checkbox_admin_accepted.setChecked(true);
+                progress_checkbox_admin_accepted.setEnabled(false);
+                progress_checkbox_admin_found.setEnabled(false);
+                progress_checkbox_admin_found.setChecked(true);
                 break;
             case CLEAN:
                 siren_clean_status.setVisibility(View.VISIBLE);
                 resultText = getText(R.string.report_message_clean).toString();
-                progress_checkbox_admin_accepted.setChecked(true);
+                progress_checkbox_admin_accepted.setEnabled(false);
+                progress_checkbox_admin_found.setEnabled(false);
+                progress_checkbox_admin_clean.setEnabled(false);
+                progress_checkbox_admin_clean.setChecked(true);
                 break;
             case DENIED:
                 resultText = getText(R.string.report_message_denied).toString();
@@ -394,41 +411,62 @@ public class FeedDetailActivity extends AppCompatActivity {
                                             getResources().getColor(R.color.colorAccent));
                                     break;
                             }
-                        } else {
-                            switch (entity.getRepState()) {
-                                case RECEIVING:
-                                    myfeed_progress_dot_second_yellow
-                                            .setVisibility(View.INVISIBLE);
-                                    myfeed_progress_dot_third_yellow
-                                            .setVisibility(View.INVISIBLE);
-                                    myfeed_progress_line_first.setBackgroundColor(
-                                            getResources().getColor(R.color.colorDivision));
-                                    myfeed_progress_line_second.setBackgroundColor(
-                                            getResources().getColor(R.color.colorDivision));
-                                    break;
-                                case ACCEPTED:
-                                    myfeed_progress_dot_second_yellow
-                                            .setVisibility(View.VISIBLE);
-                                    myfeed_progress_dot_third_yellow
-                                            .setVisibility(View.INVISIBLE);
-                                    myfeed_progress_line_first.setBackgroundColor(
-                                            getResources().getColor(R.color.colorAccent));
-                                    myfeed_progress_line_second.setBackgroundColor(
-                                            getResources().getColor(R.color.colorDivision));
-                                    break;
-                                case FOUND:
-                                case CLEAN:
-                                    myfeed_progress_dot_second_yellow
-                                            .setVisibility(View.VISIBLE);
-                                    myfeed_progress_dot_third_yellow
-                                            .setVisibility(View.VISIBLE);
-                                    myfeed_progress_line_first.setBackgroundColor(
-                                            getResources().getColor(R.color.colorAccent));
-                                    myfeed_progress_line_second.setBackgroundColor(
-                                            getResources().getColor(R.color.colorAccent));
-                                    break;
-                            }
                         }
+                        switch (entity.getRepState()) {
+                            case RECEIVING:
+                                myfeed_progress_dot_second_yellow
+                                        .setVisibility(View.INVISIBLE);
+                                myfeed_progress_dot_third_yellow
+                                        .setVisibility(View.INVISIBLE);
+                                myfeed_progress_line_first.setBackgroundColor(
+                                        getResources().getColor(R.color.colorDivision));
+                                myfeed_progress_line_second.setBackgroundColor(
+                                        getResources().getColor(R.color.colorDivision));
+                                break;
+                            case ACCEPTED:
+                                myfeed_progress_dot_second_yellow
+                                        .setVisibility(View.VISIBLE);
+                                myfeed_progress_dot_third_yellow
+                                        .setVisibility(View.INVISIBLE);
+                                myfeed_progress_line_first.setBackgroundColor(
+                                        getResources().getColor(R.color.colorAccent));
+                                myfeed_progress_line_second.setBackgroundColor(
+                                        getResources().getColor(R.color.colorDivision));
+                                myfeed_progress_text_accepted
+                                        .setTextColor(getResources().getColor(R.color.colorInfoTextColor));
+                                myfeed_progress_text_accepted
+                                        .setTextSize(
+                                                TypedValue.COMPLEX_UNIT_PX,
+                                                getResources().getDimension(R.dimen.feed_detail_progress));
+                                break;
+                            case FOUND:
+                            case CLEAN:
+                                myfeed_progress_dot_second_yellow
+                                        .setVisibility(View.VISIBLE);
+                                myfeed_progress_dot_third_yellow
+                                        .setVisibility(View.VISIBLE);
+                                myfeed_progress_line_first.setBackgroundColor(
+                                        getResources().getColor(R.color.colorAccent));
+                                myfeed_progress_line_second.setBackgroundColor(
+                                        getResources().getColor(R.color.colorAccent));
+                                myfeed_progress_text_accepted
+                                        .setTextColor(getResources().getColor(R.color.colorInfoTextColor));
+                                myfeed_progress_text_completed
+                                        .setTextColor(getResources().getColor(R.color.colorInfoTextColor));
+                                myfeed_progress_text_accepted
+                                        .setTextSize(
+                                                TypedValue.COMPLEX_UNIT_PX,
+                                                getResources().getDimension(R.dimen.feed_detail_progress));
+                                myfeed_progress_text_completed
+                                        .setTextSize(
+                                                TypedValue.COMPLEX_UNIT_PX,
+                                                getResources().getDimension(R.dimen.feed_detail_progress));
+                                report_detail_response_msg_background
+                                        .setImageResource(R.drawable.ic_response_msg_completed);
+                                break;
+                        }
+
+
                         // 신고 상태
                         setSirenState(entity.getRepState());
                         // 신고 이미지

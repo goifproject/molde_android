@@ -8,6 +8,7 @@ import com.limefriends.molde.entity.feed.FeedResponseInfoEntity;
 import com.limefriends.molde.entity.feed.FeedResponseInfoEntityList;
 import com.limefriends.molde.entity.news.CardNewsResponseInfoEntityList;
 import com.limefriends.molde.entity.response.Result;
+import com.limefriends.molde.entity.safehouse.SafehouseResponseInfoEntityList;
 import com.limefriends.molde.entity.scrap.ScrapResponseInfoEntityList;
 
 import java.util.List;
@@ -70,23 +71,6 @@ public interface MoldeRestfulService {
         @POST(MoldeRestfulApi.Feed.POST_FEED_API)
         Call<Result> reportNewFeed(@Part List<MultipartBody.Part> imageFiles,
                                    @PartMap Map<String, FeedResponseInfoEntity> feed);
-
-//        @Multipart
-//        @POST(MoldeRestfulApi.Feed.POST_FEED_API)
-//        Call<Result> reportNewFeed2(
-//                @Part("userId") String userId,
-//                @Part("userName") String userName,
-//                @Part("reportState") int reportState,
-//                @Part("reportContent") String reportContent,
-//                @Part("reportAddress") String reportAddress,
-//                @Part("reportDetailAddress") String reportDetailAddress,
-//                @Part("userEmail") String userEmail,
-//                @Part("reportLat") double reportLat,
-//                @Part("reportLng") double reportLng
-//               // @Part("reportDate") long reportDate
-//                //@Part MultipartBody.Part reportImageList
-////                @Part List<MultipartBody.Part> reportImageList
-//        );
 
         @Multipart
         @POST(MoldeRestfulApi.Feed.POST_FEED_API)
@@ -208,6 +192,11 @@ public interface MoldeRestfulService {
                                                            @Query("perPage") int perPage,
                                                            @Query("page") int page);
 
+        @GET(MoldeRestfulApi.Favorite.GET_FAVORITE_BY_LOCATION_API)
+        Call<FavoriteResponseInfoEntityList> getMyFavoriteByDistance(@Query("userId") String userId,
+                                                                     @Query("favoriteLat") double lat,
+                                                                     @Query("favoriteLng") double lng);
+
         @FormUrlEncoded
         @POST(MoldeRestfulApi.Favorite.POST_FAVORITE_API)
         Call<Result> addToMyFavorite(@Field("userId") String userId,
@@ -220,6 +209,15 @@ public interface MoldeRestfulService {
         @HTTP(method = "DELETE", path = MoldeRestfulApi.Favorite.DELETE_FAVORITE_API, hasBody = true)
         Call<Result> deleteFavorite(@Field("userId") String userId,
                                     @Field("favoriteId") int favoriteId);
+    }
+
+    interface Safehouse {
+
+        @GET(MoldeRestfulApi.Safehouse.GET_SAFEHOUSE)
+        Call<SafehouseResponseInfoEntityList> getSafehouse(@Query("safeLat") double safeLat,
+                                                           @Query("safeLng") double safeLng,
+                                                           @Query("perPage") int perPage,
+                                                           @Query("page") int page);
     }
 
 }

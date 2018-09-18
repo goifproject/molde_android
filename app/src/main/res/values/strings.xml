@@ -93,7 +93,7 @@
     <string name="producer_design">디자인</string>
     <string name="producer_design_content">김주현</string>
     <string name="producer_developer">개발</string>
-    <string name="producer_developer_content">이기정, 최진성, 함성, 함은정, 주해연</string>
+    <string name="producer_developer_content">이기정, 최진성, 함성호, 함은정, 주해연</string>
     <string name="producer_developer_github">★이기정 깃헙주소★</string>
     <string name="producer_developer_github_content">https://github.com/SODA1127</string>
     <string name="opensource_license">오픈소스 라이센스</string>
@@ -168,14 +168,14 @@
     <string name="toast_no_feed_place">신고된 몰래카메라가 없는 지역입니다</string>
     <string name="toast_require_signin">몰디 로그인이 필요합니다!</string>
     <string name="toast_network_error">인터넷 연결을 확인해주세요</string>
-    
+
     <string name="marker_title_my_location">현재 위치</string>
     <string name="marker_title_search_location">검색 위치</string>
     <string name="marker_title_favorite_location">★</string>
     <string name="marker_title_feed_location">피드 위치</string>
 
-    <string name="favorite_address">즐겨찾기 주소</string>
-    <string name="favorite_detail_address">상세 주소</string>
+    <string name="favorite_address"><font size="10">즐겨찾기 주소</font></string>
+    <string name="favorite_detail_address"><font size="10">상세 주소</font></string>
     <string name="favorite_save">저장</string>
 
     <!-- Map - Report -->
@@ -192,8 +192,9 @@
     <string name="report_search_to_set">검색해서 등록</string>
     <string name="report_detail_address">상세 주소 : </string>
     <string name="report_reply_email">답변 받을 이메일</string>
-    <string name="report_hint_input_email">이메일 입력</string>
+    <string name="report_hint_input_email"><font size="12">이메일 입력</font></string>
     <string name="report_send">신고하기</string>
+    <string name="report_content_hint"><font size="10">신고내역을 자세히 적어주시면 큰 도움이 됩니다.</font></string>
 
     <string name="login_skip">로그인 건너뛰기</string>
     <string name="login_google">구글로 로그인하기</string>
@@ -243,11 +244,8 @@
     <string name="siren_white">흰색 싸이렌</string>
 
 
-
-
     <string name="facebook_app_id">640535656298047</string>
     <string name="fb_login_protocol_scheme">fb640535656298047</string>
-
 
 
     <string name="internal_storage">Internal storage</string>

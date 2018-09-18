@@ -40,8 +40,7 @@
             android:layout_marginTop="9dp"
             android:text="주소 안 넘어옴"
             android:textColor="@color/colorInfoTextColor"
-            android:textSize="@dimen/feed_item_address_text_size"
-            android:textStyle="bold" />
+            android:textSize="@dimen/feed_item_address_text_size" />
 
         <TextView
             android:id="@+id/feed_detail_address"
@@ -52,8 +51,7 @@
             android:layout_marginStart="16dp"
             android:text="상세 주소 안 넘어옴"
             android:textColor="@color/colorInfoTextColor"
-            android:textSize="@dimen/feed_item_detail_address_text_size"
-            android:textStyle="bold" />
+            android:textSize="@dimen/feed_item_detail_address_text_size" />
 
         <TextView
             android:id="@+id/feed_date"
@@ -64,9 +62,8 @@
             android:layout_marginEnd="8dp"
             android:layout_toStartOf="@id/feed_div"
             android:text="날짜 안 넘어옴"
-            android:textColor="@color/colorInfoTextColor"
-            android:textSize="@dimen/feed_item_regi_date_text_size"
-            android:textStyle="bold" />
+            android:textColor="#9b9b9b"
+            android:textSize="@dimen/feed_item_regi_date_text_size" />
 
         <View
             android:id="@+id/feed_div"

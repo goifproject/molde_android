@@ -36,6 +36,7 @@
             android:layout_marginTop="36dp"
             android:layout_toEndOf="@+id/mypage_profile_image"
             android:text="로그인"
+            android:textColor="#4a4a4a"
             android:textSize="16sp" />
 
         <ImageView
@@ -59,6 +60,7 @@
                 android:layout_alignTop="@+id/setting_div_first"
                 android:layout_marginStart="21dp"
                 android:text="@string/my_report"
+                android:textColor="#8a000000"
                 android:textSize="12sp" />
 
             <ImageView
@@ -85,6 +87,7 @@
                 android:layout_alignTop="@+id/setting_div_first"
                 android:layout_marginStart="21dp"
                 android:text="@string/mycomment"
+                android:textColor="#8a000000"
                 android:textSize="12sp" />
 
 
@@ -111,6 +114,7 @@
                 android:layout_alignTop="@+id/setting_div_second"
                 android:layout_marginStart="15dp"
                 android:text="@string/my_scrap"
+                android:textColor="#8a000000"
                 android:textSize="12sp" />
 
             <ImageView
@@ -138,7 +142,7 @@
             android:gravity="center_vertical"
             android:paddingStart="16dp"
             android:text="@string/inquiry"
-            android:textColor="@color/colorDeepDarkGray"
+            android:textColor="#4a4a4a"
             android:textSize="14sp"
             tools:ignore="RtlSymmetry" />
 
@@ -155,7 +159,7 @@
             android:gravity="center_vertical"
             android:paddingStart="16dp"
             android:text="@string/signin"
-            android:textColor="@color/colorDeepDarkGray"
+            android:textColor="#4a4a4a"
             android:textSize="14sp"
             tools:ignore="RtlSymmetry" />
 

@@ -55,6 +55,7 @@ public class SearchMapInfoActivity extends AppCompatActivity implements
     Button delete_search_history_button;
 
     private SearchMapInfoAdapter loc_map_info_list_adapter;
+    private SearchMapHistoryAdapter history_map_info_list_adapter;
     private Handler handler = new Handler();
     private Runnable workRunnable;
     private Cache cache;
@@ -157,9 +158,10 @@ public class SearchMapInfoActivity extends AppCompatActivity implements
                 Cache cache = new Cache(getApplicationContext());
                 try {
                     if (cache.delete()) {
-                        showToast("삭제 완료");
+                        showToast("목록이 삭제되었습니다.");
+                        history_map_info_list_adapter.clear();
                     } else {
-                        showToast("삭제 실패");
+                        showToast("목록 삭제에 실패했습니다.");
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -173,6 +175,7 @@ public class SearchMapInfoActivity extends AppCompatActivity implements
      */
     private void searchMapInfoList() {
         final String keyword = loc_map_info_search_input.getText().toString();
+
         handler.removeCallbacks(workRunnable);
         workRunnable = new Runnable() {
             @Override
@@ -237,7 +240,7 @@ public class SearchMapInfoActivity extends AppCompatActivity implements
     private void setMapHistoryRecyclerView(List<SearchMapHistoryEntity> historyEntityList) {
         Collections.reverse(historyEntityList);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        SearchMapHistoryAdapter history_map_info_list_adapter
+        history_map_info_list_adapter
                 = new SearchMapHistoryAdapter(historyEntityList, getApplicationContext());
         history_map_info_list.setLayoutManager(layoutManager);
         history_map_info_list.setAdapter(history_map_info_list_adapter);

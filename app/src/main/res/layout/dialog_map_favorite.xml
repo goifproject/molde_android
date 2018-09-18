@@ -2,7 +2,8 @@
 <!-- TODO 폰트 사이즈, 크기, 색상 공통으로 적용할 것 -->
 <!-- TODO 각종 색깔 공통으로 관리할 것 - 배경 등 -->
 <!-- TODO 아이콘 크기 공통 조절, 위젯 스타일 적용 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -15,9 +16,9 @@
         android:gravity="center_vertical"
         android:paddingStart="16dp"
         android:text="@string/my_favorite"
-        android:textColor="@color/colorDeepDarkGray"
+        android:textColor="#4a4a4a"
         android:textSize="16sp"
-        android:textStyle="bold"
+        android:background="#ffffff"
         tools:ignore="RtlSymmetry" />
 
     <FrameLayout
@@ -40,9 +41,8 @@
                 android:layout_marginStart="36dp"
                 android:layout_marginTop="29dp"
                 android:text="@string/favorite_address"
-                android:textColor="@color/colorInfoTextColor"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textColor="#646464"
+                android:textSize="16sp" />
 
             <ImageView
                 android:id="@+id/my_favorite_marker_modify_button"
@@ -61,7 +61,7 @@
                 android:layout_below="@+id/my_favorite_marker_title"
                 android:layout_marginStart="36dp"
                 android:text="@string/favorite_detail_address"
-                android:textColor="@color/colorInfoTextColor"
+                android:textColor="#646464"
                 android:textSize="12sp"
                 android:textStyle="normal" />
 
@@ -93,9 +93,11 @@
                 android:layout_toStartOf="@id/my_favorite_modify_button"
                 android:hint="@string/favorite_address"
                 android:maxLength="12"
-                android:maxLines="1"
+                android:lines="1"
+                android:singleLine="true"
                 android:textColor="@color/colorInfoTextColor"
                 android:textSize="14sp"
+                android:imeOptions="actionNext"
                 android:textStyle="bold" />
 
             <EditText
@@ -109,6 +111,8 @@
                 android:hint="@string/favorite_detail_address"
                 android:maxLength="24"
                 android:maxLines="1"
+                android:lines="1"
+                android:singleLine="true"
                 android:textColor="@color/colorInfoTextColor"
                 android:textSize="12sp"
                 android:textStyle="normal" />

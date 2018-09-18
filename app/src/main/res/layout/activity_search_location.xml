@@ -36,6 +36,8 @@
             android:imeOptions="actionSearch"
             android:maxLength="20"
             android:singleLine="true"
+            android:textColor="#646464"
+            android:textSize="14sp"
             android:theme="@style/LocalSearchInputStyle" />
 
         <ImageView
@@ -77,7 +79,6 @@
         android:layout_height="@dimen/bottom_layout_height"
         android:background="@color/colorPrimary"
         android:text="@string/deleteSearchHistory"
-        android:textColor="@color/colorDeepDarkGray"
-        android:textStyle="bold" />
+        android:textColor="@color/colorDeepDarkGray" />
 
 </LinearLayout>

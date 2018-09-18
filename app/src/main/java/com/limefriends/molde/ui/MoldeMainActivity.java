@@ -61,14 +61,14 @@ public class MoldeMainActivity extends AppCompatActivity
         BottomNavigationViewHelper.disableShiftMode(navigation);
         setupListener();
 
-        int origin = getIntent().getIntExtra("origin", 0);
+//        int origin = getIntent().getIntExtra("origin", 0);
 
-        if (origin == FROM_LAUNCHER) {
+//        if (origin == FROM_LAUNCHER) {
             navigation.setSelectedItemId(R.id.main_menu_map);
-        }
-        else if (origin == FROM_NOTIFICATION) {
-            navigation.setSelectedItemId(R.id.main_menu_feed);
-        }
+//        }
+//        else if (origin == FROM_NOTIFICATION) {
+//            navigation.setSelectedItemId(R.id.main_menu_feed);
+//        }
     }
 
     private void setupListener() {
@@ -153,6 +153,11 @@ public class MoldeMainActivity extends AppCompatActivity
         } else {
             finishAfterTransition();
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override

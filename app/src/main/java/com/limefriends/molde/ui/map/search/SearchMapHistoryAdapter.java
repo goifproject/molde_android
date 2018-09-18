@@ -37,6 +37,11 @@ public class SearchMapHistoryAdapter extends RecyclerView.Adapter<SearchMapHisto
         this.context = context;
     }
 
+    public void clear() {
+        historyList.clear();
+        notifyDataSetChanged();
+    }
+
     @Override
     public MapHistoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -47,11 +52,12 @@ public class SearchMapHistoryAdapter extends RecyclerView.Adapter<SearchMapHisto
     @Override
     public void onBindViewHolder(MapHistoryViewHolder viewHolder, final int position) {
 
-        cache = new Cache(context);
+
         viewHolder.history_title.setText(historyList.get(position).getName());
         viewHolder.history_delete_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                cache = new Cache(context);
                 String keywordHistoryStr = "";
                 if (historyList.size() <= 1) {
                     historyList.remove(position);

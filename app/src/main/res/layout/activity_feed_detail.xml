@@ -61,9 +61,8 @@
                 android:layout_marginEnd="24dp"
                 android:layout_marginStart="24dp"
                 android:text="신고위치 : "
-                android:textColor="@color/colorDefaultText"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textColor="#646464"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/mypage_detail_report_location_content"
@@ -72,9 +71,8 @@
                 android:layout_below="@+id/mypage_detail_report_image_container"
                 android:layout_marginEnd="24dp"
                 android:layout_marginStart="90dp"
-                android:textColor="@color/colorDefaultText"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textColor="#646464"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/mypage_detail_report_content_title"
@@ -85,9 +83,8 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
                 android:text="신고내용 : "
-                android:textColor="@color/colorDefaultText"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textColor="#646464"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/mypage_detail_report_content"
@@ -97,9 +94,8 @@
                 android:layout_marginEnd="24dp"
                 android:layout_marginStart="90dp"
                 android:layout_marginTop="8dp"
-                android:textColor="@color/colorDefaultText"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textColor="#646464"
+                android:textSize="14sp" />
 
             <View
                 android:id="@+id/mypage_detail_report_div"
@@ -123,9 +119,9 @@
                 android:layout_marginEnd="14dp"
                 android:background="@drawable/bg_frame_rounded"
                 android:backgroundTint="@color/colorPrimary"
-                android:text="신고취소"
-                android:textColor="@color/colorInfoTextColor"
-                android:textStyle="bold"
+                android:text="@string/report_cancel"
+                android:textSize="14sp"
+                android:textColor="#646464"
                 android:visibility="gone" />
 
         </RelativeLayout>
@@ -145,10 +141,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="신고 결과"
-                android:textColor="@color/colorInfoTextColor"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:text="@string/report_result"
+                android:textColor="#646464"
+                android:textSize="14sp" />
 
             <FrameLayout
                 android:layout_width="360dp"
@@ -204,19 +199,28 @@
                     android:layout_height="56dp"
                     android:layout_marginStart="72dp">
 
-                    <View
+                    <!--<View-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:background="@drawable/bg_frame_rounded"-->
+                        <!--android:backgroundTint="@color/colorResultMsgBox" />-->
+
+                    <ImageView
+                        android:id="@+id/report_detail_response_msg_background"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/bg_frame_rounded"
-                        android:backgroundTint="@color/colorResultMsgBox" />
+                        android:src="@drawable/ic_response_msg_receiving"/>
 
                     <TextView
                         android:id="@+id/report_detail_result_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
+                        android:textColor="#646464"
                         android:gravity="center"
-                        android:textSize="12sp" />
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:textSize="11sp" />
 
                 </RelativeLayout>
 
@@ -296,29 +300,31 @@
                     android:gravity="center_vertical">
 
                     <TextView
+                        android:id="@+id/myfeed_progress_text_receiving"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
-                        android:text="접수중"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
+                        android:text="@string/report_status_receiving"
+                        android:textSize="11sp" />
 
                     <TextView
+                        android:id="@+id/myfeed_progress_text_accepted"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:text="접수완료"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
+                        android:text="@string/report_status_accepted"
+                        android:textSize="8sp"
+                        android:textColor="#d8d8d8" />
 
                     <TextView
+                        android:id="@+id/myfeed_progress_text_completed"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="12dp"
-                        android:text="접수결과"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
+                        android:text="@string/report_status_result"
+                        android:textSize="8sp"
+                        android:textColor="#d8d8d8" />
 
                 </RelativeLayout>
 
@@ -496,8 +502,7 @@
                 android:layout_marginTop="12dp"
                 android:background="@color/colorPrimary"
                 android:text="확인"
-                android:textColor="@color/colorDeepDarkGray"
-                android:textStyle="bold" />
+                android:textColor="@color/colorDeepDarkGray" />
 
         </RelativeLayout>
 

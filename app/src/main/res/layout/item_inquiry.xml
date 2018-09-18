@@ -14,15 +14,14 @@
         android:layout_marginStart="16dp"
         android:text="@string/dummy"
         android:textColor="@color/colorLittleDarkGray"
-        android:textSize="16sp"
-        android:inputType="textMultiLine" />
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/inquiry_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/inquiry_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:text="lkj@gmail.com"
         android:layout_marginTop="4dp"/>
 

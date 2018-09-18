@@ -46,10 +46,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.limefriends.molde.comm.MoldeApplication;
 import com.limefriends.molde.R;
 import com.limefriends.molde.comm.utils.PermissionUtil;
+import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.favorite.FavoriteEntity;
+import com.limefriends.molde.entity.favorite.FavoriteResponseInfoEntity;
+import com.limefriends.molde.entity.favorite.FavoriteResponseInfoEntityList;
 import com.limefriends.molde.entity.feed.FeedEntity;
 import com.limefriends.molde.entity.feed.FeedResponseInfoEntity;
 import com.limefriends.molde.entity.feed.FeedResponseInfoEntityList;
+import com.limefriends.molde.entity.safehouse.SafehouseEntity;
+import com.limefriends.molde.entity.safehouse.SafehouseResponseInfoEntityList;
 import com.limefriends.molde.remote.MoldeNetwork;
 import com.limefriends.molde.remote.MoldeRestfulService;
 import com.limefriends.molde.ui.MoldeMainActivity;
@@ -151,11 +156,15 @@ public class MapFragment extends Fragment implements
     public static final int MARKER_MY_LOCATION_HISTORY = -2;
     public static final int MARKER_MY_LOCATION_SEARCH = -3;
     public static final int MARKER_MY_LOCATION_FAVORITE = -4;
+    public static final int MARKER_SAFEHOUSE = -5;
 
     long a;
     private int currentMarkerPosition = -1;
     private int currentPage = FIRST_PAGE;
     private int reportCardPosition = 0;
+    private int currentSafehousePage = FIRST_PAGE;
+    private int PER_PAGE_10 = 10;
+    private int PER_PAGE_20 = 20;
     private double lat = 0.0;
     private double lng = 0.0;
     private boolean isFirst = true;
@@ -164,7 +173,12 @@ public class MapFragment extends Fragment implements
     private boolean isMyFavoriteActive = false;
     private boolean fromFeed = false;
     private boolean hasMoreToLoad = true;
+    private String mUid;
+    private Marker curLocationMarker;
     private List<Marker> reportInfoMarkers;
+    private List<Marker> favoriteMarkers;
+    private List<Marker> safehouseMarkers;
+    private List<FavoriteEntity> favoriteEntityList;
     private List<MapReportCardItem> mapReportCardItemList;
 
     private GoogleMap mMap;
@@ -174,6 +188,9 @@ public class MapFragment extends Fragment implements
     private MapReportCardPagerAdapter reportCardAdapter;
     private PermissionUtil mPermission;
     private MoldeRestfulService.Feed feedService;
+    private MoldeRestfulService.Favorite favoriteService;
+    private MoldeRestfulService.Safehouse safehouseService;
+
 
     /**
      * 초기화 작업 - 생명주기
@@ -195,6 +212,9 @@ public class MapFragment extends Fragment implements
         // 처음 생성시 호출되고 호출되지 않음 - 초기화 작업에 필요
         super.onCreate(savedInstanceState);
         reportInfoMarkers = new ArrayList<>();
+        favoriteMarkers = new ArrayList<>();
+        safehouseMarkers = new ArrayList<>();
+        favoriteEntityList = new ArrayList<>();
         mapReportCardItemList = new ArrayList<>();
     }
 
@@ -281,6 +301,7 @@ public class MapFragment extends Fragment implements
                 }
                 break;
             case R.id.my_loc_button:
+                clearReportInfoDataAndMarkers();
                 getMyLocation();
                 break;
         }
@@ -387,16 +408,17 @@ public class MapFragment extends Fragment implements
     // 즐겨찾기 마커 클릭시 보여줄 대화상자
     private void showFavoriteDialog(Marker marker) {
         MapFavoriteDialog mapFavoriteDialog = new MapFavoriteDialog();
-        mapFavoriteDialog.setCallback(this, marker);
+        mapFavoriteDialog.setCallback(this, marker, getUid());
         Bundle bundle = new Bundle();
-        bundle.putString("markerTitle", marker.getTitle().replace("★", ""));
+        bundle.putString("markerTitle", marker.getTitle());
         bundle.putString("markerInfo", marker.getSnippet());
         bundle.putDouble("markerLat", marker.getPosition().latitude);
         bundle.putDouble("markerLng", marker.getPosition().longitude);
         bundle.putBoolean("myFavoriteActive", isMyFavoriteActive);
         mapFavoriteDialog.setArguments(bundle);
         mapFavoriteDialog.show(
-                ((MoldeMainActivity) getContext()).getSupportFragmentManager(), "bottomSheet");
+                ((MoldeMainActivity) getContext()).getSupportFragmentManager(),
+                "bottomSheet");
     }
 
     // 마커 클릭
@@ -422,6 +444,10 @@ public class MapFragment extends Fragment implements
                             .fromBitmap(sizeUpMapIcon(R.drawable.ic_map_pick)));
                     showFavoriteDialog(marker);
                     break;
+                case MARKER_SAFEHOUSE:
+                    marker.setIcon(BitmapDescriptorFactory.
+                            fromBitmap(sizeUpMapIcon(R.drawable.ic_safehouse)));
+                    break;
             }
             hideCardView();
         }
@@ -446,7 +472,10 @@ public class MapFragment extends Fragment implements
                 case MARKER_MY_LOCATION_FAVORITE:
                     marker.setIcon(BitmapDescriptorFactory
                             .fromResource(R.drawable.ic_map_pick));
-                    showFavoriteDialog(marker);
+                    break;
+                case MARKER_SAFEHOUSE:
+                    marker.setIcon(BitmapDescriptorFactory.
+                            fromResource(R.drawable.ic_safehouse));
                     break;
             }
         }
@@ -482,16 +511,10 @@ public class MapFragment extends Fragment implements
     private void addFeedMarkers(FeedEntity feedData) {
         clearReportInfoDataAndMarkers();
         LatLng feedLocation = new LatLng(feedData.getRepLat(), feedData.getRepLon());
-        Marker feedMarker = addMarker(
-                feedLocation,
-                getText(R.string.marker_title_feed_location).toString(),
-                feedData.getRepDetailAddr(),
-                R.drawable.ic_map_marker_cur_location,
-                MARKER_MY_LOCATION);
-        feedMarker.showInfoWindow();
         loadData(feedLocation.latitude, feedLocation.longitude);
+        loadFavoriteFeed(feedLocation.latitude, feedLocation.longitude);
+        loadSafeHouse(feedLocation.latitude, feedLocation.longitude);
     }
-
 
     // 마커 아이콘 사이즈업
     private Bitmap sizeUpMapIcon(int imageId) {
@@ -543,6 +566,12 @@ public class MapFragment extends Fragment implements
         }
     }
 
+    @Override
+    public void snack(String message) {
+        if (hasMoreToLoad)
+            Snackbar.make(map_container, message, Snackbar.LENGTH_SHORT).show();
+    }
+
     /**
      * 데이터 세팅
      */
@@ -553,7 +582,6 @@ public class MapFragment extends Fragment implements
         }
         // 피드에서 데이터를 받아올 경우
         else if (fromFeed) {
-
             FeedEntity feedEntity = ((MoldeMainActivity) getActivity()).getFeedEntity();
             moveCamera(new LatLng(feedEntity.getRepLat(),
                     feedEntity.getRepLon()), ZOOM_FEED_MARKER);
@@ -563,8 +591,8 @@ public class MapFragment extends Fragment implements
         // 한 번 데이터를 불러온 후 외부에서 접근할 경우
         else {
             if (currentMarkerPosition != -1 && mapReportCardItemList.size() != 0) {
-                applyReportCardInfo(currentMarkerPosition);
-                showCardView();
+                // applyReportCardInfo(currentMarkerPosition);
+                // showCardView();
             }
             isBackBtnClicked = true;
         }
@@ -576,6 +604,22 @@ public class MapFragment extends Fragment implements
                     = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Feed.class);
         }
         return feedService;
+    }
+
+    private MoldeRestfulService.Favorite getFavoriteService() {
+        if (favoriteService == null) {
+            favoriteService
+                    = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Favorite.class);
+        }
+        return favoriteService;
+    }
+
+    private MoldeRestfulService.Safehouse getSafehouseService() {
+        if (safehouseService == null) {
+            safehouseService
+                    = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Safehouse.class);
+        }
+        return safehouseService;
     }
 
     @Override
@@ -596,7 +640,6 @@ public class MapFragment extends Fragment implements
 
         Call<FeedResponseInfoEntityList> call
                 = getFeedService().getPagedFeedByDistance(lat, lng, PER_PAGE, currentPage);
-                // = getFeedService().getFeedByDistance(lat, lng);
 
         call.enqueue(new Callback<FeedResponseInfoEntityList>() {
             @Override
@@ -619,17 +662,17 @@ public class MapFragment extends Fragment implements
                                 continue;
                             case ACCEPTED:
                                 marker = addMarker(location, entity.getRepDetailAddr(),
-                                        location.latitude + ", " + location.longitude,
+                                        "",
                                         R.drawable.ic_map_marker_red, i);
                                 break;
                             case FOUND:
                                 marker = addMarker(location, entity.getRepContents(),
-                                        location.latitude + ", " + location.longitude,
+                                        "",
                                         R.drawable.ic_map_marker_white, i);
                                 break;
                             case CLEAN:
                                 marker = addMarker(location, entity.getRepContents(),
-                                        location.latitude + ", " + location.longitude,
+                                        "",
                                         R.drawable.ic_map_marker_green, i);
                                 break;
                         }
@@ -697,16 +740,81 @@ public class MapFragment extends Fragment implements
         reportCardAdapter.addAll(data);
     }
 
+    private void loadFavoriteFeed(double lat, double lng) {
+
+        Call<FavoriteResponseInfoEntityList> call
+                = getFavoriteService().getMyFavoriteByDistance(getUid(), lat, lng);
+
+        call.enqueue(new Callback<FavoriteResponseInfoEntityList>() {
+            @Override
+            public void onResponse(Call<FavoriteResponseInfoEntityList> call, Response<FavoriteResponseInfoEntityList> response) {
+                if (response.isSuccessful()) {
+                    favoriteEntityList
+                            = FromSchemaToEntitiy.favorite(response.body().getData());
+                    for (FavoriteEntity entity : favoriteEntityList) {
+                        Marker newFavoriteMarker = addMarker(
+                                new LatLng(entity.getFavLat(), entity.getFavLon()),
+                                entity.getFavName(),
+                                entity.getFavAddr(),
+                                R.drawable.ic_map_pick,
+                                MARKER_MY_LOCATION_FAVORITE);
+                        favoriteMarkers.add(newFavoriteMarker);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FavoriteResponseInfoEntityList> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void loadSafeHouse(double lat, double lng) {
+
+        Call<SafehouseResponseInfoEntityList> call
+                = getSafehouseService().getSafehouse(lat, lng, PER_PAGE_20, FIRST_PAGE);
+
+        call.enqueue(new Callback<SafehouseResponseInfoEntityList>() {
+            @Override
+            public void onResponse(Call<SafehouseResponseInfoEntityList> call, Response<SafehouseResponseInfoEntityList> response) {
+                if (response.isSuccessful()) {
+                    List<SafehouseEntity> safehouseEntityList
+                            = FromSchemaToEntitiy.safehouse(response.body().getData());
+                    for (SafehouseEntity entity : safehouseEntityList) {
+                        Marker newSafehouseMarker = addMarker(
+                                new LatLng(entity.getSafeLat(), entity.getSafeLon()),
+                                entity.getSafeName(),
+                                "",
+                                R.drawable.ic_safehouse,
+                                MARKER_SAFEHOUSE);
+                        safehouseMarkers.add(newSafehouseMarker);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SafehouseResponseInfoEntityList> call, Throwable t) {
+
+            }
+        });
+    }
+
     // 새로 받아올 때 기존 데이터 캐시 제거
     public void clearReportInfoDataAndMarkers() {
+        // if (curLocationMarker != null) curLocationMarker.remove();
+        currentPage = FIRST_PAGE;
         mMap.clear();
+        hasMoreToLoad(true);
         if (reportInfoMarkers.size() > 0 || mapReportCardItemList.size() > 0) {
-            for (Marker marker : reportInfoMarkers) {
-                marker.remove();
-            }
+//            for (Marker marker : reportInfoMarkers) {
+//                marker.remove();
+//            }
+            favoriteMarkers.clear();
+            safehouseMarkers.clear();
             reportInfoMarkers.clear();
             mapReportCardItemList.clear();
-
             reportCardAdapter.removeAllCardItem(mapReportCardItemList);
             /**
              * makeRandomMarker 와 바꾸기만 하면 안 되길래 뭐가 문제인지 파악하지 못했는데
@@ -731,14 +839,16 @@ public class MapFragment extends Fragment implements
             String reportName = data.getStringExtra("reportName");
             loc_search_input.setText(reportName);
             clearReportInfoDataAndMarkers();
-            addMarker(
+            if (curLocationMarker != null) curLocationMarker.remove();
+            curLocationMarker = addMarker(
                     new LatLng(lat, lng),
                     getText(R.string.marker_title_search_location).toString(),
                     "",
                     R.drawable.ic_map_marker_cur_location,
                     MARKER_MY_LOCATION_HISTORY);
-
             loadData(lat, lng);
+            loadFavoriteFeed(lat, lng);
+            loadSafeHouse(lat, lng);
         } else if (resultCode == RESULT_OK && requestCode == REQ_FAVORITE) {
             FavoriteEntity myFavoriteEntity
                     = (FavoriteEntity) data.getSerializableExtra(EXTRA_KEY_FAVORITE_INFO);
@@ -748,13 +858,16 @@ public class MapFragment extends Fragment implements
                 loc_search_input.setText("★" + myFavoriteEntity.getFavName());
                 isMyFavoriteActive = myFavoriteEntity.isActive();
                 clearReportInfoDataAndMarkers();
+                if (curLocationMarker != null) curLocationMarker.remove();
                 addMarker(
                         new LatLng(lat, lng),
-                        getText(R.string.marker_title_favorite_location).toString(),
+                        myFavoriteEntity.getFavName(),
                         "",
                         R.drawable.ic_map_pick,
                         MARKER_MY_LOCATION_FAVORITE);
                 loadData(lat, lng);
+                loadFavoriteFeed(lat, lng);
+                loadSafeHouse(lat, lng);
             }
         }
     }
@@ -767,10 +880,8 @@ public class MapFragment extends Fragment implements
         Marker marker = reportInfoMarkers.get(position);
         moveCamera(marker.getPosition(), ZOOM_FEED_MARKER);
         marker.showInfoWindow();
-        report_card_view_pager.setCurrentItem(currentMarkerPosition, false);
+        report_card_view_pager.setCurrentItem(currentMarkerPosition, true);
         enlargeMarkerIcon(marker, item.getStatus());
-
-
     }
 
     @Override
@@ -846,27 +957,32 @@ public class MapFragment extends Fragment implements
             setCurrentLocation(currLocation);
             // 현재 좌표로 지도 이동
             moveCamera(currLocation, ZOOM_CUR_LOCATION);
-            clearReportInfoDataAndMarkers();
-            addMarker(
+            // clearReportInfoDataAndMarkers();
+            curLocationMarker = addMarker(
                     currLocation,
                     getText(R.string.marker_title_my_location).toString(),
                     "",
                     R.drawable.ic_map_marker_cur_location,
                     MARKER_MY_LOCATION);
             loadData(lat, lng);
+            loadFavoriteFeed(lat, lng);
+            loadSafeHouse(lat, lng);
             removeLocationListener();
         }
 
         @Override
         public void onStatusChanged(String provider, int status, Bundle bundle) {
+
         }
 
         @Override
         public void onProviderEnabled(String provider) {
+
         }
 
         @Override
         public void onProviderDisabled(String provider) {
+
         }
 
     }
@@ -909,11 +1025,15 @@ public class MapFragment extends Fragment implements
         return mPermission;
     }
 
+    // fragment 에서 Activity 의 자원을 끌어다 사용할 때 onActivityResult, onRequestPermission 같은 경우
+    // 부모에서 자식으로 코드를 전달해 줘야 한
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.e("호출확인", "onRequestPermissionsResult");
         if (requestCode == REQ_CODE) {
+            Log.e("호출확인", "requestCode == REQ_CODE");
             getPermission().onResult(grantResults);
         }
     }
@@ -921,11 +1041,13 @@ public class MapFragment extends Fragment implements
     @SuppressLint("MissingPermission")
     @Override
     public void onPermissionGranted() {
+        Log.e("호출확인", "onPermissionGranted");
         setLocationListener();
     }
 
     @Override
     public void onPermissionDenied() {
+        Log.e("호출확인", "onPermissionDenied");
         showAskAgainDialog();
     }
 
@@ -959,6 +1081,13 @@ public class MapFragment extends Fragment implements
             mAuth = ((MoldeApplication) getActivity().getApplication()).getFireBaseAuth();
         }
         return mAuth;
+    }
+
+    private String getUid() {
+        if (mAuth == null) {
+            mUid = getFirebaseAuth().getCurrentUser().getUid();
+        }
+        return mUid;
     }
 
     private void isFirst(boolean isFirst) {

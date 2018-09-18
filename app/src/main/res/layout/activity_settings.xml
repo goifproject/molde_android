@@ -24,7 +24,7 @@
                 android:layout_marginTop="1dp"
                 android:gravity="center_vertical"
                 android:text="@string/settings_favorite_push"
-                android:textColor="@color/colorInfoTextColor"
+                android:textColor="#4a4a4a"
                 android:textSize="14sp" />
 
             <Switch
@@ -50,7 +50,7 @@
                 android:layout_marginStart="16dp"
                 android:gravity="center_vertical"
                 android:text="@string/settings_feed_change_push"
-                android:textColor="@color/colorInfoTextColor"
+                android:textColor="#4a4a4a"
                 android:textSize="14sp" />
 
             <Switch
@@ -72,7 +72,7 @@
             android:gravity="center_vertical"
             android:paddingLeft="16dp"
             android:text="@string/version_info"
-            android:textColor="@color/colorInfoTextColor"
+            android:textColor="#4a4a4a"
             android:textSize="14sp" />
 
         <TextView
@@ -98,7 +98,7 @@
             android:layout_marginTop="1dp"
             android:paddingLeft="16dp"
             android:text="@string/producer"
-            android:textColor="@color/colorInfoTextColor"
+            android:textColor="#4a4a4a"
             android:textSize="14sp" />
 
         <LinearLayout
@@ -247,7 +247,7 @@
             android:gravity="center_vertical"
             android:paddingLeft="16dp"
             android:text="이용 약관"
-            android:textColor="@color/colorInfoTextColor"
+            android:textColor="#4a4a4a"
             android:textSize="14sp" />
 
         <TextView
@@ -273,7 +273,7 @@
             android:gravity="center_vertical"
             android:paddingLeft="16dp"
             android:text="@string/opensource_license"
-            android:textColor="@color/colorInfoTextColor"
+            android:textColor="#4a4a4a"
             android:textSize="14sp" />
 
         <TextView

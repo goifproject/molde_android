@@ -54,6 +54,7 @@
             android:layout_below="@+id/firstlayout"
             android:layout_marginStart="16dp"
             android:text="@string/faq_content"
+            android:textColor="#646464"
             android:textSize="12sp" />
 
         <EditText
@@ -78,8 +79,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/faq_respond_email"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textSize="12sp"
+            android:textColor="#646464" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -101,7 +102,6 @@
                 android:paddingStart="8dp"
                 android:singleLine="true"
                 android:textSize="14sp"
-                android:textStyle="bold"
                 tools:ignore="RtlSymmetry" />
 
             <TextView
@@ -156,12 +156,12 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
             android:background="@color/colorAccent"
             android:gravity="center"
             android:text="@string/faq_submit"
-            android:textColor="@color/colorInfoTextColor"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textColor="#000000"
+            android:textSize="16sp" />
 
     </RelativeLayout>
 
@@ -170,6 +170,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/item_inquiry"
-        android:visibility="invisible"/>
+        android:visibility="gone"/>
 
 </FrameLayout>

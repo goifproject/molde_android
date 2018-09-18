@@ -44,6 +44,8 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.limefriends.molde.comm.Constant.Common.PREF_KEY_FCM_TOKEN;
+
 public class LoginActivity extends AppCompatActivity {
 
     public static final int NORMAL = 0;
@@ -159,12 +161,13 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = task.getResult().getUser();
+                            String token = PreferenceUtil.getString(LoginActivity.this, PREF_KEY_FCM_TOKEN);
                             // 사용자 데이터 추가
+                            Map<String, Object> userMap = new HashMap<>();
+                            userMap.put("uId", user.getUid());
+                            userMap.put("token", token);
+                            userMap.put("authority", NORMAL);
                             if (task.getResult().getAdditionalUserInfo().isNewUser()) {
-                                Map<String, Object> userMap = new HashMap<>();
-                                userMap.put("uId", user.getUid());
-                                userMap.put("token", acct.getIdToken());
-                                userMap.put("authority", NORMAL);
                                 createUserData(userMap, user.getEmail());
                             } else {
                                 loadUserData(user.getEmail());
@@ -217,18 +220,35 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-    private void loadUserData(String email) {
+    private void loadUserData(final String email) {
         db.collection("users").document(email).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                        String uId = (String) documentSnapshot.get("uId");
+                        String token =
+                                PreferenceUtil.getString(LoginActivity.this, PREF_KEY_FCM_TOKEN);
+                        long authority = (long) documentSnapshot.get("authority");
+
+                        Map<String, Object> userMap = new HashMap<>();
+                        userMap.put("uId", uId);
+                        userMap.put("token", token);
+                        userMap.put("authority", authority);
+
+                        refreshFcmToken(email, userMap);
+
                         PreferenceUtil.putLong(LoginActivity.this,
-                                "authority", (long) documentSnapshot.get("authority"));
+                                "authority", authority);
                         loginProgressDialog.dismiss();
                         setResult(CONNECT_GOOGLE_AUTH_CODE);
                         finish();
                     }
                 });
+    }
+
+    private void refreshFcmToken(String email, Map<String, Object> userMap) {
+        db.collection("users").document(email).set(userMap);
     }
 
     @Override
@@ -258,23 +278,23 @@ public class LoginActivity extends AppCompatActivity {
         facebookLoginButton.setReadPermissions("email", "public_profile");
         facebookLoginButton.registerCallback(facebookCallbackManager,
                 new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult facebookLoginResult) {
-                Log.e("facebook", "facebook:onSuccess:" + facebookLoginResult);
-                Log.e("facebook", "facebook:onSuccess:" + facebookLoginResult.getAccessToken());
-                handleFacebookAccessToken(facebookLoginResult.getAccessToken());
-            }
+                    @Override
+                    public void onSuccess(LoginResult facebookLoginResult) {
+                        Log.e("facebook", "facebook:onSuccess:" + facebookLoginResult);
+                        Log.e("facebook", "facebook:onSuccess:" + facebookLoginResult.getAccessToken());
+                        handleFacebookAccessToken(facebookLoginResult.getAccessToken());
+                    }
 
-            @Override
-            public void onCancel() {
-                Log.e("facebook", "facebook:onCancel");
-            }
+                    @Override
+                    public void onCancel() {
+                        Log.e("facebook", "facebook:onCancel");
+                    }
 
-            @Override
-            public void onError(FacebookException error) {
-                Log.e("facebook", "facebook:onError", error);
-            }
-        });
+                    @Override
+                    public void onError(FacebookException error) {
+                        Log.e("facebook", "facebook:onError", error);
+                    }
+                });
     }
 
     private void handleFacebookAccessToken(final AccessToken token) {
@@ -287,9 +307,10 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             FirebaseUser user = task.getResult().getUser();
                             if (task.getResult().getAdditionalUserInfo().isNewUser()) {
+                                String fcmToken = PreferenceUtil.getString(LoginActivity.this, PREF_KEY_FCM_TOKEN);
                                 Map<String, Object> userMap = new HashMap<>();
                                 userMap.put("uId", user.getUid());
-                                userMap.put("token", token.getToken());
+                                userMap.put("token", fcmToken);
                                 userMap.put("authority", NORMAL);
                                 createUserData(userMap, user.getEmail());
                             } else {

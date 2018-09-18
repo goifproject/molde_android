@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.limefriends.molde.comm.MoldeApplication;
 import com.limefriends.molde.comm.custom.addOnListview.AddOnScrollRecyclerView;
 import com.limefriends.molde.comm.custom.addOnListview.OnLoadMoreListener;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
@@ -109,8 +110,11 @@ public class MapFavoriteActivity extends AppCompatActivity implements
 
         my_favorite_list_view.setIsLoading(true);
 
+        String uId
+                = ((MoldeApplication)getApplication()).getFireBaseAuth().getCurrentUser().getUid();
+
         Call<FavoriteResponseInfoEntityList> call
-                = getFavoriteService().getMyFavorite("lkj", perPage, page);
+                = getFavoriteService().getMyFavorite(uId, perPage, page);
 
         call.enqueue(new Callback<FavoriteResponseInfoEntityList>() {
             @Override

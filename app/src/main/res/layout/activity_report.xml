@@ -12,7 +12,7 @@
     <RelativeLayout
         android:id="@+id/report_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <!-- 툴바 -->
         <android.support.v7.widget.Toolbar
@@ -29,8 +29,7 @@
                 android:layout_gravity="center"
                 android:text="@string/report"
                 android:textColor="@color/colorInfoTextColor"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+                android:textSize="18sp" />
 
             <Switch
                 android:id="@+id/switch_green_zone"
@@ -203,7 +202,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="16dp"
             android:text="@string/report_content"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textStyle="bold" />
 
         <EditText
@@ -218,7 +217,10 @@
             android:gravity="start"
             android:inputType="textMultiLine"
             android:lines="7"
+            android:paddingTop="8dp"
+            android:paddingStart="11dp"
             android:padding="4dp"
+            android:hint="@string/report_content_hint"
             android:scrollHorizontally="false" />
 
         <!-- 안심신고 -->
@@ -249,7 +251,8 @@
                 android:paddingRight="17dp"
                 android:paddingTop="7dp"
                 android:text="@string/report_message_clean"
-                android:textSize="11dp" />
+                android:textColor="#666666"
+                android:textSize="10dp" />
 
             <ImageView
                 android:layout_width="57dp"
@@ -283,7 +286,7 @@
                 android:text="@string/report_location"
                 android:textAlignment="center"
                 android:textSize="12sp"
-                android:textStyle="bold" />
+                android:textColor="#000000" />
 
             <TextView
                 android:id="@+id/search_loc_input"
@@ -291,10 +294,10 @@
                 android:layout_height="match_parent"
                 android:layout_toEndOf="@+id/report_loc_title"
                 android:gravity="center_vertical"
-                android:paddingStart="16dp"
+                android:paddingStart="8dp"
                 android:text="@string/report_search_to_set"
                 android:textSize="12sp"
-                android:textStyle="bold"
+                android:textColor="#646464"
                 tools:ignore="RtlSymmetry" />
 
             <ImageView
@@ -327,7 +330,7 @@
                 android:gravity="center"
                 android:text="@string/report_detail_address"
                 android:textSize="12sp"
-                android:textStyle="bold" />
+                android:textColor="#646464"/>
 
             <EditText
                 android:id="@+id/detail_address"
@@ -340,6 +343,7 @@
                 android:background="@null"
                 android:paddingStart="8dp"
                 android:textSize="12sp"
+                android:textColor="#646464"
                 tools:ignore="RtlSymmetry" />
 
         </RelativeLayout>
@@ -354,8 +358,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="16dp"
             android:text="@string/report_reply_email"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textSize="12sp" />
 
         <RelativeLayout
             android:id="@+id/report_email_spinner"
@@ -377,7 +380,8 @@
                 android:maxLength="30"
                 android:paddingStart="8dp"
                 android:singleLine="true"
-                android:textSize="14sp"
+                android:textSize="12sp"
+                android:textColor="#646464"
                 tools:ignore="RtlSymmetry" />
 
             <TextView
@@ -436,9 +440,8 @@
             android:layout_marginTop="46dp"
             android:background="@color/colorPrimary"
             android:text="@string/report_send"
-            android:textColor="@color/colorLittleDarkGray"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textColor="#000000"
+            android:textSize="16sp" />
 
     </RelativeLayout>
 

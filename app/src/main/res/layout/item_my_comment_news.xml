@@ -24,7 +24,7 @@
         android:layout_marginTop="41dp"
         android:layout_toStartOf="@id/myComment_image"
         android:maxLines="3"
-        android:text="뉴스 데이터 안 넘어옴"
+        android:text="뉴스 데이터 안 넘어옴 "
         android:textColor="#4a4a4a"
         android:textSize="14sp" />
 

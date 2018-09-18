@@ -30,8 +30,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="날짜 안 넘어옴"
-            android:textColor="@color/colorInfoTextColor"
-            android:textSize="12sp" />
+            android:textColor="#646464"
+            android:textSize="11sp" />
 
         <TextView
             android:id="@+id/report_card_address"
@@ -41,8 +41,8 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="주소 안 넘어옴"
-            android:textColor="@color/colorInfoTextColor"
-            android:textSize="12sp" />
+            android:textColor="#646464"
+            android:textSize="10sp" />
 
         <TextView
             android:id="@+id/report_card_detail_address"
@@ -52,8 +52,8 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:text="상세 주소 안 넘어옴"
-            android:textColor="@color/colorInfoTextColor"
-            android:textSize="12sp" />
+            android:textColor="#646464"
+            android:textSize="10sp" />
 
     </LinearLayout>
 

@@ -52,6 +52,8 @@ public class MoldeRestfulApi {
         public static final String DELETE_FAVORITE_API = "/v1/favorite";
 
         public static final String POST_FAVORITE_API = "/v1/favorite";
+
+        public static final String GET_FAVORITE_BY_LOCATION_API = "/v1/favorite2";
     }
 
     public static class Report {
@@ -107,4 +109,10 @@ public class MoldeRestfulApi {
          */
         public static final String POST_FAQ_API = "/v1/faq";
     }
+
+    public static class Safehouse {
+
+        public static final String GET_SAFEHOUSE = "v1/safehouse";
+    }
+
 }

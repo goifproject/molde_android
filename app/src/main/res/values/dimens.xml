@@ -13,4 +13,6 @@
     <dimen name="feed_item_detail_address_text_size">11sp</dimen>
     <dimen name="feed_item_regi_date_text_size">8sp</dimen>
 
+    <dimen name="feed_detail_progress">11sp</dimen>
+
 </resources>

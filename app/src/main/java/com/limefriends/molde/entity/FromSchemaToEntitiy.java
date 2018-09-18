@@ -13,6 +13,8 @@ import com.limefriends.molde.entity.feed.FeedEntity;
 import com.limefriends.molde.entity.feed.FeedResponseInfoEntity;
 import com.limefriends.molde.entity.news.CardNewsEntity;
 import com.limefriends.molde.entity.news.CardNewsResponseInfoEntity;
+import com.limefriends.molde.entity.safehouse.SafehouseEntity;
+import com.limefriends.molde.entity.safehouse.SafehouseResponseInfoEntity;
 import com.limefriends.molde.entity.scrap.ScrapEntity;
 import com.limefriends.molde.entity.scrap.ScrapResponseInfoEntity;
 
@@ -183,6 +185,25 @@ public class FromSchemaToEntitiy {
                     schema.getFavLat(),
                     schema.getFavLon(),
                     true
+            ));
+        }
+        return entities;
+    }
+
+    /**
+     * safehouse
+     */
+    public static List<SafehouseEntity> safehouse(List<SafehouseResponseInfoEntity> schemas) {
+        List<SafehouseEntity> entities = new ArrayList<>();
+        for (SafehouseResponseInfoEntity schema : schemas) {
+            entities.add(new SafehouseEntity(
+                    schema.getSafeId(),
+                    schema.getSafeName(),
+                    schema.getSafeAddress(),
+                    schema.getSafePhone(),
+                    schema.getSafeLat(),
+                    schema.getSafeLon(),
+                    schema.getDistance()
             ));
         }
         return entities;
