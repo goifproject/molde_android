@@ -11,6 +11,8 @@ import com.limefriends.molde.entity.favorite.FavoriteEntity;
 import com.limefriends.molde.entity.favorite.FavoriteResponseInfoEntity;
 import com.limefriends.molde.entity.feed.FeedEntity;
 import com.limefriends.molde.entity.feed.FeedResponseInfoEntity;
+import com.limefriends.molde.entity.feedResult.FeedResultEntity;
+import com.limefriends.molde.entity.feedResult.FeedResultResponseInfoEntity;
 import com.limefriends.molde.entity.news.CardNewsEntity;
 import com.limefriends.molde.entity.news.CardNewsResponseInfoEntity;
 import com.limefriends.molde.entity.safehouse.SafehouseEntity;
@@ -209,4 +211,19 @@ public class FromSchemaToEntitiy {
         return entities;
     }
 
+    /**
+     * feedResult
+     */
+    public static List<FeedResultEntity> feedResult(List<FeedResultResponseInfoEntity> schemas) {
+        List<FeedResultEntity> entities = new ArrayList<>();
+        for (FeedResultResponseInfoEntity schema : schemas) {
+            entities.add(new FeedResultEntity(
+                    schema.getResultId(),
+                    schema.getRepId(),
+                    schema.getResultDate(),
+                    schema.getResultImg()
+            ));
+        }
+        return entities;
+    }
 }

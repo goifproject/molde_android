@@ -3,6 +3,7 @@ package com.limefriends.molde.ui.feed;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.limefriends.molde.comm.custom.addOnListview.AddOnScrollRecyclerView;
 import com.limefriends.molde.comm.custom.addOnListview.OnLoadMoreListener;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.feed.FeedEntity;
+import com.limefriends.molde.entity.feed.FeedResponseInfoEntity;
 import com.limefriends.molde.entity.feed.FeedResponseInfoEntityList;
 import com.limefriends.molde.ui.MoldeMainActivity;
 import com.limefriends.molde.R;
@@ -154,11 +156,12 @@ public class FeedFragment extends Fragment implements FeedAdapter.OnClickFeedIte
             @Override
             public void onResponse(Call<FeedResponseInfoEntityList> call, Response<FeedResponseInfoEntityList> response) {
                 if (response.isSuccessful()) {
-                    List<FeedEntity> entities = FromSchemaToEntitiy.feed2(response.body().getData());
+                    List<FeedResponseInfoEntity> schemas = response.body().getData();
+                    List<FeedEntity> entities = FromSchemaToEntitiy.feed2(schemas);
                     feedAdapter.addAll(entities);
                     currentPage++;
                     feed_list.setIsLoading(false);
-                    if (entities.size() < PER_PAGE) {
+                    if (schemas.size() < PER_PAGE) {
                         hasMoreToLoad(false);
                     }
                 }
@@ -172,6 +175,7 @@ public class FeedFragment extends Fragment implements FeedAdapter.OnClickFeedIte
     }
 
     private void fetchByDate(int perPage, int page) {
+
         Call<FeedResponseInfoEntityList> call = getFeedService()
                 .getPagedFeedByDate(perPage, page);
 
@@ -179,11 +183,12 @@ public class FeedFragment extends Fragment implements FeedAdapter.OnClickFeedIte
             @Override
             public void onResponse(Call<FeedResponseInfoEntityList> call, Response<FeedResponseInfoEntityList> response) {
                 if (response.isSuccessful()) {
-                    List<FeedEntity> entities = FromSchemaToEntitiy.feed2(response.body().getData());
+                    List<FeedResponseInfoEntity> schemas = response.body().getData();
+                    List<FeedEntity> entities = FromSchemaToEntitiy.feed2(schemas);
                     feedAdapter.addAll(entities);
                     currentPage++;
                     feed_list.setIsLoading(false);
-                    if (entities.size() < PER_PAGE) {
+                    if (schemas.size() < PER_PAGE) {
                         hasMoreToLoad(false);
                     }
                 }

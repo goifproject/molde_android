@@ -120,8 +120,8 @@ public class InquiryActivity extends AppCompatActivity {
         faq_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(InquiryActivity.this, FaQActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(InquiryActivity.this, FaQActivity.class);
+//                startActivity(intent);
             }
         });
 
@@ -190,8 +190,6 @@ public class InquiryActivity extends AppCompatActivity {
                         snackBar(getText(R.string.snackbar_invalid_email).toString());
                         return;
                     }
-                } else {
-                    faqEmail = user.getEmail();
                 }
                 if (auth.getCurrentUser().getDisplayName() == null) {
                     userName = "무명";

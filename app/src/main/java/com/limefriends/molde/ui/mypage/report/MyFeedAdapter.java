@@ -46,6 +46,11 @@ public class MyFeedAdapter extends RecyclerView.Adapter<MyFeedAdapter.MyPageMyRe
         notifyDataSetChanged();
     }
 
+    public void updateItem(int position, int state) {
+        feedEntities.get(position).setRepState(state);
+        notifyDataSetChanged();
+    }
+
     @Override
     public MyPageMyReportViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context)

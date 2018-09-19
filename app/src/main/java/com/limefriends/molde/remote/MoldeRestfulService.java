@@ -6,6 +6,7 @@ import com.limefriends.molde.entity.faq.FaqResponseInfoEntityList;
 import com.limefriends.molde.entity.favorite.FavoriteResponseInfoEntityList;
 import com.limefriends.molde.entity.feed.FeedResponseInfoEntity;
 import com.limefriends.molde.entity.feed.FeedResponseInfoEntityList;
+import com.limefriends.molde.entity.feedResult.FeedResultResponseInfoEntity;
 import com.limefriends.molde.entity.news.CardNewsResponseInfoEntityList;
 import com.limefriends.molde.entity.response.Result;
 import com.limefriends.molde.entity.safehouse.SafehouseResponseInfoEntityList;
@@ -100,12 +101,25 @@ public interface MoldeRestfulService {
                                 @Field("reportId") int state);
     }
 
+    interface FeedResult {
+
+        @GET(MoldeRestfulApi.FeedResult.GET_FEED_RESULT_API)
+        Call<FeedResultResponseInfoEntity> getFeedResult(@Query("reportId") int reportId);
+
+        @Multipart
+        @POST(MoldeRestfulApi.FeedResult.POST_FEED_RESULT_API)
+        Call<Result> reportFeedResult(
+                @Part("reportId") int reportId,
+                @Part List<MultipartBody.Part> reportImageList
+        );
+
+
+    }
+
     interface Comment {
 
         /**
          * 원래는 news_id 가 있어야 하는데 테스트 결과 어떤 경우에도 모든 데이터를 넘겨줌
-         *
-         * @return
          */
         @GET(MoldeRestfulApi.Comment.GET_COMMENT_BY_NEWSID_API)
         Call<CommentResponseInfoEntityList> getNewsComment(@Query("cardNewsId") int newsId,

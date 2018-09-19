@@ -5,6 +5,8 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.maps.model.LatLng;
@@ -28,12 +30,13 @@ public class MoldeApplication extends Application {
     private LoginManager fbLoginManager;
     private LatLng myLocation;
 
+
+
     @Override
     public void onCreate() {
         super.onCreate();
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
-
     }
 
     public FirebaseAuth getFireBaseAuth() {

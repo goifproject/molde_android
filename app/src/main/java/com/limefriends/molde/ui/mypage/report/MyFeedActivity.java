@@ -35,6 +35,7 @@ import static com.limefriends.molde.comm.Constant.Common.EXTRA_KEY_ACTIVITY_NAME
 import static com.limefriends.molde.comm.Constant.Common.EXTRA_KEY_POSITION;
 import static com.limefriends.molde.comm.Constant.Common.PREF_KEY_AUTHORITY;
 import static com.limefriends.molde.comm.Constant.Feed.EXTRA_KEY_FEED_ID;
+import static com.limefriends.molde.comm.Constant.Feed.EXTRA_KEY_STATE;
 import static com.limefriends.molde.comm.Constant.Feed.INTENT_KEY_MY_FEED;
 import static com.limefriends.molde.comm.Constant.Feed.INTENT_VALUE_MY_FEED;
 
@@ -146,13 +147,11 @@ public class MyFeedActivity extends AppCompatActivity implements MyFeedAdapter.O
                 Log.e("문제확인", t.getMessage());
             }
         });
-
     }
 
     private void setHasMoreToLoad(boolean hasMore) {
         hasMoreToLoad = hasMore;
     }
-
 
     @Override
     public void OnItemClick(int feedId, int position) {
@@ -167,7 +166,15 @@ public class MyFeedActivity extends AppCompatActivity implements MyFeedAdapter.O
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == INTENT_KEY_MY_FEED) {
-            reportAdapter.removeItem(data.getIntExtra(EXTRA_KEY_POSITION, 0));
+
+            int state = data.getIntExtra(EXTRA_KEY_STATE, -1);
+            int position = data.getIntExtra(EXTRA_KEY_POSITION, 0);
+
+            if (state == -1) {
+                reportAdapter.removeItem(position);
+            } else {
+                reportAdapter.updateItem(position, state);
+            }
         }
     }
 

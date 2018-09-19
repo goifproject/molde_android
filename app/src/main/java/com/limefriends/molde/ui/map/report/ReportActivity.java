@@ -274,14 +274,14 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
             report_content.setVisibility(View.GONE);
             report_content_title.setVisibility(View.GONE);
             green_zone_admin.setVisibility(View.VISIBLE);
-            report_email_title.setVisibility(View.GONE);
-            report_email_spinner.setVisibility(View.GONE);
+//            report_email_title.setVisibility(View.GONE);
+//            report_email_spinner.setVisibility(View.GONE);
         } else {
             report_content.setVisibility(View.VISIBLE);
             report_content_title.setVisibility(View.VISIBLE);
             green_zone_admin.setVisibility(View.GONE);
-            report_email_title.setVisibility(View.VISIBLE);
-            report_email_spinner.setVisibility(View.VISIBLE);
+//            report_email_title.setVisibility(View.VISIBLE);
+//            report_email_spinner.setVisibility(View.VISIBLE);
         }
     }
 
@@ -372,17 +372,15 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
 
         String reportEmail = "";
 
-        if (switch_green_zone.isChecked()) {
-            reportEmail = firebaseAuth.getCurrentUser().getEmail();
+
+        if (report_email_input.getText().toString().equals("")) {
+            snack(getText(R.string.snackbar_no_email).toString());
+            return;
         } else {
-            if (report_email_input.getText().toString().equals("")) {
-                snack(getText(R.string.snackbar_no_email).toString());
-            } else {
-                if (report_email_select.getVisibility() == View.GONE && report_email_self_input.getVisibility() == View.VISIBLE) {
-                    reportEmail = report_email_input.getText().toString() + "@" + report_email_self_input.getText().toString();
-                } else if (report_email_select.getVisibility() == View.VISIBLE && report_email_self_input.getVisibility() == View.GONE) {
-                    reportEmail = report_email_input.getText().toString() + "@" + report_email_select.getSelectedItem().toString();
-                }
+            if (report_email_select.getVisibility() == View.GONE && report_email_self_input.getVisibility() == View.VISIBLE) {
+                reportEmail = report_email_input.getText().toString() + "@" + report_email_self_input.getText().toString();
+            } else if (report_email_select.getVisibility() == View.VISIBLE && report_email_self_input.getVisibility() == View.GONE) {
+                reportEmail = report_email_input.getText().toString() + "@" + report_email_select.getSelectedItem().toString();
             }
         }
 
@@ -534,7 +532,6 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private MultipartBody.Part prepareFilePart(String partName, Uri fileUri) {
-        Log.e("file uri", fileUri.toString());
         File file = new File(fileUri.getPath());
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         return MultipartBody.Part.createFormData(partName, file.getName(), requestFile);

@@ -137,7 +137,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void snack(String message) {
-        Snackbar.make(settings_container, message, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(settings_container, message, Snackbar.LENGTH_SHORT).show();
     }
 
 }

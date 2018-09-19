@@ -42,6 +42,13 @@ public class MoldeRestfulApi {
         public static final String DELETE_FEED_API = "v1/pin";
     }
 
+    public static final class FeedResult {
+
+        public static final String GET_FEED_RESULT_API = "v1/result";
+
+        public static final String POST_FEED_RESULT_API = "v1/result";
+    }
+
     /**
      * 즐겨찾기
      */

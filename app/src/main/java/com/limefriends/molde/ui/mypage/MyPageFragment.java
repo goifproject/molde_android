@@ -9,18 +9,17 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.limefriends.molde.comm.MoldeApplication;
 import com.limefriends.molde.R;
+import com.limefriends.molde.comm.utils.PreferenceUtil;
 import com.limefriends.molde.ui.mypage.comment.MyCommentActivity;
 import com.limefriends.molde.ui.mypage.inquiry.InquiryActivity;
 import com.limefriends.molde.ui.mypage.login.LoginActivity;
@@ -36,6 +35,8 @@ import static com.limefriends.molde.comm.Constant.MyPage.*;
 
 // TODO "lkj" 바꿔야 함 -> uId
 public class MyPageFragment extends Fragment {
+
+    public static final String SIGNIN_TYPE = "signinType";
 
     @BindView(R.id.mypage_profile_image)
     CircleImageView mypage_profile_image;
@@ -79,12 +80,13 @@ public class MyPageFragment extends Fragment {
 
     private void setupViews(View view) {
         ButterKnife.bind(this, view);
-        if (mAuth.getCurrentUser() != null) {
-            FirebaseUser user = mAuth.getCurrentUser();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
             mypage_log_in_out_button.setText(getText(R.string.signout));
             if (user.getDisplayName() != null) {
                 mypage_profile_name.setText(user.getDisplayName());
-            } else {
+            }
+            else if (user.getEmail() != null) {
                 mypage_profile_name.setText(user.getEmail());
             }
             if (user.getPhotoUrl() != null) {
@@ -171,8 +173,17 @@ public class MyPageFragment extends Fragment {
                             .setPositiveButton(getText(R.string.yes), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    ((MoldeApplication) getActivity().getApplication()).getFireBaseAuth().signOut();
+                                    int type = PreferenceUtil.getInt(getContext(), SIGNIN_TYPE, 0);
+                                    if (type == CONNECT_GOOGLE_AUTH_CODE) {
+                                        ((MoldeApplication) getActivity().getApplication()).getFireBaseAuth().signOut();
+                                    }
+                                    else if (type == CONNECT_FACEBOOK_AUTH_CODE) {
+                                        ((MoldeApplication) getActivity().getApplication()).getFireBaseAuth().signOut();
+                                        LoginManager.getInstance().logOut();
+                                    }
                                     mypage_log_in_out_button.setText(getText(R.string.signin));
+                                    mypage_profile_name.setText("");
+                                    mypage_profile_image.setImageResource(R.drawable.ic_profile);
                                     snackBar(getText(R.string.snackbar_signed_out).toString());
                                 }
                             })
@@ -192,23 +203,31 @@ public class MyPageFragment extends Fragment {
         if (requestCode == RC_SIGN_IN) {
             switch (resultCode) {
                 case CONNECT_GOOGLE_AUTH_CODE:
+                    mypage_log_in_out_button.setText(getText(R.string.signout));
+                    PreferenceUtil.putInt(getContext(), SIGNIN_TYPE, CONNECT_GOOGLE_AUTH_CODE);
                     snackBar(getText(R.string.signin_google).toString());
                     break;
                 case CONNECT_FACEBOOK_AUTH_CODE:
+                    mypage_log_in_out_button.setText(getText(R.string.signout));
+                    PreferenceUtil.putInt(getContext(), SIGNIN_TYPE, CONNECT_FACEBOOK_AUTH_CODE);
                     snackBar(getText(R.string.signin_facebook).toString());
                     break;
             }
-            mypage_log_in_out_button.setText(getText(R.string.signout));
+
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            if (user.getDisplayName() != null) {
-                mypage_profile_name.setText(user.getDisplayName());
-            } else {
-                mypage_profile_name.setText(user.getEmail());
-            }
-            if (user.getPhotoUrl() != null) {
-                Glide.with(this)
-                        .load(user.getPhotoUrl())
-                        .into(mypage_profile_image);
+
+            if (user != null) {
+                if (user.getDisplayName() != null) {
+                    mypage_profile_name.setText(user.getDisplayName());
+                }
+                else if (user.getEmail() != null) {
+                    mypage_profile_name.setText(user.getEmail());
+                }
+                if (user.getPhotoUrl() != null) {
+                    Glide.with(this)
+                            .load(user.getPhotoUrl())
+                            .into(mypage_profile_image);
+                }
             }
         }
     }

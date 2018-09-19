@@ -52,6 +52,8 @@ public class Constant {
         public static final String EXTRA_KEY_FEED_ID = "feedId";
         // Value
         public static final String INTENT_VALUE_MY_FEED = "MyFeed";
+
+        public static final String EXTRA_KEY_STATE = "state";
     }
 
     public static class MyPage {

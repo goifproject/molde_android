@@ -97,6 +97,7 @@ public class CardNewsCommentActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
+
         comment_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -228,32 +229,37 @@ public class CardNewsCommentActivity extends AppCompatActivity {
     
     public void reportComment(int commentId) {
 
-        String uId = ((MoldeApplication)getApplication()).getFireBaseAuth().getCurrentUser().getUid();
-        
-        Call<Result> call = getCommentService()
-                .reportComment(uId, commentId);
-        
-        call.enqueue(new Callback<Result>() {
-            @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
-                if (response.isSuccessful()) {
-                    int resultCode = response.body().getResult();
-                    switch (resultCode) {
-                        case REPORT_COMMENT_DONE:
-                            showSnack("댓글이 신고되었습니다.");
-                            break;
-                        case REPORT_COMMENT_EXIST:
-                            showSnack("이미 신고한 댓글입니다.");
-                            break;
+        FirebaseAuth auth = ((MoldeApplication)getApplication()).getFireBaseAuth();
+        if (auth != null && auth.getUid() != null) {
+
+            Call<Result> call = getCommentService()
+                    .reportComment(auth.getCurrentUser().getUid(), commentId);
+
+            call.enqueue(new Callback<Result>() {
+                @Override
+                public void onResponse(Call<Result> call, Response<Result> response) {
+                    if (response.isSuccessful()) {
+                        int resultCode = response.body().getResult();
+                        switch (resultCode) {
+                            case REPORT_COMMENT_DONE:
+                                showSnack("댓글이 신고되었습니다.");
+                                break;
+                            case REPORT_COMMENT_EXIST:
+                                showSnack("이미 신고한 댓글입니다.");
+                                break;
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<Result> call, Throwable t) {
+                @Override
+                public void onFailure(Call<Result> call, Throwable t) {
 
-            }
-        });
+                }
+            });
+
+        } else {
+            showSnack("몰디 로그인이 필요합니다!");
+        }
     }
 
     private void setHasMoreToLoad(boolean hasMore) {

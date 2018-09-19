@@ -742,6 +742,8 @@ public class MapFragment extends Fragment implements
 
     private void loadFavoriteFeed(double lat, double lng) {
 
+        if (getUid() == null || getUid().equals("")) return;
+
         Call<FavoriteResponseInfoEntityList> call
                 = getFavoriteService().getMyFavoriteByDistance(getUid(), lat, lng);
 
@@ -1030,10 +1032,7 @@ public class MapFragment extends Fragment implements
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        // super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Log.e("호출확인", "onRequestPermissionsResult");
         if (requestCode == REQ_CODE) {
-            Log.e("호출확인", "requestCode == REQ_CODE");
             getPermission().onResult(grantResults);
         }
     }
@@ -1041,13 +1040,11 @@ public class MapFragment extends Fragment implements
     @SuppressLint("MissingPermission")
     @Override
     public void onPermissionGranted() {
-        Log.e("호출확인", "onPermissionGranted");
         setLocationListener();
     }
 
     @Override
     public void onPermissionDenied() {
-        Log.e("호출확인", "onPermissionDenied");
         showAskAgainDialog();
     }
 
@@ -1084,7 +1081,7 @@ public class MapFragment extends Fragment implements
     }
 
     private String getUid() {
-        if (mAuth == null) {
+        if (mAuth != null) {
             mUid = getFirebaseAuth().getCurrentUser().getUid();
         }
         return mUid;

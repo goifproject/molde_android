@@ -32,7 +32,7 @@ public class CardNewsImagePagerAdapter extends PagerAdapter {
         notifyDataSetChanged();
     }
 
-    public CardNewsImagePagerAdapter(LayoutInflater inflater) {
+    CardNewsImagePagerAdapter(LayoutInflater inflater) {
         this.inflater = inflater;
     }
 

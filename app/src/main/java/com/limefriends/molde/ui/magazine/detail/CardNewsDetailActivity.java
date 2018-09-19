@@ -4,30 +4,24 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
-import com.facebook.share.model.ShareContent;
-import com.facebook.share.model.ShareLinkContent;
-import com.facebook.share.model.ShareMediaContent;
 import com.facebook.share.model.ShareOpenGraphAction;
 import com.facebook.share.model.ShareOpenGraphContent;
 import com.facebook.share.model.ShareOpenGraphObject;
 import com.facebook.share.model.SharePhoto;
-import com.facebook.share.model.ShareStoryContent;
 import com.facebook.share.widget.ShareDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.limefriends.molde.R;
@@ -49,7 +43,6 @@ import retrofit2.Response;
 import static com.limefriends.molde.comm.Constant.Common.EXTRA_KEY_ACTIVITY_NAME;
 import static com.limefriends.molde.comm.Constant.Scrap.INTENT_VALUE_SCRAP;
 
-
 // TODO "lkj" getUid()로 변경할 것 -> uId
 // TODO auth Application 에서 가져다 쓸 것
 public class CardNewsDetailActivity extends AppCompatActivity {
@@ -70,6 +63,8 @@ public class CardNewsDetailActivity extends AppCompatActivity {
     TextView total_page_no;
     @BindView(R.id.cardnews_description)
     TextView cardnews_description;
+    @BindView(R.id.cardnews_progress)
+    ProgressBar cardnews_progress;
 
     private CardNewsImagePagerAdapter cardNewsImagePagerAdapter;
     private FirebaseAuth mFirebaseAuth;
@@ -147,35 +142,40 @@ public class CardNewsDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                cardnews_progress.setVisibility(View.VISIBLE);
+
                 Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.img_sub_tutorial_1);
 
+                // 액션 타입이랑 Object 타입이 맞아야 올라가고
+                // 맞더라도 페이스북 오류 때문에 실시간으로 반영되지 않음
+                // 앱 설정은 그대로 따라가면 됨
                 SharePhoto sharePhoto = new SharePhoto.Builder()
                         .setBitmap(bitmap)
                         .setUserGenerated(true)
                         .build();
-
+//                TODO 실제 데이터가 들어갈 때
 //                SharePhoto sharePhoto = new SharePhoto.Builder()
 //                        .setImageUrl(Uri.parse(mCardNewsEntity.getNewsImg().get(0).getUrl()))
 //                        .build();
 
                 ShareOpenGraphObject object = new ShareOpenGraphObject.Builder()
                         .putString("og:type", "article")
-                        .putString("og:title", "가나다라마바")
+                        .putString("og:title", mCardNewsEntity.getDescription())
+                        //.putString("og:description", "테스트 내용")
                         .build();
-
                 ShareOpenGraphAction action = new ShareOpenGraphAction.Builder()
-                        .setActionType("news.publishes")
-                        .putObject("book", object)
+                        .setActionType("news.reads")
+                        .putObject("article", object)
                         .putPhoto("image", sharePhoto)
                         .build();
-
                 ShareOpenGraphContent content = new ShareOpenGraphContent.Builder()
-                        .setPreviewPropertyName("book")
+                        .setPreviewPropertyName("article")
                         .setAction(action)
                         .build();
 
                 ShareDialog.show(CardNewsDetailActivity.this, content);
 
+                cardnews_progress.setVisibility(View.GONE);
 
             }
         });
@@ -205,13 +205,17 @@ public class CardNewsDetailActivity extends AppCompatActivity {
     //-----
     // Network
     //-----
-
     private void setupData() {
         activityName = getIntent().getStringExtra(EXTRA_KEY_ACTIVITY_NAME);
         cardNewsId = getIntent().getIntExtra("cardNewsId", 0);
         mFirebaseAuth = ((MoldeApplication) getApplication()).getFireBaseAuth();
         loadCardNews(cardNewsId);
-        loadMyScrap(cardNewsId, mFirebaseAuth.getCurrentUser().getUid());
+        if (mFirebaseAuth.getUid() != null) {
+            loadMyScrap(cardNewsId, mFirebaseAuth.getCurrentUser().getUid());
+        } else {
+            loadMyScrap(cardNewsId, "");
+        }
+
     }
 
     private void loadCardNews(int cardNewsId) {
