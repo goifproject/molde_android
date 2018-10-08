@@ -64,9 +64,9 @@ public class SubTutorialActivity extends AppCompatActivity {
         go_to_start_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                PreferenceUtil.putBoolean(SubTutorialActivity.this, "skipSecond", true);
                 Intent intent = new Intent(SubTutorialActivity.this, MoldeMainActivity.class);
                 startActivity(intent);
-                PreferenceUtil.putBoolean(SubTutorialActivity.this, "skipSecond", true);
                 finish();
             }
         });

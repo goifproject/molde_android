@@ -49,10 +49,9 @@ public class TutorialActivity extends AppCompatActivity {
         molde_tutorial_end_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                PreferenceUtil.putBoolean(TutorialActivity.this, "skipFirst", true);
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivityForResult(intent, LOGIN_REQUEST_CODE);
-                PreferenceUtil.putBoolean(TutorialActivity.this, "skipFirst", true);
-                finish();
             }
         });
         molde_tutorial_pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -109,8 +108,6 @@ public class TutorialActivity extends AppCompatActivity {
             container.removeView((View)object);
         }
     }
-
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

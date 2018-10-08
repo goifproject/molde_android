@@ -490,13 +490,15 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (resultCode == RESULT_OK && requestCode == REQ_REPORT_LOCATION) {
             LatLng defaultLoc = ((MoldeApplication) getApplication()).getCurrLocation();
             reportLat = data.getDoubleExtra("reportLat", defaultLoc.latitude);
             reportLng = data.getDoubleExtra("reportLng", defaultLoc.longitude);
             String reportAddress = data.getStringExtra("reportAddress");
             search_loc_input.setText(reportAddress);
-        } else if (resultCode == RESULT_OK && requestCode == TAKE_PICTURE_FOR_ADD_IMAGE) {
+        }
+        else if (resultCode == RESULT_OK && requestCode == TAKE_PICTURE_FOR_ADD_IMAGE) {
             if (data != null) {
                 Uri uri = data.getParcelableExtra("imagePath");
                 int imageSeq = data.getIntExtra("imageSeq", 1);

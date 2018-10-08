@@ -52,7 +52,6 @@ import butterknife.ButterKnife;
 
 public class MoldeReportCameraActivity extends AppCompatActivity {
 
-
     @BindView(R.id.molde_camera_layout)
     RelativeLayout molde_camera_layout;
     @BindView(R.id.molde_camera_view)
@@ -66,12 +65,10 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
 
     CameraPreview cameraPreview;
     Camera camera;
-    Context ctx;
 
     private static final String TAG = "카메라 디버그 로그";
     private final static int PERMISSIONS_REQUEST_CODE = 100;
     private final static int CAMERA_FACING = Camera.CameraInfo.CAMERA_FACING_BACK;
-    private AppCompatActivity mActivity;
     private int imageArraySize;
     private int imageSeq = 0;
     public Bitmap bitmap;
@@ -145,7 +142,7 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
                 camera.startPreview();
 
             } catch (RuntimeException ex) {
-                Toast.makeText(ctx, "camera_not_found " + ex.getMessage().toString(),
+                Toast.makeText(this, "camera_not_found " + ex.getMessage().toString(),
                         Toast.LENGTH_LONG).show();
                 Log.d(TAG, "camera_not_found " + ex.getMessage().toString());
             }
@@ -160,11 +157,9 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_camera);
         ButterKnife.bind(this);
-        Intent intent = getIntent();
-        imageSeq = intent.getIntExtra("imageSeq", 1);
-        imageArraySize = intent.getIntExtra("imageArraySize", 1);
-        ctx = this;
-        mActivity = this;
+
+        imageSeq = getIntent().getIntExtra("imageSeq", 1);
+        imageArraySize = getIntent().getIntExtra("imageArraySize", 1);
 
         //액션바 구현
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -483,7 +478,7 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
         builder.setCancelable(false);
         builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                //퍼미션 요청
+                // 퍼미션 요청
                 ActivityCompat.requestPermissions(MoldeReportCameraActivity.this,
                         new String[]{Manifest.permission.CAMERA,
                                 Manifest.permission.WRITE_EXTERNAL_STORAGE},
@@ -508,10 +503,10 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
         builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 Intent myAppSettings = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                        Uri.parse("package:" + mActivity.getPackageName()));
+                        Uri.parse("package:" + getPackageName()));
                 myAppSettings.addCategory(Intent.CATEGORY_DEFAULT);
                 myAppSettings.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mActivity.startActivity(myAppSettings);
+                startActivity(myAppSettings);
             }
         });
         builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
