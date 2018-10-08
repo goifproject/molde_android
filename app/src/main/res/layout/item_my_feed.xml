@@ -163,7 +163,7 @@
                 android:layout_alignParentEnd="true"
                 android:text="@string/report_status_result"
                 android:textSize="8sp"
-                android:textColor="#d8d8d8"/>
+                android:textColor="#d8d8d8" />
         </RelativeLayout>
 
     </RelativeLayout>
