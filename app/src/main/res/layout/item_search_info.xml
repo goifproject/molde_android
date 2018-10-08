@@ -7,23 +7,23 @@
     android:layout_height="52dp"
     android:layout_margin="4dp">
 
-    <ToggleButton
-        android:id="@+id/check_favorite_toggle"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:background="@drawable/ic_favorite_star_off"
-        android:checked="false"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="8dp"
-        android:textOff=""
-        android:textOn="" />
+    <!--<ToggleButton-->
+        <!--android:id="@+id/check_favorite_toggle"-->
+        <!--android:layout_width="24dp"-->
+        <!--android:layout_height="24dp"-->
+        <!--android:background="@drawable/ic_favorite_star_off"-->
+        <!--android:checked="false"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:textOff=""-->
+        <!--android:textOn="" />-->
 
     <TextView
         android:id="@+id/map_info_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toStartOf="@id/check_favorite_toggle"
+
         android:layout_marginTop="6dp"
         android:layout_marginStart="8dp"
         android:text="이름 데이터 안 넘어옴"
@@ -34,7 +34,7 @@
         android:id="@+id/map_info_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toStartOf="@id/check_favorite_toggle"
+
         android:layout_marginStart="8dp"
         android:layout_marginBottom="4dp"
         android:layout_below="@+id/map_info_title"

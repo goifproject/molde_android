@@ -174,8 +174,8 @@ public class SearchMapInfoAdapter extends RecyclerView.Adapter<SearchMapInfoAdap
         TextView map_info_title;
         @BindView(R.id.map_info_address)
         TextView map_info_address;
-        @BindView(R.id.check_favorite_toggle)
-        ToggleButton check_favorite_toggle;
+//        @BindView(R.id.check_favorite_toggle)
+//        ToggleButton check_favorite_toggle;
 
         double mapLat;
         double mapLng;
@@ -201,16 +201,16 @@ public class SearchMapInfoAdapter extends RecyclerView.Adapter<SearchMapInfoAdap
                 }
             });
 
-            check_favorite_toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        check_favorite_toggle.setBackgroundResource(R.drawable.ic_favorite_star_on);
-                    } else {
-                        check_favorite_toggle.setBackgroundResource(R.drawable.ic_favorite_star_off);
-                    }
-                }
-            });
+//            check_favorite_toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                @Override
+//                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                    if (isChecked) {
+//                        check_favorite_toggle.setBackgroundResource(R.drawable.ic_favorite_star_on);
+//                    } else {
+//                        check_favorite_toggle.setBackgroundResource(R.drawable.ic_favorite_star_off);
+//                    }
+//                }
+//            });
         }
     }
 

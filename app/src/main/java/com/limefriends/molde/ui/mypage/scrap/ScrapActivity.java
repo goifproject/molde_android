@@ -19,6 +19,7 @@ import com.limefriends.molde.entity.news.CardNewsEntity;
 import com.limefriends.molde.entity.news.CardNewsResponseInfoEntity;
 import com.limefriends.molde.entity.news.CardNewsResponseInfoEntityList;
 import com.limefriends.molde.entity.scrap.ScrapEntity;
+import com.limefriends.molde.entity.scrap.ScrapResponseInfoEntity;
 import com.limefriends.molde.entity.scrap.ScrapResponseInfoEntityList;
 import com.limefriends.molde.remote.MoldeRestfulService;
 import com.limefriends.molde.remote.MoldeNetwork;
@@ -143,15 +144,25 @@ public class ScrapActivity extends AppCompatActivity {
             public void onResponse(Call<ScrapResponseInfoEntityList> call,
                                    Response<ScrapResponseInfoEntityList> response) {
                 if (response.isSuccessful()) {
-                    List<ScrapEntity> entities = FromSchemaToEntitiy.scrap(response.body().getData());
+
+                    List<ScrapResponseInfoEntity> schemas = response.body().getData();
+
+                    if (schemas == null && schemas.size() == 0) {
+                        hasMoreToLoad(false);
+                        myScrap_recyclerView.setIsLoading(false);
+                        progressBar.setVisibility(View.GONE);
+                        return;
+                    }
+
+                    List<ScrapEntity> entities = FromSchemaToEntitiy.scrap(schemas);
                     fetchCount = entities.size();
                     for (ScrapEntity scrapEntity : entities) {
                         loadCardNews(scrapEntity.getNewsId());
                     }
-                    if (fetchCount == 0) {
-                        progressBar.setVisibility(View.GONE);
-                        myScrap_recyclerView.setIsLoading(false);
-                    }
+//                    if (fetchCount == 0) {
+//                        progressBar.setVisibility(View.GONE);
+//                        myScrap_recyclerView.setIsLoading(false);
+//                    }
 
                 }
             }
@@ -174,7 +185,7 @@ public class ScrapActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     addResponseCount();
                     List<CardNewsResponseInfoEntity> newsSchema = response.body().getData();
-                    if (newsSchema.size() != 0) {
+                    if (newsSchema != null && newsSchema.size() != 0) {
                         CardNewsEntity newsEntity = FromSchemaToEntitiy.cardNews(newsSchema.get(0));
                         cardNewsEntities.add(newsEntity);
                     }

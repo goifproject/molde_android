@@ -15,6 +15,7 @@ import com.limefriends.molde.comm.custom.addOnListview.AddOnScrollRecyclerView;
 import com.limefriends.molde.comm.custom.addOnListview.OnLoadMoreListener;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.favorite.FavoriteEntity;
+import com.limefriends.molde.entity.favorite.FavoriteResponseInfoEntity;
 import com.limefriends.molde.entity.favorite.FavoriteResponseInfoEntityList;
 import com.limefriends.molde.entity.response.Result;
 import com.limefriends.molde.remote.MoldeNetwork;
@@ -121,14 +122,24 @@ public class MapFavoriteActivity extends AppCompatActivity implements
             public void onResponse(Call<FavoriteResponseInfoEntityList> call,
                                    Response<FavoriteResponseInfoEntityList> response) {
                 if (response.isSuccessful()) {
+
+                    // 8. 더 이상 데이터를 세팅중이 아님을 명시
+                    my_favorite_list_view.setIsLoading(false);
+
+                    List<FavoriteResponseInfoEntity> schemas = response.body().getData();
+
+                    if (schemas == null || schemas.size() == 0) {
+                        setHasMoreToLoad(false);
+                        return;
+                    }
+
                     // 4. 호출 후 데이터 정리
-                    List<FavoriteEntity> entities = FromSchemaToEntitiy.favorite(response.body().getData());
+                    List<FavoriteEntity> entities = FromSchemaToEntitiy.favorite(schemas);
                     // 6. 데이터 추가
                     myFavoriteAdapter.setData(entities);
                     // 7. 추가 완료 후 다음 페이지로 넘어가도록 세팅
                     currentPage++;
-                    // 8. 더 이상 데이터를 세팅중이 아님을 명시
-                    my_favorite_list_view.setIsLoading(false);
+
                     if (entities.size() < PER_PAGE) {
                         setHasMoreToLoad(false);
                     }

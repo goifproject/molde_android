@@ -16,9 +16,10 @@
     <string name="report_status_result">접수 결과</string>
 
     <string name="feed_detail">신고 상세 내역</string>
-    <string name="deny_report">신고 거절</string>
-    <string name="cancel_report">신고 취소</string>
+    <string name="deny_report">신고거절</string>
+    <string name="cancel_report">신고취소</string>
     <string name="cancel_message">신고를 취소하시겠습니까?</string>
+    <string name="deny_message">신고를 거절하시겠습니까?</string>
     <string name="report_message_receiving">신고해 주셔서 감사합니다. 운영자가 신고 내용을 확인중입니다</string>
     <string name="report_message_accepted">신고하신 내용을 운영자가 관할 지역에 전달하였습니다!</string>
     <string name="report_message_found">접수 결과 몰래카메라로 판정되어 제거하였습니다!</string>
@@ -50,6 +51,7 @@
     <string name="snackbar_invalid_email">유효한 이메일이 아닙니다</string>
     <string name="snackbar_inquire_accepted">문의가 접수됬습니다. 감사합니다</string>
     <string name="snackbar_content_absent">내용이 없습니다.</string>
+    <string name="email_hint"><font size="14">이메일 입력</font></string>
 
     <!-- MyPage - FaQ-->
     <string name="faq">자주 묻는 질문</string>
@@ -89,7 +91,7 @@
     <string name="producer_ceo_content">정영찬</string>
     <string name="producer_project">[이유 있는 프로젝트 2기]</string>
     <string name="producer_plan">기획</string>
-    <string name="producer_plan_content">김주현, 최로사, 이기정</string>
+    <string name="producer_plan_content">김주현, 최로사, 이기정, 정영찬, 유지현</string>
     <string name="producer_design">디자인</string>
     <string name="producer_design_content">김주현</string>
     <string name="producer_developer">개발</string>
@@ -171,8 +173,10 @@
 
     <string name="marker_title_my_location">현재 위치</string>
     <string name="marker_title_search_location">검색 위치</string>
+    <string name="marker_title_favorite">즐겨찾기</string>
     <string name="marker_title_favorite_location">★</string>
     <string name="marker_title_feed_location">피드 위치</string>
+    <string name="marker_require_info">추가 정보를 입력해주세요</string>
 
     <string name="favorite_address"><font size="10">즐겨찾기 주소</font></string>
     <string name="favorite_detail_address"><font size="10">상세 주소</font></string>
@@ -186,7 +190,7 @@
     <string name="snackbar_no_email">이메일 주소를 입력해주세요.</string>
     <string name="snackbar_network_error">데이터 전송 실패했습니다. 네트워크를 확인해주세요.</string>
     <string name="snackbar_wrong_email_form">이메일 양식에 맞지 않습니다. 확인해주세요</string>
-    <string name="snackbar_report_success">신고가 접수됬습니다. 감사합니다.</string>
+    <string name="snackbar_report_success">신고가 접수됐습니다. 감사합니다.</string>
     <string name="snackbar_permission_denied">권한얻는 데 실패했습니다. \n\n [설정] -> [어플리케이션] -> 해당앱에 들어가 권한을 켜주세요.</string>
     <string name="report_location">신고 위치</string>
     <string name="report_search_to_set">검색해서 등록</string>
@@ -203,6 +207,7 @@
 
     <!-- Map - Favorite -->
     <string name="my_favorite">즐겨찾기</string>
+    <string name="dialog_delete_favorite_message">즐겨찾기를 삭제하시겠습니까?</string>
 
     <!-- Dialog -->
     <string name="yes">예</string>
@@ -243,8 +248,8 @@
     <string name="siren_green">초록색 싸이렌</string>
     <string name="siren_white">흰색 싸이렌</string>
 
-    <string name="facebook_app_id">640535656298047</string>
-    <string name="fb_login_protocol_scheme">fb640535656298047</string>
+    <!--<string name="facebook_app_id">640535656298047</string>-->
+    <!--<string name="fb_login_protocol_scheme">fb640535656298047</string>-->
 
     <string name="internal_storage">Internal storage</string>
 

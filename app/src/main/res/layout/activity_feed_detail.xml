@@ -390,10 +390,11 @@
                 </LinearLayout>
 
                 <ImageView
-                    android:id="@+id/myfeed_progress_dot_first_yellow_admin"
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:src="@drawable/ic_feed_dot_yellow" />
+                    android:id="@+id/myfeed_progress_dot_first_admin"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_feed_dot_grey" />
 
                 <ImageView
                     android:id="@+id/myfeed_progress_dot_second_admin"
@@ -409,6 +410,13 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:src="@drawable/ic_feed_dot_grey" />
+
+                <ImageView
+                    android:id="@+id/myfeed_progress_dot_first_yellow_admin"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:src="@drawable/ic_feed_dot_yellow"
+                    android:visibility="invisible"/>
 
                 <ImageView
                     android:id="@+id/myfeed_progress_dot_second_yellow_admin"

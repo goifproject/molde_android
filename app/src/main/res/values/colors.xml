@@ -6,6 +6,8 @@
 
     <color name="colorLicense">#3F51B5</color>
 
+    <color name="ic_launcher_background">#FFFFFF</color>
+
     <!-- MainActivity -->
     <!-- Text Color -->
     <color name="colorBottomTabText">#323232</color>

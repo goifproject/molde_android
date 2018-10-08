@@ -35,6 +35,8 @@ public class MapFavoriteDialog extends BottomSheetDialogFragment {
     TextView my_favorite_marker_info;
     @BindView(R.id.my_favorite_marker_modify_button)
     ImageView my_favorite_marker_modify_button;
+    @BindView(R.id.my_favorite_toggle)
+    ImageView my_favorite_toggle;
 
     @BindView(R.id.my_favorite_content_modify)
     RelativeLayout my_favorite_content_modify;
@@ -51,6 +53,7 @@ public class MapFavoriteDialog extends BottomSheetDialogFragment {
     public MoldeApplyMyFavoriteInfoCallback moldeApplyMyFavoriteInfoCallback;
     public Marker myFavoriteMarker;
     private String uId;
+    private boolean isMyFavoriteActive;
 
     public interface MoldeApplyMyFavoriteInfoCallback {
         void applyMyFavoriteInfo(String title, String info, Marker marker);
@@ -83,23 +86,37 @@ public class MapFavoriteDialog extends BottomSheetDialogFragment {
         ButterKnife.bind(this, view);
         Bundle bundle = getArguments();
         if (bundle != null) {
-            my_favorite_marker_title.setText(bundle.getString("markerTitle"));
-            my_favorite_marker_info.setText(bundle.getString("markerInfo"));
+
             markerLat = bundle.getDouble("markerLat");
             markerLng = bundle.getDouble("markerLng");
+            isMyFavoriteActive = bundle.getBoolean("myFavoriteActive");
+
+            if (isMyFavoriteActive) {
+                my_favorite_toggle.setImageResource(R.drawable.ic_favorite_star_on_t);
+            }
+
+            if (bundle.getString("markerTitle").equals(getText(R.string.marker_title_favorite).toString()) ||
+                    bundle.getString("markerTitle").equals(getText(R.string.marker_title_search_location).toString())) {
+                my_favorite_marker_title.setText(getText(R.string.marker_require_info));
+                return;
+            }
+
+            my_favorite_marker_title.setText(bundle.getString("markerTitle"));
+            my_favorite_marker_info.setText(bundle.getString("markerInfo"));
+
         }
     }
 
     private void setupListener() {
 
-        if (my_favorite_marker_title.getText().toString().startsWith("★")) {
+        if (my_favorite_marker_title.getText().toString().equals(getText(R.string.marker_require_info))) {
             my_favorite_marker_modify_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     my_favorite_content.setVisibility(View.GONE);
                     my_favorite_content_modify.setVisibility(View.VISIBLE);
-                    my_favorite_modify_title.setText(my_favorite_marker_title.getText());
-                    my_favorite_modify_info.setText(my_favorite_marker_info.getText());
+//                    my_favorite_modify_title.setText(my_favorite_marker_title.getText());
+//                    my_favorite_modify_info.setText(my_favorite_marker_info.getText());
                 }
             });
         }
@@ -107,6 +124,15 @@ public class MapFavoriteDialog extends BottomSheetDialogFragment {
         my_favorite_modify_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (my_favorite_marker_title.getText().toString().equals("")
+                        || my_favorite_marker_info.getText().toString().equals("")
+                        || my_favorite_marker_info.getText().toString().equals(getText(R.string.marker_title_favorite).toString())
+                        || my_favorite_marker_info.getText().toString().equals(getText(R.string.marker_title_search_location).toString())) {
+                    Toast.makeText(getContext(), "정보가 부족합니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 my_favorite_content.setVisibility(View.VISIBLE);
                 my_favorite_content_modify.setVisibility(View.GONE);
                 my_favorite_marker_title.setText(my_favorite_modify_title.getText());

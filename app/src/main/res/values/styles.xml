@@ -29,4 +29,87 @@
         <item name="android:textColorHighlight">@color/colorYellow</item>
     </style>
 
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!--<item name="android:alertDialogStyle">@style/MyAlertDialogTheme</item>-->
+        <item name="android:colorAccent">@color/colorDefaultText</item>
+    </style>
+
+    <style name="MyAlertDialogTheme">
+
+        <item name="android:colorAccent">@color/white</item>
+
+        <!--<item name="android:panelBackground">@drawable/bg_white</item>-->
+
+        <item name="android:bottomBright">@android:color/white</item>
+        <item name="android:bottomDark">@android:color/white</item>
+        <item name="android:bottomMedium">@android:color/white</item>
+        <item name="android:centerBright">@android:color/white</item>
+        <item name="android:centerDark">@android:color/white</item>
+        <item name="android:centerMedium">@android:color/white</item>
+        <item name="android:fullBright">@color/white</item>
+        <item name="android:fullDark">@color/white</item>
+        <item name="android:topBright">@color/white</item>
+        <item name="android:topDark">@android:color/white</item>
+
+
+        <!--<item name="android:windowBackground">@color/fui_transparent</item>-->
+        <!--<item name="android:windowContentOverlay">@null</item>-->
+        <!--<item name="android:windowIsFloating">false</item>-->
+        <!--<item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>-->
+        <!--<item name="android:windowMinWidthMajor">@android:dimen/dialog_min_width_major</item>-->
+        <!--<item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>-->
+        <!--<item name="android:windowTitleStyle">...</item>-->
+        <!--<item name="android:textAppearanceMedium">...</item>-->
+        <!--<item name="android:borderlessButtonStyle">@null</item>-->
+        <!--<item name="android:textAppearance">@style/TextAppearance.AppCompat</item>-->
+
+        <item name="android:buttonBarButtonStyle">@style/Widget.AppCompat.Button.ButtonBar.AlertDialog</item>
+
+        <!--<item name="android:background">@color/white</item>-->
+        <!--<item name="android:panelBackground">@color/white</item>-->
+        <!--<item name="android:panelColorBackground">@color/white</item>-->
+
+        <!--<item name="android:textColor">@color/colorDefaultText</item>-->
+        <!--<item name="android:windowBackground">@null</item>-->
+        <!--&lt;!&ndash;<item name="android:textAppearance"></item>&ndash;&gt;-->
+        <!--<item name="android:textAppearanceInverse">@null</item>-->
+
+
+        <!--<item name="windowFrame">@null</item>-->
+        <!--<item name="windowTitleStyle">@style/DialogWindowTitle.Holo</item>-->
+       <!---->
+        <!--<item name="windowIsFloating">true</item>-->
+        <!--<item name="windowContentOverlay">@null</item>-->
+        <!--<item name="windowAnimationStyle">@style/Animation.Holo.Dialog</item>-->
+        <!--<item name="windowSoftInputMode">stateUnspecified|adjustPan</item>-->
+        <!--<item name="windowActionBar">false</item>-->
+        <!--<item name="windowActionModeOverlay">true</item>-->
+        <!--<item name="windowCloseOnTouchOutside">@bool/config_closeDialogWhenTouchOutside</item>-->
+
+        <!--<item name="colorBackgroundCacheHint">@null</item>-->
+
+        <!--<item name="buttonBarStyle">@style/Widget.AppCompat.ButtonBar.AlertDialog</item>-->
+        <!--<item name="borderlessButtonStyle">@style/Widget.AppCompat.Button.Borderless</item>-->
+
+
+        <!--<item name="android:panel">@null</item>-->
+        <!--<item name="android:padding">0dp</item>-->
+
+        <item name="android:listPreferredItemPaddingLeft">30dp</item>
+        <item name="android:listPreferredItemPaddingRight">30dp</item>
+        <item name="android:listPreferredItemPaddingStart">30dp</item>
+        <item name="android:listPreferredItemPaddingEnd">30dp</item>
+
+    </style>
+
+    <style name="dialogButton" parent="Widget.AppCompat.Button">
+
+        <item name="android:buttonBarButtonStyle">@style/Widget.AppCompat.Button.ButtonBar.AlertDialog</item>
+        <item name="android:background">#00000000</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
+        <item name="android:textColor">@color/colorDefaultText</item>
+        <item name="android:padding">30dp</item>
+    </style>
+
+
 </resources>

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -167,10 +168,10 @@ public class MyPageFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (mypage_log_in_out_button.getText().equals(getText(R.string.signout))) {
-                    AlertDialog dialog = new AlertDialog.Builder(getContext())
-                            .setTitle(getText(R.string.dialog_title_signout))
+                    AlertDialog dialog = new AlertDialog.Builder(getContext(), R.style.DialogTheme)
+                            //.setTitle(getText(R.string.dialog_title_signout))
                             .setMessage(getText(R.string.dialog_msg_signout))
-                            .setPositiveButton(getText(R.string.yes), new DialogInterface.OnClickListener() {
+                            .setPositiveButton(Html.fromHtml("<font color='#000000'>예</font>"), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     int type = PreferenceUtil.getInt(getContext(), SIGNIN_TYPE, 0);
@@ -187,7 +188,7 @@ public class MyPageFragment extends Fragment {
                                     snackBar(getText(R.string.snackbar_signed_out).toString());
                                 }
                             })
-                            .setNegativeButton("아니오", null)
+                            .setNegativeButton(Html.fromHtml("<font color='#000000'>아니오</font>"), null)
                             .create();
                     dialog.show();
                 } else {

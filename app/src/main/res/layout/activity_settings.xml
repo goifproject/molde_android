@@ -135,25 +135,6 @@
                 android:background="#f6f6f6"
                 android:paddingStart="17dp"
                 android:paddingTop="14dp"
-                android:text="@string/producer_ceo"
-                android:textColor="#000000"
-                android:textSize="12sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#f6f6f6"
-                android:paddingStart="17dp"
-                android:text="@string/producer_ceo_content"
-                android:textColor="#000000"
-                android:textSize="14sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#f6f6f6"
-                android:paddingStart="17dp"
-                android:paddingTop="14dp"
                 android:text="@string/producer_project"
                 android:textColor="#000000"
                 android:textSize="12sp" />

@@ -17,6 +17,7 @@ import com.limefriends.molde.comm.custom.addOnListview.OnLoadMoreListener;
 import com.limefriends.molde.comm.utils.PreferenceUtil;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.feed.FeedEntity;
+import com.limefriends.molde.entity.feed.FeedResponseInfoEntity;
 import com.limefriends.molde.entity.feed.FeedResponseInfoEntityList;
 import com.limefriends.molde.remote.MoldeRestfulService;
 import com.limefriends.molde.remote.MoldeNetwork;
@@ -127,16 +128,26 @@ public class MyFeedActivity extends AppCompatActivity implements MyFeedAdapter.O
             @Override
             public void onResponse(Call<FeedResponseInfoEntityList> call, Response<FeedResponseInfoEntityList> response) {
                 if (response.isSuccessful()) {
+
+
+                    // 8. 더 이상 데이터를 세팅중이 아님을 명시
+                    myReport_recyclerView.setIsLoading(false);
+
                     // 4. 호출 후 데이터 정리
-                    List<FeedEntity> entities = FromSchemaToEntitiy.feed(response.body().getData());
+                    List<FeedResponseInfoEntity> schemas = response.body().getData();
+
+                    if (schemas == null || schemas.size() == 0) {
+                        setHasMoreToLoad(false);
+                        return;
+                    }
+
+                    List<FeedEntity> entities = FromSchemaToEntitiy.feed(schemas);
                     // 6. 데이터 추가
                     reportAdapter.addData(entities);
                     // 7. 추가 완료 후 다음 페이지로 넘어가도록 세팅
                     currentPage++;
-                    // 8. 더 이상 데이터를 세팅중이 아님을 명시
-                    myReport_recyclerView.setIsLoading(false);
+
                     if (entities.size() < PER_PAGE) {
-                        // Log.e("호출확인5", "magazine fragment");
                         setHasMoreToLoad(false);
                     }
                 }

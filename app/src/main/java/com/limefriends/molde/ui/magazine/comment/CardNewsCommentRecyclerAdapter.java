@@ -53,9 +53,6 @@ public class CardNewsCommentRecyclerAdapter
     @Override
     public void onBindViewHolder(MagazineCommentViewHolder holder, int position) {
         CommentEntity cardNewsCommentEntity = dataList.get(position);
-        Glide.with(context).load(R.drawable.img_placeholder_profile)
-                .bitmapTransform(new CropCircleTransformation(context))
-                .into(holder.img_comment_profile);
         holder.txt_comment_user.setText(cardNewsCommentEntity.getUserName());
         holder.txt_comment_date.setText(
                 DateUitl.fromLongToDate(cardNewsCommentEntity.getCommDate()));

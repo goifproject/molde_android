@@ -4,10 +4,16 @@
 <!-- TODO 아이콘 크기 공통 조절, 위젯 스타일 적용 -->
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/sub_desc_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <ProgressBar
+        android:id="@+id/sub_tutorial_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/molde_sub_desc_pager"
@@ -15,30 +21,22 @@
         android:layout_height="match_parent" />
 
     <FrameLayout
+        android:id="@+id/go_to_start_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bottom_layout_height"
         android:layout_gravity="bottom"
-        android:background="@color/colorPrimary">
-
-        <com.pm10.library.CircleIndicator
-            android:id="@+id/sub_desc_indicator"
-            android:layout_width="172dp"
-            android:layout_height="8dp"
-            android:layout_gravity="center"
-            app:p_defaultColor="@color/colorLittleDarkGray"
-            app:p_gap="16dp"
-            app:p_radius="4dp"
-            app:p_selectedColor="@color/colorSubDescSelect" />
+        android:background="@color/colorPrimary"
+        android:visibility="gone">
 
         <Button
             android:id="@+id/go_to_start_button"
             android:layout_width="72dp"
             android:layout_height="match_parent"
-            android:layout_gravity="end"
+            android:layout_gravity="center"
             android:background="@color/fui_transparent"
             android:text="@string/confirm"
             android:textSize="16sp"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
     </FrameLayout>
 

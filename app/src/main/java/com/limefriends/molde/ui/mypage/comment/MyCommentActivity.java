@@ -29,6 +29,7 @@ import com.limefriends.molde.entity.comment.CommentEntity;
 import com.limefriends.molde.entity.comment.CommentResponseInfoEntity;
 import com.limefriends.molde.entity.comment.CommentResponseInfoEntityList;
 import com.limefriends.molde.entity.comment.ReportedCommentEntity;
+import com.limefriends.molde.entity.comment.ReportedCommentResponseInfoEntity;
 import com.limefriends.molde.entity.comment.ReportedCommentResponseInfoEntityList;
 import com.limefriends.molde.entity.news.CardNewsEntity;
 import com.limefriends.molde.entity.news.CardNewsResponseInfoEntity;
@@ -190,7 +191,7 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
             myComment_reported_comment_listview.setOnLoadMoreListener(new OnLoadMoreListener() {
                 @Override
                 public void loadMore() {
-                    Log.e("호출확인 ","loadMore3");
+                    Log.e("호출확인 ", "loadMore3");
                     loadReportedComment(PER_PAGE, currentPage);
                 }
             });
@@ -220,7 +221,7 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
         return false;
     }
 
-    private void snack(String message){
+    private void snack(String message) {
         Snackbar.make(myComment_container, message, Snackbar.LENGTH_LONG).show();
     }
 
@@ -273,6 +274,14 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
                                    Response<CommentResponseInfoEntityList> response) {
                 // 같은 뉴스의 댓글들을 모으기 위해 오름차순 정렬
                 commentSchemas = response.body().getData();
+
+                if (commentSchemas == null || commentSchemas.size() == 0) {
+                    myComment_listView.setIsLoading(false);
+                    progressBar.setVisibility(View.GONE);
+                    hasMoreToLoad(false);
+                    return;
+                }
+
                 Collections.sort(commentSchemas, new CommentComparator());
                 CommentEntity lastAddedComment = null;
                 outer:
@@ -366,21 +375,21 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
             public void onResponse(Call<CardNewsResponseInfoEntityList> call,
                                    Response<CardNewsResponseInfoEntityList> response) {
                 if (response.isSuccessful()) {
-                    List<CardNewsResponseInfoEntity> newsSchemas = response.body().getData();
 
-                    if (newsSchemas.size() == 0) return;
-                    CardNewsResponseInfoEntity schema = response.body().getData().get(0);
-                    CardNewsEntity cardNewsEntity = new CardNewsEntity(
-                            schema.getNewsId(),
-                            schema.getPostId(),
-                            schema.getDescription(),
-                            schema.getDate(),
-                            schema.getNewsImg(),
-                            entityList
-                    );
-                    newsEntities.add(cardNewsEntity);
+                    List<CardNewsResponseInfoEntity> newsSchema = response.body().getData();
+                    if (newsSchema != null && newsSchema.size() != 0) {
+                        CardNewsResponseInfoEntity schema = response.body().getData().get(0);
+                        CardNewsEntity cardNewsEntity = new CardNewsEntity(
+                                schema.getNewsId(),
+                                schema.getPostId(),
+                                schema.getDescription(),
+                                schema.getDate(),
+                                schema.getNewsImg(),
+                                entityList
+                        );
+                        newsEntities.add(cardNewsEntity);
+                    }
                     addResponseCount();
-
                     if (fetchCount == responseCount) {
                         Collections.sort(newsEntities, new CardNewsComparator());
                         commentExpandableAdapter.addAll(newsEntities);
@@ -423,8 +432,18 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
             public void onResponse(Call<ReportedCommentResponseInfoEntityList> call,
                                    Response<ReportedCommentResponseInfoEntityList> response) {
                 if (response.isSuccessful()) {
+
+                    List<ReportedCommentResponseInfoEntity> schemas = response.body().getData();
+
+                    if (schemas == null || schemas.size() == 0) {
+                        myComment_reported_comment_listview.setIsLoading(false);
+                        progressBar.setVisibility(View.GONE);
+                        hasMoreToLoad(false);
+                        return;
+                    }
+
                     List<ReportedCommentEntity> entities
-                            = FromSchemaToEntitiy.reportedComment(response.body().getData());
+                            = FromSchemaToEntitiy.reportedComment(schemas);
                     fetchCount = entities.size();
                     for (ReportedCommentEntity commentEntity : entities) {
                         loadCardNewsComment(commentEntity.getCommId());
@@ -457,7 +476,7 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
                 if (response.isSuccessful()) {
                     addResponseCount();
                     List<CommentResponseInfoEntity> commentSchema = response.body().getData();
-                    if (commentSchema.size() != 0) {
+                    if (commentSchema != null && commentSchema.size() != 0) {
                         CommentEntity newsEntity = FromSchemaToEntitiy.comment(commentSchema.get(0));
                         commentEntities.add(newsEntity);
                     }
@@ -511,7 +530,7 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
 
     // 댓글 삭제시 신고된 댓글도 삭제
     // TODO 아직 삭제가 안
-    private void deleteReportedComment(int position, int commentId) {
+    private void deleteReportedComment(final int position, int commentId) {
 
         Call<Result> call = getCommentService().deleteReportedComment(commentId);
 
@@ -519,7 +538,8 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
                 if (response.isSuccessful()) {
-                    // snack("신고를 취소했습니다");
+                    snack("신고를 취소했습니다");
+                    reportedCommentAdapter.deleteComment(position);
                 }
             }
 
@@ -531,7 +551,7 @@ public class MyCommentActivity extends AppCompatActivity implements MyCommentExp
     }
 
     public void showDeleteCommentDialog(final int position, final int commentId) {
-        AlertDialog dialog = new AlertDialog.Builder(this)
+        AlertDialog dialog = new AlertDialog.Builder(this, R.style.DialogTheme)
                 .setTitle(getText(R.string.dialog_title_change_status))
                 .setMessage(getText(R.string.dialog_msg_delete_comment))
                 .setPositiveButton(getText(R.string.refuse_report), new DialogInterface.OnClickListener() {

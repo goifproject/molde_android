@@ -156,11 +156,20 @@ public class FeedFragment extends Fragment implements FeedAdapter.OnClickFeedIte
             @Override
             public void onResponse(Call<FeedResponseInfoEntityList> call, Response<FeedResponseInfoEntityList> response) {
                 if (response.isSuccessful()) {
+
                     List<FeedResponseInfoEntity> schemas = response.body().getData();
+
+                    feed_list.setIsLoading(false);
+
+                    if (schemas == null || schemas.size() == 0) {
+                        hasMoreToLoad(false);
+                        return;
+                    }
+
                     List<FeedEntity> entities = FromSchemaToEntitiy.feed2(schemas);
                     feedAdapter.addAll(entities);
                     currentPage++;
-                    feed_list.setIsLoading(false);
+
                     if (schemas.size() < PER_PAGE) {
                         hasMoreToLoad(false);
                     }
@@ -183,11 +192,20 @@ public class FeedFragment extends Fragment implements FeedAdapter.OnClickFeedIte
             @Override
             public void onResponse(Call<FeedResponseInfoEntityList> call, Response<FeedResponseInfoEntityList> response) {
                 if (response.isSuccessful()) {
+
+                    feed_list.setIsLoading(false);
+
                     List<FeedResponseInfoEntity> schemas = response.body().getData();
+
+                    if (schemas == null || schemas.size() == 0) {
+                        hasMoreToLoad(false);
+                        return;
+                    }
+
                     List<FeedEntity> entities = FromSchemaToEntitiy.feed2(schemas);
                     feedAdapter.addAll(entities);
                     currentPage++;
-                    feed_list.setIsLoading(false);
+
                     if (schemas.size() < PER_PAGE) {
                         hasMoreToLoad(false);
                     }

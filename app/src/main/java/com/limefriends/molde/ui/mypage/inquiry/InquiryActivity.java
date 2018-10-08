@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,6 +30,7 @@ import com.limefriends.molde.comm.utils.pattern.RegexUtil;
 import com.limefriends.molde.R;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.faq.FaqEntity;
+import com.limefriends.molde.entity.faq.FaqResponseInfoEntity;
 import com.limefriends.molde.entity.faq.FaqResponseInfoEntityList;
 import com.limefriends.molde.entity.response.Result;
 import com.limefriends.molde.remote.MoldeRestfulService;
@@ -128,6 +130,7 @@ public class InquiryActivity extends AppCompatActivity {
         ArrayAdapter emailArrayAdapter = ArrayAdapter.createFromResource(this,
                 R.array.email_select, android.R.layout.simple_spinner_item);
         faq_email_select.setAdapter(emailArrayAdapter);
+
         faq_email_select.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -240,7 +243,8 @@ public class InquiryActivity extends AppCompatActivity {
             public void onResponse(Call<Result> call, Response<Result> response) {
                 if (response.isSuccessful()) {
                     progressBar.setVisibility(View.INVISIBLE);
-                    snackBar(getText(R.string.snackbar_inquire_accepted).toString());
+                    Toast.makeText(InquiryActivity.this,
+                            getText(R.string.snackbar_inquire_accepted).toString(), Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }
@@ -268,10 +272,20 @@ public class InquiryActivity extends AppCompatActivity {
             public void onResponse(Call<FaqResponseInfoEntityList> call,
                                    Response<FaqResponseInfoEntityList> response) {
                 if (response.isSuccessful()) {
-                    List<FaqEntity> entities = FromSchemaToEntitiy.faq(response.body().getData());
+
+                    inquiry_recyclerview.setIsLoading(false);
+
+                    List<FaqResponseInfoEntity> schemas = response.body().getData();
+
+                    if (schemas == null || schemas.size() == 0) {
+                        hasMoreToLoad(false);
+                        return;
+                    }
+
+                    List<FaqEntity> entities = FromSchemaToEntitiy.faq(schemas);
                     inquiryAdapter.addAll(entities);
                     currentPage++;
-                    inquiry_recyclerview.setIsLoading(false);
+
                     if (entities.size() < PER_PAGE) {
                         hasMoreToLoad(false);
                     }

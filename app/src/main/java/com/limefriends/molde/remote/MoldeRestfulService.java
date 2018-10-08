@@ -159,7 +159,7 @@ public interface MoldeRestfulService {
                                    @Field("commentId") int commentId);
 
         @FormUrlEncoded
-        @HTTP(method = "DELETE", path = MoldeRestfulApi.Comment.DELETE_COMMENT_API, hasBody = true)
+        @HTTP(method = "DELETE", path = MoldeRestfulApi.Comment.DELETE_REPORTED_COMMENT_API, hasBody = true)
         Call<Result> deleteReportedComment(@Field("commentId") int commentUserId);
     }
 
@@ -197,7 +197,6 @@ public interface MoldeRestfulService {
         Call<Result> deleteMyScrap(@Field("userId") String userId,
                                    @Field("cardNewsScrapId") int newsId);
     }
-
 
     interface Favorite {
 

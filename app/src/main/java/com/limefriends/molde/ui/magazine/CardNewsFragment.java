@@ -14,6 +14,7 @@ import com.limefriends.molde.comm.custom.addOnListview.AddOnScrollRecyclerView;
 import com.limefriends.molde.comm.custom.addOnListview.OnLoadMoreListener;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.news.CardNewsEntity;
+import com.limefriends.molde.entity.news.CardNewsResponseInfoEntity;
 import com.limefriends.molde.entity.news.CardNewsResponseInfoEntityList;
 import com.limefriends.molde.R;
 import com.limefriends.molde.remote.MoldeRestfulService;
@@ -160,9 +161,42 @@ public class CardNewsFragment extends Fragment {
             public void onResponse(Call<CardNewsResponseInfoEntityList> call,
                                    Response<CardNewsResponseInfoEntityList> response) {
                 if (response.isSuccessful()) {
+
+                    Log.e("호출확인", response.body().toString());
+
+                    CardNewsResponseInfoEntityList schema = response.body();
+
+                    if (schema == null) {
+                        Log.e("호출확인", "schema == null");
+                    } else {
+                        Log.e("호출확인", "schema != null");
+                    }
+
+                    List<CardNewsResponseInfoEntity> schemasTemp = schema.getData();
+
+                    if (schemasTemp == null) {
+                        Log.e("호출확인", "schemasTemp == null");
+                    } else {
+                        Log.e("호출확인", "schemasTemp != null");
+                        Log.e("호출확인", schemasTemp.size()+"");
+                    }
+
+                    List<CardNewsResponseInfoEntity> schemas = response.body().getData();
+
+                    if (schemas == null) {
+                        Log.e("호출확인", "schemas == null");
+                    } else {
+                        Log.e("호출확인", "schemas != null");
+                    }
+
+                    if (schemas == null || schemas.size() == 0) {
+                        cardnews_recyclerView.setIsLoading(false);
+                        hasMoreToLoad(false);
+                        return;
+                    }
+
                     // 4. 호출 후 데이터 정리
-                    List<CardNewsEntity> entities = FromSchemaToEntitiy
-                            .cardNews(response.body().getData());
+                    List<CardNewsEntity> entities = FromSchemaToEntitiy.cardNews(response.body().getData());
                     // 6. 데이터 추가
                     cardNewsAdapter.addData(entities);
                     // 7. 추가 완료 후 다음 페이지로 넘어가도록 세팅
@@ -170,7 +204,7 @@ public class CardNewsFragment extends Fragment {
                     // 8. 더 이상 데이터를 세팅중이 아님을 명시
                     cardnews_recyclerView.setIsLoading(false);
                     // 9. 만약 불러온 데이터가 하나의 페이지에 들어가야 할 수보다 작으면 마지막 데이터인 것이므로 더 이상 데이터를 불러오지 않는다.
-                    if (entities.size() < PER_PAGE) {
+                    if (schemas.size() < PER_PAGE) {
                         hasMoreToLoad(false);
                     }
                 }

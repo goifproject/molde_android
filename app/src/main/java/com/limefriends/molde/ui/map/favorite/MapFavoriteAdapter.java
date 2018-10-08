@@ -1,6 +1,8 @@
 package com.limefriends.molde.ui.map.favorite;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,8 +74,6 @@ public class MapFavoriteAdapter extends RecyclerView.Adapter<MapFavoriteAdapter.
 
         @BindView(R.id.my_favorite_layout)
         RelativeLayout my_favorite_layout;
-        @BindView(R.id.my_favorite_view_new)
-        ImageView my_favorite_view_new;
         @BindView(R.id.my_favorite_view_title)
         TextView my_favorite_view_title;
         @BindView(R.id.my_favorite_view_info)
@@ -102,9 +102,27 @@ public class MapFavoriteAdapter extends RecyclerView.Adapter<MapFavoriteAdapter.
             my_favorite_star.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int favId = moldeMyFavoriteList.get(position).getFavId();
-                    currentPosition = position;
-                    myFavoriteAdapterCallBack.onUnSelected(favId);
+
+                    AlertDialog dialog = new AlertDialog.Builder(context, R.style.DialogTheme)
+                            .setMessage(context.getText(R.string.dialog_delete_favorite_message))
+                            .setPositiveButton(context.getText(R.string.yes), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    int favId = moldeMyFavoriteList.get(position).getFavId();
+                                    currentPosition = position;
+                                    myFavoriteAdapterCallBack.onUnSelected(favId);
+                                }
+                            })
+                            .setNegativeButton(context.getText(R.string.no), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            })
+                            .create();
+                    dialog.show();
+
+
                 }
             });
         }

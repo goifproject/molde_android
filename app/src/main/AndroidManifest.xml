@@ -32,17 +32,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.tutorial.MoldeTutorialActivity"
+            android:name=".ui.tutorial.TutorialActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".ui.tutorial.MoldeSubDescActivity"
+            android:name=".ui.tutorial.SubTutorialActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
             android:name=".ui.MoldeMainActivity"
             android:screenOrientation="portrait"
-
             android:theme="@style/AppNoBarTheme" />
         <!-- 지도 관련 -->
         <activity
@@ -127,9 +126,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
 
+        <!-- Google OAUTH -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAqi9cIlxH_iWsEpaXuuQ2EJ-rGFAoVT1g" />
+            android:value="@string/google_maps_key" />
 
         <!-- Facebook OAUTH -->
         <meta-data
@@ -139,7 +139,7 @@
 
         <provider
             android:name="com.facebook.FacebookContentProvider"
-            android:authorities="com.facebook.app.FacebookContentProvider640535656298047"
+            android:authorities="@string/fb_provider_authoities"
             android:exported="true" />
 
         <activity
@@ -186,8 +186,7 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_noti_small" />
-        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
-             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />

@@ -13,6 +13,7 @@
         android:id="@+id/inquire_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#ffffff"
         android:visibility="visible">
 
         <ProgressBar
@@ -37,8 +38,8 @@
                 android:layout_height="32dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerInParent="true"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginBottom="44dp"
+                android:layout_marginTop="44dp"
                 android:background="@drawable/bg_btn_faq"
                 android:gravity="center"
                 android:text="@string/faq"
@@ -55,6 +56,7 @@
             android:layout_marginStart="16dp"
             android:text="@string/faq_content"
             android:textColor="#646464"
+            android:layout_marginTop="16dp"
             android:textSize="12sp" />
 
         <EditText
@@ -97,7 +99,7 @@
                 android:layout_height="match_parent"
                 android:background="@null"
                 android:gravity="center_vertical"
-                android:hint="@string/report_hint_input_email"
+                android:hint="@string/email_hint"
                 android:maxLength="30"
                 android:paddingStart="8dp"
                 android:singleLine="true"

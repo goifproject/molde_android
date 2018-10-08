@@ -54,6 +54,7 @@ import com.limefriends.molde.entity.feed.FeedEntity;
 import com.limefriends.molde.entity.feed.FeedResponseInfoEntity;
 import com.limefriends.molde.entity.feed.FeedResponseInfoEntityList;
 import com.limefriends.molde.entity.safehouse.SafehouseEntity;
+import com.limefriends.molde.entity.safehouse.SafehouseResponseInfoEntity;
 import com.limefriends.molde.entity.safehouse.SafehouseResponseInfoEntityList;
 import com.limefriends.molde.remote.MoldeNetwork;
 import com.limefriends.molde.remote.MoldeRestfulService;
@@ -123,8 +124,7 @@ public class MapFragment extends Fragment implements
     @BindView(R.id.favorite_button)
     ImageView favorite_button;
     // 즐겨찾기 추가된 거 있는지
-    @BindView(R.id.favorite_new)
-    ImageView favorite_new;
+
     // 신고하기
     @BindView(R.id.report_button)
     ImageView report_button;
@@ -156,7 +156,8 @@ public class MapFragment extends Fragment implements
     public static final int MARKER_MY_LOCATION_HISTORY = -2;
     public static final int MARKER_MY_LOCATION_SEARCH = -3;
     public static final int MARKER_MY_LOCATION_FAVORITE = -4;
-    public static final int MARKER_SAFEHOUSE = -5;
+    public static final int MARKER_MY_LOCATION_PRE_FAVORITE = -5;
+    public static final int MARKER_SAFEHOUSE = -6;
 
     long a;
     private int currentMarkerPosition = -1;
@@ -165,6 +166,7 @@ public class MapFragment extends Fragment implements
     private int currentSafehousePage = FIRST_PAGE;
     private int PER_PAGE_10 = 10;
     private int PER_PAGE_20 = 20;
+    private int PER_PAGE_30 = 20;
     private double lat = 0.0;
     private double lng = 0.0;
     private boolean isFirst = true;
@@ -252,7 +254,7 @@ public class MapFragment extends Fragment implements
 
         map_ui.bringToFront();
         report_card_view_pager.setVisibility(View.GONE);
-        favorite_new.setElevation(12);
+
         my_loc_button.setElevation(8);
         report_button.setElevation(8);
     }
@@ -279,8 +281,9 @@ public class MapFragment extends Fragment implements
             case R.id.loc_search_bar:
                 intent = new Intent();
                 intent.setClass(v.getContext(), SearchMapInfoActivity.class);
-                startActivityForResult(intent, REQ_SEARCH_MAP,
-                        ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
+//                startActivityForResult(intent, REQ_SEARCH_MAP,
+//                        ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
+                startActivityForResult(intent, REQ_SEARCH_MAP);
                 break;
             case R.id.favorite_button:
                 if (getFirebaseAuth() != null && getFirebaseAuth().getUid() != null) {
@@ -397,16 +400,29 @@ public class MapFragment extends Fragment implements
     // 맵 화면 롱클릭
     @Override
     public void onMapLongClick(LatLng latLng) {
-        addMarker(
+
+        if (getUid() == null || getUid().equals("")) {
+            snack("몰디 로그인이 필요합니다.");
+            return;
+        }
+
+        Marker newFavoriteMarker = addMarker(
                 latLng,
-                getText(R.string.marker_title_favorite_location).toString(),
+                getText(R.string.marker_title_favorite).toString(),
                 "",
                 R.drawable.ic_map_pick,
-                MARKER_MY_LOCATION_FAVORITE);
+                MARKER_MY_LOCATION_PRE_FAVORITE);
+
+        newFavoriteMarker.setIcon(BitmapDescriptorFactory
+                .fromBitmap(sizeUpMapIcon(R.drawable.ic_map_pick)));
+
+        newFavoriteMarker.showInfoWindow();
+
+        showFavoriteDialog(newFavoriteMarker, MARKER_MY_LOCATION_PRE_FAVORITE);
     }
 
     // 즐겨찾기 마커 클릭시 보여줄 대화상자
-    private void showFavoriteDialog(Marker marker) {
+    private void showFavoriteDialog(Marker marker, int type) {
         MapFavoriteDialog mapFavoriteDialog = new MapFavoriteDialog();
         mapFavoriteDialog.setCallback(this, marker, getUid());
         Bundle bundle = new Bundle();
@@ -414,6 +430,11 @@ public class MapFragment extends Fragment implements
         bundle.putString("markerInfo", marker.getSnippet());
         bundle.putDouble("markerLat", marker.getPosition().latitude);
         bundle.putDouble("markerLng", marker.getPosition().longitude);
+        if (type == MARKER_MY_LOCATION_FAVORITE) {
+            isMyFavoriteActive = true;
+        } else if (type == MARKER_MY_LOCATION_PRE_FAVORITE) {
+            isMyFavoriteActive = false;
+        }
         bundle.putBoolean("myFavoriteActive", isMyFavoriteActive);
         mapFavoriteDialog.setArguments(bundle);
         mapFavoriteDialog.show(
@@ -434,15 +455,27 @@ public class MapFragment extends Fragment implements
         } else {
             switch (tagNumber) {
                 case MARKER_MY_LOCATION:
+//                    marker.setIcon(BitmapDescriptorFactory
+//                            .fromBitmap(sizeUpMapIcon(R.drawable.ic_map_marker_cur_location)));
+                    marker.showInfoWindow();
+                    break;
                 case MARKER_MY_LOCATION_HISTORY:
                 case MARKER_MY_LOCATION_SEARCH:
-                    marker.setIcon(BitmapDescriptorFactory
-                            .fromBitmap(sizeUpMapIcon(R.drawable.ic_map_marker_cur_location)));
-                    break;
+//                    marker.setIcon(BitmapDescriptorFactory
+//                            .fromBitmap(sizeUpMapIcon(R.drawable.ic_map_marker_cur_location)));
+//                    marker.showInfoWindow();
+//                    break;
                 case MARKER_MY_LOCATION_FAVORITE:
                     marker.setIcon(BitmapDescriptorFactory
                             .fromBitmap(sizeUpMapIcon(R.drawable.ic_map_pick)));
-                    showFavoriteDialog(marker);
+                    marker.showInfoWindow();
+                    showFavoriteDialog(marker, MARKER_MY_LOCATION_FAVORITE);
+                    break;
+                case MARKER_MY_LOCATION_PRE_FAVORITE:
+                    marker.setIcon(BitmapDescriptorFactory
+                            .fromBitmap(sizeUpMapIcon(R.drawable.ic_map_pick)));
+                    marker.showInfoWindow();
+                    showFavoriteDialog(marker, MARKER_MY_LOCATION_PRE_FAVORITE);
                     break;
                 case MARKER_SAFEHOUSE:
                     marker.setIcon(BitmapDescriptorFactory.
@@ -464,12 +497,14 @@ public class MapFragment extends Fragment implements
         } else {
             switch (tagNumber) {
                 case MARKER_MY_LOCATION:
+                    break;
                 case MARKER_MY_LOCATION_HISTORY:
                 case MARKER_MY_LOCATION_SEARCH:
-                    marker.setIcon(BitmapDescriptorFactory
-                            .fromResource(R.drawable.ic_map_marker_cur_location));
-                    break;
+//                    marker.setIcon(BitmapDescriptorFactory
+//                            .fromResource(R.drawable.ic_map_marker_cur_location));
+//                    break;
                 case MARKER_MY_LOCATION_FAVORITE:
+                case MARKER_MY_LOCATION_PRE_FAVORITE:
                     marker.setIcon(BitmapDescriptorFactory
                             .fromResource(R.drawable.ic_map_pick));
                     break;
@@ -586,7 +621,7 @@ public class MapFragment extends Fragment implements
             moveCamera(new LatLng(feedEntity.getRepLat(),
                     feedEntity.getRepLon()), ZOOM_FEED_MARKER);
             addFeedMarkers(feedEntity);
-            fromFeed = false;
+
         }
         // 한 번 데이터를 불러온 후 외부에서 접근할 경우
         else {
@@ -649,7 +684,7 @@ public class MapFragment extends Fragment implements
                 List<FeedResponseInfoEntity> entityList = response.body().getData();
 
                 // 피드가 존재하는 경우
-                if (entityList.size() != 0) {
+                if (entityList != null && entityList.size() != 0) {
                     // 피드를 추가로 불러왔을 때 위치
                     reportCardPosition = mapReportCardItemList.size();
                     for (int i = 0; i < entityList.size(); i++) {
@@ -664,16 +699,31 @@ public class MapFragment extends Fragment implements
                                 marker = addMarker(location, entity.getRepDetailAddr(),
                                         "",
                                         R.drawable.ic_map_marker_red, i);
+                                if (i == 0 && fromFeed) {
+                                    marker.setIcon(BitmapDescriptorFactory
+                                            .fromBitmap(sizeUpMapIcon(R.drawable.ic_map_marker_red)));
+                                    marker.showInfoWindow();
+                                }
                                 break;
                             case FOUND:
                                 marker = addMarker(location, entity.getRepContents(),
                                         "",
                                         R.drawable.ic_map_marker_white, i);
+                                if (i == 0 && fromFeed) {
+                                    marker.setIcon(BitmapDescriptorFactory
+                                            .fromBitmap(sizeUpMapIcon(R.drawable.ic_map_marker_white)));
+                                    marker.showInfoWindow();
+                                }
                                 break;
                             case CLEAN:
                                 marker = addMarker(location, entity.getRepContents(),
                                         "",
                                         R.drawable.ic_map_marker_green, i);
+                                if (i == 0 && fromFeed) {
+                                    marker.setIcon(BitmapDescriptorFactory
+                                            .fromBitmap(sizeUpMapIcon(R.drawable.ic_map_marker_green)));
+                                    marker.showInfoWindow();
+                                }
                                 break;
                         }
                         reportInfoMarkers.add(marker);
@@ -692,9 +742,12 @@ public class MapFragment extends Fragment implements
 
                         updateData(mapReportCardItemList);
 
-                        applyReportCardInfo(reportCardPosition);
+                        // applyReportCardInfo(reportCardPosition);
 
-                        if (reportCardPosition == 0) showCardView();
+                        if (reportCardPosition == 0 && fromFeed) {
+                            showCardView();
+                            fromFeed = false;
+                        }
 
                         currentPage++;
 
@@ -716,6 +769,8 @@ public class MapFragment extends Fragment implements
                 // 피드가 아예 없는 경우
                 else {
 
+                    hasMoreToLoad(false);
+
                     snackBar(getText(R.string.toast_no_feed_place).toString());
 
                     moveCamera(new LatLng(lat, lng), ZOOM_CUR_LOCATION);
@@ -731,6 +786,8 @@ public class MapFragment extends Fragment implements
                 snackBar(getText(R.string.toast_network_error).toString());
 
                 isLoading(false);
+
+                fromFeed = false;
             }
         });
     }
@@ -740,7 +797,7 @@ public class MapFragment extends Fragment implements
         reportCardAdapter.addAll(data);
     }
 
-    private void loadFavoriteFeed(double lat, double lng) {
+    private void loadFavoriteFeed(final double lat, final double lng) {
 
         if (getUid() == null || getUid().equals("")) return;
 
@@ -751,15 +808,27 @@ public class MapFragment extends Fragment implements
             @Override
             public void onResponse(Call<FavoriteResponseInfoEntityList> call, Response<FavoriteResponseInfoEntityList> response) {
                 if (response.isSuccessful()) {
+
+                    List<FavoriteResponseInfoEntity> schemas = response.body().getData();
+
+                    if (schemas == null || schemas.size() == 0) return;
+
                     favoriteEntityList
-                            = FromSchemaToEntitiy.favorite(response.body().getData());
-                    for (FavoriteEntity entity : favoriteEntityList) {
+                            = FromSchemaToEntitiy.favorite(schemas);
+                    for (int i = 0; i < favoriteEntityList.size(); i++) {
+                        FavoriteEntity entity = favoriteEntityList.get(i);
                         Marker newFavoriteMarker = addMarker(
                                 new LatLng(entity.getFavLat(), entity.getFavLon()),
                                 entity.getFavName(),
                                 entity.getFavAddr(),
                                 R.drawable.ic_map_pick,
                                 MARKER_MY_LOCATION_FAVORITE);
+
+                        if (lat == entity.getFavLat() && lng == entity.getFavLon()) {
+                            newFavoriteMarker.setIcon(BitmapDescriptorFactory
+                                    .fromBitmap(sizeUpMapIcon(R.drawable.ic_map_pick)));
+                            newFavoriteMarker.showInfoWindow();
+                        }
                         favoriteMarkers.add(newFavoriteMarker);
                     }
                 }
@@ -775,14 +844,19 @@ public class MapFragment extends Fragment implements
     private void loadSafeHouse(double lat, double lng) {
 
         Call<SafehouseResponseInfoEntityList> call
-                = getSafehouseService().getSafehouse(lat, lng, PER_PAGE_20, FIRST_PAGE);
+                = getSafehouseService().getSafehouse(lat, lng, PER_PAGE_30, FIRST_PAGE);
 
         call.enqueue(new Callback<SafehouseResponseInfoEntityList>() {
             @Override
             public void onResponse(Call<SafehouseResponseInfoEntityList> call, Response<SafehouseResponseInfoEntityList> response) {
                 if (response.isSuccessful()) {
+
+                    List<SafehouseResponseInfoEntity> schemas = response.body().getData();
+
+                    if (schemas == null || schemas.size() == 0) return;
+
                     List<SafehouseEntity> safehouseEntityList
-                            = FromSchemaToEntitiy.safehouse(response.body().getData());
+                            = FromSchemaToEntitiy.safehouse(schemas);
                     for (SafehouseEntity entity : safehouseEntityList) {
                         Marker newSafehouseMarker = addMarker(
                                 new LatLng(entity.getSafeLat(), entity.getSafeLon()),
@@ -792,7 +866,6 @@ public class MapFragment extends Fragment implements
                                 MARKER_SAFEHOUSE);
                         safehouseMarkers.add(newSafehouseMarker);
                     }
-
                 }
             }
 
@@ -809,6 +882,7 @@ public class MapFragment extends Fragment implements
         currentPage = FIRST_PAGE;
         mMap.clear();
         hasMoreToLoad(true);
+
         if (reportInfoMarkers.size() > 0 || mapReportCardItemList.size() > 0) {
 //            for (Marker marker : reportInfoMarkers) {
 //                marker.remove();
@@ -842,12 +916,17 @@ public class MapFragment extends Fragment implements
             loc_search_input.setText(reportName);
             clearReportInfoDataAndMarkers();
             if (curLocationMarker != null) curLocationMarker.remove();
+            LatLng newLatlng = new LatLng(lat, lng);
             curLocationMarker = addMarker(
-                    new LatLng(lat, lng),
+                    newLatlng,
                     getText(R.string.marker_title_search_location).toString(),
                     "",
-                    R.drawable.ic_map_marker_cur_location,
-                    MARKER_MY_LOCATION_HISTORY);
+                    R.drawable.ic_map_pick,
+                    MARKER_MY_LOCATION_PRE_FAVORITE);
+            curLocationMarker.setIcon(BitmapDescriptorFactory
+                    .fromBitmap(sizeUpMapIcon(R.drawable.ic_map_pick)));
+            curLocationMarker.showInfoWindow();
+            moveCamera(newLatlng, ZOOM_CUR_LOCATION);
             loadData(lat, lng);
             loadFavoriteFeed(lat, lng);
             loadSafeHouse(lat, lng);
@@ -861,12 +940,14 @@ public class MapFragment extends Fragment implements
                 isMyFavoriteActive = myFavoriteEntity.isActive();
                 clearReportInfoDataAndMarkers();
                 if (curLocationMarker != null) curLocationMarker.remove();
+                LatLng newLatlng = new LatLng(lat, lng);
                 addMarker(
-                        new LatLng(lat, lng),
+                        newLatlng,
                         myFavoriteEntity.getFavName(),
                         "",
                         R.drawable.ic_map_pick,
                         MARKER_MY_LOCATION_FAVORITE);
+                moveCamera(newLatlng, ZOOM_CUR_LOCATION);
                 loadData(lat, lng);
                 loadFavoriteFeed(lat, lng);
                 loadSafeHouse(lat, lng);
@@ -966,6 +1047,7 @@ public class MapFragment extends Fragment implements
                     "",
                     R.drawable.ic_map_marker_cur_location,
                     MARKER_MY_LOCATION);
+            curLocationMarker.showInfoWindow();
             loadData(lat, lng);
             loadFavoriteFeed(lat, lng);
             loadSafeHouse(lat, lng);
@@ -1049,7 +1131,7 @@ public class MapFragment extends Fragment implements
     }
 
     private void showAskAgainDialog() {
-        AlertDialog dialog = new AlertDialog.Builder(getContext())
+        AlertDialog dialog = new AlertDialog.Builder(getContext(), R.style.DialogTheme)
                 .setTitle(getText(R.string.dialog_request_permission))
                 .setMessage(getText(R.string.dialog_go_settings))
                 .setPositiveButton(getText(R.string.yes), new DialogInterface.OnClickListener() {
@@ -1081,10 +1163,7 @@ public class MapFragment extends Fragment implements
     }
 
     private String getUid() {
-        if (mAuth != null) {
-            mUid = getFirebaseAuth().getCurrentUser().getUid();
-        }
-        return mUid;
+        return getFirebaseAuth().getUid();
     }
 
     private void isFirst(boolean isFirst) {

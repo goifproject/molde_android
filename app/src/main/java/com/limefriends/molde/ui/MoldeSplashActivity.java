@@ -12,7 +12,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.limefriends.molde.R;
 import com.limefriends.molde.comm.utils.PreferenceUtil;
-import com.limefriends.molde.ui.tutorial.MoldeTutorialActivity;
+import com.limefriends.molde.ui.tutorial.SubTutorialActivity;
+import com.limefriends.molde.ui.tutorial.TutorialActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,22 +36,31 @@ public class MoldeSplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                SharedPreferences sharedPreferences = getSharedPreferences("isFirst", Activity.MODE_PRIVATE);
-                boolean firstLaunch = sharedPreferences.getBoolean("isFirst", true);
+
+                boolean firstLaunch = PreferenceUtil.getBoolean(MoldeSplashActivity.this, "isFirst");
+                boolean skipFirstTutorial = PreferenceUtil.getBoolean(MoldeSplashActivity.this, "skipFirst");
+                boolean skipSecondTutorial = PreferenceUtil.getBoolean(MoldeSplashActivity.this, "skipSecond");
+
                 if (firstLaunch) {
                     PreferenceUtil.putLong(MoldeSplashActivity.this, "authority", GUEST);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putBoolean("isFirst", false);
-                    editor.apply();
-                    Intent intent = new Intent(getApplicationContext(), MoldeTutorialActivity.class);
-                    startActivity(intent);
-                    finish();
-                    return;
+                    PreferenceUtil.putBoolean(MoldeSplashActivity.this, "isFirst", false);
                 }
 
-                Intent intent = new Intent(getApplicationContext(), MoldeMainActivity.class);
-                startActivity(intent);
-                finish();
+                if (skipFirstTutorial) {
+                    if (skipSecondTutorial) {
+                        Intent intent = new Intent(getApplicationContext(), MoldeMainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Intent intent = new Intent(getApplicationContext(), SubTutorialActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                } else {
+                    Intent intent = new Intent(getApplicationContext(), TutorialActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
         }, 1500);
 

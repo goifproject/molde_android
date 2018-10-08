@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:layout_marginStart="36dp"
-                android:layout_marginTop="29dp"
+                android:layout_marginTop="28dp"
                 android:text="@string/favorite_address"
                 android:textColor="#646464"
                 android:textSize="16sp" />
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/my_favorite_marker_title"
                 android:layout_marginStart="36dp"
-                android:text="@string/favorite_detail_address"
+
                 android:textColor="#646464"
                 android:textSize="12sp"
                 android:textStyle="normal" />
@@ -70,7 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:background="@drawable/ic_favorite_star_on_t" />
+                android:background="@drawable/ic_favorite_star_off_t" />
 
         </RelativeLayout>
 

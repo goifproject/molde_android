@@ -477,7 +477,7 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
     @TargetApi(Build.VERSION_CODES.M)
     private void showDialogForPermission(String msg) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(MoldeReportCameraActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(MoldeReportCameraActivity.this, R.style.DialogTheme);
         builder.setTitle("알림");
         builder.setMessage(msg);
         builder.setCancelable(false);

@@ -61,7 +61,7 @@ public class SearchMapHistoryAdapter extends RecyclerView.Adapter<SearchMapHisto
                 String keywordHistoryStr = "";
                 if (historyList.size() <= 1) {
                     historyList.remove(position);
-                    notifyItemRemoved(position);
+                    notifyDataSetChanged();
                     try {
                         cache.write(keywordHistoryStr);
                         return;
@@ -71,8 +71,9 @@ public class SearchMapHistoryAdapter extends RecyclerView.Adapter<SearchMapHisto
                 }
 
                 try {
-                    notifyItemRemoved(position);
+                    //notifyItemRemoved(position);
                     historyList.remove(position);
+                    notifyDataSetChanged();
                     Collections.reverse(historyList);
                     for (int i = 0; i < historyList.size(); i++) {
                         keywordHistoryStr +=

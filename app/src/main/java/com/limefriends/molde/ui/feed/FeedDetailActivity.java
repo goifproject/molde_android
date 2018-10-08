@@ -18,7 +18,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -26,7 +25,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
@@ -41,14 +39,9 @@ import com.limefriends.molde.entity.feed.FeedEntity;
 import com.limefriends.molde.entity.feed.FeedImageResponseInfoEntity;
 import com.limefriends.molde.entity.feed.FeedResponseInfoEntity;
 import com.limefriends.molde.entity.feed.FeedResponseInfoEntityList;
-import com.limefriends.molde.entity.feedResult.FeedResultEntity;
-import com.limefriends.molde.entity.feedResult.FeedResultResponseInfoEntityList;
 import com.limefriends.molde.entity.response.Result;
 import com.limefriends.molde.remote.MoldeNetwork;
 import com.limefriends.molde.remote.MoldeRestfulService;
-import com.limefriends.molde.ui.map.report.ReportActivity;
-import com.pm10.library.CircleIndicator;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,8 +82,8 @@ public class FeedDetailActivity extends AppCompatActivity implements View.OnClic
     // 신고 취소
     @BindView(R.id.mypage_detail_report_cancel_button)
     Button mypage_detail_report_cancel_button;
-    @BindView(R.id.myfeed_progress)
-    ProgressBar myfeed_progress;
+    //@BindView(R.id.myfeed_progress)
+    //ProgressBar myfeed_progress;
 
     // 신고 상태 이미지
     @BindView(R.id.report_detail_normal)
@@ -144,6 +137,9 @@ public class FeedDetailActivity extends AppCompatActivity implements View.OnClic
     View myfeed_progress_line_first_admin;
     @BindView(R.id.myfeed_progress_line_second_admin)
     View myfeed_progress_line_second_admin;
+
+    @BindView(R.id.myfeed_progress_dot_first_yellow_admin)
+    ImageView myfeed_progress_dot_first_yellow_admin;
     @BindView(R.id.myfeed_progress_dot_second_yellow_admin)
     ImageView myfeed_progress_dot_second_yellow_admin;
     @BindView(R.id.myfeed_progress_dot_third_yellow_admin)
@@ -244,7 +240,7 @@ public class FeedDetailActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onClick(View v) {
                 if (mypage_detail_report_cancel_button.getText().equals(getText(R.string.cancel_report))) {
-                    AlertDialog dialog = new AlertDialog.Builder(v.getContext())
+                    AlertDialog dialog = new AlertDialog.Builder(v.getContext(), R.style.DialogTheme)
                             .setTitle(getText(R.string.cancel_report))
                             .setMessage(getText(R.string.cancel_message))
                             .setPositiveButton(getText(R.string.yes), new DialogInterface.OnClickListener() {
@@ -263,9 +259,9 @@ public class FeedDetailActivity extends AppCompatActivity implements View.OnClic
                             .create();
                     dialog.show();
                 } else if (mypage_detail_report_cancel_button.getText().equals(getText(R.string.deny_report))) {
-                    AlertDialog dialog = new AlertDialog.Builder(v.getContext())
-                            .setTitle(getText(R.string.cancel_report))
-                            .setMessage(getText(R.string.cancel_message))
+                    AlertDialog dialog = new AlertDialog.Builder(v.getContext(), R.style.DialogTheme)
+                            .setTitle(getText(R.string.deny_report))
+                            .setMessage(getText(R.string.deny_message))
                             .setPositiveButton(getText(R.string.yes), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -618,7 +614,10 @@ public class FeedDetailActivity extends AppCompatActivity implements View.OnClic
     private void changeAdminProgress(int state) {
         switch (state) {
             case RECEIVING:
+                break;
             case ACCEPTED:
+                myfeed_progress_dot_first_yellow_admin.
+                        setVisibility(View.VISIBLE);
                 myfeed_progress_dot_second_yellow_admin
                         .setVisibility(View.INVISIBLE);
                 myfeed_progress_dot_third_yellow_admin
@@ -630,6 +629,8 @@ public class FeedDetailActivity extends AppCompatActivity implements View.OnClic
                 progress_checkbox_admin_accepted.setChecked(true);
                 break;
             case FOUND:
+                myfeed_progress_dot_first_yellow_admin.
+                        setVisibility(View.VISIBLE);
                 myfeed_progress_dot_second_yellow_admin
                         .setVisibility(View.VISIBLE);
                 myfeed_progress_dot_third_yellow_admin
@@ -643,6 +644,8 @@ public class FeedDetailActivity extends AppCompatActivity implements View.OnClic
                 progress_checkbox_admin_found.setChecked(true);
                 break;
             case CLEAN:
+                myfeed_progress_dot_first_yellow_admin.
+                        setVisibility(View.VISIBLE);
                 myfeed_progress_dot_second_yellow_admin
                         .setVisibility(View.VISIBLE);
                 myfeed_progress_dot_third_yellow_admin
@@ -727,10 +730,10 @@ public class FeedDetailActivity extends AppCompatActivity implements View.OnClic
 
     public void deleteReport(int reportId) {
         FirebaseAuth auth = ((MoldeApplication) getApplication()).getFireBaseAuth();
-        if (auth == null || auth.getUid() == null) {
-            snack(getText(R.string.require_login).toString());
-            return;
-        }
+//        if (auth == null || auth.getUid() == null) {
+//            snack(getText(R.string.require_login).toString());
+//            return;
+//        }
         String uId = auth.getCurrentUser().getUid();
 
         Call<Result> call = getFeedService().deleteFeed(uId, reportId);

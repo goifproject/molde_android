@@ -15,11 +15,11 @@
     <Button
         android:id="@+id/molde_tutorial_end_button"
         android:layout_width="match_parent"
-        android:layout_height="36dp"
+        android:layout_height="@dimen/bottom_layout_height"
         android:layout_gravity="bottom"
-        android:background="#b3646464"
+        android:background="@color/colorPrimary"
         android:text="@string/start"
-        android:textColor="#ffffff"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:visibility="gone"/>
 
 </FrameLayout>

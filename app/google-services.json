@@ -31,6 +31,22 @@
           }
         },
         {
+          "client_id": "133210223530-uvckhl4lseqb8s7c72k9s8rq4q91i3dd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.limefriends.molde",
+            "certificate_hash": "e2b42e506ba2733769ad9e742a93b536e74f08be"
+          }
+        },
+        {
+          "client_id": "133210223530-900dvi1fercud02c191lhmhh8hmh44lv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.limefriends.molde",
+            "certificate_hash": "877a28ba257abc54ce8fdd993e9be9c7743f3fb3"
+          }
+        },
+        {
           "client_id": "133210223530-jdcdndttq6l0o74d8l4ri6btnljk4fh7.apps.googleusercontent.com",
           "client_type": 3
         }

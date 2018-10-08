@@ -220,6 +220,7 @@
             android:paddingTop="8dp"
             android:paddingStart="11dp"
             android:padding="4dp"
+            android:maxLength="200"
             android:hint="@string/report_content_hint"
             android:scrollHorizontally="false" />
 
@@ -376,7 +377,7 @@
                 android:layout_height="match_parent"
                 android:background="@null"
                 android:gravity="center_vertical"
-                android:hint="@string/report_hint_input_email"
+                android:hint="@string/email_hint"
                 android:maxLength="30"
                 android:paddingStart="8dp"
                 android:singleLine="true"

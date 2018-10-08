@@ -32,7 +32,7 @@ public class MoldeNetwork {
     private Retrofit buildRetrofit() {
         if (mRetrofit == null) {
             mRetrofit = new Retrofit.Builder()
-                    .baseUrl(MoldeApplication.BASE_URL)
+                    .baseUrl(BuildConfig.SERVER_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(buildOkHttpClient())
                     .build();
@@ -45,7 +45,7 @@ public class MoldeNetwork {
         if (BuildConfig.DEBUG) {
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         } else {
-            interceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         }
         return new OkHttpClient.Builder()
                 .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)

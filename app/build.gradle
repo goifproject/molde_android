@@ -10,10 +10,23 @@ android {
         versionName "1.0"
         resConfigs "en", "es", "ja", "in"
     }
-    buildTypes {
+    signingConfigs {
         release {
-            minifyEnabled true
-            shrinkResources true
+            storeFile file(storepath)
+            storePassword storepwd
+            keyAlias aliasid
+            keyPassword aliaspwd
+        }
+    }
+    buildTypes {
+        debug {
+            buildConfigField "String", "SERVER_URL", SERVER_URL
+        }
+        release {
+            buildConfigField "String", "SERVER_URL", SERVER_URL
+            signingConfig signingConfigs.release
+            // minifyEnabled true
+            // shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

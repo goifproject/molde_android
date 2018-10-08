@@ -28,11 +28,14 @@ import com.limefriends.molde.R;
 import com.limefriends.molde.comm.MoldeApplication;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.news.CardNewsEntity;
+import com.limefriends.molde.entity.news.CardNewsResponseInfoEntity;
 import com.limefriends.molde.entity.news.CardNewsResponseInfoEntityList;
 import com.limefriends.molde.entity.response.Result;
 import com.limefriends.molde.remote.MoldeNetwork;
 import com.limefriends.molde.remote.MoldeRestfulService;
 import com.limefriends.molde.ui.magazine.comment.CardNewsCommentActivity;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -117,7 +120,7 @@ public class CardNewsDetailActivity extends AppCompatActivity {
                 if (mFirebaseAuth != null && mFirebaseAuth.getUid() != null) {
                     final String uId = mFirebaseAuth.getCurrentUser().getUid();
                     if (!isLoading && isScrap) {
-                        AlertDialog dialog = new AlertDialog.Builder(CardNewsDetailActivity.this)
+                        AlertDialog dialog = new AlertDialog.Builder(CardNewsDetailActivity.this, R.style.DialogTheme)
                                 .setMessage(getText(R.string.scrap_delete_message))
                                 .setPositiveButton(getText(R.string.yes), new DialogInterface.OnClickListener() {
                                     @Override
@@ -219,14 +222,18 @@ public class CardNewsDetailActivity extends AppCompatActivity {
     }
 
     private void loadCardNews(int cardNewsId) {
+
         MoldeRestfulService.CardNews newsService
                 = MoldeNetwork.getInstance().generateService(MoldeRestfulService.CardNews.class);
+
         Call<CardNewsResponseInfoEntityList> call = newsService.getCardNewsListById(cardNewsId);
+
         call.enqueue(new Callback<CardNewsResponseInfoEntityList>() {
             @Override
             public void onResponse(Call<CardNewsResponseInfoEntityList> call,
                                    Response<CardNewsResponseInfoEntityList> response) {
                 if (response.isSuccessful()) {
+
                     mCardNewsEntity
                             = FromSchemaToEntitiy.cardNews(response.body().getData().get(0));
                     // 카드뉴스 이미지 개수 세팅
@@ -330,7 +337,7 @@ public class CardNewsDetailActivity extends AppCompatActivity {
     }
 
     private void snack(String msg) {
-        Snackbar.make(cardnews_detail_layout, msg, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(cardnews_detail_layout, msg, Snackbar.LENGTH_SHORT).show();
     }
 
 }

@@ -80,7 +80,7 @@ public class SearchMapInfoActivity extends AppCompatActivity implements
     private void setupViews() {
         setContentView(R.layout.activity_search_location);
         ButterKnife.bind(this);
-        setupWindowAnimations();
+        // setupWindowAnimations();
         loc_map_info_search_bar.setElevation(12);
     }
 

@@ -23,3 +23,6 @@
 -dontwarn okio.Okio
 -dontwarn retrofit2.Platform$Java8
 -dontwarn okio.DeflaterSink
+-keepclassmembers class android.support.design.internal.BottomNavigationMenuView {
+    boolean mShiftingMode;
+}

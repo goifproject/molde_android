@@ -24,6 +24,7 @@ import com.limefriends.molde.comm.custom.addOnListview.AddOnScrollRecyclerView;
 import com.limefriends.molde.comm.custom.addOnListview.OnLoadMoreListener;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.comment.CommentEntity;
+import com.limefriends.molde.entity.comment.CommentResponseInfoEntity;
 import com.limefriends.molde.entity.comment.CommentResponseInfoEntityList;
 import com.limefriends.molde.entity.response.Result;
 import com.limefriends.molde.remote.MoldeNetwork;
@@ -142,7 +143,7 @@ public class CardNewsCommentActivity extends AppCompatActivity {
     }
 
     public void showSnack(String message) {
-        Snackbar.make(comment_layout, message, 300).show();
+        Snackbar.make(comment_layout, message, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
@@ -183,15 +184,25 @@ public class CardNewsCommentActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<CommentResponseInfoEntityList> call,
                                    Response<CommentResponseInfoEntityList> response) {
+
+                List<CommentResponseInfoEntity> schemas = response.body().getData();
+
+                // 8. 더 이상 데이터를 세팅중이 아님을 명시
+                comment_list_view.setIsLoading(false);
+
+                if (schemas == null || schemas.size() == 0) {
+                    setHasMoreToLoad(false);
+                    return;
+                }
+
                 // 4. 호출 후 데이터 정리
                 List<CommentEntity> entities
-                        = FromSchemaToEntitiy.comment(response.body().getData());
+                        = FromSchemaToEntitiy.comment(schemas);
                 // 6. 데이터 추가
                 cardNewsCommentRecyclerAdapter.addData(entities);
                 // 7. 추가 완료 후 다음 페이지로 넘어가도록 세팅
                 currentPage++;
-                // 8. 더 이상 데이터를 세팅중이 아님을 명시
-                comment_list_view.setIsLoading(false);
+
                 // 9. 만약 불러온 데이터가 하나의 페이지에 들어가야 할 수보다 작으면 마지막 데이터인 것이므로 더 이상 데이터를 불러오지 않는다.
                 if (entities.size() < PER_PAGE) {
                     setHasMoreToLoad(false);
