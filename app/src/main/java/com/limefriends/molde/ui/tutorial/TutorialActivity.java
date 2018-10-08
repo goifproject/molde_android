@@ -22,6 +22,10 @@ import com.limefriends.molde.ui.mypage.login.LoginActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.limefriends.molde.comm.Constant.MyPage.CONNECT_FACEBOOK_AUTH_CODE;
+import static com.limefriends.molde.comm.Constant.MyPage.CONNECT_GOOGLE_AUTH_CODE;
+import static com.limefriends.molde.ui.mypage.MyPageFragment.SIGNIN_TYPE;
+
 public class TutorialActivity extends AppCompatActivity {
 
     private final int TUTORIAL_PAGE_CNT = 4;
@@ -49,10 +53,9 @@ public class TutorialActivity extends AppCompatActivity {
         molde_tutorial_end_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                PreferenceUtil.putBoolean(TutorialActivity.this, "skipFirst", true);
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivityForResult(intent, LOGIN_REQUEST_CODE);
-                PreferenceUtil.putBoolean(TutorialActivity.this, "skipFirst", true);
-                finish();
             }
         });
         molde_tutorial_pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -125,12 +128,14 @@ public class TutorialActivity extends AppCompatActivity {
                     break;
                 case CONNECT_GOOGLE_AUTH_CODE:
                     Intent intent2 = new Intent(getApplicationContext(), SubTutorialActivity.class);
+                    PreferenceUtil.putInt(this, SIGNIN_TYPE, CONNECT_GOOGLE_AUTH_CODE);
                     intent2.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                     intent2.putExtra("authLoginDone", CONNECT_GOOGLE_AUTH_CODE);
                     startActivity(intent2);
                     finish();
                     break;
                 case CONNECT_FACEBOOK_AUTH_CODE:
+                    PreferenceUtil.putInt(this, SIGNIN_TYPE, CONNECT_FACEBOOK_AUTH_CODE);
                     Intent intent3 = new Intent(getApplicationContext(), SubTutorialActivity.class);
                     intent3.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                     intent3.putExtra("authLoginDone", CONNECT_FACEBOOK_AUTH_CODE);

@@ -512,7 +512,7 @@ public class FeedDetailActivity extends AppCompatActivity implements View.OnClic
             }
 
             @Override
-            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+            public void onPermissionDenied(List<String> deniedPermissions) {
                 snack("권한 거부\n" + deniedPermissions.toString());
             }
         };

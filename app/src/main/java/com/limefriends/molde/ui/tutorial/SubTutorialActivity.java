@@ -23,7 +23,6 @@ import com.limefriends.molde.comm.utils.PreferenceUtil;
 import com.limefriends.molde.ui.MoldeMainActivity;
 import com.limefriends.molde.R;
 import com.limefriends.molde.ui.MoldeSplashActivity;
-import com.pm10.library.CircleIndicator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,6 +41,8 @@ public class SubTutorialActivity extends AppCompatActivity {
     ViewPager molde_sub_desc_pager;
     @BindView(R.id.go_to_start_layout)
     FrameLayout go_to_start_layout;
+    @BindView(R.id.go_to_start_button)
+    Button go_to_start_button;
 
 
     @Override
@@ -61,12 +62,12 @@ public class SubTutorialActivity extends AppCompatActivity {
                 break;
         }
         molde_sub_desc_pager.setAdapter(new MoldeSubDescAdapter());
-        go_to_start_layout.setOnClickListener(new View.OnClickListener() {
+        go_to_start_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                PreferenceUtil.putBoolean(SubTutorialActivity.this, "skipSecond", true);
                 Intent intent = new Intent(SubTutorialActivity.this, MoldeMainActivity.class);
                 startActivity(intent);
-                PreferenceUtil.putBoolean(SubTutorialActivity.this, "skipSecond", true);
                 finish();
             }
         });

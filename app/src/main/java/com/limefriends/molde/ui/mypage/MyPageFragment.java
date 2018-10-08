@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -176,14 +177,16 @@ public class MyPageFragment extends Fragment {
                                 public void onClick(DialogInterface dialog, int which) {
                                     int type = PreferenceUtil.getInt(getContext(), SIGNIN_TYPE, 0);
                                     if (type == CONNECT_GOOGLE_AUTH_CODE) {
+                                        Log.e("호출확인", "CONNECT_GOOGLE_AUTH_CODE");
                                         ((MoldeApplication) getActivity().getApplication()).getFireBaseAuth().signOut();
                                     }
                                     else if (type == CONNECT_FACEBOOK_AUTH_CODE) {
+                                        Log.e("호출확인", "CONNECT_FACEBOOK_AUTH_CODE");
                                         ((MoldeApplication) getActivity().getApplication()).getFireBaseAuth().signOut();
                                         LoginManager.getInstance().logOut();
                                     }
                                     mypage_log_in_out_button.setText(getText(R.string.signin));
-                                    mypage_profile_name.setText("");
+                                    mypage_profile_name.setText("Guest");
                                     mypage_profile_image.setImageResource(R.drawable.ic_profile);
                                     snackBar(getText(R.string.snackbar_signed_out).toString());
                                 }

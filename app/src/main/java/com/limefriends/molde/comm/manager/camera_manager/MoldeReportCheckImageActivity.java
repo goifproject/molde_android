@@ -24,17 +24,9 @@ public class MoldeReportCheckImageActivity extends AppCompatActivity {
 
     Button image_done_button;
 
-    private final int ADD_IMAGE = 100;
     private Uri imagePath;
     private int imageSeq = 0;
 
-    private String reportContent;
-    private String reportAddress;
-    private String reportDetailAddress;
-    private String reportEmailName;
-    private String reportEmailDomainPosition;
-    private String reportLat;
-    private String reportLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +43,7 @@ public class MoldeReportCheckImageActivity extends AppCompatActivity {
         Intent cameraIntent = getIntent();
         imageSeq = cameraIntent.getIntExtra("imageSeq", 1);
         imagePath = cameraIntent.getParcelableExtra("imagePath");
-        reportContent = cameraIntent.getStringExtra("reportContent");
-        reportAddress = cameraIntent.getStringExtra("reportAddress");
-        reportDetailAddress = cameraIntent.getStringExtra("reportDetailAddress");
-        reportEmailName = cameraIntent.getStringExtra("reportEmailName");
-        reportEmailDomainPosition = cameraIntent.getStringExtra("reportEmailDomainPosition");
-        reportLat = cameraIntent.getStringExtra("reportLat");
-        reportLng = cameraIntent.getStringExtra("reportLng");
+
 
         if(imagePath != null){
             report_check_image.setImageURI(imagePath);
@@ -70,18 +56,10 @@ public class MoldeReportCheckImageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.setClass(getApplicationContext(), ReportActivity.class);
                 intent.putExtra("imagePath", imagePath);
                 intent.putExtra("imageSeq", imageSeq);
-                intent.putExtra("reportContent", reportContent);
-                intent.putExtra("reportAddress", reportAddress);
-                intent.putExtra("reportDetailAddress", reportDetailAddress);
-                intent.putExtra("reportEmailName", reportEmailName);
-                intent.putExtra("reportEmailDomainPosition", reportEmailDomainPosition);
-                intent.putExtra("reportLat", reportLat);
-                intent.putExtra("reportLng", reportLng);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
 

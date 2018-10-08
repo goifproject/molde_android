@@ -1,9 +1,11 @@
 package com.limefriends.molde.remote;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.limefriends.molde.R;
 import com.limefriends.molde.entity.map.SearchMapInfoEntity;
 import com.limefriends.molde.entity.map.poi.Poi;
 import com.limefriends.molde.entity.map.poi.TMapSearchInfo;
@@ -19,14 +21,16 @@ import java.util.ArrayList;
 
 
 public class SearchPoiService extends AsyncTask<String, Void, ArrayList<SearchMapInfoEntity>> {
-    private final String TMAP_API_KEY = "846fd0ff-fac4-4e07-9c7c-1950cc0131dd";
+
     private final int SEARCH_COUNT = 20;  // minimum is 20
     private ArrayList<SearchMapInfoEntity> searchMapListData;
     private SearchMapInfoAdapter mAdapter;
+    private String TMAP_API_KEY;
 
-    public SearchPoiService(SearchMapInfoAdapter adapter) {
+    public SearchPoiService(SearchMapInfoAdapter adapter, Context context) {
         this.mAdapter = adapter;
-        searchMapListData = new ArrayList<SearchMapInfoEntity>();
+        searchMapListData = new ArrayList<>();
+        context.getResources().getString(R.string.tmap_key);
     }
 
     @Override

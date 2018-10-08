@@ -180,7 +180,7 @@ public class SearchMapInfoActivity extends AppCompatActivity implements
         workRunnable = new Runnable() {
             @Override
             public void run() {
-                loc_map_info_list_adapter.filter(keyword, keywordHistoryStr);
+                loc_map_info_list_adapter.filter(keyword, keywordHistoryStr, SearchMapInfoActivity.this);
             }
         };
         handler.post(workRunnable);

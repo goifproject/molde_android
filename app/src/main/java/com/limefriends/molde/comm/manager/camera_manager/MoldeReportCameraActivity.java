@@ -1,27 +1,14 @@
 package com.limefriends.molde.comm.manager.camera_manager;
 
-import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Environment;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 import android.view.Surface;
 import android.view.View;
@@ -31,8 +18,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceView;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -62,110 +47,72 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
     @BindView(R.id.molde_gallary_button)
     ImageView molde_gallary_button;
 
-    public static final int TAKE_PICTURE_FOR_ADD_IMAGE = 994;
-
     CameraPreview cameraPreview;
     Camera camera;
-    Context ctx;
 
     private static final String TAG = "카메라 디버그 로그";
-    private final static int PERMISSIONS_REQUEST_CODE = 100;
+    public static final int TAKE_PICTURE_FOR_ADD_IMAGE = 994;
     private final static int CAMERA_FACING = Camera.CameraInfo.CAMERA_FACING_BACK;
-    private AppCompatActivity mActivity;
+
     private int imageArraySize;
     private int imageSeq = 0;
     public Bitmap bitmap;
 
-    public static void doRestart(Context c) {
-        try {
-            if (c != null) {
-                PackageManager pm = c.getPackageManager();
-                if (pm != null) {
-                    Intent mStartActivity = pm.getLaunchIntentForPackage(
-                            c.getPackageName()
-                    );
-                    if (mStartActivity != null) {
-                        mStartActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        int mPendingIntentId = 223344;
-                        PendingIntent mPendingIntent = PendingIntent
-                                .getActivity(c, mPendingIntentId, mStartActivity,
-                                        PendingIntent.FLAG_CANCEL_CURRENT);
-                        AlarmManager mgr =
-                                (AlarmManager) c.getSystemService(Context.ALARM_SERVICE);
-                        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
-                        System.exit(0);
-                    } else {
-                        Log.e(TAG, "Was not able to restart application, " +
-                                "mStartActivity null");
-                    }
-                } else {
-                    Log.e(TAG, "Was not able to restart application, PM null");
-                }
-            } else {
-                Log.e(TAG, "Was not able to restart application, Context null");
-            }
-        } catch (Exception ex) {
-            Log.e(TAG, "Was not able to restart application");
-        }
-    }
-
     public void startCamera() {
         if (cameraPreview == null) {
             cameraPreview = new CameraPreview(this, molde_camera_view);
-            cameraPreview.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-                    LayoutParams.MATCH_PARENT));
+            cameraPreview.setLayoutParams(
+                    new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
             molde_camera_layout.addView(cameraPreview);
             cameraPreview.setKeepScreenOn(true);
-            // 프리뷰 화면 눌렀을 때  사진을 찍음
-            /*preview.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View arg0) {
-                    camera.takePicture(shutterCallback, rawCallback, jpegCallback);
-                }
-            });*/
         }
 
         cameraPreview.setCamera(null);
+
         if (camera != null) {
             camera.release();
             camera = null;
         }
 
+        // 카메라 개수 파악
         int numCams = Camera.getNumberOfCameras();
         if (numCams > 0) {
             try {
+                // 정면 카메라 선택
                 camera = Camera.open(CAMERA_FACING);
-                // camera orientation
-                camera.setDisplayOrientation(setCameraDisplayOrientation(this, CAMERA_FACING,
-                        camera));
+                // 카메라 방향 설정
+                camera.setDisplayOrientation(
+                        setCameraDisplayOrientation(this, CAMERA_FACING, camera));
                 // get Camera parameters
                 Camera.Parameters params = camera.getParameters();
                 // picture image orientation
                 params.setRotation(setCameraDisplayOrientation(this, CAMERA_FACING, camera));
+                // 미리보기 시작
                 camera.startPreview();
-
             } catch (RuntimeException ex) {
-                Toast.makeText(ctx, "camera_not_found " + ex.getMessage().toString(),
+                Toast.makeText(this, "camera_not_found " + ex.getMessage().toString(),
                         Toast.LENGTH_LONG).show();
                 Log.d(TAG, "camera_not_found " + ex.getMessage().toString());
             }
         }
-
+        // 미리보기 화면에 띄워줌
         cameraPreview.setCamera(camera);
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_camera);
         ButterKnife.bind(this);
+
         Intent intent = getIntent();
         imageSeq = intent.getIntExtra("imageSeq", 1);
         imageArraySize = intent.getIntExtra("imageArraySize", 1);
-        ctx = this;
-        mActivity = this;
 
+        setupViews();
+    }
+
+    private void setupViews() {
         //액션바 구현
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.custom_toolbar);
@@ -175,7 +122,12 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
         TextView toolbar_title = getSupportActionBar().getCustomView().findViewById(R.id.toolbar_title);
         toolbar_title.setText("카메라");
 
-        //갤러리 선택 기능 구현
+        setupListener();
+    }
+
+    private void setupListener() {
+
+        // 갤러리 선택 기능 구현
         molde_gallary_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,8 +139,21 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
             }
         });
 
-
-        cameraFocusOn();
+        molde_camera_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                camera.autoFocus(new Camera.AutoFocusCallback() {
+                    @Override
+                    public void onAutoFocus(boolean success, Camera camera) {
+                        if (success) {
+                            // Toast.makeText(getApplicationContext(),"포커스 성공",Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Toast.makeText(getApplicationContext(),"포커스 실패",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        });
 
         //카메라 버튼 기능 구현
         molde_camera_capture_button.setOnClickListener(new View.OnClickListener() {
@@ -200,6 +165,7 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
                         if (success) {
                             camera.takePicture(shutterCallback, rawCallback, jpegCallback);
                         } else {
+
                         }
                     }
                 });
@@ -212,31 +178,6 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
                 cameraPreview.setCheckCameraUse(true);
             }
         });
-
-
-        if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { //API 23 이상이면
-                // 런타임 퍼미션 처리 필요
-                int hasCameraPermission = ContextCompat.checkSelfPermission(this,
-                        Manifest.permission.CAMERA);
-                int hasWriteExternalStoragePermission =
-                        ContextCompat.checkSelfPermission(this,
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-                if (hasCameraPermission == PackageManager.PERMISSION_GRANTED
-                        && hasWriteExternalStoragePermission == PackageManager.PERMISSION_GRANTED) {
-                } else {
-                    //퍼미션 요청
-                    ActivityCompat.requestPermissions(this,
-                            new String[]{Manifest.permission.CAMERA,
-                                    Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                            PERMISSIONS_REQUEST_CODE);
-                }
-            }
-        } else {
-            Toast.makeText(MoldeReportCameraActivity.this, "카메라를 지원하지 않습니다. 죄송합니다.",
-                    Toast.LENGTH_LONG).show();
-        }
     }
 
     @Override
@@ -254,24 +195,7 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
         startCamera();
     }
 
-    public void cameraFocusOn() {
-        molde_camera_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                camera.autoFocus(new Camera.AutoFocusCallback() {
-                    @Override
-                    public void onAutoFocus(boolean success, Camera camera) {
-                        if (success) {
-                            //Toast.makeText(getApplicationContext(),"포커스 성공",Toast.LENGTH_SHORT).show();
-                        } else {
-                            //Toast.makeText(getApplicationContext(),"포커스 실패",Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-            }
-        });
-    }
-
+    // 생명주기를 통해
     @Override
     protected void onPause() {
         super.onPause();
@@ -281,42 +205,25 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
             camera.release();
             camera = null;
         }
-
         molde_camera_layout.removeView(cameraPreview);
         cameraPreview = null;
-
-    }
-
-    private void resetCam() {
-        startCamera();
-    }
-
-    private void refreshGallery(File file) {
-        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        mediaScanIntent.setData(Uri.fromFile(file));
-        sendBroadcast(mediaScanIntent);
-        Intent intent = new Intent();
-        intent.setClass(getApplicationContext(), MoldeReportCheckImageActivity.class);
-        intent.putExtra("imageSeq", imageSeq);
-        intent.putExtra("imagePath", Uri.fromFile(file));
-        startActivity(intent);
     }
 
     Camera.ShutterCallback shutterCallback = new Camera.ShutterCallback() {
         public void onShutter() {
-            Log.d(TAG, "onShutter'd");
+            Log.d(TAG, "onPictureTaken - shutterCallback");
         }
     };
 
     Camera.PictureCallback rawCallback = new Camera.PictureCallback() {
         public void onPictureTaken(byte[] data, Camera camera) {
-            Log.d(TAG, "onPictureTaken - raw");
+            Log.d(TAG, "onPictureTaken - rawCallback");
         }
     };
 
     Camera.PictureCallback jpegCallback = new Camera.PictureCallback() {
         public void onPictureTaken(byte[] data, Camera camera) {
-
+            Log.d(TAG, "onPictureTaken - jpegCallback");
             //이미지의 너비와 높이 결정
             int w = camera.getParameters().getPictureSize().width;
             int h = camera.getParameters().getPictureSize().height;
@@ -356,7 +263,7 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
             // write to SD Card
             try {
                 File sdCard = Environment.getExternalStorageDirectory();
-                File dir = new File(sdCard.getAbsolutePath() + "/molde_report_image");
+                File dir = new File(sdCard.getAbsolutePath() + "/molde");
                 dir.mkdirs();
 
                 long systemTime = System.currentTimeMillis();
@@ -373,24 +280,36 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
                         + outFile.getAbsolutePath());
 
                 refreshGallery(outFile);
-            } catch (FileNotFoundException e) {
+            } catch (IOException  e) {
                 e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
             }
             return null;
         }
     }
 
+    private void refreshGallery(File file) {
+
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        mediaScanIntent.setData(Uri.fromFile(file));
+        sendBroadcast(mediaScanIntent);
+        Intent intent = new Intent();
+        intent.setClass(getApplicationContext(), MoldeReportCheckImageActivity.class);
+        intent.putExtra("imageSeq", imageSeq);
+        intent.putExtra("imagePath", Uri.fromFile(file));
+        startActivityForResult(intent, TAKE_PICTURE_FOR_ADD_IMAGE);
+    }
+
     public static int setCameraDisplayOrientation(Activity activity,
                                                   int cameraId, android.hardware.Camera camera) {
-        android.hardware.Camera.CameraInfo info =
-                new android.hardware.Camera.CameraInfo();
-        android.hardware.Camera.getCameraInfo(cameraId, info);
-        int rotation = activity.getWindowManager().getDefaultDisplay()
-                .getRotation();
+
+        android.hardware.Camera.CameraInfo info = new android.hardware.Camera.CameraInfo();
+
+        camera.getCameraInfo(cameraId, info);
+
+        int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
+
         int degrees = 0;
+
         switch (rotation) {
             case Surface.ROTATION_0:
                 degrees = 0;
@@ -407,119 +326,15 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
         }
 
         int result;
+
         if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
             result = (info.orientation + degrees) % 360;
             result = (360 - result) % 360;  // compensate the mirror
-        } else {  // back-facing
+        } else {
+            // back-facing
             result = (info.orientation - degrees + 360) % 360;
         }
-
         return result;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grandResults) {
-
-        if (requestCode == PERMISSIONS_REQUEST_CODE && grandResults.length > 0) {
-
-            int hasCameraPermission = ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.CAMERA);
-            int hasWriteExternalStoragePermission =
-                    ContextCompat.checkSelfPermission(this,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-            if (hasCameraPermission == PackageManager.PERMISSION_GRANTED
-                    && hasWriteExternalStoragePermission == PackageManager.PERMISSION_GRANTED) {
-
-                //이미 퍼미션을 가지고 있음
-                doRestart(this);
-            } else {
-                checkPermissions();
-            }
-        }
-
-    }
-
-    @TargetApi(Build.VERSION_CODES.M)
-    private void checkPermissions() {
-        int hasCameraPermission = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.CAMERA);
-        int hasWriteExternalStoragePermission =
-                ContextCompat.checkSelfPermission(this,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        boolean cameraRationale = ActivityCompat.shouldShowRequestPermissionRationale(this,
-                Manifest.permission.CAMERA);
-        boolean writeExternalStorageRationale =
-                ActivityCompat.shouldShowRequestPermissionRationale(this,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-
-        if ((hasCameraPermission == PackageManager.PERMISSION_DENIED && cameraRationale)
-                || (hasWriteExternalStoragePermission == PackageManager.PERMISSION_DENIED
-                && writeExternalStorageRationale))
-            showDialogForPermission("앱을 실행하려면 퍼미션을 허가하셔야합니다.");
-
-        else if ((hasCameraPermission == PackageManager.PERMISSION_DENIED && !cameraRationale)
-                || (hasWriteExternalStoragePermission == PackageManager.PERMISSION_DENIED
-                && !writeExternalStorageRationale))
-            showDialogForPermissionSetting("퍼미션 거부 + Don't ask again(다시 묻지 않음) " +
-                    "체크 박스를 설정한 경우로 설정에서 퍼미션 허가해야합니다.");
-
-        else if (hasCameraPermission == PackageManager.PERMISSION_GRANTED
-                || hasWriteExternalStoragePermission == PackageManager.PERMISSION_GRANTED) {
-            doRestart(this);
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.M)
-    private void showDialogForPermission(String msg) {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(MoldeReportCameraActivity.this, R.style.DialogTheme);
-        builder.setTitle("알림");
-        builder.setMessage(msg);
-        builder.setCancelable(false);
-        builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                //퍼미션 요청
-                ActivityCompat.requestPermissions(MoldeReportCameraActivity.this,
-                        new String[]{Manifest.permission.CAMERA,
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        PERMISSIONS_REQUEST_CODE);
-            }
-        });
-
-        builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                finish();
-            }
-        });
-        builder.create().show();
-    }
-
-    private void showDialogForPermissionSetting(String msg) {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(MoldeReportCameraActivity.this);
-        builder.setTitle("알림");
-        builder.setMessage(msg);
-        builder.setCancelable(true);
-        builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                Intent myAppSettings = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                        Uri.parse("package:" + mActivity.getPackageName()));
-                myAppSettings.addCategory(Intent.CATEGORY_DEFAULT);
-                myAppSettings.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mActivity.startActivity(myAppSettings);
-            }
-        });
-        builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                finish();
-            }
-        });
-        builder.create().show();
     }
 
     @Override
@@ -528,7 +343,6 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK && requestCode == TAKE_PICTURE_FOR_ADD_IMAGE) {
             setResult(RESULT_OK, data);
             finish();
-
         }
     }
 }

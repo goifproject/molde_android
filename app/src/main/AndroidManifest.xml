@@ -195,6 +195,9 @@
             android:name="firebase_messaging_auto_init_enabled"
             android:value="true" />
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="ff6d89ab1400a9758d7cfdf3d6ecb36df88337fa" />
     </application>
 
 </manifest>

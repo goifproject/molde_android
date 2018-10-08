@@ -89,11 +89,11 @@ public class SearchMapInfoAdapter extends RecyclerView.Adapter<SearchMapInfoAdap
         this.mapInfoAdapterCallback = mapInfoAdapterCallback;
     }
 
-    public void filter(String keyword, String keywordHistoryStr) {
+    public void filter(String keyword, String keywordHistoryStr, Context context) {
         keywordHistory = keywordHistoryStr;
         if (keyword.length() >= 2) {
             try {
-                SearchPoiService parser = new SearchPoiService(this);
+                SearchPoiService parser = new SearchPoiService(this, context);
                 infoList.addAll(parser.execute(keyword).get());
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
