@@ -1,0 +1,42 @@
+ext {
+
+    minSdkVersion = 21
+    compileSdkVersion = 26
+    targetSdkVersion = 26
+
+    // Gradle plugin
+     androidPluginVersion = '3.1.4'
+     googleServiceVersion = '4.1.0'
+
+    // Gradle Dependencies
+    constraintLayout = '1.1.3'
+
+    googleMapsUtil = '0.4'
+
+    playServiceMap = '15.0.1'
+    playServiceLocation = '15.0.1'
+    playServiceAuth = '16.0.0'
+
+    firebaseCore = '16.0.3'
+    firebaseJobDispatcher = '0.8.5'
+    firebaseFirestore = '17.0.1'
+    firebaseMessaging = '17.3.1'
+
+    firebaseAuth = '16.0.3'
+    firebaseUiAuth = '3.2.2'
+    firebaseFacebookSDK = '4.36.0'
+
+    butterKnife = '8.8.1'
+    androidAnnotations = '28.0.0'
+    tedPermission = '2.2.1'
+    pm10 = '1.0.2'
+
+    glide = '3.7.0'
+    glideTransformation = '2.0.1'
+    circleImageView = '2.2.0'
+
+    okHttp = '3.11.0'
+    loggingInterceptor = '3.10.0'
+    retrofit = '2.4.0'
+    converterGson = '2.4.0'
+}
