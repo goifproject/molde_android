@@ -154,7 +154,7 @@
                 android:layout_centerInParent="true"
                 android:text="@string/report_status_accepted"
                 android:textSize="8sp"
-                android:textColor="#d8d8d8"/>
+                android:textColor="#d8d8d8" />
 
             <TextView
                 android:id="@+id/report_progress_text_completed"
