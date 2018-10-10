@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.limefriends.molde.comm.MoldeApplication;
 import com.limefriends.molde.comm.custom.addOnListview.AddOnScrollRecyclerView;
 import com.limefriends.molde.comm.custom.addOnListview.OnLoadMoreListener;
+import com.limefriends.molde.comm.utils.DateUitl;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.feed.FeedEntity;
 import com.limefriends.molde.entity.feed.FeedResponseInfoEntity;
@@ -40,6 +41,8 @@ public class FeedFragment extends Fragment implements FeedAdapter.OnClickFeedIte
     ToggleButton feed_sort_toggle;
     @BindView(R.id.feed_update_date)
     TextView feed_update_date;
+    @BindView(R.id.feed_update_text)
+    TextView feed_update_text;
     @BindView(R.id.feed_list)
     AddOnScrollRecyclerView feed_list;
 
@@ -170,6 +173,9 @@ public class FeedFragment extends Fragment implements FeedAdapter.OnClickFeedIte
                     feedAdapter.addAll(entities);
                     currentPage++;
 
+                    feed_update_text.setText(getText(R.string.feed_date_location));
+                    feed_update_date.setText(DateUitl.fromLongToDate(entities.get(0).getRepDate()));
+
                     if (schemas.size() < PER_PAGE) {
                         hasMoreToLoad(false);
                     }
@@ -205,6 +211,9 @@ public class FeedFragment extends Fragment implements FeedAdapter.OnClickFeedIte
                     List<FeedEntity> entities = FromSchemaToEntitiy.feed2(schemas);
                     feedAdapter.addAll(entities);
                     currentPage++;
+
+                    feed_update_text.setText(getText(R.string.feed_date_recent));
+                    feed_update_date.setText(DateUitl.fromLongToDate(entities.get(0).getRepDate()));
 
                     if (schemas.size() < PER_PAGE) {
                         hasMoreToLoad(false);

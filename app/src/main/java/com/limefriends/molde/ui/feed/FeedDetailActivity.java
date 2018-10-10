@@ -32,6 +32,7 @@ import com.limefriends.molde.R;
 import com.limefriends.molde.comm.Constant;
 import com.limefriends.molde.comm.MoldeApplication;
 import com.limefriends.molde.comm.manager.camera_manager.MoldeReportCameraActivity;
+import com.limefriends.molde.comm.utils.DateUitl;
 import com.limefriends.molde.comm.utils.PreferenceUtil;
 import com.limefriends.molde.comm.utils.StringUtil;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
@@ -128,6 +129,13 @@ public class FeedDetailActivity extends AppCompatActivity implements View.OnClic
     TextView myfeed_progress_text_accepted;
     @BindView(R.id.myfeed_progress_text_completed)
     TextView myfeed_progress_text_completed;
+
+    @BindView(R.id.myfeed_progress_receiving_date)
+    TextView myfeed_progress_receiving_date;
+    @BindView(R.id.myfeed_progress_accepted_date)
+    TextView myfeed_progress_accepted_date;
+    @BindView(R.id.myfeed_progress_completed_date)
+    TextView myfeed_progress_completed_date;
 
     @BindView(R.id.report_detail_response_msg_background)
     ImageView report_detail_response_msg_background;
@@ -233,6 +241,7 @@ public class FeedDetailActivity extends AppCompatActivity implements View.OnClic
             mypage_detail_report_cancel_button.setText(getText(R.string.deny_report));
             isMyFeed = true;
         }
+
     }
 
     private void setupListener() {
@@ -500,6 +509,23 @@ public class FeedDetailActivity extends AppCompatActivity implements View.OnClic
         report_detail_result_text.setText(resultText);
     }
 
+    private void setDate(int state, String date) {
+        switch (state) {
+            case RECEIVING:
+                myfeed_progress_receiving_date.setVisibility(View.VISIBLE);
+                myfeed_progress_receiving_date.setText(DateUitl.fromLongToDate2(date));
+                break;
+            case ACCEPTED:
+                myfeed_progress_accepted_date.setVisibility(View.VISIBLE);
+                myfeed_progress_accepted_date.setText(DateUitl.fromLongToDate2(date));
+                break;
+            case FOUND:
+                myfeed_progress_completed_date.setVisibility(View.VISIBLE);
+                myfeed_progress_completed_date.setText(DateUitl.fromLongToDate2(date));
+                break;
+        }
+    }
+
     public void takePictureForAdd(final int imageSeq) {
         PermissionListener permissionlistener = new PermissionListener() {
             @Override
@@ -705,10 +731,10 @@ public class FeedDetailActivity extends AppCompatActivity implements View.OnClic
                             changeAdminProgress(feedEntity.getRepState());
                         }
                         changeProgress(feedEntity.getRepState());
-
-
                         // 신고 상태
                         setSirenState(feedEntity.getRepState());
+                        // 신고 날짜
+                        setDate(feedEntity.getRepState(), feedEntity.getRepDate());
                         // 신고 이미지
                         List<FeedImageResponseInfoEntity> imageList = feedEntity.getRepImg();
                         List<String> imageUrls = new ArrayList<>();

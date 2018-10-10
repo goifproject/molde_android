@@ -33,7 +33,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     @BindView(R.id.mypage_provisions)
     Button mypage_provisions;
     @BindView(R.id.mypage_provisions_answer)
-    TextView mypage_provisions_answer;
+    LinearLayout mypage_provisions_answer;
     @BindView(R.id.mypage_license)
     Button mypage_license;
     @BindView(R.id.mypage_license_answer)
@@ -67,6 +67,17 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         findViewById(R.id.mypage_made_by).setOnClickListener(this);
         findViewById(R.id.mypage_provisions).setOnClickListener(this);
         findViewById(R.id.mypage_license).setOnClickListener(this);
+
+        int allowNewFeedPush =  PreferenceUtil.getInt(SettingsActivity.this, PREF_KEY_NEW_FEED_PUSH, DISALLOW_PUSH);
+        int allowFeedChangePush = PreferenceUtil.getInt(SettingsActivity.this, PREF_KEY_FEED_CHANGE_PUSH, DISALLOW_PUSH);
+
+        if (allowNewFeedPush == ALLOW_PUSH) {
+            switch_my_favorite_push.setChecked(true);
+        }
+
+        if (allowFeedChangePush == ALLOW_PUSH) {
+            switch_feed_change_push.setChecked(false);
+        }
 
         switch_my_favorite_push.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

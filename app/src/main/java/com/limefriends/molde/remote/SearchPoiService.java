@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class SearchPoiService extends AsyncTask<String, Void, ArrayList<SearchMapInfoEntity>> {
 
-    private final int SEARCH_COUNT = 20;  // minimum is 20
+    private static final int SEARCH_COUNT = 20;  // minimum is 20
     private ArrayList<SearchMapInfoEntity> searchMapListData;
     private SearchMapInfoAdapter mAdapter;
     private String TMAP_API_KEY;
@@ -30,7 +30,7 @@ public class SearchPoiService extends AsyncTask<String, Void, ArrayList<SearchMa
     public SearchPoiService(SearchMapInfoAdapter adapter, Context context) {
         this.mAdapter = adapter;
         searchMapListData = new ArrayList<>();
-        context.getResources().getString(R.string.tmap_key);
+        TMAP_API_KEY = context.getResources().getString(R.string.tmap_key);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class SearchPoiService extends AsyncTask<String, Void, ArrayList<SearchMa
         mAdapter.notifyDataSetChanged();
     }
 
-    public ArrayList<SearchMapInfoEntity> getAutoComplete(String word) {
+    private ArrayList<SearchMapInfoEntity> getAutoComplete(String word) {
 
         try {
             String encodeWord = URLEncoder.encode(word, "UTF-8");

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?><!-- TODO 폰트 사이즈, 크기, 색상 공통으로 적용할 것 --><!-- TODO 각종 색깔 공통으로 관리할 것 - 배경 등 --><!-- TODO 아이콘 크기 공통 조절, 위젯 스타일 적용 -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorMypageSettingDiv">
@@ -14,9 +17,9 @@
             android:id="@+id/myfeed_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:elevation="2dp"
             android:layout_centerInParent="true"
-            android:visibility="gone"/>
+            android:elevation="2dp"
+            android:visibility="gone" />
 
         <!-- 신고 내용 -->
         <RelativeLayout
@@ -138,7 +141,7 @@
         <RelativeLayout
             android:id="@+id/report_detail_normal"
             android:layout_width="match_parent"
-            android:layout_height="168dp"
+            android:layout_height="174dp"
             android:layout_marginTop="12dp"
             android:background="@color/white"
             android:visibility="visible">
@@ -153,8 +156,8 @@
                 android:textColor="#646464"
                 android:textSize="14sp" />
 
-            <FrameLayout
-                android:layout_width="360dp"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/mypage_detail_report_result"
                 android:layout_centerInParent="true"
@@ -164,8 +167,10 @@
                     android:id="@+id/siren_bad_status"
                     android:layout_width="48dp"
                     android:layout_height="32dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_toStartOf="@id/message_container"
+                    android:layout_alignBottom="@id/message_container"
+                    android:layout_alignTop="@id/message_container"
                     android:contentDescription="@string/siren_red_dead"
                     android:src="@drawable/ic_feed_siren_red_h"
                     android:visibility="gone" />
@@ -174,19 +179,23 @@
                     android:id="@+id/siren_receiving_status"
                     android:layout_width="32dp"
                     android:layout_height="48dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_toStartOf="@id/message_container"
+                    android:layout_alignBottom="@id/message_container"
+                    android:layout_alignTop="@id/message_container"
                     android:contentDescription="@string/siren_red"
                     android:src="@drawable/ic_feed_siren_red_v"
                     android:visibility="gone" />
+
 
                 <ImageView
                     android:id="@+id/siren_clean_status"
                     android:layout_width="32dp"
                     android:layout_height="48dp"
-                    android:layout_gravity="end"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@id/message_container"
+                    android:layout_alignBottom="@id/message_container"
+                    android:layout_alignTop="@id/message_container"
                     android:contentDescription="@string/siren_green"
                     android:src="@drawable/ic_feed_siren_green"
                     android:visibility="gone" />
@@ -195,17 +204,19 @@
                     android:id="@+id/siren_found_status"
                     android:layout_width="32dp"
                     android:layout_height="48dp"
-                    android:layout_gravity="end"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@id/message_container"
+                    android:layout_alignBottom="@id/message_container"
+                    android:layout_alignTop="@id/message_container"
                     android:contentDescription="@string/siren_white"
                     android:src="@drawable/ic_feed_siren_white"
                     android:visibility="gone" />
 
                 <RelativeLayout
+                    android:id="@+id/message_container"
                     android:layout_width="216dp"
                     android:layout_height="56dp"
-                    android:layout_marginStart="72dp">
+                    android:layout_centerHorizontal="true">
 
                     <!--<View-->
                     <!--android:layout_width="match_parent"-->
@@ -232,111 +243,326 @@
 
                 </RelativeLayout>
 
-                <RelativeLayout
-                    android:id="@+id/mypage_detail_report_ing"
-                    android:layout_width="312dp"
-                    android:layout_height="12dp"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="67dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true">
-
-                        <View
-                            android:id="@+id/myfeed_progress_line_first"
-                            android:layout_width="0dp"
-                            android:layout_height="2dp"
-                            android:layout_weight="1"
-                            android:background="@color/colorDivision" />
-
-                        <View
-                            android:id="@+id/myfeed_progress_line_second"
-                            android:layout_width="0dp"
-                            android:layout_height="2dp"
-                            android:layout_weight="1"
-                            android:background="@color/colorDivision" />
-
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/myfeed_progress_dot_first_yellow"
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:src="@drawable/ic_feed_dot_yellow" />
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/message_container">
 
                     <ImageView
                         android:id="@+id/myfeed_progress_dot_second"
                         android:layout_width="8dp"
                         android:layout_height="8dp"
-                        android:layout_centerInParent="true"
-                        android:src="@drawable/ic_feed_dot_grey" />
-
-                    <ImageView
-                        android:id="@+id/myfeed_progress_dot_third"
-                        android:layout_width="8dp"
-                        android:layout_height="8dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/ic_feed_dot_grey" />
-
-                    <ImageView
-                        android:id="@+id/myfeed_progress_dot_second_yellow"
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:layout_centerInParent="true"
-                        android:src="@drawable/ic_feed_dot_yellow"
-                        android:visibility="invisible" />
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintEnd_toStartOf="@+id/space2"
+                        app:layout_constraintStart_toEndOf="@+id/space"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_feed_dot_grey" />
 
                     <ImageView
                         android:id="@+id/myfeed_progress_dot_third_yellow"
                         android:layout_width="12dp"
                         android:layout_height="12dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/ic_feed_dot_yellow"
-                        android:visibility="invisible" />
+                        android:elevation="1dp"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="@+id/myfeed_progress_line_second"
+                        app:layout_constraintStart_toEndOf="@+id/myfeed_progress_line_second"
+                        app:layout_constraintTop_toTopOf="@+id/myfeed_progress_line_second"
+                        app:srcCompat="@drawable/ic_feed_dot_yellow" />
 
-                </RelativeLayout>
+                    <ImageView
+                        android:id="@+id/myfeed_progress_dot_first_yellow"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:elevation="1dp"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="@+id/myfeed_progress_line_first"
+                        app:layout_constraintEnd_toStartOf="@+id/myfeed_progress_line_first"
+                        app:layout_constraintTop_toTopOf="@+id/myfeed_progress_line_first"
+                        app:srcCompat="@drawable/ic_feed_dot_yellow" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:layout_gravity="bottom"
-                    android:layout_marginBottom="16dp"
-                    android:gravity="center_vertical">
+                    <View
+                        android:id="@+id/myfeed_progress_line_second"
+                        android:layout_width="141dp"
+                        android:layout_height="2dp"
+                        android:background="@color/colorDivision"
+                        app:layout_constraintBottom_toBottomOf="@+id/myfeed_progress_dot_second"
+                        app:layout_constraintStart_toEndOf="@+id/myfeed_progress_dot_second"
+                        app:layout_constraintTop_toTopOf="@+id/myfeed_progress_dot_second" />
+
+                    <View
+                        android:id="@+id/myfeed_progress_line_first"
+                        android:layout_width="141dp"
+                        android:layout_height="2dp"
+                        android:background="@color/colorDivision"
+                        app:layout_constraintBottom_toBottomOf="@+id/myfeed_progress_dot_second"
+                        app:layout_constraintEnd_toStartOf="@+id/myfeed_progress_dot_second"
+                        app:layout_constraintTop_toTopOf="@+id/myfeed_progress_dot_second" />
+
+                    <Space
+                        android:id="@+id/space"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="34dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Space
+                        android:id="@+id/space2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="34dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/myfeed_progress_text_receiving"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="8dp"
                         android:text="@string/report_status_receiving"
-                        android:textSize="11sp" />
-
-                    <TextView
-                        android:id="@+id/myfeed_progress_text_accepted"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="@string/report_status_accepted"
-                        android:textColor="#d8d8d8"
-                        android:textSize="8sp" />
+                        android:textSize="11sp"
+                        app:layout_constraintEnd_toStartOf="@+id/myfeed_progress_line_first"
+                        app:layout_constraintStart_toStartOf="@+id/myfeed_progress_dot_first_yellow"
+                        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
                     <TextView
                         android:id="@+id/myfeed_progress_text_completed"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="12dp"
+                        android:layout_marginTop="8dp"
                         android:text="@string/report_status_result"
                         android:textColor="#d8d8d8"
-                        android:textSize="8sp" />
+                        android:textSize="8sp"
+                        app:layout_constraintEnd_toEndOf="@+id/myfeed_progress_dot_third_yellow"
+                        app:layout_constraintStart_toEndOf="@+id/myfeed_progress_line_second"
+                        app:layout_constraintTop_toBottomOf="@+id/myfeed_progress_dot_third" />
 
-                </RelativeLayout>
+                    <TextView
+                        android:id="@+id/myfeed_progress_text_accepted"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/report_status_accepted"
+                        android:textColor="#d8d8d8"
+                        android:textSize="8sp"
+                        app:layout_constraintEnd_toStartOf="@+id/myfeed_progress_line_second"
+                        app:layout_constraintStart_toEndOf="@+id/myfeed_progress_line_first"
+                        app:layout_constraintTop_toBottomOf="@+id/myfeed_progress_dot_second" />
 
-            </FrameLayout>
+                    <TextView
+                        android:id="@+id/myfeed_progress_receiving_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:text="2018. 03. 12"
+                        android:textColor="#646464"
+                        android:textSize="8sp"
+                        android:visibility="invisible"
+                        app:layout_constraintStart_toStartOf="@+id/myfeed_progress_text_receiving"
+                        app:layout_constraintTop_toBottomOf="@+id/myfeed_progress_text_receiving" />
+
+                    <TextView
+                        android:id="@+id/myfeed_progress_accepted_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:text="2018. 03. 12"
+                        android:textColor="#646464"
+                        android:textSize="8sp"
+                        android:visibility="invisible"
+                        app:layout_constraintEnd_toEndOf="@+id/myfeed_progress_text_accepted"
+                        app:layout_constraintStart_toStartOf="@+id/myfeed_progress_text_accepted"
+                        app:layout_constraintTop_toBottomOf="@+id/myfeed_progress_text_accepted" />
+
+                    <TextView
+                        android:id="@+id/myfeed_progress_completed_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:text="2018. 03. 12"
+                        android:textColor="#646464"
+                        android:textSize="8sp"
+                        android:visibility="invisible"
+                        app:layout_constraintEnd_toEndOf="@+id/myfeed_progress_text_completed"
+                        app:layout_constraintTop_toBottomOf="@+id/myfeed_progress_text_completed" />
+
+                    <ImageView
+                        android:id="@+id/myfeed_progress_dot_third"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/myfeed_progress_dot_third_yellow"
+                        app:layout_constraintStart_toEndOf="@+id/myfeed_progress_line_second"
+                        app:layout_constraintTop_toTopOf="@+id/myfeed_progress_dot_third_yellow"
+                        app:srcCompat="@drawable/ic_feed_dot_grey" />
+
+                    <ImageView
+                        android:id="@+id/myfeed_progress_dot_second_yellow"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:elevation="1dp"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="@+id/myfeed_progress_dot_second"
+                        app:layout_constraintEnd_toStartOf="@+id/myfeed_progress_line_second"
+                        app:layout_constraintStart_toEndOf="@+id/myfeed_progress_line_first"
+                        app:layout_constraintTop_toTopOf="@+id/myfeed_progress_dot_second"
+                        app:srcCompat="@drawable/ic_feed_dot_yellow" />
+
+                    <ImageView
+                        android:id="@+id/imageView5"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/myfeed_progress_dot_first_yellow"
+                        app:layout_constraintEnd_toStartOf="@+id/myfeed_progress_line_first"
+                        app:layout_constraintTop_toTopOf="@+id/myfeed_progress_dot_first_yellow"
+                        app:srcCompat="@drawable/ic_feed_dot_grey" />
+
+
+                </android.support.constraint.ConstraintLayout>
+
+                <!--<RelativeLayout-->
+                    <!--android:id="@+id/mypage_detail_report_ing"-->
+                    <!--android:layout_width="312dp"-->
+                    <!--android:layout_height="12dp"-->
+                    <!--android:layout_marginStart="24dp"-->
+                    <!--android:layout_marginTop="67dp">-->
+
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_centerVertical="true">-->
+
+                        <!--<View-->
+                            <!--android:id="@+id/myfeed_progress_line_first"-->
+                            <!--android:layout_width="0dp"-->
+                            <!--android:layout_height="2dp"-->
+                            <!--android:layout_weight="1"-->
+                            <!--android:background="@color/colorDivision" />-->
+
+                        <!--<View-->
+                            <!--android:id="@+id/myfeed_progress_line_second"-->
+                            <!--android:layout_width="0dp"-->
+                            <!--android:layout_height="2dp"-->
+                            <!--android:layout_weight="1"-->
+                            <!--android:background="@color/colorDivision" />-->
+
+                    <!--</LinearLayout>-->
+
+                    <!--<ImageView-->
+                        <!--android:id="@+id/myfeed_progress_dot_first_yellow"-->
+                        <!--android:layout_width="12dp"-->
+                        <!--android:layout_height="12dp"-->
+                        <!--android:src="@drawable/ic_feed_dot_yellow" />-->
+
+                    <!--<ImageView-->
+                        <!--android:id="@+id/myfeed_progress_dot_second"-->
+                        <!--android:layout_width="8dp"-->
+                        <!--android:layout_height="8dp"-->
+                        <!--android:layout_centerInParent="true"-->
+                        <!--android:src="@drawable/ic_feed_dot_grey" />-->
+
+                    <!--<ImageView-->
+                        <!--android:id="@+id/myfeed_progress_dot_third"-->
+                        <!--android:layout_width="8dp"-->
+                        <!--android:layout_height="8dp"-->
+                        <!--android:layout_alignParentEnd="true"-->
+                        <!--android:layout_centerVertical="true"-->
+                        <!--android:src="@drawable/ic_feed_dot_grey" />-->
+
+                    <!--<ImageView-->
+                        <!--android:id="@+id/myfeed_progress_dot_second_yellow"-->
+                        <!--android:layout_width="12dp"-->
+                        <!--android:layout_height="12dp"-->
+                        <!--android:layout_centerInParent="true"-->
+                        <!--android:src="@drawable/ic_feed_dot_yellow"-->
+                        <!--android:visibility="invisible" />-->
+
+                    <!--<ImageView-->
+                        <!--android:id="@+id/myfeed_progress_dot_third_yellow"-->
+                        <!--android:layout_width="12dp"-->
+                        <!--android:layout_height="12dp"-->
+                        <!--android:layout_alignParentEnd="true"-->
+                        <!--android:layout_centerVertical="true"-->
+                        <!--android:src="@drawable/ic_feed_dot_yellow"-->
+                        <!--android:visibility="invisible" />-->
+
+                <!--</RelativeLayout>-->
+
+                <!--<RelativeLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="bottom"-->
+                    <!--android:layout_marginBottom="12dp"-->
+                    <!--android:gravity="center_vertical">-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/myfeed_progress_text_receiving"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_centerVertical="true"-->
+                        <!--android:layout_marginStart="16dp"-->
+                        <!--android:text="@string/report_status_receiving"-->
+                        <!--android:textSize="11sp" />-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/myfeed_progress_receiving_date"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginStart="10dp"-->
+                        <!--android:layout_marginTop="12dp"-->
+                        <!--android:text="2018. 03. 12"-->
+                        <!--android:textSize="8sp"-->
+                        <!--android:textColor="#646464"-->
+                        <!--android:layout_below="@id/myfeed_progress_text_receiving"/>-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/myfeed_progress_text_accepted"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_centerInParent="true"-->
+                        <!--android:text="@string/report_status_accepted"-->
+                        <!--android:textColor="#d8d8d8"-->
+                        <!--android:textSize="8sp" />-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/mymyfeed_progress_accepted_date"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginStart="10dp"-->
+                        <!--android:layout_marginTop="12dp"-->
+                        <!--android:text="2018. 03. 12"-->
+                        <!--android:textSize="8sp"-->
+                        <!--android:textColor="#646464"-->
+                        <!--android:layout_centerHorizontal="true"-->
+                        <!--android:layout_below="@id/myfeed_progress_text_accepted"/>-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/myfeed_progress_text_completed"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_alignParentEnd="true"-->
+                        <!--android:layout_centerVertical="true"-->
+                        <!--android:layout_marginEnd="6dp"-->
+                        <!--android:text="@string/report_status_result"-->
+                        <!--android:textColor="#d8d8d8"-->
+                        <!--android:textSize="8sp" />-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/myfeed_progress_completed_date"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="12dp"-->
+                        <!--android:text="2018. 03. 12"-->
+                        <!--android:textSize="8sp"-->
+                        <!--android:textColor="#646464"-->
+                        <!--android:layout_alignParentEnd="true"-->
+                        <!--android:layout_marginEnd="6dp"-->
+                        <!--android:layout_below="@id/myfeed_progress_text_completed"/>-->
+
+                <!--</RelativeLayout>-->
+
+            </RelativeLayout>
 
         </RelativeLayout>
 
@@ -416,7 +642,7 @@
                     android:layout_width="12dp"
                     android:layout_height="12dp"
                     android:src="@drawable/ic_feed_dot_yellow"
-                    android:visibility="invisible"/>
+                    android:visibility="invisible" />
 
                 <ImageView
                     android:id="@+id/myfeed_progress_dot_second_yellow_admin"
