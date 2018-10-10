@@ -16,12 +16,12 @@ import java.util.List;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
-public class FeedImageAdapter extends PagerAdapter{
+public class FeedImageAdapter extends PagerAdapter {
 
     private Context context;
     private List<String> reportImageLinkList = new ArrayList<>();
 
-    public FeedImageAdapter(Context context) {
+    FeedImageAdapter(Context context) {
         this.context = context;
     }
 
@@ -54,7 +54,7 @@ public class FeedImageAdapter extends PagerAdapter{
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
 
-        container.removeView((View)object);
+        container.removeView((View) object);
     }
 
 }

@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- TODO 폰트 사이즈, 크기, 색상 공통으로 적용할 것 -->
-<!-- TODO 각종 색깔 공통으로 관리할 것 - 배경 등 -->
-<!-- TODO 아이콘 크기 공통 조절, 위젯 스타일 적용 -->
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/mypage_login_layout"

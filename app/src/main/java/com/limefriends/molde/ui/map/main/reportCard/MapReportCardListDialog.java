@@ -11,8 +11,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.limefriends.molde.R;
+import com.limefriends.molde.comm.utils.NetworkUtil;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.feed.FeedEntity;
 import com.limefriends.molde.entity.feed.FeedResponseInfoEntityList;
@@ -59,6 +61,11 @@ public class MapReportCardListDialog extends BottomSheetDialogFragment {
     }
 
     public void setData(int reportId) {
+
+        if (!NetworkUtil.isConnected(getContext())) {
+            Toast.makeText(getContext(), "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         MoldeRestfulService.Feed feedService
                 = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Feed.class);

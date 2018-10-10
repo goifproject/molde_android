@@ -7,7 +7,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +15,10 @@ import android.widget.ImageView;
 
 import com.limefriends.molde.R;
 import com.limefriends.molde.comm.utils.PreferenceUtil;
-import com.limefriends.molde.ui.MoldeSplashActivity;
 import com.limefriends.molde.ui.mypage.login.LoginActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.limefriends.molde.comm.Constant.MyPage.CONNECT_FACEBOOK_AUTH_CODE;
-import static com.limefriends.molde.comm.Constant.MyPage.CONNECT_GOOGLE_AUTH_CODE;
 import static com.limefriends.molde.ui.mypage.MyPageFragment.SIGNIN_TYPE;
 
 public class TutorialActivity extends AppCompatActivity {

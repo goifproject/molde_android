@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- TODO 좀 불안한데 프로그래스 커스터마이징 해야 할 듯 -->
-<!-- TODO 폰트 사이즈, 크기, 색상 공통으로 적용할 것 -->
-<!-- TODO 아이콘 크기 공통 조절, 위젯 스타일 적용 -->
-<!-- TODO 각종 색깔 공통으로 관리할 것-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/mypage_report_layout"
     android:layout_width="match_parent"
@@ -29,7 +25,6 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="42dp"
             android:layout_marginTop="24dp"
-            android:text="날짜 데이터 안 넘어옴"
             android:textColor="@color/colorInfoTextColor"
             android:textSize="11sp" />
 
@@ -40,7 +35,6 @@
             android:layout_alignStart="@+id/mypage_report_date"
             android:layout_below="@+id/mypage_report_date"
             android:layout_marginTop="7dp"
-            android:text="장소 데이터 안 넘어옴"
             android:textColor="@color/colorInfoTextColor"
             android:textSize="11sp" />
 
@@ -50,7 +44,6 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/mypage_report_date"
             android:layout_below="@+id/mypage_report_location"
-            android:text="장소 데이터 안 넘어옴"
             android:textColor="@color/colorInfoTextColor"
             android:textSize="11sp" />
 

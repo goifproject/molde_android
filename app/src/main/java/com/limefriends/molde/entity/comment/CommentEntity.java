@@ -1,8 +1,5 @@
 package com.limefriends.molde.entity.comment;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 /**
  * Created by user on 2018-05-19.
  */

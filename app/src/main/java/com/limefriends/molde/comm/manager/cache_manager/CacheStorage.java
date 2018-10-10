@@ -32,7 +32,7 @@ public class CacheStorage {
     private Lock readLock = rwl.readLock();
     private Lock writeLock = rwl.writeLock();
 
-    public CacheStorage(File cacheDir, long maxBytesSize) {
+    CacheStorage(File cacheDir, long maxBytesSize) {
         this.cacheDir = cacheDir;
         this.maxBytesSize = maxBytesSize;
         this.cacheFileMap = Collections

@@ -16,12 +16,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.limefriends.molde.R;
 import com.limefriends.molde.comm.MoldeApplication;
 import com.limefriends.molde.comm.custom.addOnListview.AddOnScrollRecyclerView;
 import com.limefriends.molde.comm.custom.addOnListview.OnLoadMoreListener;
+import com.limefriends.molde.comm.utils.NetworkUtil;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.comment.CommentEntity;
 import com.limefriends.molde.entity.comment.CommentResponseInfoEntity;
@@ -38,14 +40,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-// TODO "lkj" 변경할 것 -> uId
-// TODO auth Application 에서 가져다 쓸 것
-// TODO swipe refresh 적용할까
-// TODO snack 에서 showSnack 이 아니라 댓글 신고로 넘어가야 함
 public class CardNewsCommentActivity extends AppCompatActivity {
 
     public static final int REPORT_COMMENT_EXIST = 2;
     public static final int REPORT_COMMENT_DONE = 1;
+
     @BindView(R.id.comment_layout)
     RelativeLayout comment_layout;
     @BindView(R.id.comment_list_view)
@@ -62,6 +61,7 @@ public class CardNewsCommentActivity extends AppCompatActivity {
     private static final int FIRST_PAGE = 0;
     private int currentPage = FIRST_PAGE;
     private boolean hasMoreToLoad = true;
+    private boolean isReporting = false;
     private int cardNewsId;
 
     @Override
@@ -103,7 +103,7 @@ public class CardNewsCommentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 InputMethodManager inputMethodManager =
-                        (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                        (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputMethodManager.hideSoftInputFromWindow(comment_input.getWindowToken(), 0);
             }
         });
@@ -113,7 +113,7 @@ public class CardNewsCommentActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // TODO 실제 로그인 상태 확인 구현
                 // 로그인 된 상태라면 -> 댓글 등록
-                FirebaseAuth auth = ((MoldeApplication)getApplication()).getFireBaseAuth();
+                FirebaseAuth auth = ((MoldeApplication) getApplication()).getFireBaseAuth();
                 if (auth != null && auth.getUid() != null) {
                     String uId = auth.getCurrentUser().getUid();
                     String name = auth.getCurrentUser().getDisplayName();
@@ -174,6 +174,11 @@ public class CardNewsCommentActivity extends AppCompatActivity {
 
     private void loadComment(int cardNewsId, int perPage, int page) {
 
+        if (!NetworkUtil.isConnected(this)) {
+            Toast.makeText(this, "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         if (!hasMoreToLoad) return;
 
         comment_list_view.setIsLoading(true);
@@ -218,8 +223,15 @@ public class CardNewsCommentActivity extends AppCompatActivity {
 
     private void addToComment(final String userId, final String userName,
                               final int newsId, final String content, final String regiDate) {
+
+        if (!NetworkUtil.isConnected(this)) {
+            Toast.makeText(this, "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         Call<Result> call = getCommentService()
                 .createNewComment(userId, userName, newsId, content, regiDate);
+
         call.enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
@@ -237,14 +249,22 @@ public class CardNewsCommentActivity extends AppCompatActivity {
             }
         });
     }
-    
+
     public void reportComment(int commentId) {
 
-        FirebaseAuth auth = ((MoldeApplication)getApplication()).getFireBaseAuth();
-        if (auth != null && auth.getUid() != null) {
+        if (!NetworkUtil.isConnected(this)) {
+            Toast.makeText(this, "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        FirebaseAuth auth = ((MoldeApplication) getApplication()).getFireBaseAuth();
+
+        if (auth != null) {
+
+            isReporting = true;
 
             Call<Result> call = getCommentService()
-                    .reportComment(auth.getCurrentUser().getUid(), commentId);
+                    .reportComment(auth.getUid(), commentId);
 
             call.enqueue(new Callback<Result>() {
                 @Override
@@ -259,6 +279,7 @@ public class CardNewsCommentActivity extends AppCompatActivity {
                                 showSnack("이미 신고한 댓글입니다.");
                                 break;
                         }
+                        isReporting = false;
                     }
                 }
 
@@ -271,6 +292,15 @@ public class CardNewsCommentActivity extends AppCompatActivity {
         } else {
             showSnack("몰디 로그인이 필요합니다!");
         }
+    }
+
+    public boolean isReporting() {
+
+        if (isReporting) {
+            showSnack("신고중입니다");
+            return true;
+        }
+        return false;
     }
 
     private void setHasMoreToLoad(boolean hasMore) {
@@ -287,7 +317,6 @@ public class CardNewsCommentActivity extends AppCompatActivity {
         setHasMoreToLoad(true);
         currentPage = 0;
     }
-
 
 
 }

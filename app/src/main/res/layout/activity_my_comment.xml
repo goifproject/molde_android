@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/myComment_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <com.limefriends.molde.comm.custom.addOnListview.AddOnScrollExpandableListView
         android:id="@+id/myComment_listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:groupIndicator="@null"
         android:childIndicator="@null"
-        android:visibility="visible"/>
+        android:groupIndicator="@null"
+        android:visibility="visible" />
 
     <com.limefriends.molde.comm.custom.addOnListview.AddOnScrollRecyclerView
         android:id="@+id/myComment_reported_comment_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item_cardnews_comment"
         android:visibility="invisible"
-        />
+        tools:listitem="@layout/item_cardnews_comment" />
 
     <ProgressBar
         android:id="@+id/progressBar2"

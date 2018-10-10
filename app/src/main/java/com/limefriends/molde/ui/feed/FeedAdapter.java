@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.limefriends.molde.R;
-import com.limefriends.molde.comm.utils.DateUitl;
+import com.limefriends.molde.comm.utils.DateUtil;
 import com.limefriends.molde.entity.feed.FeedEntity;
 
 import java.util.ArrayList;
@@ -71,7 +71,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
         viewHolder.position = position;
         viewHolder.feed_address.setText(feed.getRepAddr());
         viewHolder.feed_detail_address.setText(feed.getRepDetailAddr());
-        viewHolder.feed_date.setText(DateUitl.fromLongToDate(feed.getRepDate()));
+        viewHolder.feed_date.setText(DateUtil.fromLongToDate(feed.getRepDate()));
         switch (reportFeedList.get(position).getRepState()) {
             case RECEIVING:
             case ACCEPTED:

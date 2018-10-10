@@ -45,6 +45,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.limefriends.molde.comm.MoldeApplication;
 import com.limefriends.molde.R;
+import com.limefriends.molde.comm.utils.NetworkUtil;
 import com.limefriends.molde.comm.utils.PermissionUtil;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.favorite.FavoriteEntity;
@@ -140,8 +141,6 @@ public class MapFragment extends Fragment implements
     /**
      * 하단 카드뷰
      */
-//    @BindView(R.id.report_card_view)
-//    FrameLayout report_card_view_layout;
     @BindView(R.id.report_card_view_pager)
     ViewPager report_card_view_pager;
 
@@ -159,7 +158,6 @@ public class MapFragment extends Fragment implements
     public static final int MARKER_MY_LOCATION_PRE_FAVORITE = -5;
     public static final int MARKER_SAFEHOUSE = -6;
 
-    long a;
     private int currentMarkerPosition = -1;
     private int currentPage = FIRST_PAGE;
     private int reportCardPosition = 0;
@@ -175,7 +173,6 @@ public class MapFragment extends Fragment implements
     private boolean isMyFavoriteActive = false;
     private boolean fromFeed = false;
     private boolean hasMoreToLoad = true;
-    private String mUid;
     private Marker curLocationMarker;
     private List<Marker> reportInfoMarkers;
     private List<Marker> favoriteMarkers;
@@ -199,12 +196,6 @@ public class MapFragment extends Fragment implements
      */
     @Override
     public void onAttach(Context context) {
-        /*
-         * onAttach 에서는 context 를 넘겨받기 때문에 인터페이스 연결할 사항을 처리한다
-         * 다만 onCreateView 에서 View 를 binding 하기 이전까지는 모든 뷰가 null 이기 때문에 해당 사항을 처리하려면
-         * onViewCrated 에서 해야 함
-         * add 할 때 호출됨
-         */
         super.onAttach(context);
         ((MoldeMainActivity) context).setOnKeyBackPressedListener(this);
     }
@@ -224,7 +215,6 @@ public class MapFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         // replace 할 때마다 호출됨. 매니저에 add, replace 되는 순간 반드시 호출되는 듯
-        // TODO 캐싱 문제를 좀 더 살펴보자. 일단은 안드로이드에서 처리해 주고 있다고 하니 굳이 추가로 캐싱을 하지 않아도 될 듯
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
         // 뷰
@@ -279,10 +269,14 @@ public class MapFragment extends Fragment implements
         Intent intent;
         switch (v.getId()) {
             case R.id.loc_search_bar:
+
+                if (!NetworkUtil.isConnected(getContext())) {
+                    Toast.makeText(getContext(), "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 intent = new Intent();
                 intent.setClass(v.getContext(), SearchMapInfoActivity.class);
-//                startActivityForResult(intent, REQ_SEARCH_MAP,
-//                        ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                 startActivityForResult(intent, REQ_SEARCH_MAP);
                 break;
             case R.id.favorite_button:
@@ -304,6 +298,12 @@ public class MapFragment extends Fragment implements
                 }
                 break;
             case R.id.my_loc_button:
+
+                if (!NetworkUtil.isConnected(getContext())) {
+                    Toast.makeText(getContext(), "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 clearReportInfoDataAndMarkers();
                 getMyLocation();
                 break;
@@ -455,16 +455,10 @@ public class MapFragment extends Fragment implements
         } else {
             switch (tagNumber) {
                 case MARKER_MY_LOCATION:
-//                    marker.setIcon(BitmapDescriptorFactory
-//                            .fromBitmap(sizeUpMapIcon(R.drawable.ic_map_marker_cur_location)));
                     marker.showInfoWindow();
                     break;
                 case MARKER_MY_LOCATION_HISTORY:
                 case MARKER_MY_LOCATION_SEARCH:
-//                    marker.setIcon(BitmapDescriptorFactory
-//                            .fromBitmap(sizeUpMapIcon(R.drawable.ic_map_marker_cur_location)));
-//                    marker.showInfoWindow();
-//                    break;
                 case MARKER_MY_LOCATION_FAVORITE:
                     marker.setIcon(BitmapDescriptorFactory
                             .fromBitmap(sizeUpMapIcon(R.drawable.ic_map_pick)));
@@ -500,9 +494,6 @@ public class MapFragment extends Fragment implements
                     break;
                 case MARKER_MY_LOCATION_HISTORY:
                 case MARKER_MY_LOCATION_SEARCH:
-//                    marker.setIcon(BitmapDescriptorFactory
-//                            .fromResource(R.drawable.ic_map_marker_cur_location));
-//                    break;
                 case MARKER_MY_LOCATION_FAVORITE:
                 case MARKER_MY_LOCATION_PRE_FAVORITE:
                     marker.setIcon(BitmapDescriptorFactory
@@ -613,10 +604,23 @@ public class MapFragment extends Fragment implements
     // 화면에 세팅될 때마다 어떤 경로로 데이터를 세팅할지 결정함
     private void setupData() {
         if (isFirst) {
+
+
+            if (!NetworkUtil.isConnected(getContext())) {
+                Toast.makeText(getContext(), "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+                return;
+            }
+
             getMyLocation();
         }
         // 피드에서 데이터를 받아올 경우
         else if (fromFeed) {
+
+            if (!NetworkUtil.isConnected(getContext())) {
+                Toast.makeText(getContext(), "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+                return;
+            }
+
             FeedEntity feedEntity = ((MoldeMainActivity) getActivity()).getFeedEntity();
             moveCamera(new LatLng(feedEntity.getRepLat(),
                     feedEntity.getRepLon()), ZOOM_FEED_MARKER);
@@ -625,11 +629,7 @@ public class MapFragment extends Fragment implements
         }
         // 한 번 데이터를 불러온 후 외부에서 접근할 경우
         else {
-            if (currentMarkerPosition != -1 && mapReportCardItemList.size() != 0) {
-                // applyReportCardInfo(currentMarkerPosition);
-                // showCardView();
-            }
-            isBackBtnClicked = true;
+
         }
     }
 
@@ -659,11 +659,22 @@ public class MapFragment extends Fragment implements
 
     @Override
     public void loadData() {
+
+        if (!NetworkUtil.isConnected(getContext())) {
+            Toast.makeText(getContext(), "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         loadData(lat, lng);
     }
 
     // 네트워크에서 피드 데이터 받아옴
     private void loadData(final double lat, final double lng) {
+
+        if (!NetworkUtil.isConnected(getContext())) {
+            Toast.makeText(getContext(), "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         if (!hasMoreToLoad) return;
 
@@ -878,27 +889,17 @@ public class MapFragment extends Fragment implements
 
     // 새로 받아올 때 기존 데이터 캐시 제거
     public void clearReportInfoDataAndMarkers() {
-        // if (curLocationMarker != null) curLocationMarker.remove();
+
         currentPage = FIRST_PAGE;
         mMap.clear();
         hasMoreToLoad(true);
 
         if (reportInfoMarkers.size() > 0 || mapReportCardItemList.size() > 0) {
-//            for (Marker marker : reportInfoMarkers) {
-//                marker.remove();
-//            }
             favoriteMarkers.clear();
             safehouseMarkers.clear();
             reportInfoMarkers.clear();
             mapReportCardItemList.clear();
             reportCardAdapter.removeAllCardItem(mapReportCardItemList);
-            /**
-             * makeRandomMarker 와 바꾸기만 하면 안 되길래 뭐가 문제인지 파악하지 못했는데
-             * 결국 어떤 차이가 있었던 것이 아니라 데이터가 유동적으로 변경된 것이 문제였음
-             * 즉, 네트워크에서 받아오는 데이터는 10 -> 0개로 변경이 일어났는데 그것을 계속 어댑터에서만
-             * 변경하고 뷰에 반영을 해주지 않아 이전 뷰페이저에서는 2-3개 남아있던 아이템이 계속 살아있었던 것이다
-             * 다만 어댑터는 변경되었기 떄문에 어디에서도 호출이 발생하지 않았던 것
-             */
             report_card_view_pager.setAdapter(reportCardAdapter);
         }
     }
@@ -907,6 +908,12 @@ public class MapFragment extends Fragment implements
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (!NetworkUtil.isConnected(getContext())) {
+            Toast.makeText(getContext(), "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         if (resultCode == RESULT_OK && requestCode == REQ_SEARCH_MAP) {
             LatLng defaultLoc = ((MoldeApplication)
                     getActivity().getApplication()).getCurrLocation();
@@ -933,6 +940,7 @@ public class MapFragment extends Fragment implements
         } else if (resultCode == RESULT_OK && requestCode == REQ_FAVORITE) {
             FavoriteEntity myFavoriteEntity
                     = (FavoriteEntity) data.getSerializableExtra(EXTRA_KEY_FAVORITE_INFO);
+
             if (myFavoriteEntity != null) {
                 lat = myFavoriteEntity.getFavLat();
                 lng = myFavoriteEntity.getFavLon();
@@ -979,12 +987,6 @@ public class MapFragment extends Fragment implements
         marker.setSnippet(info);
     }
 
-    // 즐겨찾기 콜백 함수
-    @Override
-    public void setMyFavoriteActive(boolean active) {
-        this.isMyFavoriteActive = active;
-    }
-
     // 피드에서 데이터를 받아왔음을 명시
     public void setFromFeed(boolean fromFeed) {
         this.fromFeed = fromFeed;
@@ -999,21 +1001,12 @@ public class MapFragment extends Fragment implements
 
         showProgress();
 
-        a = System.currentTimeMillis();
-
         if (manager == null) {
             manager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
         }
         boolean isGpsEnable = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         if (isGpsEnable) {
-            /**
-             * 이틀에 걸쳐 해결하지 못했던 문제의 원인은 static 으로 계속 메모리에 올라가 있던 PermissionUtil 에게
-             * activity 와 this 를 통째로 넘겨준 것이었다. back 키를 통해 앱을 종료하고 다시 실행시키면 activity, fragment
-             * 는 죽는데 문제는 static 에 넘겨준 객체는 죽지 않고 그대로 살아 있었던 것이다. getInstance 를 했을 때
-             * 당연히 기존에 있던 객체를 사용했던 것이고 인자를 넘겨줘도 기존에 넘겨받았던 액티비티와 콜백함수를 사용했으니
-             * 당연히 getContext 를 했을 때 이전에는 죽어버렸던 객체를 호출하게 된 것이다. static 이 아주 흉물스러운 것이라는
-             * 것을 다시 느낌. 생각해보면 이전에도 이런 일이 있었는데 강사님이 해결해 줬던 기억이 난다.
-             */
+
             getPermission().checkPermission(new String[]{
                     android.Manifest.permission.ACCESS_COARSE_LOCATION,
                     android.Manifest.permission.ACCESS_FINE_LOCATION});
@@ -1029,8 +1022,6 @@ public class MapFragment extends Fragment implements
 
         @Override
         public void onLocationChanged(Location location) {
-
-            Log.e("호출확인", "onLocationChanged : " + (System.currentTimeMillis() - a));
 
             // 현재위치 위경도 좌표 가져오기
             lat = location.getLatitude();

@@ -2,6 +2,7 @@ package com.limefriends.molde.remote;
 
 public class MoldeRestfulApi {
 
+
     /**
      * 카드 뉴스
      */
@@ -11,6 +12,7 @@ public class MoldeRestfulApi {
 
         public static final String GET_NEWS_BY_ID_API = "/v1/newsid";
     }
+
 
     /**
      * 피드
@@ -49,6 +51,7 @@ public class MoldeRestfulApi {
         public static final String POST_FEED_RESULT_API = "v1/result";
     }
 
+
     /**
      * 즐겨찾기
      */
@@ -63,10 +66,6 @@ public class MoldeRestfulApi {
         public static final String GET_FAVORITE_BY_LOCATION_API = "/v1/favorite2";
     }
 
-    public static class Report {
-
-        public static final String GET_REPORT_API = "/v1/report";
-    }
 
     /**
      * 댓글
@@ -85,10 +84,11 @@ public class MoldeRestfulApi {
 
         public static final String PUT_COMMENT_API = "/v1/comment";
 
-        public static final String DELETE_COMMENT_API = "/v1/comment";
+        public static final String DELETE_COMMENT_API = "/v1/commentadmin";
 
-        public static final String DELETE_REPORTED_COMMENT_API = "/v1/commentadmin";
+        public static final String DELETE_REPORTED_COMMENT_API = "/v1/commreport";
     }
+
 
     /**
      * 스크랩
@@ -103,6 +103,7 @@ public class MoldeRestfulApi {
 
         public static final String DELETE_SCRAP_API = "/v1/scrap";
     }
+
 
     /**
      * 자주 묻는 질문

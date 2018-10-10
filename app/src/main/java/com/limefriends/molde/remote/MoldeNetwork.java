@@ -32,7 +32,7 @@ public class MoldeNetwork {
     private Retrofit buildRetrofit() {
         if (mRetrofit == null) {
             mRetrofit = new Retrofit.Builder()
-                    .baseUrl(BuildConfig.SERVER_URL)
+                    .baseUrl("http://192.168.0.103:7019")
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(buildOkHttpClient())
                     .build();
@@ -41,6 +41,7 @@ public class MoldeNetwork {
     }
 
     private OkHttpClient buildOkHttpClient() {
+
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         if (BuildConfig.DEBUG) {
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);

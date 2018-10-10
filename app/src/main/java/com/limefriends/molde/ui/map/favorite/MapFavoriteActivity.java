@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.limefriends.molde.comm.MoldeApplication;
 import com.limefriends.molde.comm.custom.addOnListview.AddOnScrollRecyclerView;
 import com.limefriends.molde.comm.custom.addOnListview.OnLoadMoreListener;
+import com.limefriends.molde.comm.utils.NetworkUtil;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.favorite.FavoriteEntity;
 import com.limefriends.molde.entity.favorite.FavoriteResponseInfoEntity;
@@ -107,6 +108,11 @@ public class MapFavoriteActivity extends AppCompatActivity implements
 
     private void loadFavorite(int perPage, int page) {
 
+        if (!NetworkUtil.isConnected(this)) {
+            Toast.makeText(this, "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         if (!hasMoreToLoad) return;
 
         my_favorite_list_view.setIsLoading(true);
@@ -148,7 +154,7 @@ public class MapFavoriteActivity extends AppCompatActivity implements
 
             @Override
             public void onFailure(Call<FavoriteResponseInfoEntityList> call, Throwable t) {
-                Log.e("즐겨찾기 오류", t.getMessage());
+
             }
         });
 
@@ -156,7 +162,14 @@ public class MapFavoriteActivity extends AppCompatActivity implements
 
     private void deleteFavorite(final int favId) {
 
-        Call<Result> call = getFavoriteService().deleteFavorite("lkj", favId);
+        if (!NetworkUtil.isConnected(this)) {
+            Toast.makeText(this, "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        String uId =  ((MoldeApplication)getApplication()).getFireBaseAuth().getUid();
+
+        Call<Result> call = getFavoriteService().deleteFavorite(uId, favId);
 
         call.enqueue(new Callback<Result>() {
             @Override

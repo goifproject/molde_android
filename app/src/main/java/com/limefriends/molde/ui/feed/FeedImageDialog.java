@@ -40,7 +40,6 @@ public class FeedImageDialog extends AppCompatDialogFragment {
                     .into(new SimpleTarget<GlideDrawable>() {
                         @Override
                         public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                            // getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                             WindowManager.LayoutParams params = getDialog().getWindow().getAttributes();
                             params.width = getResources().getDisplayMetrics().widthPixels;
                             params.height = getResources().getDisplayMetrics().heightPixels;

@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- TODO 폰트 사이즈, 크기, 색상 공통으로 적용할 것 -->
-<!-- TODO 각종 색깔 공통으로 관리할 것-->
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -29,7 +27,6 @@
             android:id="@+id/report_info_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="날짜 안 넘어옴"
             android:textColor="#646464"
             android:textSize="11sp" />
 
@@ -40,7 +37,6 @@
             android:layout_marginTop="4dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="주소 안 넘어옴"
             android:textColor="#646464"
             android:textSize="10sp" />
 
@@ -51,7 +47,6 @@
             android:layout_marginTop="4dp"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="상세 주소 안 넘어옴"
             android:textColor="#646464"
             android:textSize="10sp" />
 

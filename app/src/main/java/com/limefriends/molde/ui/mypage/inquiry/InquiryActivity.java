@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.limefriends.molde.comm.Constant;
 import com.limefriends.molde.comm.MoldeApplication;
 import com.limefriends.molde.comm.custom.addOnListview.AddOnScrollRecyclerView;
+import com.limefriends.molde.comm.utils.NetworkUtil;
 import com.limefriends.molde.comm.utils.PreferenceUtil;
 import com.limefriends.molde.comm.utils.pattern.RegexUtil;
 import com.limefriends.molde.R;
@@ -231,6 +232,11 @@ public class InquiryActivity extends AppCompatActivity {
 
     private void inquire(String userId, String userName, String content, String email) {
 
+        if (!NetworkUtil.isConnected(this)) {
+            Toast.makeText(this, "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         MoldeRestfulService.Faq faqService
                 = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Faq.class);
 
@@ -257,6 +263,11 @@ public class InquiryActivity extends AppCompatActivity {
     }
 
     private void loadInquiry() {
+
+        if (!NetworkUtil.isConnected(this)) {
+            Toast.makeText(this, "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         if (!hasMoreToLoad) return;
 

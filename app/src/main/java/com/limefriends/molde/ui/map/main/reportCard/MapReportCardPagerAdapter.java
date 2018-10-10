@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.limefriends.molde.R;
-import com.limefriends.molde.comm.utils.DateUitl;
+import com.limefriends.molde.comm.utils.DateUtil;
 import com.limefriends.molde.comm.utils.StringUtil;
 import com.limefriends.molde.ui.map.main.MapFragment;
 
@@ -126,7 +126,7 @@ public class MapReportCardPagerAdapter extends PagerAdapter implements IMapRepor
     }
 
     private void bind(MapReportCardItem item) {
-        report_info_date.setText(DateUitl.fromLongToDate(item.getDate()));
+        report_info_date.setText(DateUtil.fromLongToDate(item.getDate()));
         report_card_address.setText(StringUtil.moveLine(item.getRepContent()));
         report_card_detail_address.setText(item.getDetailAddress());
         if (item.getThumbnailUrl() != null) {

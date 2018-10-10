@@ -4,7 +4,7 @@ import android.text.format.DateFormat;
 
 import java.util.Date;
 
-public class DateUitl {
+public class DateUtil {
 
     public static String fromLongToDate(String date) {
         long millisecond = Long.parseLong(date);

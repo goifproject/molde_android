@@ -10,9 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.bumptech.glide.Glide;
 import com.limefriends.molde.R;
-import com.limefriends.molde.comm.utils.DateUitl;
+import com.limefriends.molde.comm.utils.DateUtil;
 import com.limefriends.molde.entity.comment.CommentEntity;
 
 import java.util.ArrayList;
@@ -20,7 +19,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 public class CardNewsCommentRecyclerAdapter
         extends RecyclerView.Adapter<CardNewsCommentRecyclerAdapter.MagazineCommentViewHolder> {
@@ -55,7 +53,7 @@ public class CardNewsCommentRecyclerAdapter
         CommentEntity cardNewsCommentEntity = dataList.get(position);
         holder.txt_comment_user.setText(cardNewsCommentEntity.getUserName());
         holder.txt_comment_date.setText(
-                DateUitl.fromLongToDate(cardNewsCommentEntity.getCommDate()));
+                DateUtil.fromLongToDate(cardNewsCommentEntity.getCommDate()));
         holder.txt_comment_content.setText(cardNewsCommentEntity.getComment());
         holder.commentId = dataList.get(position).getCommId();
     }
@@ -91,7 +89,9 @@ public class CardNewsCommentRecyclerAdapter
                     .setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            view.reportComment(commentId);
+                            if (!view.isReporting()) {
+                                view.reportComment(commentId);
+                            }
                         }
                     });
         }

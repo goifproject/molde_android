@@ -35,7 +35,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.limefriends.molde.comm.Constant.MyPage.*;
 
-// TODO "lkj" 바꿔야 함 -> uId
 public class MyPageFragment extends Fragment {
 
     public static final String SIGNIN_TYPE = "signinType";
@@ -170,7 +169,6 @@ public class MyPageFragment extends Fragment {
             public void onClick(View v) {
                 if (mypage_log_in_out_button.getText().equals(getText(R.string.signout))) {
                     AlertDialog dialog = new AlertDialog.Builder(getContext(), R.style.DialogTheme)
-                            //.setTitle(getText(R.string.dialog_title_signout))
                             .setMessage(getText(R.string.dialog_msg_signout))
                             .setPositiveButton(Html.fromHtml("<font color='#000000'>예</font>"), new DialogInterface.OnClickListener() {
                                 @Override

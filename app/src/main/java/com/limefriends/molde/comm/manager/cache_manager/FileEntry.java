@@ -11,7 +11,7 @@ public class FileEntry {
     private String key;
     private File file;
 
-    public FileEntry(String key, File file) {
+    FileEntry(String key, File file) {
         this.key = key;
         this.file = file;
     }

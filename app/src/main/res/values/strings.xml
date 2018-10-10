@@ -423,10 +423,6 @@
     <string name="siren_red_dead">죽은 빨간색 싸이렌</string>
     <string name="siren_green">초록색 싸이렌</string>
     <string name="siren_white">흰색 싸이렌</string>
-
-    <!--<string name="facebook_app_id">640535656298047</string>-->
-    <!--<string name="fb_login_protocol_scheme">fb640535656298047</string>-->
-
     <string name="internal_storage">Internal storage</string>
 
 </resources>

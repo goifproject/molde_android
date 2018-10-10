@@ -1,11 +1,8 @@
 package com.limefriends.molde.entity.comment;
 
-import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import java.util.Comparator;
 
 public class CommentResponseInfoEntity {
 

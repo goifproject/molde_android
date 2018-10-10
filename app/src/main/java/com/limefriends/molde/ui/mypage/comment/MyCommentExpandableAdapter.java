@@ -9,8 +9,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.limefriends.molde.R;
-import com.limefriends.molde.comm.Constant;
-import com.limefriends.molde.comm.utils.DateUitl;
+import com.limefriends.molde.comm.utils.DateUtil;
 import com.limefriends.molde.entity.comment.CommentEntity;
 import com.limefriends.molde.entity.news.CardNewsEntity;
 
@@ -33,7 +32,6 @@ public class MyCommentExpandableAdapter extends BaseExpandableListAdapter {
     }
 
     public void addAll(List<CardNewsEntity> newsEntityList) {
-        // newsEntityList.addAll(newsEntityList);
         this.newsEntityList = newsEntityList;
         notifyDataSetChanged();
     }
@@ -110,7 +108,7 @@ public class MyCommentExpandableAdapter extends BaseExpandableListAdapter {
 
         CommentEntity comment = newsEntityList.get(groupPosition).getComments().get(childPosition);
 
-        myComment_date.setText(DateUitl.fromLongToDate(comment.getCommDate()));
+        myComment_date.setText(DateUtil.fromLongToDate(comment.getCommDate()));
         myComment_comment.setText(comment.getComment());
 
         view.setOnClickListener(new View.OnClickListener() {

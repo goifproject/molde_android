@@ -8,12 +8,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.limefriends.molde.R;
 import com.limefriends.molde.comm.Constant;
 import com.limefriends.molde.comm.custom.addOnListview.AddOnScrollRecyclerView;
 import com.limefriends.molde.comm.custom.addOnListview.OnLoadMoreListener;
+import com.limefriends.molde.comm.utils.NetworkUtil;
 import com.limefriends.molde.comm.utils.PreferenceUtil;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.feed.FeedEntity;
@@ -111,8 +113,10 @@ public class MyFeedActivity extends AppCompatActivity implements MyFeedAdapter.O
     //-----
 
     private Call<FeedResponseInfoEntityList> generateCall(String userId, int perPage, int page) {
+
         MoldeRestfulService.Feed feedService
                 = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Feed.class);
+
         if (authority == MEMBER || authority == GUARDIAN) {
             return feedService.getMyFeed(userId, perPage, page);
         } else if (authority == ADMIN) {
@@ -122,8 +126,16 @@ public class MyFeedActivity extends AppCompatActivity implements MyFeedAdapter.O
     }
 
     private void loadMyReport(int perPage, int page) {
+
+        if (!NetworkUtil.isConnected(this)) {
+            Toast.makeText(this, "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         if (!hasMoreToLoad) return;
+
         myReport_recyclerView.setIsLoading(true);
+
         generateCall(userId, perPage, page).enqueue(new Callback<FeedResponseInfoEntityList>() {
             @Override
             public void onResponse(Call<FeedResponseInfoEntityList> call, Response<FeedResponseInfoEntityList> response) {
@@ -155,7 +167,6 @@ public class MyFeedActivity extends AppCompatActivity implements MyFeedAdapter.O
 
             @Override
             public void onFailure(Call<FeedResponseInfoEntityList> call, Throwable t) {
-                Log.e("문제확인", t.getMessage());
             }
         });
     }

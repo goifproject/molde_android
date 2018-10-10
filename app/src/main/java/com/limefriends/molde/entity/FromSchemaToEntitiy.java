@@ -25,6 +25,7 @@ import java.util.List;
 
 public class FromSchemaToEntitiy {
 
+
     /**
      * 카드뉴스 리스트
      */
@@ -42,6 +43,7 @@ public class FromSchemaToEntitiy {
         return entities;
     }
 
+
     /**
      * 카드뉴스
      */
@@ -53,6 +55,7 @@ public class FromSchemaToEntitiy {
                 schema.getDate(),
                 schema.getNewsImg());
     }
+
 
     /**
      * 댓글
@@ -94,6 +97,7 @@ public class FromSchemaToEntitiy {
         }
         return entities;
     }
+
 
     /**
      * 피드
@@ -141,6 +145,7 @@ public class FromSchemaToEntitiy {
         return data;
     }
 
+
     /**
      * 스크랩
      */
@@ -155,6 +160,7 @@ public class FromSchemaToEntitiy {
         }
         return entities;
     }
+
 
     /**
      * faq
@@ -172,6 +178,7 @@ public class FromSchemaToEntitiy {
         }
         return entities;
     }
+
 
     /**
      * favorite
@@ -192,6 +199,7 @@ public class FromSchemaToEntitiy {
         return entities;
     }
 
+
     /**
      * safehouse
      */
@@ -210,6 +218,7 @@ public class FromSchemaToEntitiy {
         }
         return entities;
     }
+
 
     /**
      * feedResult

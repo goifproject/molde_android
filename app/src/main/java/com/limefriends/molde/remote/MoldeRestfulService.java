@@ -86,7 +86,6 @@ public interface MoldeRestfulService {
                 @Part("reportDetailAddress") String reportDetailAddress,
                 @Part("reportState") int reportState,
                 @Part("reportDate") long reportDate,
-                //@Part MultipartBody.Part reportImageList
                 @Part List<MultipartBody.Part> reportImageList
         );
 
@@ -155,8 +154,7 @@ public interface MoldeRestfulService {
 
         @FormUrlEncoded
         @HTTP(method = "DELETE", path = MoldeRestfulApi.Comment.DELETE_COMMENT_API, hasBody = true)
-        Call<Result> deleteComment(@Field("commentUserId") String commentUserId,
-                                   @Field("commentId") int commentId);
+        Call<Result> deleteComment(@Field("commentId") int commentId);
 
         @FormUrlEncoded
         @HTTP(method = "DELETE", path = MoldeRestfulApi.Comment.DELETE_REPORTED_COMMENT_API, hasBody = true)
@@ -184,8 +182,8 @@ public interface MoldeRestfulService {
                                                          @Query("page") int page);
 
         @GET(MoldeRestfulApi.Scrap.GET_SCRAP_BY_ID_API)
-        Call<Result> getMyScrap(@Query("userId") String userId,
-                                @Query("cardNewsId") int cardNewsId);
+        Call<ScrapResponseInfoEntityList> getMyScrap(@Query("userId") String userId,
+                                                     @Query("cardNewsId") int cardNewsId);
 
         @FormUrlEncoded
         @POST(MoldeRestfulApi.Scrap.POST_SCRAP_API)

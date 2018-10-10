@@ -29,8 +29,6 @@ import static com.limefriends.molde.comm.Constant.MoldeMain.FROM_NOTIFICATION;
 public class MoldeMainActivity extends AppCompatActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-
-
     public interface OnKeyBackPressedListener {
         void onBackKey();
     }
@@ -61,14 +59,7 @@ public class MoldeMainActivity extends AppCompatActivity
         BottomNavigationViewHelper.disableShiftMode(navigation);
         setupListener();
 
-//        int origin = getIntent().getIntExtra("origin", 0);
-
-//        if (origin == FROM_LAUNCHER) {
-            navigation.setSelectedItemId(R.id.main_menu_map);
-//        }
-//        else if (origin == FROM_NOTIFICATION) {
-//            navigation.setSelectedItemId(R.id.main_menu_feed);
-//        }
+        navigation.setSelectedItemId(R.id.main_menu_map);
     }
 
     private void setupListener() {

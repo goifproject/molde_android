@@ -1,7 +1,6 @@
 package com.limefriends.molde.comm.manager.cache_manager;
 
 import android.content.Context;
-import android.os.Environment;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,14 +16,9 @@ public class Cache {
         this.context = context;
     }
 
-    public File getCacheDir(Context context) {
+    private File getCacheDir(Context context) {
         File cacheDir = null;
-//        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-//            cacheDir = new File(Environment.getExternalStorageDirectory(), "moldeCache");
-//            if (!cacheDir.isDirectory()) {
-//                cacheDir.mkdirs();
-//            }
-//        }
+
         cacheDir = new File("moldeCache");
         if (!cacheDir.isDirectory()) {
             cacheDir = context.getCacheDir();

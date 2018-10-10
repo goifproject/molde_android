@@ -14,9 +14,8 @@ import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
 import com.limefriends.molde.R;
-import com.limefriends.molde.comm.utils.DateUitl;
+import com.limefriends.molde.comm.utils.DateUtil;
 import com.limefriends.molde.entity.comment.CommentEntity;
-import com.limefriends.molde.ui.magazine.comment.CardNewsCommentActivity;
 import com.limefriends.molde.ui.magazine.detail.CardNewsDetailActivity;
 
 import java.util.ArrayList;
@@ -61,7 +60,7 @@ public class ReportedCommentAdapter extends RecyclerView.Adapter<ReportedComment
                 .into(holder.img_comment_profile);
         holder.txt_comment_user.setText(cardNewsCommentEntity.getUserName());
         holder.txt_comment_date.setText(
-                DateUitl.fromLongToDate(cardNewsCommentEntity.getCommDate()));
+                DateUtil.fromLongToDate(cardNewsCommentEntity.getCommDate()));
         holder.txt_comment_content.setText(cardNewsCommentEntity.getComment());
         holder.commentId = dataList.get(position).getCommId();
         holder.img_comment_siren.setBackgroundResource(R.drawable.ic_comment_siren_on);

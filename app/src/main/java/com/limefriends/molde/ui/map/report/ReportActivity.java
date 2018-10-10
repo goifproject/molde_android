@@ -33,6 +33,7 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.limefriends.molde.comm.Constant;
 import com.limefriends.molde.comm.MoldeApplication;
+import com.limefriends.molde.comm.utils.NetworkUtil;
 import com.limefriends.molde.comm.utils.PreferenceUtil;
 import com.limefriends.molde.comm.utils.pattern.RegexUtil;
 import com.limefriends.molde.R;
@@ -273,14 +274,10 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
             report_content.setVisibility(View.GONE);
             report_content_title.setVisibility(View.GONE);
             green_zone_admin.setVisibility(View.VISIBLE);
-//            report_email_title.setVisibility(View.GONE);
-//            report_email_spinner.setVisibility(View.GONE);
         } else {
             report_content.setVisibility(View.VISIBLE);
             report_content_title.setVisibility(View.VISIBLE);
             green_zone_admin.setVisibility(View.GONE);
-//            report_email_title.setVisibility(View.VISIBLE);
-//            report_email_spinner.setVisibility(View.VISIBLE);
         }
     }
 
@@ -327,6 +324,11 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
     //-----
 
     private void sendReport() {
+
+        if (!NetworkUtil.isConnected(this)) {
+            Toast.makeText(this, "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         // 1. 이미지 등록 확인
         List<MultipartBody.Part> imageMultiParts = null;

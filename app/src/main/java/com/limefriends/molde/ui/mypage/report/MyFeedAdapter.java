@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.limefriends.molde.R;
 import com.limefriends.molde.comm.Constant;
-import com.limefriends.molde.comm.utils.DateUitl;
+import com.limefriends.molde.comm.utils.DateUtil;
 import com.limefriends.molde.entity.feed.FeedEntity;
 
 import java.util.ArrayList;
@@ -117,7 +117,7 @@ public class MyFeedAdapter extends RecyclerView.Adapter<MyFeedAdapter.MyPageMyRe
                         .setTextColor(context.getResources().getColor(R.color.colorInfoTextColor));
                 break;
         }
-        viewHolder.mypage_report_date.setText(DateUitl.fromLongToDate(feed.getRepDate()));
+        viewHolder.mypage_report_date.setText(DateUtil.fromLongToDate(feed.getRepDate()));
         viewHolder.mypage_report_location.setText(feed.getRepAddr());
         viewHolder.mypage_report_address.setText(feed.getRepDetailAddr());
         viewHolder.position = position;

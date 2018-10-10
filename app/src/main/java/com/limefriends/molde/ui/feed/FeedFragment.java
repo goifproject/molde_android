@@ -3,19 +3,20 @@ package com.limefriends.molde.ui.feed;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.limefriends.molde.comm.MoldeApplication;
 import com.limefriends.molde.comm.custom.addOnListview.AddOnScrollRecyclerView;
 import com.limefriends.molde.comm.custom.addOnListview.OnLoadMoreListener;
-import com.limefriends.molde.comm.utils.DateUitl;
+import com.limefriends.molde.comm.utils.DateUtil;
+import com.limefriends.molde.comm.utils.NetworkUtil;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.feed.FeedEntity;
 import com.limefriends.molde.entity.feed.FeedResponseInfoEntity;
@@ -93,6 +94,7 @@ public class FeedFragment extends Fragment implements FeedAdapter.OnClickFeedIte
         feed_sort_toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
                 // 체크가 최신순, 기본이 거리순
                 hasMoreToLoad(true);
                 currentPage = FIRST_PAGE;
@@ -150,6 +152,12 @@ public class FeedFragment extends Fragment implements FeedAdapter.OnClickFeedIte
     }
 
     private void fetchByLocation(int perPage, int page) {
+
+        if (!NetworkUtil.isConnected(getContext())) {
+            Toast.makeText(getContext(), "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         LatLng latLng = ((MoldeApplication) getActivity().getApplication()).getCurrLocation();
 
         Call<FeedResponseInfoEntityList> call = getFeedService()
@@ -174,7 +182,7 @@ public class FeedFragment extends Fragment implements FeedAdapter.OnClickFeedIte
                     currentPage++;
 
                     feed_update_text.setText(getText(R.string.feed_date_location));
-                    feed_update_date.setText(DateUitl.fromLongToDate(entities.get(0).getRepDate()));
+                    feed_update_date.setText(DateUtil.fromLongToDate(entities.get(0).getRepDate()));
 
                     if (schemas.size() < PER_PAGE) {
                         hasMoreToLoad(false);
@@ -190,6 +198,11 @@ public class FeedFragment extends Fragment implements FeedAdapter.OnClickFeedIte
     }
 
     private void fetchByDate(int perPage, int page) {
+
+        if (!NetworkUtil.isConnected(getContext())) {
+            Toast.makeText(getContext(), "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         Call<FeedResponseInfoEntityList> call = getFeedService()
                 .getPagedFeedByDate(perPage, page);
@@ -213,7 +226,7 @@ public class FeedFragment extends Fragment implements FeedAdapter.OnClickFeedIte
                     currentPage++;
 
                     feed_update_text.setText(getText(R.string.feed_date_recent));
-                    feed_update_date.setText(DateUitl.fromLongToDate(entities.get(0).getRepDate()));
+                    feed_update_date.setText(DateUtil.fromLongToDate(entities.get(0).getRepDate()));
 
                     if (schemas.size() < PER_PAGE) {
                         hasMoreToLoad(false);

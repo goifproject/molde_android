@@ -6,7 +6,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 
 public class AddOnScrollRecyclerView extends RecyclerView {
 
@@ -32,15 +31,6 @@ public class AddOnScrollRecyclerView extends RecyclerView {
         this.isGridLayout = isGridLayout;
     }
 
-    public int getVisibleThreshold() {
-        return visibleThreshold;
-    }
-
-    public void setVisibleThreshold(int threshold) {
-        if (threshold >= 10) return;
-        this.visibleThreshold = threshold;
-    }
-
     public void setOnLoadMoreListener (OnLoadMoreListener listener) {
         this.onLoadMoreListener = listener;
     }
@@ -60,33 +50,17 @@ public class AddOnScrollRecyclerView extends RecyclerView {
 
             if (isGridLayout) {
                 GridLayoutManager gridLayoutManager = (GridLayoutManager) layoutManager;
-                // int spanCount = gridLayoutManager.getSpanCount();
                 visibleItemCount = recyclerView.getChildCount();
                 totalItemCount = gridLayoutManager.getItemCount();
                 firstOrLastVisibleItem = gridLayoutManager.findFirstVisibleItemPosition();
-                // Log.d("tot:fir:vis:vis2-G", totalItemCount + ":" + firstOrLastVisibleItem + ":" + visibleItemCount+":"+layoutManager.getChildCount());
             } else {
                 LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
                 visibleItemCount = recyclerView.getChildCount();
                 totalItemCount = linearLayoutManager.getItemCount();
                 firstOrLastVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
-                // Log.d("tot:fir:vis:vis2-L", totalItemCount + ":" + firstVisibleItem + ":" + visibleItemCount+":"+layoutManager.getChildCount());
             }
 
-//            switch (recyclerView.getScrollState()) {
-//                case RecyclerView.SCROLL_STATE_DRAGGING:
-//                    Log.e("호출확인 ", "SCROLL_STATE_DRAGGING");
-//                    break;
-//                case RecyclerView.SCROLL_STATE_IDLE:
-//                    Log.e("호출확인 ", "SCROLL_STATE_IDLE");
-//                    break;
-//                case RecyclerView.SCROLL_STATE_SETTLING:
-//                    Log.e("호출확인 ", "SCROLL_STATE_SETTLING");
-//                    break;
-//            }
-
             if (totalItemCount == visibleItemCount && !isLoading) {
-                Log.e("호출확인 ","loadMore1");
                 onLoadMoreListener.loadMore();
                 return;
             }
@@ -94,7 +68,6 @@ public class AddOnScrollRecyclerView extends RecyclerView {
             if (!isLoading &&
                     (totalItemCount - visibleItemCount) <= firstOrLastVisibleItem + visibleThreshold) {
                 if (onLoadMoreListener != null) {
-                    Log.e("호출확인 ","loadMore2");
                     onLoadMoreListener.loadMore();
                 }
                 isLoading = true;

@@ -28,7 +28,6 @@ import com.limefriends.molde.comm.manager.gallery_manager.MoldeReportGalleryActi
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -136,22 +135,6 @@ public class MoldeReportCameraActivity extends AppCompatActivity {
                 intent.putExtra("imageSeq", imageSeq);
                 intent.putExtra("imageArraySize", imageArraySize);
                 startActivityForResult(intent, TAKE_PICTURE_FOR_ADD_IMAGE);
-            }
-        });
-
-        molde_camera_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                camera.autoFocus(new Camera.AutoFocusCallback() {
-                    @Override
-                    public void onAutoFocus(boolean success, Camera camera) {
-                        if (success) {
-                            // Toast.makeText(getApplicationContext(),"포커스 성공",Toast.LENGTH_SHORT).show();
-                        } else {
-                            // Toast.makeText(getApplicationContext(),"포커스 실패",Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
             }
         });
 

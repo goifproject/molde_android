@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
     private CallbackManager facebookCallbackManager;
 
     /**
-     * FirebaseAuth.getInstance() 하는 곳에서 받아 사용한다.
+     * TODO FirebaseAuth.getInstance() 하는 곳에서 받아 사용한다.
      */
     private FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
         @Override
@@ -178,23 +178,11 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         } else {
 
-                            // TODO 시도해보자
-                            if (task.getResult().getAdditionalUserInfo().isNewUser()) {
-
-                            } else {
-
-                            }
-
-                            // TODO 기존에 존재하는 아이디일 경우
-                            Log.e("facebook", task.getException().getMessage());
                             if (task.getException().getMessage().startsWith("An account already exists with the same email address")) {
-                                Log.e("facebook", "이미 있어");
+                                Snackbar.make(findViewById(R.id.mypage_login_layout), "이미 가입된 계정입니다.", Snackbar.LENGTH_SHORT).show();
+                                return;
                             }
-
-                            Log.e("facebook", "signInWithCredential:failure", task.getException());
                             Snackbar.make(findViewById(R.id.mypage_login_layout), "로그인이 정상적으로 처리되지 않았습니다.", Snackbar.LENGTH_SHORT).show();
-
-
                         }
                     }
                 });
@@ -212,19 +200,15 @@ public class LoginActivity extends AppCompatActivity {
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult facebookLoginResult) {
-                        Log.e("facebook", "facebook:onSuccess:" + facebookLoginResult);
-                        Log.e("facebook", "facebook:onSuccess:" + facebookLoginResult.getAccessToken());
                         handleFacebookAccessToken(facebookLoginResult.getAccessToken());
                     }
 
                     @Override
                     public void onCancel() {
-                        Log.e("facebook", "facebook:onCancel");
                     }
 
                     @Override
                     public void onError(FacebookException error) {
-                        Log.e("facebook", "facebook:onError", error);
                     }
                 });
     }
@@ -251,7 +235,6 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             // TODO 기존에 존재하는 아이디일 경우
                             loginProgressDialog.dismiss();
-                            Log.e("facebook", task.getException().getMessage());
                             if (task.getException().getMessage()
                                     .startsWith("An account already exists with the same email address")) {
                                 Snackbar.make(findViewById(R.id.mypage_login_layout),
@@ -268,8 +251,6 @@ public class LoginActivity extends AppCompatActivity {
                                     finish();
                                 }
                             }, 1000);
-
-                            Log.e("facebook", "signInWithCredential:failure", task.getException());
                         }
                     }
                 });
@@ -285,7 +266,6 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        // TODO 실패시 롤백
                         // 권한은 Preference에 저장, 나머지는 FirebaseAuth 를 통해 얻어오고,
                         // 리스너 설정해서 변화가 일어날 때마다 다시 데이터 받아오고 갱신해 준다.
                         int authority = (int) userMap.get("authority");
@@ -298,7 +278,6 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.e("createUserData", "Error adding document", e);
                     }
                 });
     }
@@ -345,7 +324,6 @@ public class LoginActivity extends AppCompatActivity {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
-                Log.e("google", "Google sign in failed", e);
             }
             return;
         }

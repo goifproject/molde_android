@@ -39,8 +39,6 @@ public class Constant {
     }
 
     public static class Map {
-        public static final String EXTRA_KEY_SEARCH_MAP_INFO = "mapSearchInfo";
-        public static final String EXTRA_KEY_SEARCH_MAP_HISTORY = "mapHistoryInfo";
         public static final String EXTRA_KEY_FAVORITE_INFO = "mapFavoriteInfo";
     }
 

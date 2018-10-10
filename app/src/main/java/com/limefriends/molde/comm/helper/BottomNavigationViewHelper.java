@@ -3,7 +3,6 @@ import android.annotation.SuppressLint;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
-import android.util.Log;
 import java.lang.reflect.Field;
 
 public class BottomNavigationViewHelper {
@@ -22,9 +21,7 @@ public class BottomNavigationViewHelper {
                 item.setChecked(item.getItemData().isChecked());
             }
         } catch (NoSuchFieldException e) {
-            Log.e("BNVHelper", "다른 필드로 이동 불가", e);
         } catch (IllegalAccessException e) {
-            Log.e("BNVHelper", "다른 필드로 값을 변경할 수 없음", e);
         }
     }
 }

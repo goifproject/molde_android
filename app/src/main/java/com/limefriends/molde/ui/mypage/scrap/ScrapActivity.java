@@ -9,11 +9,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.limefriends.molde.R;
 import com.limefriends.molde.comm.MoldeApplication;
 import com.limefriends.molde.comm.custom.addOnListview.AddOnScrollRecyclerView;
 import com.limefriends.molde.comm.custom.addOnListview.OnLoadMoreListener;
+import com.limefriends.molde.comm.utils.NetworkUtil;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.news.CardNewsEntity;
 import com.limefriends.molde.entity.news.CardNewsResponseInfoEntity;
@@ -128,6 +130,11 @@ public class ScrapActivity extends AppCompatActivity {
 
     private void loadMyScrap(int perPage, int page) {
 
+        if (!NetworkUtil.isConnected(this)) {
+            Toast.makeText(this, "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         if (!hasMoreToLoad) return;
 
         myScrap_recyclerView.setIsLoading(true);
@@ -147,7 +154,7 @@ public class ScrapActivity extends AppCompatActivity {
 
                     List<ScrapResponseInfoEntity> schemas = response.body().getData();
 
-                    if (schemas == null && schemas.size() == 0) {
+                    if (schemas == null || schemas.size() == 0) {
                         hasMoreToLoad(false);
                         myScrap_recyclerView.setIsLoading(false);
                         progressBar.setVisibility(View.GONE);
@@ -159,10 +166,6 @@ public class ScrapActivity extends AppCompatActivity {
                     for (ScrapEntity scrapEntity : entities) {
                         loadCardNews(scrapEntity.getNewsId());
                     }
-//                    if (fetchCount == 0) {
-//                        progressBar.setVisibility(View.GONE);
-//                        myScrap_recyclerView.setIsLoading(false);
-//                    }
 
                 }
             }

@@ -13,7 +13,6 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener {
     private IMapReportCardPagerAdapter mAdapter;
     private float mLastOffset;
     private boolean mScalingEnabled;
-    private int currentPage;
 
     private OnPageSelectedCallback callback;
 
@@ -119,15 +118,6 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener {
 
     @Override
     public void onPageScrollStateChanged(int state) {
-
-//        switch (state) {
-//            case ViewPager.SCROLL_STATE_SETTLING:
-//                Log.e("호출확인", "SCROLL_STATE_SETTLING");
-//                break;
-//            case ViewPager.SCROLL_STATE_IDLE:
-//                Log.e("호출확인", "SCROLL_STATE_IDLE");
-//                break;
-//        }
 
         if (state == ViewPager.SCROLL_STATE_IDLE
                 && callback.getCardItemCount()-1 == mViewPager.getCurrentItem()) {

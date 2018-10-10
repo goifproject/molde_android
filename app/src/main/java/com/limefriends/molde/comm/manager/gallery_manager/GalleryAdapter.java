@@ -48,6 +48,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.PhotoVie
         return mSelectPhotoList;
     }
 
+
     /**
      * 아이템 선택시 호출되는 리스너
      */
@@ -67,8 +68,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.PhotoVie
         this.itemLayout = itemLayout;
 
     }
-
-
 
 
     /**

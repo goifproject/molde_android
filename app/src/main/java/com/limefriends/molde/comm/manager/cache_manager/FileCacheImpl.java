@@ -8,7 +8,7 @@ public class FileCacheImpl implements FileCache {
 
     private CacheStorage cacheStorage;
 
-    public FileCacheImpl(File cacheDir, int maxKBSizes) {
+    FileCacheImpl(File cacheDir, int maxKBSizes) {
         long maxBytesSize = maxKBSizes <= 0 ? 0 : maxKBSizes * 1024;
         cacheStorage = new CacheStorage(cacheDir, maxBytesSize);
     }

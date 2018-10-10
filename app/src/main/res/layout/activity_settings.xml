@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?><!-- TODO 폰트 사이즈, 크기, 색상 공통으로 적용할 것 --><!-- TODO 각종 색깔 공통으로 관리할 것 - 배경 등 --><!-- TODO 아이콘 크기 공통 조절, 위젯 스타일 적용 -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBG">
 
-    <RelativeLayout
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/settings_container"
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorBG">
@@ -93,9 +93,9 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_below="@+id/mypage_version_answer"
+            android:layout_marginTop="1dp"
             android:background="@color/colorWhite"
             android:gravity="center_vertical"
-            android:layout_marginTop="1dp"
             android:paddingLeft="16dp"
             android:text="@string/producer"
             android:textColor="#4a4a4a"
@@ -216,17 +216,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/mypage_provisions"
-            android:visibility="visible"
             android:background="#f6f6f6"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="visible">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="8dp"
                 android:paddingBottom="4dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
                 android:text="@string/terms_content_1"
                 android:textColor="#000000"
                 android:textSize="14sp" />
@@ -234,10 +234,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="8dp"
                 android:paddingBottom="4dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
                 android:text="@string/terms_content_2"
                 android:textColor="#000000"
                 android:textSize="14sp" />
@@ -245,23 +245,23 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="4dp"
-                android:text="@string/terms_content_3"
                 android:breakStrategy="balanced"
                 android:hyphenationFrequency="full"
+                android:paddingBottom="4dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
+                android:text="@string/terms_content_3"
                 android:textColor="#000000"
                 android:textSize="14sp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="8dp"
                 android:paddingBottom="4dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
                 android:text="@string/terms_content_4"
                 android:textColor="#000000"
                 android:textSize="14sp" />
@@ -269,10 +269,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="8dp"
                 android:paddingBottom="4dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
                 android:text="@string/terms_content_5"
                 android:textColor="#000000"
                 android:textSize="14sp" />
@@ -280,10 +280,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="8dp"
                 android:paddingBottom="4dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
                 android:text="@string/terms_content_6"
                 android:textColor="#000000"
                 android:textSize="14sp" />
@@ -291,10 +291,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="8dp"
                 android:paddingBottom="4dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
                 android:text="@string/terms_content_7"
                 android:textColor="#000000"
                 android:textSize="14sp" />
@@ -302,10 +302,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="8dp"
                 android:paddingBottom="4dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
                 android:text="@string/terms_content_8"
                 android:textColor="#000000"
                 android:textSize="14sp" />
@@ -313,10 +313,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="8dp"
                 android:paddingBottom="4dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
                 android:text="@string/terms_content_9"
                 android:textColor="#000000"
                 android:textSize="14sp" />
@@ -324,10 +324,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="8dp"
                 android:paddingBottom="4dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
                 android:text="@string/terms_content_10"
                 android:textColor="#000000"
                 android:textSize="14sp" />
@@ -335,10 +335,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="8dp"
                 android:paddingBottom="4dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
                 android:text="@string/terms_content_11"
                 android:textColor="#000000"
                 android:textSize="14sp" />
@@ -346,10 +346,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="8dp"
                 android:paddingBottom="4dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
                 android:text="@string/terms_content_12"
                 android:textColor="#000000"
                 android:textSize="14sp" />
@@ -357,10 +357,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="8dp"
                 android:paddingBottom="4dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
                 android:text="@string/terms_content_13"
                 android:textColor="#000000"
                 android:textSize="14sp" />
@@ -368,10 +368,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="8dp"
                 android:paddingBottom="4dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
                 android:text="@string/terms_content_14"
                 android:textColor="#000000"
                 android:textSize="14sp" />
@@ -379,10 +379,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="8dp"
                 android:paddingBottom="4dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
                 android:text="@string/terms_content_15"
                 android:textColor="#000000"
                 android:textSize="14sp" />
@@ -390,10 +390,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="8dp"
                 android:paddingBottom="4dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
                 android:text="@string/terms_content_16"
                 android:textColor="#000000"
                 android:textSize="14sp" />
@@ -401,10 +401,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="8dp"
                 android:paddingBottom="4dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
                 android:text="@string/terms_content_17"
                 android:textColor="#000000"
                 android:textSize="14sp" />
@@ -412,10 +412,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="8dp"
                 android:paddingBottom="4dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
                 android:text="@string/terms_content_18"
                 android:textColor="#000000"
                 android:textSize="14sp" />
@@ -440,10 +440,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/mypage_license"
+            android:autoLink="web"
             android:background="#f6f6f6"
             android:paddingHorizontal="17dp"
             android:paddingVertical="14dp"
-            android:autoLink="web"
             android:text="@string/opensource_licence_content"
             android:textColor="#000000"
             android:textSize="14sp"

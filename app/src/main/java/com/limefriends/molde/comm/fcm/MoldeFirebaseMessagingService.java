@@ -10,11 +10,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.firebase.jobdispatcher.Job;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.limefriends.molde.R;
@@ -22,14 +25,15 @@ import com.limefriends.molde.comm.utils.PreferenceUtil;
 import com.limefriends.molde.ui.MoldeMainActivity;
 import com.limefriends.molde.ui.feed.FeedDetailActivity;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static com.limefriends.molde.comm.Constant.Common.ALLOW_PUSH;
 import static com.limefriends.molde.comm.Constant.Common.DISALLOW_PUSH;
+import static com.limefriends.molde.comm.Constant.Common.PREF_KEY_FCM_TOKEN;
 import static com.limefriends.molde.comm.Constant.Common.PREF_KEY_FEED_CHANGE_PUSH;
 import static com.limefriends.molde.comm.Constant.Common.PREF_KEY_NEW_FEED_PUSH;
 import static com.limefriends.molde.comm.Constant.Feed.EXTRA_KEY_FEED_ID;
-import static com.limefriends.molde.comm.Constant.MoldeMain.FROM_NOTIFICATION;
 
 // TODO 시간 기다리는 문제
 // TODO 오레오부터 바뀐 채널 문제
@@ -37,28 +41,18 @@ public class MoldeFirebaseMessagingService extends FirebaseMessagingService {
 
     public static final int TYPE_REPORT_STATE_CHANGE = 1;
     public static final int TYPE_NEW_FEED = 0;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     /**
      * Called when message is received.
      */
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        // [START_EXCLUDE]
-        // FCM에서 메시지를 전달할 경우 앱이 백그라운드에 있을 때 안드로이드 OS 에서 바로 FCM을 실행시켜
-        // 프로그래밍 해 놓은 코드를 실행시키지 못하고 계속 default 값으로만 가능하다
-        // 앱 서버(임시로 포스트맨)에서 firebase 서버에 POST로
-        // 헤더 : 권한 설정, 토큰 값
-        // 바디 : 페이로드(4kb)
-        // 를 넘겨주면 포어그라운드, 백그라운드 모두 아래 코드가 실행된다.
 
-        // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
-            Log.e("토큰호출", "Message data payload: "+remoteMessage.getData());
             Map<String, String> data = remoteMessage.getData();
             int type = Integer.parseInt(data.get("type"));
             int feedId = Integer.parseInt(data.get("feedId"));
-            // String title = data.get("title");
-            // String message = data.get("content");
 
             if (type == TYPE_NEW_FEED) {
                 int push = PreferenceUtil.getInt(this, PREF_KEY_NEW_FEED_PUSH, DISALLOW_PUSH);
@@ -70,19 +64,8 @@ public class MoldeFirebaseMessagingService extends FirebaseMessagingService {
                 if (push == ALLOW_PUSH)
                 sendNotification(type, feedId, "신고 상태 변화", "신고한 피드 상태가 변경되었습니다.");
             }
-
-
-
-//            if (/* Check if data needs to be processed by long running job */ true) {
-//                // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
-//                scheduleJob();
-//            } else {
-//                // Handle message within 10 seconds
-//                handleNow();
-//            }
         }
     }
-
 
     /**
      * Called if InstanceID token is updated. This may occur if the security of
@@ -93,27 +76,50 @@ public class MoldeFirebaseMessagingService extends FirebaseMessagingService {
     public void onNewToken(String token) {
         sendRegistrationToServer(token);
     }
-    // [END on_new_token]
 
     /**
-     * Schedule a job using FirebaseJobDispatcher.
+     * TODO Schedule a job using FirebaseJobDispatcher.
      */
     private void scheduleJob() {
-        // [START dispatch_job]
+
         FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
         Job myJob = dispatcher.newJobBuilder()
                 .setService(MoldeJobService.class)
                 .setTag("my-job-tag")
                 .build();
         dispatcher.schedule(myJob);
-        // [END dispatch_job]
     }
 
     /**
      * Persist token to third-party servers.
      */
-    private void sendRegistrationToServer(String token) {
-        // TODO 파이어베이스에 올려놓을 것
+    private void sendRegistrationToServer(final String token) {
+        String uId = FirebaseAuth.getInstance().getUid();
+
+        if (uId == null) return;
+
+        db.collection("users").document(uId).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                        String uuId = (String) documentSnapshot.get("uId");
+                        long authority = (long) documentSnapshot.get("authority");
+
+                        Map<String, Object> userMap = new HashMap<>();
+                        userMap.put("uId", uuId);
+                        userMap.put("token", token);
+                        userMap.put("authority", authority);
+
+                        PreferenceUtil.putString(MoldeFirebaseMessagingService.this, PREF_KEY_FCM_TOKEN, token);
+
+                        refreshFcmToken(uuId, userMap);
+                    }
+                });
+    }
+
+    private void refreshFcmToken(String uId, Map<String, Object> userMap) {
+        db.collection("users").document(uId).set(userMap);
     }
 
     /**
@@ -121,14 +127,10 @@ public class MoldeFirebaseMessagingService extends FirebaseMessagingService {
      */
     private void sendNotification(int type, int feedId, String title, String message) {
         NotificationCompat.Builder mBuilder = createNotification(title, message);
-//        if (type == TYPE_NEW_FEED) {
-//            mBuilder.setContentIntent(createGoMainPendingIntent());
-//        }
-//        else if (type == TYPE_REPORT_STATE_CHANGE) {
             mBuilder.setContentIntent(createGoFeedPendingIntent(feedId));
-//        }
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            TODO Notification Channel
 //            NotificationChannel channel = new NotificationChannel(channelId,
 //                    "Channel human readable title",
 //                    NotificationManager.IMPORTANCE_DEFAULT);
@@ -162,14 +164,6 @@ public class MoldeFirebaseMessagingService extends FirebaseMessagingService {
         stackBuilder.addParentStack(MoldeMainActivity.class);
         stackBuilder.addNextIntent(resultIntent);
         return stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
-    private PendingIntent createGoMainPendingIntent() {
-        Intent intent = new Intent(this, MoldeMainActivity.class);
-        intent.putExtra("origin", FROM_NOTIFICATION);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        return PendingIntent.getActivity(
-                this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
     }
 
 }

@@ -9,9 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.limefriends.molde.comm.custom.addOnListview.AddOnScrollRecyclerView;
 import com.limefriends.molde.comm.custom.addOnListview.OnLoadMoreListener;
+import com.limefriends.molde.comm.utils.NetworkUtil;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.news.CardNewsEntity;
 import com.limefriends.molde.entity.news.CardNewsResponseInfoEntity;
@@ -146,6 +148,11 @@ public class CardNewsFragment extends Fragment {
 
     private void loadMagazine(int perPage, int page) {
 
+        if (!NetworkUtil.isConnected(getContext())) {
+            Toast.makeText(getContext(), "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         // 1. 더 이상 불러올 데이터가 없는지 확인
         if (!hasMoreToLoad) return;
 
@@ -162,32 +169,7 @@ public class CardNewsFragment extends Fragment {
                                    Response<CardNewsResponseInfoEntityList> response) {
                 if (response.isSuccessful()) {
 
-                    Log.e("호출확인", response.body().toString());
-
-                    CardNewsResponseInfoEntityList schema = response.body();
-
-                    if (schema == null) {
-                        Log.e("호출확인", "schema == null");
-                    } else {
-                        Log.e("호출확인", "schema != null");
-                    }
-
-                    List<CardNewsResponseInfoEntity> schemasTemp = schema.getData();
-
-                    if (schemasTemp == null) {
-                        Log.e("호출확인", "schemasTemp == null");
-                    } else {
-                        Log.e("호출확인", "schemasTemp != null");
-                        Log.e("호출확인", schemasTemp.size()+"");
-                    }
-
                     List<CardNewsResponseInfoEntity> schemas = response.body().getData();
-
-                    if (schemas == null) {
-                        Log.e("호출확인", "schemas == null");
-                    } else {
-                        Log.e("호출확인", "schemas != null");
-                    }
 
                     if (schemas == null || schemas.size() == 0) {
                         cardnews_recyclerView.setIsLoading(false);
@@ -212,7 +194,7 @@ public class CardNewsFragment extends Fragment {
 
             @Override
             public void onFailure(Call<CardNewsResponseInfoEntityList> call, Throwable t) {
-                Log.e("매거진 실패", t.getMessage());
+
             }
         });
     }

@@ -20,7 +20,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,7 +31,8 @@ import com.limefriends.molde.R;
 import com.limefriends.molde.comm.Constant;
 import com.limefriends.molde.comm.MoldeApplication;
 import com.limefriends.molde.comm.manager.camera_manager.MoldeReportCameraActivity;
-import com.limefriends.molde.comm.utils.DateUitl;
+import com.limefriends.molde.comm.utils.DateUtil;
+import com.limefriends.molde.comm.utils.NetworkUtil;
 import com.limefriends.molde.comm.utils.PreferenceUtil;
 import com.limefriends.molde.comm.utils.StringUtil;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
@@ -43,6 +43,7 @@ import com.limefriends.molde.entity.feed.FeedResponseInfoEntityList;
 import com.limefriends.molde.entity.response.Result;
 import com.limefriends.molde.remote.MoldeNetwork;
 import com.limefriends.molde.remote.MoldeRestfulService;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,11 +65,7 @@ import static com.limefriends.molde.comm.Constant.Feed.*;
 import static com.limefriends.molde.comm.Constant.ReportState.*;
 import static com.limefriends.molde.comm.manager.camera_manager.MoldeReportCameraActivity.TAKE_PICTURE_FOR_ADD_IMAGE;
 
-// TODO "lkj" 변경할 것
-// TODO auth Application 에서 가져다 쓸 것
 public class FeedDetailActivity extends AppCompatActivity implements View.OnClickListener {
-
-    public static final int RESPONSE_SUCCESS = 1;
 
     @BindView(R.id.feed_detail_container)
     LinearLayout feed_detail_container;
@@ -83,8 +80,6 @@ public class FeedDetailActivity extends AppCompatActivity implements View.OnClic
     // 신고 취소
     @BindView(R.id.mypage_detail_report_cancel_button)
     Button mypage_detail_report_cancel_button;
-    //@BindView(R.id.myfeed_progress)
-    //ProgressBar myfeed_progress;
 
     // 신고 상태 이미지
     @BindView(R.id.report_detail_normal)
@@ -372,7 +367,6 @@ public class FeedDetailActivity extends AppCompatActivity implements View.OnClic
     private void setImagePager() {
         feedImageAdapter = new FeedImageAdapter(getApplicationContext());
         mypage_detail_report_image_pager.setAdapter(feedImageAdapter);
-        // mypage_detail_report_image_indicator.setupWithViewPager(mypage_detail_report_image_pager);
     }
 
     @Override
@@ -485,22 +479,14 @@ public class FeedDetailActivity extends AppCompatActivity implements View.OnClic
             case ACCEPTED:
                 siren_receiving_status.setVisibility(View.VISIBLE);
                 resultText = getText(R.string.report_message_accepted).toString();
-//                progress_checkbox_admin_accepted.setChecked(true);
                 break;
             case FOUND:
                 siren_found_status.setVisibility(View.VISIBLE);
                 resultText = getText(R.string.report_message_found).toString();
-//                progress_checkbox_admin_accepted.setEnabled(false);
-//                progress_checkbox_admin_found.setEnabled(false);
-//                progress_checkbox_admin_found.setChecked(true);
                 break;
             case CLEAN:
                 siren_clean_status.setVisibility(View.VISIBLE);
                 resultText = getText(R.string.report_message_clean).toString();
-//                progress_checkbox_admin_accepted.setEnabled(false);
-//                progress_checkbox_admin_found.setEnabled(false);
-//                progress_checkbox_admin_clean.setEnabled(false);
-//                progress_checkbox_admin_clean.setChecked(true);
                 break;
             case DENIED:
                 resultText = getText(R.string.report_message_denied).toString();
@@ -513,15 +499,15 @@ public class FeedDetailActivity extends AppCompatActivity implements View.OnClic
         switch (state) {
             case RECEIVING:
                 myfeed_progress_receiving_date.setVisibility(View.VISIBLE);
-                myfeed_progress_receiving_date.setText(DateUitl.fromLongToDate2(date));
+                myfeed_progress_receiving_date.setText(DateUtil.fromLongToDate2(date));
                 break;
             case ACCEPTED:
                 myfeed_progress_accepted_date.setVisibility(View.VISIBLE);
-                myfeed_progress_accepted_date.setText(DateUitl.fromLongToDate2(date));
+                myfeed_progress_accepted_date.setText(DateUtil.fromLongToDate2(date));
                 break;
             case FOUND:
                 myfeed_progress_completed_date.setVisibility(View.VISIBLE);
-                myfeed_progress_completed_date.setText(DateUitl.fromLongToDate2(date));
+                myfeed_progress_completed_date.setText(DateUtil.fromLongToDate2(date));
                 break;
         }
     }
@@ -709,7 +695,14 @@ public class FeedDetailActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void loadReport(int reportId) {
+
+        if (!NetworkUtil.isConnected(this)) {
+            Toast.makeText(this, "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         Call<FeedResponseInfoEntityList> call = getFeedService().getFeedById(reportId);
+
         call.enqueue(new Callback<FeedResponseInfoEntityList>() {
             @Override
             public void onResponse(Call<FeedResponseInfoEntityList> call,
@@ -755,11 +748,14 @@ public class FeedDetailActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void deleteReport(int reportId) {
+
+        if (!NetworkUtil.isConnected(this)) {
+            Toast.makeText(this, "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         FirebaseAuth auth = ((MoldeApplication) getApplication()).getFireBaseAuth();
-//        if (auth == null || auth.getUid() == null) {
-//            snack(getText(R.string.require_login).toString());
-//            return;
-//        }
+
         String uId = auth.getCurrentUser().getUid();
 
         Call<Result> call = getFeedService().deleteFeed(uId, reportId);
@@ -784,7 +780,14 @@ public class FeedDetailActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void updateReport(int reportId, final int state) {
+
+        if (!NetworkUtil.isConnected(this)) {
+            Toast.makeText(this, "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         Call<Result> call = getFeedService().updateFeed(reportId, state);
+
         call.enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
@@ -814,6 +817,11 @@ public class FeedDetailActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void reportInspection() {
+
+        if (!NetworkUtil.isConnected(this)) {
+            Toast.makeText(this, "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         if (feedEntity.getRepState() != FOUND && progress_checkbox_admin_found.isChecked()) {
             List<MultipartBody.Part> imageMultiParts = new ArrayList<>();

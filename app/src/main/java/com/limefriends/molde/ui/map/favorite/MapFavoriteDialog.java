@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.Marker;
 import com.limefriends.molde.R;
+import com.limefriends.molde.comm.utils.NetworkUtil;
 import com.limefriends.molde.entity.response.Result;
 import com.limefriends.molde.remote.MoldeNetwork;
 import com.limefriends.molde.remote.MoldeRestfulService;
@@ -57,7 +58,6 @@ public class MapFavoriteDialog extends BottomSheetDialogFragment {
 
     public interface MoldeApplyMyFavoriteInfoCallback {
         void applyMyFavoriteInfo(String title, String info, Marker marker);
-        void setMyFavoriteActive(boolean active);
     }
 
     public void setCallback(MoldeApplyMyFavoriteInfoCallback moldeApplyMyFavoriteInfoCallback,
@@ -115,8 +115,6 @@ public class MapFavoriteDialog extends BottomSheetDialogFragment {
                 public void onClick(View v) {
                     my_favorite_content.setVisibility(View.GONE);
                     my_favorite_content_modify.setVisibility(View.VISIBLE);
-//                    my_favorite_modify_title.setText(my_favorite_marker_title.getText());
-//                    my_favorite_modify_info.setText(my_favorite_marker_info.getText());
                 }
             });
         }
@@ -125,10 +123,10 @@ public class MapFavoriteDialog extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
 
-                if (my_favorite_marker_title.getText().toString().equals("")
-                        || my_favorite_marker_info.getText().toString().equals("")
-                        || my_favorite_marker_info.getText().toString().equals(getText(R.string.marker_title_favorite).toString())
-                        || my_favorite_marker_info.getText().toString().equals(getText(R.string.marker_title_search_location).toString())) {
+                if (my_favorite_modify_title.getText().toString().equals("")
+                        || my_favorite_modify_info.getText().toString().equals("")
+                        || my_favorite_modify_title.getText().toString().equals(getText(R.string.marker_title_favorite).toString())
+                        || my_favorite_modify_title.getText().toString().equals(getText(R.string.marker_title_search_location).toString())) {
                     Toast.makeText(getContext(), "정보가 부족합니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -148,6 +146,11 @@ public class MapFavoriteDialog extends BottomSheetDialogFragment {
     }
 
     private void addToMyFavorite() {
+
+        if (!NetworkUtil.isConnected(getContext())) {
+            Toast.makeText(getContext(), "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         MoldeRestfulService.Favorite favoriteService
                 = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Favorite.class);

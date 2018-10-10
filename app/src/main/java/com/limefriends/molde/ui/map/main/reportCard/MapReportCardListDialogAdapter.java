@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.limefriends.molde.R;
-import com.limefriends.molde.comm.utils.DateUitl;
+import com.limefriends.molde.comm.utils.DateUtil;
 import com.limefriends.molde.entity.feed.FeedEntity;
 import com.limefriends.molde.ui.feed.FeedDetailActivity;
 
@@ -48,7 +48,7 @@ public class MapReportCardListDialogAdapter extends RecyclerView.Adapter<MapRepo
 
     @Override
     public void onBindViewHolder(ReportMapViewHolder viewHolder, int position) {
-        viewHolder.report_info_date.setText(DateUitl.fromLongToDate(feedList.get(position).getRepDate()));
+        viewHolder.report_info_date.setText(DateUtil.fromLongToDate(feedList.get(position).getRepDate()));
         viewHolder.report_info_address.setText(feedList.get(position).getRepAddr());
         viewHolder.report_info_detail_address.setText(feedList.get(position).getRepDetailAddr());
         if (feedList.get(0).getRepImg() != null && feedList.get(0).getRepImg().size() != 0) {

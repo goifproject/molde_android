@@ -6,15 +6,15 @@ import java.io.InputStream;
 
 public interface FileCache {
 
-    public FileEntry get(String key);
+    FileEntry get(String key);
 
-    public void put(String key, ByteProvider provider) throws IOException;
+    void put(String key, ByteProvider provider) throws IOException;
 
-    public void put(String key, InputStream is) throws IOException;
+    void put(String key, InputStream is) throws IOException;
 
-    public void put(String key, File sourceFile, boolean move) throws IOException;
+    void put(String key, File sourceFile, boolean move) throws IOException;
 
-    public void remove(String key);
+    void remove(String key);
 
-    public void clear();
+    void clear();
 }

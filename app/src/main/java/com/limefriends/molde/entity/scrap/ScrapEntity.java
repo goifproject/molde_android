@@ -1,9 +1,5 @@
 package com.limefriends.molde.entity.scrap;
 
-/**
- * Created by user on 2018-05-19.
- */
-
 public class ScrapEntity {
 
     private int scrapId;

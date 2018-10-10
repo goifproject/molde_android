@@ -8,3 +8,4 @@
 /captures
 .externalNativeBuild
 /src/main/res/values/secret
+/src/main/res/values/google_maps_api

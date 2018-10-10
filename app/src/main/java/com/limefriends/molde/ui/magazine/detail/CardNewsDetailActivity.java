@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
@@ -26,11 +27,13 @@ import com.facebook.share.widget.ShareDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.limefriends.molde.R;
 import com.limefriends.molde.comm.MoldeApplication;
+import com.limefriends.molde.comm.utils.NetworkUtil;
 import com.limefriends.molde.entity.FromSchemaToEntitiy;
 import com.limefriends.molde.entity.news.CardNewsEntity;
-import com.limefriends.molde.entity.news.CardNewsResponseInfoEntity;
 import com.limefriends.molde.entity.news.CardNewsResponseInfoEntityList;
 import com.limefriends.molde.entity.response.Result;
+import com.limefriends.molde.entity.scrap.ScrapResponseInfoEntity;
+import com.limefriends.molde.entity.scrap.ScrapResponseInfoEntityList;
 import com.limefriends.molde.remote.MoldeNetwork;
 import com.limefriends.molde.remote.MoldeRestfulService;
 import com.limefriends.molde.ui.magazine.comment.CardNewsCommentActivity;
@@ -46,8 +49,6 @@ import retrofit2.Response;
 import static com.limefriends.molde.comm.Constant.Common.EXTRA_KEY_ACTIVITY_NAME;
 import static com.limefriends.molde.comm.Constant.Scrap.INTENT_VALUE_SCRAP;
 
-// TODO "lkj" getUid()로 변경할 것 -> uId
-// TODO auth Application 에서 가져다 쓸 것
 public class CardNewsDetailActivity extends AppCompatActivity {
 
     @BindView(R.id.cardnews_detail_layout)
@@ -76,6 +77,7 @@ public class CardNewsDetailActivity extends AppCompatActivity {
     private String activityName;
     private boolean isLoading;
     private boolean isScrap;
+    private int cardNewsScrapId;
     private int cardNewsId;
 
     @Override
@@ -104,6 +106,7 @@ public class CardNewsDetailActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
+
         cardnews_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,6 +117,7 @@ public class CardNewsDetailActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         cardnews_scrap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,7 +129,7 @@ public class CardNewsDetailActivity extends AppCompatActivity {
                                 .setPositiveButton(getText(R.string.yes), new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        deleteFromScrap(cardNewsId, uId);
+                                        deleteFromScrap(cardNewsScrapId, uId);
                                     }
                                 })
                                 .setNegativeButton(getText(R.string.no), null)
@@ -156,15 +160,10 @@ public class CardNewsDetailActivity extends AppCompatActivity {
                         .setBitmap(bitmap)
                         .setUserGenerated(true)
                         .build();
-//                TODO 실제 데이터가 들어갈 때
-//                SharePhoto sharePhoto = new SharePhoto.Builder()
-//                        .setImageUrl(Uri.parse(mCardNewsEntity.getNewsImg().get(0).getUrl()))
-//                        .build();
 
                 ShareOpenGraphObject object = new ShareOpenGraphObject.Builder()
                         .putString("og:type", "article")
                         .putString("og:title", mCardNewsEntity.getDescription())
-                        //.putString("og:description", "테스트 내용")
                         .build();
                 ShareOpenGraphAction action = new ShareOpenGraphAction.Builder()
                         .setActionType("news.reads")
@@ -208,7 +207,14 @@ public class CardNewsDetailActivity extends AppCompatActivity {
     //-----
     // Network
     //-----
+
     private void setupData() {
+
+        if (!NetworkUtil.isConnected(this)) {
+            Toast.makeText(this, "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         activityName = getIntent().getStringExtra(EXTRA_KEY_ACTIVITY_NAME);
         cardNewsId = getIntent().getIntExtra("cardNewsId", 0);
         mFirebaseAuth = ((MoldeApplication) getApplication()).getFireBaseAuth();
@@ -218,7 +224,6 @@ public class CardNewsDetailActivity extends AppCompatActivity {
         } else {
             loadMyScrap(cardNewsId, "");
         }
-
     }
 
     private void loadCardNews(int cardNewsId) {
@@ -253,37 +258,54 @@ public class CardNewsDetailActivity extends AppCompatActivity {
     }
 
     private void loadMyScrap(int cardNewsId, String userId) {
+
         isLoading = true;
+
         MoldeRestfulService.Scrap scrapService
                 = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Scrap.class);
-        Call<Result> call = scrapService.getMyScrap(userId, cardNewsId);
-        call.enqueue(new Callback<Result>() {
+
+        Call<ScrapResponseInfoEntityList> call = scrapService.getMyScrap(userId, cardNewsId);
+
+        call.enqueue(new Callback<ScrapResponseInfoEntityList>() {
             @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
+            public void onResponse(Call<ScrapResponseInfoEntityList> call, Response<ScrapResponseInfoEntityList> response) {
                 if (response.isSuccessful()) {
-                    if (response.body().getResult() == 0) {
-                        cardnews_scrap.setImageResource(R.drawable.ic_news_scrap_off);
-                        isScrap = false;
-                    } else {
-                        cardnews_scrap.setImageResource(R.drawable.ic_news_scrap_on);
-                        isScrap = true;
+
+                    List<ScrapResponseInfoEntity> schemas =  response.body().getData();
+
+                    if (schemas != null) {
+                        if (schemas.size() == 0) {
+                            cardnews_scrap.setImageResource(R.drawable.ic_news_scrap_off);
+                            isScrap = false;
+                        } else {
+                            cardnews_scrap.setImageResource(R.drawable.ic_news_scrap_on);
+                            isScrap = true;
+                            cardNewsScrapId = schemas.get(0).getScrapId();
+                        }
                     }
                     isLoading = false;
                 }
             }
 
-
             @Override
-            public void onFailure(Call<Result> call, Throwable t) {
+            public void onFailure(Call<ScrapResponseInfoEntityList> call, Throwable t) {
 
             }
         });
     }
 
     private void addToMyScrap(int cardNewsId, String userId) {
+
+        if (!NetworkUtil.isConnected(this)) {
+            Toast.makeText(this, "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         MoldeRestfulService.Scrap scrapService
                 = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Scrap.class);
+
         Call<Result> call = scrapService.addToMyScrap(userId, cardNewsId);
+
         call.enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
@@ -304,10 +326,18 @@ public class CardNewsDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void deleteFromScrap(int cardNewsId, String userId) {
+    private void deleteFromScrap(int cardNewsScrapId, String userId) {
+
+        if (!NetworkUtil.isConnected(this)) {
+            Toast.makeText(this, "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         MoldeRestfulService.Scrap scrapService
                 = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Scrap.class);
-        Call<Result> call = scrapService.deleteMyScrap(userId, cardNewsId);
+
+        Call<Result> call = scrapService.deleteMyScrap(userId, cardNewsScrapId);
+
         call.enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {

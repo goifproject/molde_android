@@ -23,14 +23,10 @@ import static com.limefriends.molde.comm.Constant.Common.PREF_KEY_FIRESTORE_TOKE
 // TODO 로그인 매니저 설정해줘야 함
 public class MoldeApplication extends Application {
 
-    // public static final String BASE_URL = "http://13.209.64.183:7019";
-    // public static final String BASE_URL = "http://172.31.99.232:7019";
     private static final double DEFAULT_LAT = 37.5662952;
     private static final double DEFAULT_LNG = 126.97794509999994;
 
     private FirebaseAuth firebaseAuth;
-    private GoogleSignInClient ggClient;
-    private LoginManager fbLoginManager;
     private LatLng myLocation;
 
     @Override
@@ -43,18 +39,6 @@ public class MoldeApplication extends Application {
 
     public FirebaseAuth getFireBaseAuth() {
         return firebaseAuth;
-    }
-
-    public void setFireBaseAuth(FirebaseAuth auth) {
-        this.firebaseAuth = auth;
-    }
-
-    public GoogleSignInClient getGoogleClient() {
-        return ggClient;
-    }
-
-    public LoginManager getFireBaseLoginManager() {
-        return fbLoginManager;
     }
 
     public LatLng getCurrLocation() {
