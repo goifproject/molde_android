@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -37,6 +38,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.limefriends.molde.R;
+import com.limefriends.molde.comm.utils.NetworkUtil;
 import com.limefriends.molde.comm.utils.PreferenceUtil;
 
 import java.util.HashMap;
@@ -123,6 +125,11 @@ public class LoginActivity extends AppCompatActivity {
         login_google_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (!NetworkUtil.isConnected(LoginActivity.this)) {
+                    Toast.makeText(LoginActivity.this, "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+                }
+
                 // 로그인 하기 전에 클라이언트가 준비되어 있어야 함
                 googleSignIn();
             }
@@ -195,6 +202,14 @@ public class LoginActivity extends AppCompatActivity {
     private void configureFacebookSignIn() {
         facebookCallbackManager = CallbackManager.Factory.create();
         final LoginButton facebookLoginButton = findViewById(R.id.in_facebook_login_button);
+        facebookLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!NetworkUtil.isConnected(LoginActivity.this)) {
+                    Toast.makeText(LoginActivity.this, "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
         facebookLoginButton.setReadPermissions("email", "public_profile");
         facebookLoginButton.registerCallback(facebookCallbackManager,
                 new FacebookCallback<LoginResult>() {

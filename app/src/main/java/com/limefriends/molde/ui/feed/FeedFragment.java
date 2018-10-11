@@ -3,6 +3,7 @@ package com.limefriends.molde.ui.feed;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +55,8 @@ public class FeedFragment extends Fragment implements FeedAdapter.OnClickFeedIte
     private final int FIRST_PAGE = 0;
     private int currentPage = FIRST_PAGE;
     private boolean hasMoreToLoad = true;
-    private boolean isFirstOnCreateView = true;
+    private boolean isFirstCall = true;
+    private boolean isSecondCall = false;
     private String feedStandard = FEED_BY_DISTANCE;
 
     @Override
@@ -62,13 +64,15 @@ public class FeedFragment extends Fragment implements FeedAdapter.OnClickFeedIte
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_feed, container, false);
 
+        if (!isFirstCall) isSecondCall = true;
+
         setupViews(view);
 
         setupListener();
 
         setupFeedList();
 
-        if (isFirstOnCreateView) loadFeedData(feedStandard, PER_PAGE, currentPage);
+        if (isFirstCall) loadFeedData(feedStandard, PER_PAGE, currentPage);
 
         return view;
     }
@@ -95,17 +99,33 @@ public class FeedFragment extends Fragment implements FeedAdapter.OnClickFeedIte
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                // 체크가 최신순, 기본이 거리순
-                hasMoreToLoad(true);
-                currentPage = FIRST_PAGE;
-                feedAdapter.clear();
                 if (isChecked) {
+
                     feed_sort_toggle.setBackgroundDrawable(
                             getResources().getDrawable(R.drawable.ic_feed_toggle_on));
+
+                    if (isSecondCall) return;
+
+                    hasMoreToLoad(true);
+
+                    currentPage = FIRST_PAGE;
+
+                    feedAdapter.clear();
+
                     loadFeedData(FEED_BY_LAST, PER_PAGE, currentPage);
                 } else {
+
                     feed_sort_toggle.setBackgroundDrawable(
                             getResources().getDrawable(R.drawable.ic_feed_toggle_off));
+
+                    isSecondCall = false;
+
+                    hasMoreToLoad(true);
+
+                    currentPage = FIRST_PAGE;
+
+                    feedAdapter.clear();
+
                     loadFeedData(FEED_BY_DISTANCE, PER_PAGE, currentPage);
                 }
             }
@@ -172,6 +192,8 @@ public class FeedFragment extends Fragment implements FeedAdapter.OnClickFeedIte
 
                     feed_list.setIsLoading(false);
 
+                    isFirstCall = false;
+
                     if (schemas == null || schemas.size() == 0) {
                         hasMoreToLoad(false);
                         return;
@@ -216,6 +238,8 @@ public class FeedFragment extends Fragment implements FeedAdapter.OnClickFeedIte
 
                     List<FeedResponseInfoEntity> schemas = response.body().getData();
 
+                    isFirstCall = false;
+
                     if (schemas == null || schemas.size() == 0) {
                         hasMoreToLoad(false);
                         return;
@@ -258,6 +282,5 @@ public class FeedFragment extends Fragment implements FeedAdapter.OnClickFeedIte
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        isFirstOnCreateView = false;
     }
 }

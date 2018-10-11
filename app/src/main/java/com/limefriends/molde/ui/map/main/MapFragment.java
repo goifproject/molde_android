@@ -162,9 +162,9 @@ public class MapFragment extends Fragment implements
     private int currentPage = FIRST_PAGE;
     private int reportCardPosition = 0;
     private int currentSafehousePage = FIRST_PAGE;
-    private int PER_PAGE_10 = 10;
-    private int PER_PAGE_20 = 20;
-    private int PER_PAGE_30 = 20;
+    private static final int PER_PAGE_10 = 10;
+    private static final int PER_PAGE_20 = 20;
+    private static final int PER_PAGE_30 = 20;
     private double lat = 0.0;
     private double lng = 0.0;
     private boolean isFirst = true;

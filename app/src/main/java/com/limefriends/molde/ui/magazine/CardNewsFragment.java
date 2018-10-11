@@ -171,6 +171,8 @@ public class CardNewsFragment extends Fragment {
 
                     List<CardNewsResponseInfoEntity> schemas = response.body().getData();
 
+                    isFirstOnCreateView = false;
+
                     if (schemas == null || schemas.size() == 0) {
                         cardnews_recyclerView.setIsLoading(false);
                         hasMoreToLoad(false);
@@ -211,7 +213,6 @@ public class CardNewsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        isFirstOnCreateView = false;
     }
 
 
