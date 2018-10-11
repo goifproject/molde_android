@@ -22,16 +22,10 @@ import static com.limefriends.molde.comm.Constant.Authority.*;
 
 public class MoldeSplashActivity extends AppCompatActivity {
 
-    @BindView(R.id.molde_splash)
-    ImageView molde_splash_img;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        ButterKnife.bind(this);
-        GlideDrawableImageViewTarget gifSplashImg = new GlideDrawableImageViewTarget(molde_splash_img);
-        Glide.with(this).load(R.drawable.molde_splash).into(gifSplashImg);
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -62,7 +56,7 @@ public class MoldeSplashActivity extends AppCompatActivity {
                     finish();
                 }
             }
-        }, 1500);
+        }, 1000);
 
     }
 }
