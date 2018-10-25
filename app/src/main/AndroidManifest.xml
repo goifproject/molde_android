@@ -15,7 +15,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".comm.MoldeApplication"
+        android:name=".common.MoldeApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -23,7 +23,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true">
         <activity
-            android:name=".ui.MoldeSplashActivity"
+            android:name=".screen.main.MoldeSplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme">
             <intent-filter>
@@ -33,97 +33,97 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.tutorial.TutorialActivity"
+            android:name=".screen.tutorial.TutorialActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".ui.tutorial.SubTutorialActivity"
+            android:name=".screen.tutorial.SubTutorialActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".ui.MoldeMainActivity"
+            android:name=".screen.main.MoldeMainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <!-- 지도 관련 -->
         <activity
-            android:name=".ui.map.search.SearchMapInfoActivity"
+            android:name=".screen.map.search.SearchMapInfoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".ui.map.report.ReportActivity"
+            android:name=".screen.map.report.ReportActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".ui.map.favorite.MapFavoriteActivity"
+            android:name=".screen.map.favorite.MapFavoriteActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".comm.manager.camera_manager.MoldeReportCameraActivity"
+            android:name=".common.manager.camera_manager.MoldeReportCameraActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".comm.manager.gallery_manager.MoldeReportGalleryActivity"
+            android:name=".common.manager.gallery_manager.MoldeReportGalleryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".comm.manager.camera_manager.MoldeReportCheckImageActivity"
+            android:name=".common.manager.camera_manager.MoldeReportCheckImageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
 
         <!-- 매거진 관련 -->
         <activity
-            android:name=".ui.magazine.info.RecentMolcaInfoActivity"
+            android:name=".screen.magazine.info.RecentMolcaInfoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.magazine.info.HowToDetectActivity"
+            android:name=".screen.magazine.info.HowToDetectActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.magazine.info.HowToRespondActivity"
+            android:name=".screen.magazine.info.HowToRespondActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.magazine.detail.CardNewsDetailActivity"
+            android:name=".screen.magazine.detail.CardNewsDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".ui.magazine.comment.CardNewsCommentActivity"
+            android:name=".screen.magazine.comment.CardNewsCommentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
 
         <!-- 마이페이지 관련 -->
         <activity
-            android:name=".ui.mypage.settings.SettingsActivity"
+            android:name=".screen.mypage.settings.SettingsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.mypage.inquiry.InquiryActivity"
+            android:name=".screen.mypage.inquiry.InquiryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui.mypage.faq.FaQActivity"
+            android:name=".screen.mypage.faq.FaQActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.mypage.report.MyFeedActivity"
+            android:name=".screen.mypage.report.MyFeedActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.feed.FeedDetailActivity"
+            android:name=".screen.feed.FeedDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.mypage.comment.MyCommentActivity"
+            android:name=".screen.mypage.comment.MyCommentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.mypage.scrap.ScrapActivity"
+            android:name=".screen.mypage.scrap.ScrapActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.mypage.login.LoginActivity"
+            android:name=".screen.mypage.login.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
 
@@ -164,20 +164,20 @@
         </activity>
 
         <!-- Firebase Cloud Messaging -->
-        <service android:name=".comm.fcm.MoldeFirebaseMessagingService">
+        <service android:name=".common.fcm.MoldeFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
-        <service android:name=".comm.fcm.MoldeFirebaseInstanceIDService">
+        <service android:name=".common.fcm.MoldeFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 
         <service
-            android:name=".comm.fcm.MoldeJobService"
+            android:name=".common.fcm.MoldeJobService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />

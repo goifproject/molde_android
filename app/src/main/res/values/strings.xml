@@ -52,7 +52,7 @@
     <!-- MyPage - Inquiry-->
     <string name="inquire">문의하기</string>
     <string name="snackbar_invalid_email">유효한 이메일이 아닙니다</string>
-    <string name="snackbar_inquire_accepted">문의가 접수됬습니다. 감사합니다</string>
+    <string name="snackbar_inquire_accepted">문의가 접수됐습니다. 감사합니다</string>
     <string name="snackbar_content_absent">내용이 없습니다.</string>
     <string name="email_hint"><font size="14">이메일 입력</font></string>
 
@@ -80,6 +80,8 @@
     <string name="dialog_msg_delete_comment">댓글을 상태를 변경하시겠습니까?</string>
     <string name="delete_comment">댓글 삭제</string>
     <string name="refuse_report">신고 거절</string>
+    <string name="dialog_report_comment_title">댓글 신고</string>
+    <string name="dialog_report_comment_msg">댓글을 신고하시겠습니까?</string>
 
     <!-- MyPage - Main -->
 

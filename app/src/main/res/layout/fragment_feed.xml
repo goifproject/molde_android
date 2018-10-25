@@ -48,7 +48,7 @@
         android:textOn="@string/feedSortCategory"
         android:textSize="10sp" />
 
-    <com.limefriends.molde.comm.custom.addOnListview.AddOnScrollRecyclerView
+    <com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView
         android:id="@+id/feed_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
