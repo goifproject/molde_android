@@ -25,15 +25,23 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
-public class ReportedCommentAdapter extends RecyclerView.Adapter<ReportedCommentAdapter.ViewHolder> {
+public class ReportedCommentAdapter
+        extends RecyclerView.Adapter<ReportedCommentAdapter.ViewHolder> {
+
+    public interface OnCommentClickListener {
+        void onSirenClicked(int position, int commentId);
+
+        void onCommentClicked(int cardNewsId);
+    }
 
     private Context context;
     private List<CommentEntity> dataList = new ArrayList<>();
-    private MyCommentActivity view;
 
-    ReportedCommentAdapter(Context context, MyCommentActivity view) {
+    private OnCommentClickListener mOnCommentClickListener;
+
+    ReportedCommentAdapter(Context context, OnCommentClickListener onCommentClickListener) {
         this.context = context;
-        this.view = view;
+        this.mOnCommentClickListener = onCommentClickListener;
     }
 
     public void addData(List<CommentEntity> data) {
@@ -100,19 +108,11 @@ public class ReportedCommentAdapter extends RecyclerView.Adapter<ReportedComment
 
         private void setupListener() {
             img_comment_siren
-                    .setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            view.showDeleteCommentDialog(position, commentId);
-                        }
-                    });
-            cardnews_comment_container.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), CardNewsDetailActivity.class);
-                    intent.putExtra("cardNewsId", cardNewsId);
-                }
-            });
+                    .setOnCheckedChangeListener((buttonView, isChecked)
+                            -> mOnCommentClickListener.onSirenClicked(position, commentId));
+
+            cardnews_comment_container.setOnClickListener(v
+                    -> mOnCommentClickListener.onCommentClicked(cardNewsId));
         }
 
     }

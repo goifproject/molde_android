@@ -21,7 +21,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.limefriends.molde.common.MoldeApplication;
 import com.limefriends.molde.R;
+import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.common.utils.PreferenceUtil;
+import com.limefriends.molde.screen.common.controller.BaseFragment;
+import com.limefriends.molde.screen.common.dialog.DialogFactory;
+import com.limefriends.molde.screen.common.dialog.DialogManager;
+import com.limefriends.molde.screen.common.dialog.view.PromptDialog;
 import com.limefriends.molde.screen.mypage.comment.MyCommentActivity;
 import com.limefriends.molde.screen.mypage.inquiry.InquiryActivity;
 import com.limefriends.molde.screen.mypage.login.LoginActivity;
@@ -35,9 +40,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.limefriends.molde.common.Constant.MyPage.*;
 
-public class MyPageFragment extends Fragment {
+public class MyPageFragment extends BaseFragment {
 
     public static final String SIGNIN_TYPE = "signinType";
+    public static final String SIGN_OUT_DIALOG = "SIGN_OUT_DIALOG";
 
     @BindView(R.id.mypage_profile_image)
     CircleImageView mypage_profile_image;
@@ -60,9 +66,14 @@ public class MyPageFragment extends Fragment {
 
     private FirebaseAuth mAuth;
 
+    @Service private DialogFactory mDialogFactory;
+    @Service private DialogManager mDialogManager;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        getInjector().inject(this);
 
         View view = inflater.inflate(R.layout.fragment_mypage, container, false);
 
@@ -168,36 +179,44 @@ public class MyPageFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (mypage_log_in_out_button.getText().equals(getText(R.string.signout))) {
-                    AlertDialog dialog = new AlertDialog.Builder(getContext(), R.style.DialogTheme)
-                            .setMessage(getText(R.string.dialog_msg_signout))
-                            .setPositiveButton(Html.fromHtml("<font color='#000000'>예</font>"), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    int type = PreferenceUtil.getInt(getContext(), SIGNIN_TYPE, 0);
-                                    if (type == CONNECT_GOOGLE_AUTH_CODE) {
-                                        Log.e("호출확인", "CONNECT_GOOGLE_AUTH_CODE");
-                                        ((MoldeApplication) getActivity().getApplication()).getFireBaseAuth().signOut();
-                                    }
-                                    else if (type == CONNECT_FACEBOOK_AUTH_CODE) {
-                                        Log.e("호출확인", "CONNECT_FACEBOOK_AUTH_CODE");
-                                        ((MoldeApplication) getActivity().getApplication()).getFireBaseAuth().signOut();
-                                        LoginManager.getInstance().logOut();
-                                    }
-                                    mypage_log_in_out_button.setText(getText(R.string.signin));
-                                    mypage_profile_name.setText("Guest");
-                                    mypage_profile_image.setImageResource(R.drawable.ic_profile);
-                                    snackBar(getText(R.string.snackbar_signed_out).toString());
-                                }
-                            })
-                            .setNegativeButton(Html.fromHtml("<font color='#000000'>아니오</font>"), null)
-                            .create();
-                    dialog.show();
+                    showAskLogoutDialog();
                 } else {
                     Intent intent = new Intent(getContext(), LoginActivity.class);
                     startActivityForResult(intent, RC_SIGN_IN);
                 }
             }
         });
+    }
+
+    private void showAskLogoutDialog() {
+        PromptDialog promptDialog = mDialogFactory.newPromptDialog(
+                getText(R.string.dialog_msg_signout).toString(),
+                "",
+                getText(R.string.yes).toString(),
+                getText(R.string.no).toString());
+        promptDialog.registerListener(new PromptDialog.PromptDialogDismissListener() {
+            @Override
+            public void onPositiveButtonClicked() {
+                int type = PreferenceUtil.getInt(getContext(), SIGNIN_TYPE, 0);
+                if (type == CONNECT_GOOGLE_AUTH_CODE) {
+                    ((MoldeApplication) getActivity().getApplication()).getFireBaseAuth().signOut();
+                }
+                else if (type == CONNECT_FACEBOOK_AUTH_CODE) {
+                    ((MoldeApplication) getActivity().getApplication()).getFireBaseAuth().signOut();
+                    LoginManager.getInstance().logOut();
+                }
+                mypage_log_in_out_button.setText(getText(R.string.signin));
+                mypage_profile_name.setText("Guest");
+                mypage_profile_image.setImageResource(R.drawable.ic_profile);
+                snackBar(getText(R.string.snackbar_signed_out).toString());
+            }
+
+            @Override
+            public void onNegativeButtonClicked() {
+
+            }
+        });
+        mDialogManager.showRetainedDialogWithId(promptDialog, SIGN_OUT_DIALOG);
     }
 
     @Override

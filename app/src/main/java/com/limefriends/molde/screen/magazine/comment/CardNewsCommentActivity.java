@@ -1,6 +1,8 @@
 package com.limefriends.molde.screen.magazine.comment;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,7 +20,7 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.limefriends.molde.R;
-import com.limefriends.molde.common.DI.Service;
+import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.common.MoldeApplication;
 import com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView;
 import com.limefriends.molde.screen.common.addOnListview.OnLoadMoreListener;
@@ -27,6 +29,9 @@ import com.limefriends.molde.model.entity.comment.CommentEntity;
 import com.limefriends.molde.model.repository.Repository;
 import com.limefriends.molde.networking.service.MoldeRestfulService;
 import com.limefriends.molde.screen.common.controller.BaseActivity;
+import com.limefriends.molde.screen.common.dialog.DialogFactory;
+import com.limefriends.molde.screen.common.dialog.DialogManager;
+import com.limefriends.molde.screen.common.dialog.view.PromptDialog;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 
 import java.util.ArrayList;
@@ -37,7 +42,10 @@ import butterknife.ButterKnife;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
 
-public class CardNewsCommentActivity extends BaseActivity {
+public class CardNewsCommentActivity extends BaseActivity
+        implements CardNewsCommentRecyclerAdapter.OnReportCommentClickListener {
+
+    public static final String REPORT_COMMENT_DIALOG = "REPORT_COMMENT_DIALOG";
 
     public static void start(Context context, int cardNewsId, String description) {
         Intent intent = new Intent();
@@ -64,6 +72,8 @@ public class CardNewsCommentActivity extends BaseActivity {
 
     @Service private Repository.Comment mCommentRepository;
     @Service private ToastHelper mToastHelper;
+    @Service private DialogFactory mDialogFactory;
+    @Service private DialogManager mDialogManager;
 
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
@@ -318,5 +328,24 @@ public class CardNewsCommentActivity extends BaseActivity {
         currentPage = 0;
     }
 
+    @Override
+    public void onReportCommentClicked(int commentId) {
+        PromptDialog promptDialog = mDialogFactory.newPromptDialog(
+                getText(R.string.dialog_report_comment_msg).toString(),
+                "",
+                getText(R.string.yes).toString(),
+                getText(R.string.no).toString());
+        promptDialog.registerListener(new PromptDialog.PromptDialogDismissListener() {
+            @Override
+            public void onPositiveButtonClicked() {
+                reportComment(commentId);
+            }
 
+            @Override
+            public void onNegativeButtonClicked() {
+
+            }
+        });
+        mDialogManager.showRetainedDialogWithId(promptDialog, REPORT_COMMENT_DIALOG);
+    }
 }

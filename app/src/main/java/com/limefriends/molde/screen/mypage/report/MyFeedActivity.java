@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.limefriends.molde.R;
 import com.limefriends.molde.common.Constant;
-import com.limefriends.molde.common.DI.Service;
+import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView;
 import com.limefriends.molde.screen.common.addOnListview.OnLoadMoreListener;
 import com.limefriends.molde.common.utils.NetworkUtil;

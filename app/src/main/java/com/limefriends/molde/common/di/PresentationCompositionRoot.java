@@ -1,6 +1,7 @@
-package com.limefriends.molde.common.DI;
+package com.limefriends.molde.common.di;
 
-import android.app.Activity;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 
 import com.limefriends.molde.common.FromSchemaToEntity;
 import com.limefriends.molde.screen.common.bottomNavigationViewHelper.BottomNavigationViewHelper;
@@ -14,6 +15,8 @@ import com.limefriends.molde.model.repository.usecase.FeedUseCase;
 import com.limefriends.molde.model.repository.usecase.SafehouseUseCase;
 import com.limefriends.molde.model.repository.usecase.ScrapUseCase;
 import com.limefriends.molde.networking.service.MoldeRestfulService;
+import com.limefriends.molde.screen.common.dialog.DialogFactory;
+import com.limefriends.molde.screen.common.dialog.DialogManager;
 import com.limefriends.molde.screen.common.screensNavigator.ActivityScreenNavigator;
 import com.limefriends.molde.screen.common.screensNavigator.FragmentScreenNavigator;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
@@ -21,16 +24,20 @@ import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 public class PresentationCompositionRoot {
 
     private final CompositionRoot mCompositionRoot;
-    private final Activity mActivity;
+    private final FragmentActivity mActivity;
 
     public PresentationCompositionRoot(CompositionRoot mCompositionRoot,
-                                       Activity mActivity) {
+                                       FragmentActivity mActivity) {
         this.mCompositionRoot = mCompositionRoot;
         this.mActivity = mActivity;
     }
 
-    private Activity getActivity() {
+    private FragmentActivity getActivity() {
         return mActivity;
+    }
+
+    private FragmentManager getFragmentManager() {
+        return getActivity().getSupportFragmentManager();
     }
 
 
@@ -94,6 +101,14 @@ public class PresentationCompositionRoot {
 
     public BottomNavigationViewHelper getBottomNavigationViewHelper() {
         return new BottomNavigationViewHelper();
+    }
+
+    public DialogManager getDialogManager() {
+        return new DialogManager(getFragmentManager());
+    }
+
+    public DialogFactory getDialogFactory() {
+        return new DialogFactory();
     }
 
 

@@ -5,7 +5,7 @@ import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.limefriends.molde.common.DI.CompositionRoot;
+import com.limefriends.molde.common.di.CompositionRoot;
 
 import io.fabric.sdk.android.Fabric;
 

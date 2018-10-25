@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.limefriends.molde.common.DI.Service;
+import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView;
 import com.limefriends.molde.screen.common.addOnListview.OnLoadMoreListener;
 import com.limefriends.molde.common.utils.NetworkUtil;

@@ -10,7 +10,6 @@ import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
@@ -29,24 +28,21 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.limefriends.molde.R;
 import com.limefriends.molde.common.Constant;
-import com.limefriends.molde.common.DI.CompositionRoot;
-import com.limefriends.molde.common.DI.Service;
+import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.common.MoldeApplication;
 import com.limefriends.molde.common.manager.camera_manager.MoldeReportCameraActivity;
 import com.limefriends.molde.common.utils.DateUtil;
 import com.limefriends.molde.common.utils.NetworkUtil;
 import com.limefriends.molde.common.utils.PreferenceUtil;
 import com.limefriends.molde.common.utils.StringUtil;
-import com.limefriends.molde.common.FromSchemaToEntity;
 import com.limefriends.molde.model.entity.feed.FeedEntity;
 import com.limefriends.molde.model.repository.Repository;
 import com.limefriends.molde.networking.schema.feed.FeedImageSchema;
-import com.limefriends.molde.networking.schema.feed.FeedSchema;
-import com.limefriends.molde.networking.schema.feed.FeedResponseSchema;
 import com.limefriends.molde.networking.schema.response.Result;
-import com.limefriends.molde.networking.MoldeNetwork;
-import com.limefriends.molde.networking.service.MoldeRestfulService;
 import com.limefriends.molde.screen.common.controller.BaseActivity;
+import com.limefriends.molde.screen.common.dialog.DialogFactory;
+import com.limefriends.molde.screen.common.dialog.DialogManager;
+import com.limefriends.molde.screen.common.dialog.view.PromptDialog;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 
 import java.io.File;
@@ -60,9 +56,7 @@ import io.reactivex.observers.DisposableObserver;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import retrofit2.http.DELETE;
 
 import static com.limefriends.molde.common.Constant.Authority.*;
 import static com.limefriends.molde.common.Constant.Common.EXTRA_KEY_ACTIVITY_NAME;
@@ -74,6 +68,9 @@ import static com.limefriends.molde.common.manager.camera_manager.MoldeReportCam
 
 public class FeedDetailActivity extends BaseActivity implements View.OnClickListener {
 
+    public static final String REFUSE_REPORTED_COMMENT_DIALOG = "REFUSE_REPORTED_COMMENT_DIALOG";
+    public static final String CANCEL_REPORT_FEED_DIALOG = "CANCEL_REPORT_FEED_DIALOG";
+    public static final String CHANGE_FEED_STATE_DIALOG = "CHANGE_FEED_STATE_DIALOG";
     @BindView(R.id.feed_detail_container)
     LinearLayout feed_detail_container;
     // 이미지 페이저
@@ -186,6 +183,8 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
     @Service private Repository.Feed mFeedRepository;
     @Service private Repository.FeedResult mFeedResultRepository;
     @Service private ToastHelper mToastHelper;
+    @Service private DialogFactory mDialogFactory;
+    @Service private DialogManager mDialogManager;
 
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
@@ -195,6 +194,7 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
     private long authority;
     private boolean isMyFeed;
     private boolean isloading;
+    private int reportState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -255,78 +255,78 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
     }
 
     private void setupListener() {
-        mypage_detail_report_cancel_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mypage_detail_report_cancel_button.getText().equals(getText(R.string.cancel_report))) {
-                    AlertDialog dialog = new AlertDialog.Builder(v.getContext(), R.style.DialogTheme)
-                            .setTitle(getText(R.string.cancel_report))
-                            .setMessage(getText(R.string.cancel_message))
-                            .setPositiveButton(getText(R.string.yes), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    isloading = true;
-                                    deleteReport(feedId);
-                                }
-                            })
-                            .setNegativeButton(getText(R.string.no), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                }
-                            })
-                            .create();
-                    dialog.show();
-                } else if (mypage_detail_report_cancel_button.getText().equals(getText(R.string.deny_report))) {
-                    AlertDialog dialog = new AlertDialog.Builder(v.getContext(), R.style.DialogTheme)
-                            .setTitle(getText(R.string.deny_report))
-                            .setMessage(getText(R.string.deny_message))
-                            .setPositiveButton(getText(R.string.yes), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    isloading = true;
-                                    refuseReport(feedId, DENIED);
-                                }
-                            })
-                            .setNegativeButton(getText(R.string.no), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                }
-                            })
-                            .create();
-                    dialog.show();
-                }
+        mypage_detail_report_cancel_button.setOnClickListener(v -> {
+            if (mypage_detail_report_cancel_button.getText().equals(getText(R.string.cancel_report))) {
+                showDeleteFeedDialog(feedId);
+            } else if (mypage_detail_report_cancel_button.getText().equals(getText(R.string.deny_report))) {
+                showDenyFeedDialog(feedId);
             }
         });
 
-        report_confirm_admin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 1개만 체크되어 있어야 함
-                boolean accepted = progress_checkbox_admin_accepted.isChecked();
-                boolean found = progress_checkbox_admin_found.isChecked();
-                boolean clean = progress_checkbox_admin_clean.isChecked();
+        report_confirm_admin.setOnClickListener(v -> {
 
-                isloading = true;
-
-                if (accepted) {
-                    updateReport(feedId, ACCEPTED);
-                } else if (found) {
-
-                    if (imageSparseArray != null && imageSparseArray.size() > 0) {
-                        updateReport(feedId, FOUND);
-                        reportInspection();
-                    } else {
-                        snack(getText(R.string.snackbar_no_image).toString());
-                        return;
-                    }
-                } else if (clean) {
-                    updateReport(feedId, CLEAN);
-                } else {
-                    Toast.makeText(FeedDetailActivity.this, "진행중인 신고입니다", Toast.LENGTH_SHORT).show();
-                }
+            if (isloading) {
+                snack("상태를 변경중입니다.");
+                return;
             }
+
+
+
+            boolean accepted = progress_checkbox_admin_accepted.isChecked();
+            boolean found = progress_checkbox_admin_found.isChecked();
+            boolean clean = progress_checkbox_admin_clean.isChecked();
+
+
+            if (reportState == CLEAN) {
+                snack("확인이 완료된 신고입니다.");
+                return;
+            } else if (reportState == DENIED) {
+                snack("거절된 신고입니다.");
+                return;
+            } else if (reportState == ACCEPTED && accepted) {
+                snack("신고 상태를 변경해주세요");
+                return;
+            } else if (reportState == FOUND && found) {
+                snack("신고 상태를 변경해주세요");
+                return;
+            } else if (!accepted && !found && !clean) {
+                snack("신고 상태를 변경해주세요");
+                return;
+            }
+
+            PromptDialog promptDialog = mDialogFactory.newPromptDialog(
+                    getText(R.string.dialog_change_feed_state).toString(),
+                    "",
+                    getText(R.string.yes).toString(),
+                    getText(R.string.no).toString());
+            promptDialog.registerListener(new PromptDialog.PromptDialogDismissListener() {
+                @Override
+                public void onPositiveButtonClicked() {
+
+
+
+                    if (accepted) {
+                        updateReport(feedId, ACCEPTED);
+                    } else if (found) {
+                        if (imageSparseArray != null && imageSparseArray.size() > 0) {
+                            updateReport(feedId, FOUND);
+                            reportInspection();
+                        } else {
+                            snack(getText(R.string.snackbar_no_image).toString());
+                        }
+                    } else if (clean) {
+                        updateReport(feedId, CLEAN);
+                    } else {
+                        mToastHelper.showShortToast("진행중인 신고입니다");
+                    }
+                }
+
+                @Override
+                public void onNegativeButtonClicked() {
+
+                }
+            });
+            mDialogManager.showRetainedDialogWithId(promptDialog, CHANGE_FEED_STATE_DIALOG);
         });
 
         progress_checkbox_admin_accepted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -377,6 +377,48 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
         third_iamge_delete_button.setOnClickListener(this);
         forth_iamge_delete_button.setOnClickListener(this);
         fifth_iamge_delete_button.setOnClickListener(this);
+    }
+
+    private void showDenyFeedDialog(int feedId) {
+        PromptDialog promptDialog = mDialogFactory.newPromptDialog(
+                getText(R.string.deny_message).toString(),
+                "",
+                getText(R.string.yes).toString(),
+                getText(R.string.no).toString());
+        promptDialog.registerListener(new PromptDialog.PromptDialogDismissListener() {
+            @Override
+            public void onPositiveButtonClicked() {
+                isloading = true;
+                refuseReport(feedId, DENIED);
+            }
+
+            @Override
+            public void onNegativeButtonClicked() {
+
+            }
+        });
+        mDialogManager.showRetainedDialogWithId(promptDialog, REFUSE_REPORTED_COMMENT_DIALOG);
+    }
+
+    private void showDeleteFeedDialog(int feedId) {
+        PromptDialog promptDialog = mDialogFactory.newPromptDialog(
+                getText(R.string.cancel_message).toString(),
+                "",
+                getText(R.string.yes).toString(),
+                getText(R.string.no).toString());
+        promptDialog.registerListener(new PromptDialog.PromptDialogDismissListener() {
+            @Override
+            public void onPositiveButtonClicked() {
+                isloading = true;
+                deleteReport(feedId);
+            }
+
+            @Override
+            public void onNegativeButtonClicked() {
+
+            }
+        });
+        mDialogManager.showRetainedDialogWithId(promptDialog, CANCEL_REPORT_FEED_DIALOG);
     }
 
     private void setImagePager() {
@@ -761,6 +803,8 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onNext(List<FeedEntity> feedEntities) {
                 feedEntity = feedEntities.get(0);
+                // 권한
+                reportState = feedEntity.getRepState();
                 // 위치
                 mypage_detail_report_location_content.setText(
                         String.format("%s %s", feedEntity.getRepAddr(), feedEntity.getRepDetailAddr()));
@@ -816,27 +860,6 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
                         .deleteFeed(uId, reportId)
                         .subscribeWith(getDeleteFeedObserver())
         );
-//
-//        Call<Result> call = getFeedService().deleteFeed(uId, reportId);
-//
-//        call.enqueue(new Callback<Result>() {
-//            @Override
-//            public void onResponse(Call<Result> call, Response<Result> response) {
-//                if (response.isSuccessful()) {
-//                    isloading = false;
-//                    Toast.makeText(FeedDetailActivity.this, "신고를 취소했습니다.", Toast.LENGTH_LONG).show();
-//                    Intent intent = new Intent();
-//                    intent.putExtra(EXTRA_KEY_POSITION, position);
-//                    setResult(RESULT_OK, intent);
-//                    finish();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Result> call, Throwable t) {
-//                isloading = false;
-//            }
-//        });
     }
 
     private DisposableObserver<Result> getDeleteFeedObserver() {
@@ -872,35 +895,13 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
             return;
         }
 
+        isloading = true;
+
         mCompositeDisposable.add(
                 mFeedRepository
                         .updateFeed(reportId, state)
                         .subscribeWith(getUpdateFeedObserver(state))
         );
-//
-//        Call<Result> call = getFeedService().updateFeed(reportId, state);
-//
-//        call.enqueue(new Callback<Result>() {
-//            @Override
-//            public void onResponse(Call<Result> call, Response<Result> response) {
-//                if (response.isSuccessful()) {
-//                    Toast.makeText(FeedDetailActivity.this, "신고 상태가 변경되었습니다.", Toast.LENGTH_LONG).show();
-//
-//                    changeAdminProgress(state);
-//                    isloading = false;
-//
-//                    Intent intent = new Intent();
-//                    intent.putExtra(EXTRA_KEY_POSITION, position);
-//                    intent.putExtra(EXTRA_KEY_STATE, state);
-//                    setResult(RESULT_OK, intent);
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Result> call, Throwable t) {
-//                isloading = false;
-//            }
-//        });
     }
 
     private DisposableObserver<Result> getUpdateFeedObserver(int state) {
@@ -961,25 +962,6 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
                             .reportFeedResult(feedEntity.getRepId(), imageMultiParts)
                             .subscribeWith(getFeedResultObserver())
             );
-//
-//            MoldeRestfulService.FeedResult feedResultService
-//                    = MoldeNetwork.getInstance().generateService(MoldeRestfulService.FeedResult.class);
-//
-//            Call<Result> call = feedResultService.reportFeedResult(
-//                    feedEntity.getRepId(), imageMultiParts);
-//
-//            call.enqueue(new Callback<Result>() {
-//                @Override
-//                public void onResponse(Call<Result> call, Response<Result> response) {
-//                    image_list.setVisibility(View.GONE);
-//                    isloading = false;
-//                }
-//
-//                @Override
-//                public void onFailure(Call<Result> call, Throwable t) {
-//                    isloading = false;
-//                }
-//            });
         }
     }
 

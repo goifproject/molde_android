@@ -71,6 +71,8 @@ public class MapReportCardListDialog extends BottomSheetDialogFragment {
         return view;
     }
 
+
+
 //    public void setData(List<FeedEntity> data) {
 //        reportHistoryAdapter.setData(data);
 //    }

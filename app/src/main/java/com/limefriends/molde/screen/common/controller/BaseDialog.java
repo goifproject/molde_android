@@ -1,31 +1,32 @@
 package com.limefriends.molde.screen.common.controller;
 
+
 import android.support.annotation.UiThread;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.DialogFragment;
 
 import com.limefriends.molde.common.di.CompositionRoot;
 import com.limefriends.molde.common.di.Injector;
 import com.limefriends.molde.common.di.PresentationCompositionRoot;
-import com.limefriends.molde.common.MoldeApplication;
 
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseDialog extends DialogFragment {
 
     private boolean mIsInjectorUsed;
 
     @UiThread
     protected Injector getInjector() {
         if (mIsInjectorUsed) {
-            throw  new RuntimeException("there is no need to user more than one injector");
+            throw new RuntimeException("there is no need to use injector more than once");
         }
+        mIsInjectorUsed = true;
         return new Injector(getCompositionRoot());
     }
 
-    public PresentationCompositionRoot getCompositionRoot() {
+    private PresentationCompositionRoot getCompositionRoot() {
         return new PresentationCompositionRoot(getAppCompositionRoot(), getActivity());
     }
 
     private CompositionRoot getAppCompositionRoot() {
-        return  ((MoldeApplication) getActivity().getApplication()).getCompositionRoot();
+        return new CompositionRoot();
     }
 
 }

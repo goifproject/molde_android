@@ -62,6 +62,7 @@ public class Constant {
         //파이어베이스 인증 클라이언트
         public static final int RC_SIGN_IN = 9001;
 
+        public static final String INTENT_VALUE_MYCOMMENT = "MyCommentActivity";
     }
 
     public static class Scrap {

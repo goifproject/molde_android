@@ -10,10 +10,9 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.limefriends.molde.common.DI.Service;
+import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.common.MoldeApplication;
 import com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView;
-import com.limefriends.molde.screen.common.addOnListview.OnLoadMoreListener;
 import com.limefriends.molde.common.utils.DateUtil;
 import com.limefriends.molde.common.utils.NetworkUtil;
 import com.limefriends.molde.model.entity.feed.FeedEntity;

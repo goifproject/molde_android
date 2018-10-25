@@ -28,7 +28,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -40,8 +39,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.limefriends.molde.common.DI.Service;
-import com.limefriends.molde.common.FromSchemaToEntity;
+import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.common.MoldeApplication;
 import com.limefriends.molde.R;
 import com.limefriends.molde.common.utils.NetworkUtil;
@@ -49,11 +47,10 @@ import com.limefriends.molde.common.utils.PermissionUtil;
 import com.limefriends.molde.model.entity.favorite.FavoriteEntity;
 import com.limefriends.molde.model.repository.Repository;
 import com.limefriends.molde.model.entity.feed.FeedEntity;
-import com.limefriends.molde.networking.schema.feed.FeedSchema;
-import com.limefriends.molde.networking.schema.feed.FeedResponseSchema;
-import com.limefriends.molde.networking.MoldeNetwork;
-import com.limefriends.molde.networking.service.MoldeRestfulService;
 import com.limefriends.molde.screen.common.controller.BaseFragment;
+import com.limefriends.molde.screen.common.dialog.DialogFactory;
+import com.limefriends.molde.screen.common.dialog.DialogManager;
+import com.limefriends.molde.screen.common.dialog.view.PromptDialog;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 import com.limefriends.molde.screen.main.MoldeMainActivity;
 import com.limefriends.molde.screen.map.favorite.MapFavoriteActivity;
@@ -71,9 +68,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.disposables.CompositeDisposable;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
 import static com.limefriends.molde.common.Constant.Map.*;
@@ -92,6 +86,7 @@ public class MapFragment extends BaseFragment implements
         GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener,
         GoogleMap.OnInfoWindowCloseListener, GoogleMap.OnMarkerClickListener {
 
+    public static final String RE_ASK_PERMISSION_DIALOG = "RE_ASK_PERMISSION_DIALOG";
     // 전체 컨테이
     @BindView(R.id.map_container)
     FrameLayout map_container;
@@ -173,9 +168,6 @@ public class MapFragment extends BaseFragment implements
     private boolean hasMoreToLoad = true;
     private Marker curLocationMarker;
     private List<Marker> reportInfoMarkers;
-    private List<Marker> favoriteMarkers;
-    private List<Marker> safehouseMarkers;
-    private List<FavoriteEntity> favoriteEntityList;
     private List<MapReportCardItem> mapReportCardItemList;
 
     private GoogleMap mMap;
@@ -189,6 +181,8 @@ public class MapFragment extends BaseFragment implements
     @Service private Repository.Safehouse mSafehouseRepository;
     @Service private Repository.Feed mFeedRepository;
     @Service private ToastHelper mToastHelper;
+    @Service private DialogFactory mDialogFactory;
+    @Service private DialogManager mDialogManager;
 
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
@@ -209,9 +203,6 @@ public class MapFragment extends BaseFragment implements
         // 처음 생성시 호출되고 호출되지 않음 - 초기화 작업에 필요
         super.onCreate(savedInstanceState);
         reportInfoMarkers = new ArrayList<>();
-        favoriteMarkers = new ArrayList<>();
-        safehouseMarkers = new ArrayList<>();
-        favoriteEntityList = new ArrayList<>();
         mapReportCardItemList = new ArrayList<>();
     }
 
@@ -810,8 +801,6 @@ public class MapFragment extends BaseFragment implements
                                                 .fromBitmap(sizeUpMapIcon(R.drawable.ic_map_pick)));
                                         newFavoriteMarker.showInfoWindow();
                                     }
-
-                                    favoriteMarkers.add(newFavoriteMarker);
                                 },
                                 err -> {
                                 }
@@ -832,7 +821,6 @@ public class MapFragment extends BaseFragment implements
                                             "",
                                             R.drawable.ic_safehouse,
                                             MARKER_SAFEHOUSE);
-                                    safehouseMarkers.add(newSafehouseMarker);
                                 }
                         )
         );
@@ -886,8 +874,6 @@ public class MapFragment extends BaseFragment implements
         hasMoreToLoad(true);
 
         if (reportInfoMarkers.size() > 0 || mapReportCardItemList.size() > 0) {
-            favoriteMarkers.clear();
-            safehouseMarkers.clear();
             reportInfoMarkers.clear();
             mapReportCardItemList.clear();
             reportCardAdapter.removeAllCardItem(mapReportCardItemList);
@@ -1135,18 +1121,23 @@ public class MapFragment extends BaseFragment implements
     }
 
     private void showAskAgainDialog() {
-        AlertDialog dialog = new AlertDialog.Builder(getContext(), R.style.DialogTheme)
-                .setTitle(getText(R.string.dialog_request_permission))
-                .setMessage(getText(R.string.dialog_go_settings))
-                .setPositiveButton(getText(R.string.yes), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        goSettings();
-                    }
-                })
-                .setNegativeButton(getText(R.string.no), null)
-                .create();
-        dialog.show();
+        PromptDialog promptDialog = mDialogFactory.newPromptDialog(
+                getText(R.string.dialog_go_settings).toString(),
+                "",
+                getText(R.string.yes).toString(),
+                getText(R.string.no).toString());
+        promptDialog.registerListener(new PromptDialog.PromptDialogDismissListener() {
+            @Override
+            public void onPositiveButtonClicked() {
+                goSettings();
+            }
+
+            @Override
+            public void onNegativeButtonClicked() {
+
+            }
+        });
+        mDialogManager.showRetainedDialogWithId(promptDialog, RE_ASK_PERMISSION_DIALOG);
     }
 
     private void goSettings() {

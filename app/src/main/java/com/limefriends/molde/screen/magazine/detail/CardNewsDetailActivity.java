@@ -1,13 +1,11 @@
 package com.limefriends.molde.screen.magazine.detail;
 
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -23,14 +21,16 @@ import com.facebook.share.model.SharePhoto;
 import com.facebook.share.widget.ShareDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.limefriends.molde.R;
-import com.limefriends.molde.common.DI.Service;
+import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.common.MoldeApplication;
 import com.limefriends.molde.common.utils.NetworkUtil;
 import com.limefriends.molde.model.entity.news.CardNewsEntity;
 import com.limefriends.molde.model.entity.scrap.ScrapEntity;
 import com.limefriends.molde.model.repository.Repository;
-import com.limefriends.molde.model.repository.usecase.CardNewsUseCase;
 import com.limefriends.molde.screen.common.controller.BaseActivity;
+import com.limefriends.molde.screen.common.dialog.DialogFactory;
+import com.limefriends.molde.screen.common.dialog.DialogManager;
+import com.limefriends.molde.screen.common.dialog.view.PromptDialog;
 import com.limefriends.molde.screen.common.screensNavigator.ActivityScreenNavigator;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 
@@ -70,10 +70,14 @@ public class CardNewsDetailActivity extends BaseActivity {
     private FirebaseAuth mFirebaseAuth;
     private CardNewsEntity mCardNewsEntity;
 
+    private static final String DELETE_SCRAP_DIALOG_TAG = "DELETE_SCRAP_DIALOG_TAG";
+
     @Service private Repository.Scrap mScrapRepository;
     @Service private Repository.CardNews mCardNewsRepository;
     @Service private ToastHelper mToastHelper;
     @Service private ActivityScreenNavigator mActivityScreenNavigator;
+    @Service private DialogFactory mDialogFactory;
+    @Service private DialogManager mDialogManager;
 
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
@@ -128,17 +132,7 @@ public class CardNewsDetailActivity extends BaseActivity {
                 if (mFirebaseAuth != null && mFirebaseAuth.getUid() != null) {
                     final String uId = mFirebaseAuth.getCurrentUser().getUid();
                     if (!isLoading && isScrap) {
-                        AlertDialog dialog = new AlertDialog.Builder(CardNewsDetailActivity.this, R.style.DialogTheme)
-                                .setMessage(getText(R.string.scrap_delete_message))
-                                .setPositiveButton(getText(R.string.yes), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        deleteFromScrap(cardNewsScrapId, uId);
-                                    }
-                                })
-                                .setNegativeButton(getText(R.string.no), null)
-                                .create();
-                        dialog.show();
+                        showPromptDialog();
                     } else {
                         addToMyScrap(cardNewsId, uId);
                     }
@@ -208,6 +202,26 @@ public class CardNewsDetailActivity extends BaseActivity {
         });
     }
 
+    private void showPromptDialog() {
+        PromptDialog promptDialog = mDialogFactory.newPromptDialog(
+                getText(R.string.scrap_delete_message).toString(),
+                "",
+                getText(R.string.yes).toString(),
+                getText(R.string.no).toString());
+        promptDialog.registerListener(new PromptDialog.PromptDialogDismissListener() {
+            @Override
+            public void onPositiveButtonClicked() {
+                deleteFromScrap(cardNewsScrapId, mFirebaseAuth.getUid());
+            }
+
+            @Override
+            public void onNegativeButtonClicked() {
+
+            }
+        });
+        mDialogManager.showRetainedDialogWithId(promptDialog, DELETE_SCRAP_DIALOG_TAG);
+    }
+
     //-----
     // Network
     //-----
@@ -268,7 +282,8 @@ public class CardNewsDetailActivity extends BaseActivity {
                         .getScrap(userId, cardNewsId)
                         .subscribe(
                                 data::add,
-                                err -> {},
+                                err -> {
+                                },
                                 () -> {
                                     if (data.size() == 0) {
                                         cardnews_scrap.setImageResource(R.drawable.ic_news_scrap_off);
@@ -345,5 +360,4 @@ public class CardNewsDetailActivity extends BaseActivity {
     private void snack(String msg) {
         Snackbar.make(cardnews_detail_layout, msg, Snackbar.LENGTH_SHORT).show();
     }
-
 }

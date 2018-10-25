@@ -9,7 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.limefriends.molde.common.DI.Service;
+import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.common.MoldeApplication;
 import com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView;
 import com.limefriends.molde.screen.common.addOnListview.OnLoadMoreListener;
@@ -18,6 +18,9 @@ import com.limefriends.molde.model.entity.favorite.FavoriteEntity;
 import com.limefriends.molde.model.repository.Repository;
 import com.limefriends.molde.R;
 import com.limefriends.molde.screen.common.controller.BaseActivity;
+import com.limefriends.molde.screen.common.dialog.DialogFactory;
+import com.limefriends.molde.screen.common.dialog.DialogManager;
+import com.limefriends.molde.screen.common.dialog.view.PromptDialog;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 
 import java.util.ArrayList;
@@ -27,11 +30,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.disposables.CompositeDisposable;
 
-public class MapFavoriteActivity extends BaseActivity implements
-        MapFavoriteAdapter.MyFavoriteAdapterCallBack {
+public class MapFavoriteActivity extends BaseActivity
+        implements MapFavoriteAdapter.MyFavoriteAdapterCallBack {
 
     private static final int PER_PAGE = 10;
     private static final int FIRST_PAGE = 0;
+    public static final String DELETE_FAVORITE_DIALOG = "DELETE_FAVORITE_DIALOG";
     private int currentPage = FIRST_PAGE;
     private boolean hasMoreToLoad = true;
 
@@ -43,6 +47,8 @@ public class MapFavoriteActivity extends BaseActivity implements
 
     @Service private Repository.Favorite mFavoriteRepository;
     @Service private ToastHelper mToastHelper;
+    @Service private DialogFactory mDialogFactory;
+    @Service private DialogManager mDialogManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,22 +103,24 @@ public class MapFavoriteActivity extends BaseActivity implements
     }
 
     public void showDeleteDialog(final int favId) {
-        AlertDialog dialog = new AlertDialog.Builder(this, R.style.DialogTheme)
-                .setMessage(getText(R.string.dialog_delete_favorite_message))
-                .setPositiveButton(getText(R.string.yes), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        onUnSelected(favId);
-                    }
-                })
-                .setNegativeButton(getText(R.string.no), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
 
-                    }
-                })
-                .create();
-        dialog.show();
+        PromptDialog promptDialog = mDialogFactory.newPromptDialog(
+                getText(R.string.dialog_delete_favorite_message).toString(),
+                "",
+                getText(R.string.yes).toString(),
+                getText(R.string.no).toString());
+        promptDialog.registerListener(new PromptDialog.PromptDialogDismissListener() {
+            @Override
+            public void onPositiveButtonClicked() {
+                onUnSelected(favId);
+            }
+
+            @Override
+            public void onNegativeButtonClicked() {
+
+            }
+        });
+        mDialogManager.showRetainedDialogWithId(promptDialog, DELETE_FAVORITE_DIALOG);
     }
 
     //-----
@@ -177,7 +185,7 @@ public class MapFavoriteActivity extends BaseActivity implements
                                 e -> {},
                                 err -> {},
                                 () -> {
-                                    mToastHelper.showShortToast("즐겨찾기 삭제 성공");
+                                    mToastHelper.showShortToast("즐겨찾기가 삭제되었습니다.");
                                     myFavoriteAdapter.notifyFavoriteRemoved();
                                 }
                         )

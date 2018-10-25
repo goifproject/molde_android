@@ -1,4 +1,4 @@
-package com.limefriends.molde.common.DI;
+package com.limefriends.molde.common.di;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

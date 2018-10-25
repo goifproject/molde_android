@@ -11,7 +11,7 @@ import android.transition.TransitionInflater;
 import android.view.MenuItem;
 
 import com.limefriends.molde.R;
-import com.limefriends.molde.common.DI.Service;
+import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.screen.common.bottomNavigationViewHelper.BottomNavigationViewHelper;
 import com.limefriends.molde.model.entity.feed.FeedEntity;
 import com.limefriends.molde.screen.common.controller.BaseActivity;

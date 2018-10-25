@@ -1,4 +1,4 @@
-package com.limefriends.molde.common.DI;
+package com.limefriends.molde.common.di;
 
 import com.limefriends.molde.BuildConfig;
 import com.limefriends.molde.networking.service.MoldeRestfulService;

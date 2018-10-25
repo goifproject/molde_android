@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -32,7 +31,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.limefriends.molde.common.Constant;
-import com.limefriends.molde.common.DI.Service;
+import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.common.MoldeApplication;
 import com.limefriends.molde.common.utils.NetworkUtil;
 import com.limefriends.molde.common.utils.PreferenceUtil;
@@ -40,10 +39,10 @@ import com.limefriends.molde.common.utils.pattern.RegexUtil;
 import com.limefriends.molde.R;
 import com.limefriends.molde.model.repository.Repository;
 import com.limefriends.molde.networking.schema.response.Result;
-import com.limefriends.molde.networking.service.MoldeRestfulService;
-import com.limefriends.molde.networking.MoldeNetwork;
-import com.limefriends.molde.common.manager.camera_manager.MoldeReportCameraActivity;
 import com.limefriends.molde.screen.common.controller.BaseActivity;
+import com.limefriends.molde.screen.common.dialog.DialogFactory;
+import com.limefriends.molde.screen.common.dialog.DialogManager;
+import com.limefriends.molde.screen.common.dialog.view.PromptDialog;
 import com.limefriends.molde.screen.common.screensNavigator.ActivityScreenNavigator;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 import com.limefriends.molde.screen.map.search.SearchMapInfoActivity;
@@ -59,17 +58,14 @@ import io.reactivex.observers.DisposableObserver;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import static com.limefriends.molde.common.Constant.Authority.*;
 import static com.limefriends.molde.common.Constant.Common.EXTRA_KEY_ACTIVITY_NAME;
 import static com.limefriends.molde.common.Constant.Common.PREF_KEY_AUTHORITY;
-import static com.limefriends.molde.common.manager.camera_manager.MoldeReportCameraActivity.TAKE_PICTURE_FOR_ADD_IMAGE;
 
 public class ReportActivity extends BaseActivity implements View.OnClickListener {
 
+    public static final String CANCEL_REPORT_DIALOG = "CANCEL_REPORT_DIALOG";
     @BindView(R.id.first_iamge)
     ImageView first_iamge;
     @BindView(R.id.second_iamge)
@@ -144,9 +140,11 @@ public class ReportActivity extends BaseActivity implements View.OnClickListener
 
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
-    @Service private ToastHelper mToastHelper;
-    @Service private ActivityScreenNavigator mActivityScreenNavigator;
     @Service private Repository.Feed mFeedRepository;
+    @Service private ActivityScreenNavigator mActivityScreenNavigator;
+    @Service private ToastHelper mToastHelper;
+    @Service private DialogFactory mDialogFactory;
+    @Service private DialogManager mDialogManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -221,6 +219,9 @@ public class ReportActivity extends BaseActivity implements View.OnClickListener
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.homeAsUp:
+                onBackPressed();
+                break;
             case R.id.first_iamge:
                 takePictureForAdd(1);
                 break;
@@ -335,6 +336,26 @@ public class ReportActivity extends BaseActivity implements View.OnClickListener
         return false;
     }
 
+    @Override
+    public void onBackPressed() {
+        PromptDialog promptDialog = mDialogFactory.newPromptDialog(
+                getText(R.string.dialog_cancel_report).toString(),
+                "",
+                getText(R.string.yes).toString(),
+                getText(R.string.no).toString());
+        promptDialog.registerListener(new PromptDialog.PromptDialogDismissListener() {
+            @Override
+            public void onPositiveButtonClicked() {
+                ReportActivity.super.onBackPressed();
+            }
+
+            @Override
+            public void onNegativeButtonClicked() {
+
+            }
+        });
+        mDialogManager.showRetainedDialogWithId(promptDialog, CANCEL_REPORT_DIALOG);
+    }
     //-----
     // Network
     //-----

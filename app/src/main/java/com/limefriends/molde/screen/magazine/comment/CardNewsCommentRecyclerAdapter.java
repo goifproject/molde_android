@@ -26,13 +26,19 @@ import butterknife.ButterKnife;
 public class CardNewsCommentRecyclerAdapter
         extends RecyclerView.Adapter<CardNewsCommentRecyclerAdapter.MagazineCommentViewHolder> {
 
+    public interface OnReportCommentClickListener {
+        void onReportCommentClicked(int commentId);
+    }
+
+    private OnReportCommentClickListener mOnReportCommentClickListener;
+
     private Context context;
     private List<CommentEntity> dataList = new ArrayList<>();
-    private CardNewsCommentActivity view;
+    // private CardNewsCommentActivity view;
 
-    CardNewsCommentRecyclerAdapter(Context context, CardNewsCommentActivity view) {
+    CardNewsCommentRecyclerAdapter(Context context, OnReportCommentClickListener onReportCommentClickListener) {
         this.context = context;
-        this.view = view;
+        this.mOnReportCommentClickListener = onReportCommentClickListener;
     }
 
     public void addData(CommentEntity data) {
@@ -89,31 +95,8 @@ public class CardNewsCommentRecyclerAdapter
 
         private void setupListener() {
             img_comment_siren
-                    .setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                            AlertDialog dialog = new AlertDialog.Builder(context, R.style.DialogTheme)
-                                    .setTitle(context.getText(R.string.dialog_report_comment_title))
-                                    .setMessage(context.getText(R.string.dialog_report_comment_msg))
-                                    .setPositiveButton(context.getText(R.string.yes), new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            if (!view.isReporting()) {
-                                                view.reportComment(commentId);
-                                            }
-                                        }
-                                    })
-                                    .setNegativeButton(context.getString(R.string.no), new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-
-                                        }
-                                    })
-                                    .create();
-                            dialog.show();
-                        }
-                    });
+                    .setOnCheckedChangeListener((buttonView, isChecked)
+                            -> mOnReportCommentClickListener.onReportCommentClicked(commentId));
         }
     }
 }

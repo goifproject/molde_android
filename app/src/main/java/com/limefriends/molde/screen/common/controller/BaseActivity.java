@@ -3,9 +3,9 @@ package com.limefriends.molde.screen.common.controller;
 import android.support.annotation.UiThread;
 import android.support.v7.app.AppCompatActivity;
 
-import com.limefriends.molde.common.DI.CompositionRoot;
-import com.limefriends.molde.common.DI.Injector;
-import com.limefriends.molde.common.DI.PresentationCompositionRoot;
+import com.limefriends.molde.common.di.CompositionRoot;
+import com.limefriends.molde.common.di.Injector;
+import com.limefriends.molde.common.di.PresentationCompositionRoot;
 import com.limefriends.molde.common.MoldeApplication;
 
 public abstract class BaseActivity extends AppCompatActivity {

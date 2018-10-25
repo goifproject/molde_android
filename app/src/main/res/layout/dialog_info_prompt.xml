@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txt_dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="36dp"
+        android:layout_marginBottom="24dp"
+        android:textColor="#000000"
+        tools:text="Dialog title" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorDivider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txt_dialog_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            tools:text="Dialog message very very very very very very very very very very very very long" />
+
+        <Button
+            android:id="@+id/btn_dialog_negative"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="48dp"
+            android:background="@null"
+            tools:text="@string/no" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="48dp"
+            android:background="@color/colorDivider" />
+
+        <Button
+            android:id="@+id/btn_dialog_positive"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="48dp"
+            android:background="@null"
+            tools:text="@string/yes" />
+
+    </LinearLayout>
+
+</LinearLayout>
