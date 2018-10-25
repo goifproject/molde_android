@@ -30,6 +30,7 @@ import com.gun0912.tedpermission.TedPermission;
 import com.limefriends.molde.R;
 import com.limefriends.molde.common.Constant;
 import com.limefriends.molde.common.DI.CompositionRoot;
+import com.limefriends.molde.common.DI.Service;
 import com.limefriends.molde.common.MoldeApplication;
 import com.limefriends.molde.common.manager.camera_manager.MoldeReportCameraActivity;
 import com.limefriends.molde.common.utils.DateUtil;
@@ -179,14 +180,14 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
     ImageView fifth_iamge_delete_button;
 
     private FeedImageAdapter feedImageAdapter;
-    private MoldeRestfulService.Feed feedService;
     private SparseArrayCompat<Uri> imageSparseArray = new SparseArrayCompat<>();
     private FeedEntity feedEntity;
 
-    private Repository.Feed mFeedRepository;
-    private Repository.FeedResult mFeedResultRepository;
+    @Service private Repository.Feed mFeedRepository;
+    @Service private Repository.FeedResult mFeedResultRepository;
+    @Service private ToastHelper mToastHelper;
+
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
-    private ToastHelper mToastHelper;
 
     private String activityName;
     private int feedId;
@@ -199,11 +200,7 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mFeedRepository = getCompositionRoot().getFeedUseCase();
-
-        mFeedResultRepository = getCompositionRoot().getFeedResultUseCase();
-
-        mToastHelper = getCompositionRoot().getToastHelper();
+        getInjector().inject(this);
 
         setContentView(R.layout.activity_feed_detail);
 

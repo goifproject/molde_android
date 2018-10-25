@@ -93,7 +93,7 @@ public class CardNewsCommentRecyclerAdapter
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                            AlertDialog dialog = new AlertDialog.Builder(context)
+                            AlertDialog dialog = new AlertDialog.Builder(context, R.style.DialogTheme)
                                     .setTitle(context.getText(R.string.dialog_report_comment_title))
                                     .setMessage(context.getText(R.string.dialog_report_comment_msg))
                                     .setPositiveButton(context.getText(R.string.yes), new DialogInterface.OnClickListener() {

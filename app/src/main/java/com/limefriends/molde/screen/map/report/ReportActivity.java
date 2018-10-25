@@ -32,6 +32,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.limefriends.molde.common.Constant;
+import com.limefriends.molde.common.DI.Service;
 import com.limefriends.molde.common.MoldeApplication;
 import com.limefriends.molde.common.utils.NetworkUtil;
 import com.limefriends.molde.common.utils.PreferenceUtil;
@@ -143,22 +144,16 @@ public class ReportActivity extends BaseActivity implements View.OnClickListener
 
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
-    private ToastHelper mToastHelper;
-
-    private ActivityScreenNavigator mActivityScreenNavigator;
-
-    private Repository.Feed mFeedRepository;
+    @Service private ToastHelper mToastHelper;
+    @Service private ActivityScreenNavigator mActivityScreenNavigator;
+    @Service private Repository.Feed mFeedRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
 
-        mFeedRepository = getCompositionRoot().getFeedUseCase();
-
-        mToastHelper = getCompositionRoot().getToastHelper();
-
-        mActivityScreenNavigator = getCompositionRoot().getActivityScreenNavigator();
+        getInjector().inject(this);
 
         // 권한 설정
         authority = (int) PreferenceUtil.getLong(this, PREF_KEY_AUTHORITY, Constant.Authority.GUEST);

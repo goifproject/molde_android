@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.limefriends.molde.R;
+import com.limefriends.molde.common.DI.Service;
 import com.limefriends.molde.common.MoldeApplication;
 import com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView;
 import com.limefriends.molde.screen.common.addOnListview.OnLoadMoreListener;
@@ -61,9 +62,10 @@ public class CardNewsCommentActivity extends BaseActivity {
     private CardNewsCommentRecyclerAdapter cardNewsCommentRecyclerAdapter;
     private MoldeRestfulService.Comment commentService;
 
-    private Repository.Comment mCommentRepository;
+    @Service private Repository.Comment mCommentRepository;
+    @Service private ToastHelper mToastHelper;
+
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
-    private ToastHelper mToastHelper;
 
     private static final int PER_PAGE = 20;
     private static final int FIRST_PAGE = 0;
@@ -76,9 +78,7 @@ public class CardNewsCommentActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mToastHelper = getCompositionRoot().getToastHelper();
-
-        mCommentRepository = getCompositionRoot().getCommentUseCase();
+        getInjector().inject(this);
 
         setContentView(R.layout.activity_cardnews_comment);
 

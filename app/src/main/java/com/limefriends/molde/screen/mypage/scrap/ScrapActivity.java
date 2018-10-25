@@ -11,12 +11,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.limefriends.molde.R;
+import com.limefriends.molde.common.DI.Service;
 import com.limefriends.molde.common.MoldeApplication;
 import com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView;
 import com.limefriends.molde.common.utils.NetworkUtil;
 import com.limefriends.molde.model.entity.news.CardNewsEntity;
 import com.limefriends.molde.model.repository.Repository;
 import com.limefriends.molde.screen.common.controller.BaseActivity;
+import com.limefriends.molde.screen.common.screensNavigator.ActivityScreenNavigator;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 
 import java.util.ArrayList;
@@ -36,9 +38,11 @@ public class ScrapActivity extends BaseActivity {
     @BindView(R.id.progressBar3)
     ProgressBar progressBar;
 
+    @Service private Repository.Scrap mScrapUseCase;
+    @Service private ToastHelper mToastHelper;
+    @Service private ActivityScreenNavigator mActivityScreenNavigator;
+
     private ScrapAdapter adapter;
-    private Repository.Scrap mScrapUseCase;
-    private ToastHelper mToastHelper;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
     private final int PER_PAGE = 10;
@@ -52,9 +56,7 @@ public class ScrapActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mScrapUseCase = getCompositionRoot().getScrapUseCase();
-
-        mToastHelper = getCompositionRoot().getToastHelper();
+        getInjector().inject(this);
 
         setContentView(R.layout.activity_my_scrap);
 
@@ -129,8 +131,7 @@ public class ScrapActivity extends BaseActivity {
 
     public void onCardNewsSelected(int newsId, int position) {
         selectedNewsPosition = position;
-        getCompositionRoot()
-                .getActivityScreenNavigator()
+        mActivityScreenNavigator
                 .toCardNewsDetailActivity(this, newsId, INTENT_KEY_CARDNEWS_DETAIL);
     }
 

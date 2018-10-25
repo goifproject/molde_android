@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.limefriends.molde.common.Constant;
+import com.limefriends.molde.common.DI.Service;
 import com.limefriends.molde.common.MoldeApplication;
 import com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView;
 import com.limefriends.molde.common.utils.NetworkUtil;
@@ -74,13 +75,14 @@ public class InquiryActivity extends BaseActivity {
     private boolean hasMoreToLoad = true;
 
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
-    private Repository.Faq mFaqRepository;
+
+    @Service private Repository.Faq mFaqRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mFaqRepository = getCompositionRoot().getFaqUseCase();
+        getInjector().inject(this);
 
         setContentView(R.layout.activity_inquiry);
 

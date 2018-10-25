@@ -18,13 +18,13 @@ import com.limefriends.molde.screen.common.screensNavigator.ActivityScreenNaviga
 import com.limefriends.molde.screen.common.screensNavigator.FragmentScreenNavigator;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 
-public class ControllerCompositionRoot {
+public class PresentationCompositionRoot {
 
     private final CompositionRoot mCompositionRoot;
     private final Activity mActivity;
 
-    public ControllerCompositionRoot(CompositionRoot mCompositionRoot,
-                                     Activity mActivity) {
+    public PresentationCompositionRoot(CompositionRoot mCompositionRoot,
+                                       Activity mActivity) {
         this.mCompositionRoot = mCompositionRoot;
         this.mActivity = mActivity;
     }

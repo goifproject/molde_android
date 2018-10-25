@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.limefriends.molde.R;
 import com.limefriends.molde.common.Constant;
+import com.limefriends.molde.common.DI.Service;
 import com.limefriends.molde.common.MoldeApplication;
 import com.limefriends.molde.common.utils.NetworkUtil;
 import com.limefriends.molde.common.utils.PreferenceUtil;
@@ -75,9 +76,8 @@ public class MyCommentActivity extends BaseActivity implements MyCommentExpandab
 
     private long authority;
 
-    private Repository.Comment mCommentRepository;
-
-    private ToastHelper mToastHelper;
+    @Service private Repository.Comment mCommentRepository;
+    @Service private ToastHelper mToastHelper;
 
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
@@ -85,9 +85,7 @@ public class MyCommentActivity extends BaseActivity implements MyCommentExpandab
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mCommentRepository = getCompositionRoot().getCommentUseCase();
-
-        mToastHelper = getCompositionRoot().getToastHelper();
+        getInjector().inject(this);
 
         authority = PreferenceUtil.getLong(this, PREF_KEY_AUTHORITY, Constant.Authority.GUEST);
 
@@ -260,13 +258,13 @@ public class MyCommentActivity extends BaseActivity implements MyCommentExpandab
         List<CommentEntity> data = new ArrayList<>();
         return new DisposableObserver<CommentEntity>() {
             @Override
-            public void onNext(CommentEntity commentEntities) {
-                data.add(commentEntities);
+            public void onNext(CommentEntity commentEntity) {
+                data.add(commentEntity);
             }
 
             @Override
             public void onError(Throwable e) {
-
+                Log.e("에러", e.getMessage());
             }
 
             @Override

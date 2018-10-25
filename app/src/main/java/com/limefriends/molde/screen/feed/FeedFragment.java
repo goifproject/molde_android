@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.limefriends.molde.common.DI.Service;
 import com.limefriends.molde.common.MoldeApplication;
 import com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView;
 import com.limefriends.molde.screen.common.addOnListview.OnLoadMoreListener;
@@ -45,8 +46,9 @@ public class FeedFragment extends BaseFragment implements FeedAdapter.OnClickFee
 
     private FeedAdapter feedAdapter;
 
-    private Repository.Feed mFeedRepository;
-    private ToastHelper mToastHelper;
+    @Service private Repository.Feed mFeedRepository;
+    @Service private ToastHelper mToastHelper;
+
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
     private final int PER_PAGE = 10;
@@ -61,9 +63,7 @@ public class FeedFragment extends BaseFragment implements FeedAdapter.OnClickFee
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        mFeedRepository = getCompositionRoot().getFeedUseCase();
-
-        mToastHelper = getCompositionRoot().getToastHelper();
+        getInjector().inject(this);
 
         View view = inflater.inflate(R.layout.fragment_feed, container, false);
 

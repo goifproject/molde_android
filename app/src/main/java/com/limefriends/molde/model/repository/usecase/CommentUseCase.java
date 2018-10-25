@@ -115,6 +115,7 @@ public class CommentUseCase implements Repository.Comment {
                             .getReportedCommentDetailObservable(reportedCommentEntity.getCommId())
                             .subscribeOn(Schedulers.io());
                 })
+                .filter(commentResponseSchema -> commentResponseSchema.getData().size() != 0)
                 .flatMap(commentResponseSchema -> {
                     Log.e("Thread3", Thread.currentThread().getName());
                     return Observable.just(mFromSchemaToEntity.commentNS(commentResponseSchema.getData().get(0)));

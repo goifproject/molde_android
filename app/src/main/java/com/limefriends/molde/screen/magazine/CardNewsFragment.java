@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.limefriends.molde.common.DI.Service;
 import com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView;
 import com.limefriends.molde.screen.common.addOnListview.OnLoadMoreListener;
 import com.limefriends.molde.common.utils.NetworkUtil;
@@ -36,9 +37,11 @@ public class CardNewsFragment extends BaseFragment {
     @BindView(R.id.manual_for_spreading)
     LinearLayout manual_for_spreading;
 
+    @Service private Repository.CardNews mCardNewsUseCase;
+    @Service private ActivityScreenNavigator mActivityScreenNavigator;
+
+    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private CardNewsAdapter cardNewsAdapter;
-
-
 
     private static final int PER_PAGE = 10;
     private static final int FIRST_PAGE = 0;
@@ -46,19 +49,11 @@ public class CardNewsFragment extends BaseFragment {
     private boolean hasMoreToLoad = true;
     private boolean isFirstOnCreateView = true;
 
-    private Repository.CardNews mCardNewsUseCase;
-    private ActivityScreenNavigator mActivityScreenNavigator;
-    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
-        mCardNewsUseCase
-                = getCompositionRoot().getCardNewsUseCase();
-
-        mActivityScreenNavigator = getCompositionRoot().getActivityScreenNavigator();
+        getInjector().inject(this);
 
         ViewGroup rootView = (ViewGroup) inflater
                 .inflate(R.layout.fragment_cardnews, container, false);

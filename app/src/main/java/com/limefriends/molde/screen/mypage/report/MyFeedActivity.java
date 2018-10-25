@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.limefriends.molde.R;
 import com.limefriends.molde.common.Constant;
+import com.limefriends.molde.common.DI.Service;
 import com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView;
 import com.limefriends.molde.screen.common.addOnListview.OnLoadMoreListener;
 import com.limefriends.molde.common.utils.NetworkUtil;
@@ -45,9 +46,10 @@ public class MyFeedActivity extends BaseActivity implements MyFeedAdapter.OnItem
 
     private MyFeedAdapter reportAdapter;
 
-    private Repository.Feed mFeedUseCase;
-    private ToastHelper mToastHelper;
-    private final CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+    @Service private Repository.Feed mFeedUseCase;
+    @Service private ToastHelper mToastHelper;
+
+    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
     private static final int PER_PAGE = 10;
     private static final int FIRST_PAGE = 0;
@@ -61,9 +63,7 @@ public class MyFeedActivity extends BaseActivity implements MyFeedAdapter.OnItem
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_feed);
 
-        mFeedUseCase = getCompositionRoot().getFeedUseCase();
-
-        mToastHelper = getCompositionRoot().getToastHelper();
+        getInjector().inject(this);
 
         authority = PreferenceUtil.getLong(this, PREF_KEY_AUTHORITY, Constant.Authority.GUEST);
 

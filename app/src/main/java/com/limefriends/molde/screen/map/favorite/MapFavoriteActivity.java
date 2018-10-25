@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.limefriends.molde.common.DI.Service;
 import com.limefriends.molde.common.MoldeApplication;
 import com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView;
 import com.limefriends.molde.screen.common.addOnListview.OnLoadMoreListener;
@@ -38,18 +39,16 @@ public class MapFavoriteActivity extends BaseActivity implements
     AddOnScrollRecyclerView my_favorite_list_view;
 
     private MapFavoriteAdapter myFavoriteAdapter;
-
-    private Repository.Favorite mFavoriteRepository;
-    private ToastHelper mToastHelper;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+
+    @Service private Repository.Favorite mFavoriteRepository;
+    @Service private ToastHelper mToastHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mFavoriteRepository = getCompositionRoot().getFavoriteUseCase();
-
-        mToastHelper = getCompositionRoot().getToastHelper();
+        getInjector().inject(this);
 
         setContentView(R.layout.activity_map_favorite);
 

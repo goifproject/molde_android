@@ -11,6 +11,7 @@ import android.transition.TransitionInflater;
 import android.view.MenuItem;
 
 import com.limefriends.molde.R;
+import com.limefriends.molde.common.DI.Service;
 import com.limefriends.molde.screen.common.bottomNavigationViewHelper.BottomNavigationViewHelper;
 import com.limefriends.molde.model.entity.feed.FeedEntity;
 import com.limefriends.molde.screen.common.controller.BaseActivity;
@@ -36,15 +37,16 @@ public class MoldeMainActivity extends BaseActivity
     private SparseArrayCompat fragmentSparseArray;
     private FeedEntity feedEntity;
     private Fragment fragment;
-    private BottomNavigationViewHelper mBottomNavigationViewHelper;
     private long lastTimeBackPressed;
+
+    @Service private BottomNavigationViewHelper mBottomNavigationViewHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
-        mBottomNavigationViewHelper = getCompositionRoot().getBottomNavigationViewHelper();
+        getInjector().inject(this);
 
         fragmentSparseArray = new SparseArrayCompat();
 

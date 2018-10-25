@@ -23,6 +23,7 @@ import com.facebook.share.model.SharePhoto;
 import com.facebook.share.widget.ShareDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.limefriends.molde.R;
+import com.limefriends.molde.common.DI.Service;
 import com.limefriends.molde.common.MoldeApplication;
 import com.limefriends.molde.common.utils.NetworkUtil;
 import com.limefriends.molde.model.entity.news.CardNewsEntity;
@@ -69,10 +70,11 @@ public class CardNewsDetailActivity extends BaseActivity {
     private FirebaseAuth mFirebaseAuth;
     private CardNewsEntity mCardNewsEntity;
 
-    private Repository.Scrap mScrapRepository;
-    private Repository.CardNews mCardNewsRepository;
-    private ToastHelper mToastHelper;
-    private ActivityScreenNavigator mActivityScreenNavigator;
+    @Service private Repository.Scrap mScrapRepository;
+    @Service private Repository.CardNews mCardNewsRepository;
+    @Service private ToastHelper mToastHelper;
+    @Service private ActivityScreenNavigator mActivityScreenNavigator;
+
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
     private String activityName;
@@ -86,13 +88,7 @@ public class CardNewsDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cardnews_detail);
 
-        mCardNewsRepository = getCompositionRoot().getCardNewsUseCase();
-
-        mScrapRepository = getCompositionRoot().getScrapUseCase();
-
-        mToastHelper = getCompositionRoot().getToastHelper();
-
-        mActivityScreenNavigator = getCompositionRoot().getActivityScreenNavigator();
+        getInjector().inject(this);
 
         FacebookSdk.sdkInitialize(this);
         AppEventsLogger.activateApp(this);

@@ -40,6 +40,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.limefriends.molde.common.DI.Service;
 import com.limefriends.molde.common.FromSchemaToEntity;
 import com.limefriends.molde.common.MoldeApplication;
 import com.limefriends.molde.R;
@@ -183,14 +184,12 @@ public class MapFragment extends BaseFragment implements
     private MyLocationListener myLocationListener;
     private MapReportCardPagerAdapter reportCardAdapter;
     private PermissionUtil mPermission;
-    private MoldeRestfulService.Feed feedService;
-    private MoldeRestfulService.Favorite favoriteService;
-    private MoldeRestfulService.Safehouse safehouseService;
 
-    private Repository.Favorite mFavoriteRepository;
-    private Repository.Safehouse mSafehouseRepository;
-    private Repository.Feed mFeedRepository;
-    private ToastHelper mToastHelper;
+    @Service private Repository.Favorite mFavoriteRepository;
+    @Service private Repository.Safehouse mSafehouseRepository;
+    @Service private Repository.Feed mFeedRepository;
+    @Service private ToastHelper mToastHelper;
+
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
     private MapFavoriteDialog mapFavoriteDialog;
@@ -220,13 +219,7 @@ public class MapFragment extends BaseFragment implements
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        mFavoriteRepository = getCompositionRoot().getFavoriteUseCase();
-
-        mSafehouseRepository = getCompositionRoot().getSafehouseUseCase();
-
-        mFeedRepository = getCompositionRoot().getFeedUseCase();
-
-        mToastHelper = getCompositionRoot().getToastHelper();
+        getInjector().inject(this);
 
         // replace 할 때마다 호출됨. 매니저에 add, replace 되는 순간 반드시 호출되는 듯
         View view = inflater.inflate(R.layout.fragment_map, container, false);
