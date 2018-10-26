@@ -25,6 +25,7 @@ import com.limefriends.molde.model.entity.news.CardNewsEntity;
 import com.limefriends.molde.common.utils.comparator.CardNewsComparator;
 import com.limefriends.molde.screen.common.addOnListview.AddOnScrollExpandableListView;
 import com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView;
+import com.limefriends.molde.screen.common.addOnListview.OnLoadMoreListener;
 import com.limefriends.molde.screen.common.controller.BaseActivity;
 import com.limefriends.molde.screen.common.dialog.DialogFactory;
 import com.limefriends.molde.screen.common.dialog.DialogManager;
@@ -64,6 +65,7 @@ public class MyCommentActivity
     private static final int PER_PAGE = 10;
     private static final int FIRST_PAGE = 0;
     private int currentPage = FIRST_PAGE;
+    private boolean isLoading;
 
     private MyCommentExpandableAdapter commentExpandableAdapter;
     private ReportedCommentAdapter reportedCommentAdapter;
@@ -118,18 +120,37 @@ public class MyCommentActivity
     }
 
     private void setupList() {
-//        TODO 풀어줘
         if (authority == Constant.Authority.ADMIN) {
             myComment_reported_comment_listview.setVisibility(View.VISIBLE);
             myComment_listView.setVisibility(View.INVISIBLE);
             reportedCommentAdapter = new ReportedCommentAdapter(this, this);
             myComment_reported_comment_listview.setAdapter(reportedCommentAdapter);
             myComment_reported_comment_listview.setLayoutManager(new LinearLayoutManager(this), false);
-            myComment_reported_comment_listview.setOnLoadMoreListener(() -> loadReportedComment(PER_PAGE, currentPage));
+            myComment_reported_comment_listview.setOnLoadMoreListener(new OnLoadMoreListener() {
+                @Override
+                public void loadMore() {
+                    loadReportedComment(PER_PAGE, currentPage);
+                }
+
+                @Override
+                public boolean isLoading() {
+                    return isLoading;
+                }
+            });
         } else {
             commentExpandableAdapter = new MyCommentExpandableAdapter(this);
             myComment_listView.setAdapter(commentExpandableAdapter);
-            myComment_listView.setOnLoadMoreListener(() -> loadComment(PER_PAGE, currentPage));
+            myComment_listView.setOnLoadMoreListener(new OnLoadMoreListener() {
+                @Override
+                public void loadMore() {
+                    loadComment(PER_PAGE, currentPage);
+                }
+
+                @Override
+                public boolean isLoading() {
+                    return isLoading;
+                }
+            });
             myComment_listView.setGroupIndicator(null);
             myComment_listView.setChildIndicator(null);
             myComment_listView.setChildDivider(getResources().getDrawable(R.color.white));
@@ -207,7 +228,7 @@ public class MyCommentActivity
 
         progressBar.setVisibility(View.VISIBLE);
 
-        myComment_listView.setIsLoading(true);
+        isLoading = true;
 
         String uId
                 = ((MoldeApplication) getApplication()).getFireBaseAuth().getCurrentUser().getUid();
@@ -256,7 +277,7 @@ public class MyCommentActivity
 
                 currentPage++;
 
-                myComment_listView.setIsLoading(false);
+                isLoading = false;
 
                 progressBar.setVisibility(View.GONE);
             }
@@ -273,7 +294,7 @@ public class MyCommentActivity
 
         if (!hasMoreToLoad) return;
 
-        myComment_reported_comment_listview.setIsLoading(true);
+        isLoading = true;
 
         progressBar.setVisibility(View.VISIBLE);
 
@@ -301,7 +322,7 @@ public class MyCommentActivity
             public void onComplete() {
 
                 if (data.size() == 0) {
-                    myComment_reported_comment_listview.setIsLoading(false);
+                    isLoading = false;
                     progressBar.setVisibility(View.GONE);
                     hasMoreToLoad(false);
                     return;
@@ -313,7 +334,7 @@ public class MyCommentActivity
 
                 currentPage++;
 
-                myComment_reported_comment_listview.setIsLoading(false);
+                isLoading = false;
 
                 if (data.size() < PER_PAGE) {
                     hasMoreToLoad(false);

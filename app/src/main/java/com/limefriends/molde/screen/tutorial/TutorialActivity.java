@@ -19,7 +19,7 @@ import com.limefriends.molde.screen.mypage.login.LoginActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import static com.limefriends.molde.screen.mypage.MyPageFragment.SIGNIN_TYPE;
+import static com.limefriends.molde.screen.mypage.main.MyPageFragment.SIGNIN_TYPE;
 
 public class TutorialActivity extends AppCompatActivity {
 

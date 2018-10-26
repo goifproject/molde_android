@@ -9,7 +9,6 @@ import android.util.AttributeSet;
 
 public class AddOnScrollRecyclerView extends RecyclerView {
 
-    private boolean isLoading = false;
     private int visibleThreshold = 1;
     private boolean isGridLayout;
     private LayoutManager layoutManager;
@@ -31,12 +30,8 @@ public class AddOnScrollRecyclerView extends RecyclerView {
         this.isGridLayout = isGridLayout;
     }
 
-    public void setOnLoadMoreListener (OnLoadMoreListener listener) {
+    public void setOnLoadMoreListener(OnLoadMoreListener listener) {
         this.onLoadMoreListener = listener;
-    }
-
-    public void setIsLoading(boolean isLoading) {
-        this.isLoading = isLoading;
     }
 
     private OnScrollListener scrollListener = new OnScrollListener() {
@@ -60,22 +55,17 @@ public class AddOnScrollRecyclerView extends RecyclerView {
                 firstOrLastVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
             }
 
-            if (totalItemCount == visibleItemCount && !isLoading) {
+            if (totalItemCount == visibleItemCount && !onLoadMoreListener.isLoading()) {
                 onLoadMoreListener.loadMore();
                 return;
             }
 
-            if (!isLoading &&
+            if (!onLoadMoreListener.isLoading() &&
                     (totalItemCount - visibleItemCount) <= firstOrLastVisibleItem + visibleThreshold) {
-                if (onLoadMoreListener != null) {
-                    onLoadMoreListener.loadMore();
-                }
-                isLoading = true;
+                onLoadMoreListener.loadMore();
             }
         }
     };
-
-
 
 
 }

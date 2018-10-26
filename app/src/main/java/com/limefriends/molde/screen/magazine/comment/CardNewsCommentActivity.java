@@ -1,8 +1,6 @@
 package com.limefriends.molde.screen.magazine.comment;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -83,6 +81,7 @@ public class CardNewsCommentActivity extends BaseActivity
     private boolean hasMoreToLoad = true;
     private boolean isReporting = false;
     private int cardNewsId;
+    private boolean isLoading;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -167,6 +166,11 @@ public class CardNewsCommentActivity extends BaseActivity
             public void loadMore() {
                 loadComment(cardNewsId, PER_PAGE, currentPage);
             }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
         });
     }
 
@@ -201,7 +205,7 @@ public class CardNewsCommentActivity extends BaseActivity
 
         if (!hasMoreToLoad) return;
 
-        comment_list_view.setIsLoading(true);
+        isLoading = true;
 
         mCompositeDisposable.add(
                 mCommentRepository
@@ -220,13 +224,13 @@ public class CardNewsCommentActivity extends BaseActivity
 
             @Override
             public void onError(Throwable e) {
-                comment_list_view.setIsLoading(false);
+                isLoading = false;
             }
 
             @Override
             public void onComplete() {
 
-                comment_list_view.setIsLoading(false);
+                isLoading = false;
 
                 if (data.size() == 0) {
                     setHasMoreToLoad(false);

@@ -1,4 +1,4 @@
-package com.limefriends.molde.screen.mypage;
+package com.limefriends.molde.screen.mypage.main;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;

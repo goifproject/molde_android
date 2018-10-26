@@ -7,7 +7,6 @@ import android.widget.ExpandableListView;
 
 public class AddOnScrollExpandableListView extends ExpandableListView {
 
-    private boolean isLoading = false;
     private int visibleThreshold = 1;
     private OnLoadMoreListener onLoadMoreListener;
 
@@ -21,12 +20,8 @@ public class AddOnScrollExpandableListView extends ExpandableListView {
         setOnScrollListener(scrollListener);
     }
 
-    public void setOnLoadMoreListener (OnLoadMoreListener listener) {
+    public void setOnLoadMoreListener(OnLoadMoreListener listener) {
         this.onLoadMoreListener = listener;
-    }
-
-    public void setIsLoading(boolean isLoading) {
-        this.isLoading = isLoading;
     }
 
     private OnScrollListener scrollListener = new OnScrollListener() {
@@ -40,12 +35,9 @@ public class AddOnScrollExpandableListView extends ExpandableListView {
 
             if (totalItemCount == visibleItemCount) return;
 
-            if (!isLoading &&
+            if (!onLoadMoreListener.isLoading() &&
                     (totalItemCount - visibleItemCount) <= firstVisibleItem + visibleThreshold) {
-                if (onLoadMoreListener != null) {
-                    onLoadMoreListener.loadMore();
-                }
-                isLoading = true;
+                onLoadMoreListener.loadMore();
             }
         }
     };

@@ -1,4 +1,4 @@
-package com.limefriends.molde.screen.magazine;
+package com.limefriends.molde.screen.magazine.main;
 
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -17,6 +17,8 @@ import com.limefriends.molde.model.repository.Repository;
 import com.limefriends.molde.R;
 import com.limefriends.molde.screen.common.controller.BaseFragment;
 import com.limefriends.molde.screen.common.screensNavigator.ActivityScreenNavigator;
+import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
+import com.limefriends.molde.screen.common.views.ViewFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +39,10 @@ public class CardNewsFragment extends BaseFragment {
     @BindView(R.id.manual_for_spreading)
     LinearLayout manual_for_spreading;
 
-    @Service private Repository.CardNews mCardNewsUseCase;
-    @Service private ActivityScreenNavigator mActivityScreenNavigator;
+    @Service
+    private Repository.CardNews mCardNewsUseCase;
+    @Service
+    private ActivityScreenNavigator mActivityScreenNavigator;
 
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private CardNewsAdapter cardNewsAdapter;
@@ -48,6 +52,7 @@ public class CardNewsFragment extends BaseFragment {
     private int currentPage = FIRST_PAGE;
     private boolean hasMoreToLoad = true;
     private boolean isFirstOnCreateView = true;
+    private boolean isLoading;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -105,6 +110,11 @@ public class CardNewsFragment extends BaseFragment {
                     public void loadMore() {
                         loadMagazine(PER_PAGE, currentPage);
                     }
+
+                    @Override
+                    public boolean isLoading() {
+                        return isLoading;
+                    }
                 });
     }
 
@@ -123,7 +133,7 @@ public class CardNewsFragment extends BaseFragment {
         if (!hasMoreToLoad) return;
 
         // 3. 스크롤에 의해서 다시 호출될 수 있기 때문에 로딩중임을 명시해 줌
-        cardnews_recyclerView.setIsLoading(true);
+        isLoading = true;
 
         List<CardNewsEntity> data = new ArrayList<>();
 
@@ -155,7 +165,7 @@ public class CardNewsFragment extends BaseFragment {
             public void onComplete() {
                 isFirstOnCreateView = false;
                 if (data.size() == 0) {
-                    cardnews_recyclerView.setIsLoading(false);
+                    isLoading = false;
                     hasMoreToLoad(false);
                     return;
                 } else if (data.size() < PER_PAGE) {
@@ -163,7 +173,7 @@ public class CardNewsFragment extends BaseFragment {
                 }
                 cardNewsAdapter.addData(data);
                 currentPage++;
-                cardnews_recyclerView.setIsLoading(false);
+                isLoading = false;
             }
         };
     }
@@ -177,6 +187,5 @@ public class CardNewsFragment extends BaseFragment {
         super.onDestroyView();
         mCompositeDisposable.clear();
     }
-
 
 }

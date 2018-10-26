@@ -7,6 +7,7 @@ import com.limefriends.molde.screen.common.dialog.DialogManager;
 import com.limefriends.molde.screen.common.screensNavigator.ActivityScreenNavigator;
 import com.limefriends.molde.screen.common.screensNavigator.FragmentScreenNavigator;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
+import com.limefriends.molde.screen.common.views.ViewFactory;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -97,6 +98,9 @@ public class Injector {
         }
         else if (type.equals(DialogFactory.class)) {
             return mPresentationCompositionRoot.getDialogFactory();
+        }
+        else if (type.equals(ViewFactory.class)) {
+            return mPresentationCompositionRoot.getViewFactory();
         }
         else {
             throw new RuntimeException("unsupported service type class: "+type);

@@ -38,6 +38,7 @@ public class MapFavoriteActivity extends BaseActivity
     public static final String DELETE_FAVORITE_DIALOG = "DELETE_FAVORITE_DIALOG";
     private int currentPage = FIRST_PAGE;
     private boolean hasMoreToLoad = true;
+    private boolean isLoading;
 
     @BindView(R.id.my_favorite_list_view)
     AddOnScrollRecyclerView my_favorite_list_view;
@@ -90,6 +91,11 @@ public class MapFavoriteActivity extends BaseActivity
             public void loadMore() {
                 loadFavorite(PER_PAGE, currentPage);
             }
+
+            @Override
+            public boolean isLoading() {
+                return false;
+            }
         });
     }
 
@@ -137,7 +143,7 @@ public class MapFavoriteActivity extends BaseActivity
 
         if (!hasMoreToLoad) return;
 
-        my_favorite_list_view.setIsLoading(true);
+        isLoading = true;
 
         String uId
                 = ((MoldeApplication)getApplication()).getFireBaseAuth().getCurrentUser().getUid();
@@ -150,7 +156,7 @@ public class MapFavoriteActivity extends BaseActivity
                                 data::addAll,
                                 err -> {},
                                 () -> {
-                                    my_favorite_list_view.setIsLoading(false);
+                                    isLoading = false;
 
                                     if (data.size() == 0) {
                                         setHasMoreToLoad(false);

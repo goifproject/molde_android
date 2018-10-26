@@ -1,4 +1,4 @@
-package com.limefriends.molde.screen.magazine;
+package com.limefriends.molde.screen.magazine.main;
 
 import android.content.Context;
 import android.content.Intent;

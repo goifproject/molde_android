@@ -17,6 +17,7 @@ import com.limefriends.molde.common.utils.DateUtil;
 import com.limefriends.molde.common.utils.NetworkUtil;
 import com.limefriends.molde.model.entity.feed.FeedEntity;
 import com.limefriends.molde.model.repository.Repository;
+import com.limefriends.molde.screen.common.addOnListview.OnLoadMoreListener;
 import com.limefriends.molde.screen.common.controller.BaseFragment;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 import com.limefriends.molde.screen.main.MoldeMainActivity;
@@ -44,6 +45,7 @@ public class FeedFragment extends BaseFragment implements FeedAdapter.OnClickFee
     AddOnScrollRecyclerView feed_list;
 
     private FeedAdapter feedAdapter;
+    private boolean isLoading;
 
     @Service private Repository.Feed mFeedRepository;
     @Service private ToastHelper mToastHelper;
@@ -141,25 +143,28 @@ public class FeedFragment extends BaseFragment implements FeedAdapter.OnClickFee
         }
         feed_list.setAdapter(feedAdapter);
         feed_list.setLayoutManager(new LinearLayoutManager(getContext()), false);
-        feed_list.setOnLoadMoreListener(() -> loadFeedData(feedStandard, PER_PAGE, currentPage));
+        feed_list.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void loadMore() {
+                loadFeedData(feedStandard, PER_PAGE, currentPage);
+            }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
+        });
     }
 
     //-----
     // Network
     //-----
-//
-//    private MoldeRestfulService.Feed getFeedService() {
-//        if (feedService == null) {
-//            feedService = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Feed.class);
-//        }
-//        return feedService;
-//    }
 
     private void loadFeedData(String feedStandard, int perPage, int page) {
 
         if (!hasMoreToLoad) return;
 
-        feed_list.setIsLoading(true);
+        isLoading = true;
 
         if (feedStandard.equals(FEED_BY_DISTANCE)) {
             fetchByLocation(perPage, page);
@@ -214,12 +219,12 @@ public class FeedFragment extends BaseFragment implements FeedAdapter.OnClickFee
 
             @Override
             public void onError(Throwable e) {
-                feed_list.setIsLoading(false);
+                isLoading = false;
             }
 
             @Override
             public void onComplete() {
-                feed_list.setIsLoading(false);
+                isLoading = false;
 
                 isFirstCall = false;
 

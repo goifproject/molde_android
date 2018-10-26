@@ -73,6 +73,7 @@ public class InquiryActivity extends BaseActivity {
     private final int FIRST_PAGE = 0;
     private int currentPage = FIRST_PAGE;
     private boolean hasMoreToLoad = true;
+    private boolean isLoading;
 
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
@@ -246,27 +247,6 @@ public class InquiryActivity extends BaseActivity {
                                 }
                         )
         );
-//
-//        Call<Result> call = faqService.createNewFaq(userId, userName, content, email);
-//
-//        progressBar.setVisibility(View.VISIBLE);
-//
-//        call.enqueue(new Callback<Result>() {
-//            @Override
-//            public void onResponse(Call<Result> call, Response<Result> response) {
-//                if (response.isSuccessful()) {
-//                    progressBar.setVisibility(View.INVISIBLE);
-//                    Toast.makeText(InquiryActivity.this,
-//                            getText(R.string.snackbar_inquire_accepted).toString(), Toast.LENGTH_SHORT).show();
-//                    finish();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Result> call, Throwable t) {
-//
-//            }
-//        });
     }
 
     private void loadInquiry() {
@@ -278,7 +258,7 @@ public class InquiryActivity extends BaseActivity {
 
         if (!hasMoreToLoad) return;
 
-        inquiry_recyclerview.setIsLoading(true);
+        isLoading = false;
 
         List<FaqEntity> data = new ArrayList<>();
         mCompositeDisposable.add(
@@ -288,7 +268,7 @@ public class InquiryActivity extends BaseActivity {
                                 e -> data.addAll(e),
                                 err -> { },
                                 () -> {
-                                    inquiry_recyclerview.setIsLoading(false);
+                                    isLoading = false;
 
                                     if (data.size() == 0) {
                                         hasMoreToLoad(false);
@@ -305,43 +285,6 @@ public class InquiryActivity extends BaseActivity {
                                 }
                         )
         );
-
-//
-//        MoldeRestfulService.Faq faqService
-//                = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Faq.class);
-//
-//        Call<FaqResponseSchema> call = faqService.getMyFaqList();
-//
-//        call.enqueue(new Callback<FaqResponseSchema>() {
-//            @Override
-//            public void onResponse(Call<FaqResponseSchema> call,
-//                                   Response<FaqResponseSchema> response) {
-//                if (response.isSuccessful()) {
-//
-//                    inquiry_recyclerview.setIsLoading(false);
-//
-//                    List<FaqSchema> schemas = response.body().getData();
-//
-//                    if (schemas == null || schemas.size() == 0) {
-//                        hasMoreToLoad(false);
-//                        return;
-//                    }
-//
-//                    List<FaqEntity> entities = FromSchemaToEntity.faq(schemas);
-//                    inquiryAdapter.addAll(entities);
-//                    currentPage++;
-//
-//                    if (entities.size() < PER_PAGE) {
-//                        hasMoreToLoad(false);
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<FaqResponseSchema> call, Throwable t) {
-//
-//            }
-//        });
     }
 
     private void hasMoreToLoad(boolean hasMore) {

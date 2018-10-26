@@ -57,6 +57,7 @@ public class MyFeedActivity extends BaseActivity implements MyFeedAdapter.OnItem
     private boolean hasMoreToLoad = true;
     private long authority;
     private String userId;
+    private boolean isLoading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +101,11 @@ public class MyFeedActivity extends BaseActivity implements MyFeedAdapter.OnItem
             public void loadMore() {
                 loadMyReport(PER_PAGE, currentPage);
             }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
         });
     }
 
@@ -135,47 +141,12 @@ public class MyFeedActivity extends BaseActivity implements MyFeedAdapter.OnItem
 
         if (!hasMoreToLoad) return;
 
-        myReport_recyclerView.setIsLoading(true);
+        isLoading = true;
 
         mCompositeDisposable.add(
                 generateCall(userId, perPage, page)
                     .subscribeWith(getDisposable())
         );
-
-//
-//        generateCall(userId, perPage, page).enqueue(new Callback<FeedResponseSchema>() {
-//            @Override
-//            public void onResponse(Call<FeedResponseSchema> call, Response<FeedResponseSchema> response) {
-//                if (response.isSuccessful()) {
-//
-//
-//                    // 8. 더 이상 데이터를 세팅중이 아님을 명시
-//                    myReport_recyclerView.setIsLoading(false);
-//
-//                    // 4. 호출 후 데이터 정리
-//                    List<FeedSchema> schemas = response.body().getData();
-//
-//                    if (schemas == null || schemas.size() == 0) {
-//                        setHasMoreToLoad(false);
-//                        return;
-//                    }
-//
-//                    List<FeedEntity> entities = FromSchemaToEntity.feed(schemas);
-//                    // 6. 데이터 추가
-//                    reportAdapter.addData(entities);
-//                    // 7. 추가 완료 후 다음 페이지로 넘어가도록 세팅
-//                    currentPage++;
-//
-//                    if (entities.size() < PER_PAGE) {
-//                        setHasMoreToLoad(false);
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<FeedResponseSchema> call, Throwable t) {
-//            }
-//        });
     }
 
     private DisposableObserver<List<FeedEntity>> getDisposable() {
@@ -193,7 +164,7 @@ public class MyFeedActivity extends BaseActivity implements MyFeedAdapter.OnItem
 
             @Override
             public void onComplete() {
-                myReport_recyclerView.setIsLoading(false);
+                isLoading = false;
 
                 if (entities.size() == 0) {
                     setHasMoreToLoad(false);

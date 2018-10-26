@@ -17,6 +17,7 @@ import com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView
 import com.limefriends.molde.common.utils.NetworkUtil;
 import com.limefriends.molde.model.entity.news.CardNewsEntity;
 import com.limefriends.molde.model.repository.Repository;
+import com.limefriends.molde.screen.common.addOnListview.OnLoadMoreListener;
 import com.limefriends.molde.screen.common.controller.BaseActivity;
 import com.limefriends.molde.screen.common.screensNavigator.ActivityScreenNavigator;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
@@ -51,6 +52,7 @@ public class ScrapActivity extends BaseActivity {
 
     private boolean hasMoreToLoad = true;
     private int selectedNewsPosition;
+    private boolean isLoading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +89,18 @@ public class ScrapActivity extends BaseActivity {
         myScrap_recyclerView.setAdapter(adapter);
         myScrap_recyclerView.setLayoutManager(
                 new GridLayoutManager(this, 2), true);
-        myScrap_recyclerView.setOnLoadMoreListener(() -> loadMyScrap(PER_PAGE, currentPage));
+        myScrap_recyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void loadMore() {
+                Log.e("호출확인", "2");
+                loadMyScrap(PER_PAGE, currentPage);
+            }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
+        });
     }
 
     @Override
@@ -112,7 +125,7 @@ public class ScrapActivity extends BaseActivity {
 
         if (!hasMoreToLoad) return;
 
-        myScrap_recyclerView.setIsLoading(true);
+        isLoading = true;
 
         progressBar.setVisibility(View.VISIBLE);
 
@@ -160,14 +173,14 @@ public class ScrapActivity extends BaseActivity {
             public void onComplete() {
                 if (data.size() == 0) {
                     hasMoreToLoad(false);
-                    myScrap_recyclerView.setIsLoading(false);
+                    isLoading = false;
                     progressBar.setVisibility(View.GONE);
                     return;
                 }
                 progressBar.setVisibility(View.GONE);
                 adapter.addData(data);
                 currentPage++;
-                myScrap_recyclerView.setIsLoading(false);
+                isLoading = false;
                 if (data.size() < PER_PAGE) {
                     hasMoreToLoad(false);
                 }

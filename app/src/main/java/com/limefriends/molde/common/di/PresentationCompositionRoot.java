@@ -2,6 +2,7 @@ package com.limefriends.molde.common.di;
 
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.view.LayoutInflater;
 
 import com.limefriends.molde.common.FromSchemaToEntity;
 import com.limefriends.molde.screen.common.bottomNavigationViewHelper.BottomNavigationViewHelper;
@@ -20,6 +21,7 @@ import com.limefriends.molde.screen.common.dialog.DialogManager;
 import com.limefriends.molde.screen.common.screensNavigator.ActivityScreenNavigator;
 import com.limefriends.molde.screen.common.screensNavigator.FragmentScreenNavigator;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
+import com.limefriends.molde.screen.common.views.ViewFactory;
 
 public class PresentationCompositionRoot {
 
@@ -40,6 +42,9 @@ public class PresentationCompositionRoot {
         return getActivity().getSupportFragmentManager();
     }
 
+    private LayoutInflater getLayoutInflater() {
+        return getActivity().getLayoutInflater();
+    }
 
     /**
      * RestfulService
@@ -111,6 +116,9 @@ public class PresentationCompositionRoot {
         return new DialogFactory();
     }
 
+    public ViewFactory getViewFactory() {
+        return new ViewFactory(getLayoutInflater());
+    }
 
     /**
      * UseCase
