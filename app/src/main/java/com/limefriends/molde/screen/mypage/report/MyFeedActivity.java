@@ -96,16 +96,9 @@ public class MyFeedActivity extends BaseActivity implements MyFeedAdapter.OnItem
         reportAdapter = new MyFeedAdapter(this, this);
         myReport_recyclerView.setAdapter(reportAdapter);
         myReport_recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()), false);
-        myReport_recyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void loadMore() {
-                loadMyReport(PER_PAGE, currentPage);
-            }
-
-            @Override
-            public boolean isLoading() {
-                return isLoading;
-            }
+        myReport_recyclerView.setOnLoadMoreListener(() -> {
+            if (isLoading) return;
+            loadMyReport(PER_PAGE, currentPage);
         });
     }
 

@@ -126,30 +126,16 @@ public class MyCommentActivity
             reportedCommentAdapter = new ReportedCommentAdapter(this, this);
             myComment_reported_comment_listview.setAdapter(reportedCommentAdapter);
             myComment_reported_comment_listview.setLayoutManager(new LinearLayoutManager(this), false);
-            myComment_reported_comment_listview.setOnLoadMoreListener(new OnLoadMoreListener() {
-                @Override
-                public void loadMore() {
-                    loadReportedComment(PER_PAGE, currentPage);
-                }
-
-                @Override
-                public boolean isLoading() {
-                    return isLoading;
-                }
+            myComment_reported_comment_listview.setOnLoadMoreListener(() -> {
+                if (isLoading) return;
+                loadReportedComment(PER_PAGE, currentPage);
             });
         } else {
             commentExpandableAdapter = new MyCommentExpandableAdapter(this);
             myComment_listView.setAdapter(commentExpandableAdapter);
-            myComment_listView.setOnLoadMoreListener(new OnLoadMoreListener() {
-                @Override
-                public void loadMore() {
-                    loadComment(PER_PAGE, currentPage);
-                }
-
-                @Override
-                public boolean isLoading() {
-                    return isLoading;
-                }
+            myComment_listView.setOnLoadMoreListener(() -> {
+                if (isLoading) return;
+                loadComment(PER_PAGE, currentPage);
             });
             myComment_listView.setGroupIndicator(null);
             myComment_listView.setChildIndicator(null);

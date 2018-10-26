@@ -3,6 +3,9 @@ package com.limefriends.molde.screen.common.views;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.limefriends.molde.screen.magazine.main.view.CardNewsView;
+import com.limefriends.molde.screen.magazine.main.view.CardNewsViewImpl;
+
 import javax.annotation.Nullable;
 
 public class ViewFactory {

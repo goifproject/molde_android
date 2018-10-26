@@ -44,6 +44,7 @@ public class CardNewsFragment extends BaseFragment {
     @Service
     private ActivityScreenNavigator mActivityScreenNavigator;
 
+
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private CardNewsAdapter cardNewsAdapter;
 
@@ -105,16 +106,9 @@ public class CardNewsFragment extends BaseFragment {
                 new GridLayoutManager(getContext(), 2), true);
         // 3. loadMore
         cardnews_recyclerView.setOnLoadMoreListener(
-                new OnLoadMoreListener() {
-                    @Override
-                    public void loadMore() {
-                        loadMagazine(PER_PAGE, currentPage);
-                    }
-
-                    @Override
-                    public boolean isLoading() {
-                        return isLoading;
-                    }
+                () -> {
+                    if (isLoading) return;
+                    loadMagazine(PER_PAGE, currentPage);
                 });
     }
 

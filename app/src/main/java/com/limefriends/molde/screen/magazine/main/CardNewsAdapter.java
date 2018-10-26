@@ -28,7 +28,7 @@ public class CardNewsAdapter extends RecyclerView.Adapter<CardNewsAdapter.Magazi
 
     private List<CardNewsEntity> entities = new ArrayList<>();
 
-    CardNewsAdapter(Context context) {
+    public CardNewsAdapter(Context context) {
         this.context = context;
     }
 

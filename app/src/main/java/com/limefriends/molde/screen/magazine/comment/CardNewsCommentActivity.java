@@ -21,7 +21,6 @@ import com.limefriends.molde.R;
 import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.common.MoldeApplication;
 import com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView;
-import com.limefriends.molde.screen.common.addOnListview.OnLoadMoreListener;
 import com.limefriends.molde.common.utils.NetworkUtil;
 import com.limefriends.molde.model.entity.comment.CommentEntity;
 import com.limefriends.molde.model.repository.Repository;
@@ -161,16 +160,9 @@ public class CardNewsCommentActivity extends BaseActivity
                 = new CardNewsCommentRecyclerAdapter(this, this);
         comment_list_view.setAdapter(cardNewsCommentRecyclerAdapter);
         comment_list_view.setLayoutManager(new LinearLayoutManager(this), false);
-        comment_list_view.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void loadMore() {
-                loadComment(cardNewsId, PER_PAGE, currentPage);
-            }
-
-            @Override
-            public boolean isLoading() {
-                return isLoading;
-            }
+        comment_list_view.setOnLoadMoreListener(() -> {
+            if (isLoading) return;
+            loadComment(cardNewsId, PER_PAGE, currentPage);
         });
     }
 

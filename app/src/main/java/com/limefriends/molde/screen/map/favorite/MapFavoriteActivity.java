@@ -86,16 +86,9 @@ public class MapFavoriteActivity extends BaseActivity
         myFavoriteAdapter.setMoldeMyFavoriteAdapterCallBack(this);
         my_favorite_list_view.setAdapter(myFavoriteAdapter);
         my_favorite_list_view.setLayoutManager(new LinearLayoutManager(getApplicationContext()), false);
-        my_favorite_list_view.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void loadMore() {
-                loadFavorite(PER_PAGE, currentPage);
-            }
-
-            @Override
-            public boolean isLoading() {
-                return false;
-            }
+        my_favorite_list_view.setOnLoadMoreListener(() -> {
+            if (isLoading) return;
+            loadFavorite(PER_PAGE, currentPage);
         });
     }
 

@@ -17,7 +17,6 @@ import com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView
 import com.limefriends.molde.common.utils.NetworkUtil;
 import com.limefriends.molde.model.entity.news.CardNewsEntity;
 import com.limefriends.molde.model.repository.Repository;
-import com.limefriends.molde.screen.common.addOnListview.OnLoadMoreListener;
 import com.limefriends.molde.screen.common.controller.BaseActivity;
 import com.limefriends.molde.screen.common.screensNavigator.ActivityScreenNavigator;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
@@ -89,17 +88,9 @@ public class ScrapActivity extends BaseActivity {
         myScrap_recyclerView.setAdapter(adapter);
         myScrap_recyclerView.setLayoutManager(
                 new GridLayoutManager(this, 2), true);
-        myScrap_recyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void loadMore() {
-                Log.e("호출확인", "2");
-                loadMyScrap(PER_PAGE, currentPage);
-            }
-
-            @Override
-            public boolean isLoading() {
-                return isLoading;
-            }
+        myScrap_recyclerView.setOnLoadMoreListener(() -> {
+            if (isLoading) return;
+            loadMyScrap(PER_PAGE, currentPage);
         });
     }
 

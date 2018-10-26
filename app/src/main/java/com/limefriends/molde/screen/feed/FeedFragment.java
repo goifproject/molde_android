@@ -143,16 +143,9 @@ public class FeedFragment extends BaseFragment implements FeedAdapter.OnClickFee
         }
         feed_list.setAdapter(feedAdapter);
         feed_list.setLayoutManager(new LinearLayoutManager(getContext()), false);
-        feed_list.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void loadMore() {
-                loadFeedData(feedStandard, PER_PAGE, currentPage);
-            }
-
-            @Override
-            public boolean isLoading() {
-                return isLoading;
-            }
+        feed_list.setOnLoadMoreListener(() -> {
+            if (isLoading) return;
+            loadFeedData(feedStandard, PER_PAGE, currentPage);
         });
     }
 

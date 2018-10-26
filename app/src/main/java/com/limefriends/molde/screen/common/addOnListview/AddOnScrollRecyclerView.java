@@ -55,13 +55,12 @@ public class AddOnScrollRecyclerView extends RecyclerView {
                 firstOrLastVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
             }
 
-            if (totalItemCount == visibleItemCount && !onLoadMoreListener.isLoading()) {
+            if (totalItemCount == visibleItemCount) {
                 onLoadMoreListener.loadMore();
                 return;
             }
 
-            if (!onLoadMoreListener.isLoading() &&
-                    (totalItemCount - visibleItemCount) <= firstOrLastVisibleItem + visibleThreshold) {
+            if ((totalItemCount - visibleItemCount) <= firstOrLastVisibleItem + visibleThreshold) {
                 onLoadMoreListener.loadMore();
             }
         }

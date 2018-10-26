@@ -35,8 +35,7 @@ public class AddOnScrollExpandableListView extends ExpandableListView {
 
             if (totalItemCount == visibleItemCount) return;
 
-            if (!onLoadMoreListener.isLoading() &&
-                    (totalItemCount - visibleItemCount) <= firstVisibleItem + visibleThreshold) {
+            if ((totalItemCount - visibleItemCount) <= firstVisibleItem + visibleThreshold) {
                 onLoadMoreListener.loadMore();
             }
         }
