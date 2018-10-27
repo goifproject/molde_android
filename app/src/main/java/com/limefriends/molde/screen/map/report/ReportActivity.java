@@ -446,44 +446,6 @@ public class ReportActivity extends BaseActivity implements View.OnClickListener
                     )
                     .subscribeWith(getReportFeedObserver())
             );
-
-
-
-//            MoldeRestfulService.Feed feedService
-//                    = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Feed.class);
-//
-//            Call<Result> moldeReportEntityCall = feedService.reportNewFeed3(
-//                    reportUserId,
-//                    reportUserName,
-//                    reportEmail,
-//                    reportContent,
-//                    reportLat,
-//                    reportLng,
-//                    reportAddress,
-//                    reportDetailAddress,
-//                    reportState,
-//                    System.currentTimeMillis(),
-//                    imageMultiParts
-//            );
-//
-//            moldeReportEntityCall.enqueue(new Callback<Result>() {
-//                @Override
-//                public void onResponse(Call<Result> call, Response<Result> response) {
-//                    if (response.isSuccessful()) {
-//                        // TODO 1 여기서 finish() 잠시 두고 3-5대 열어놓고 연속으로 누르면서 부하를 얼만큼 버티는지 알아보자
-//                        // TODO 2 해당 지역이면 바로 반영될 수 있도록 할 것
-//                        progressBar.setVisibility(View.INVISIBLE);
-//                        Toast.makeText(ReportActivity.this,
-//                                R.string.snackbar_report_success, Toast.LENGTH_LONG).show();
-//                        finish();
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(Call<Result> call, Throwable t) {
-//                    snack(getText(R.string.snackbar_network_error).toString());
-//                }
-//            });
         } else {
             snack(getText(R.string.snackbar_wrong_email_form).toString());
         }
@@ -493,7 +455,11 @@ public class ReportActivity extends BaseActivity implements View.OnClickListener
         return new DisposableObserver<Result>() {
             @Override
             public void onNext(Result result) {
+                progressBar.setVisibility(View.INVISIBLE);
 
+                mToastHelper.showShortToast(getText(R.string.snackbar_report_success).toString());
+
+                finish();
             }
 
             @Override
@@ -503,11 +469,7 @@ public class ReportActivity extends BaseActivity implements View.OnClickListener
 
             @Override
             public void onComplete() {
-                progressBar.setVisibility(View.INVISIBLE);
 
-                mToastHelper.showShortToast(getText(R.string.snackbar_report_success).toString());
-
-                finish();
             }
         };
     }

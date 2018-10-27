@@ -31,6 +31,7 @@ import com.limefriends.molde.R;
 import com.limefriends.molde.model.entity.faq.FaqEntity;
 import com.limefriends.molde.model.repository.Repository;
 import com.limefriends.molde.screen.common.controller.BaseActivity;
+import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,6 +79,7 @@ public class InquiryActivity extends BaseActivity {
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
     @Service private Repository.Faq mFaqRepository;
+    @Service private ToastHelper mToastHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -228,33 +230,22 @@ public class InquiryActivity extends BaseActivity {
 
     private void inquire(String userId, String userName, String content, String email) {
 
-        if (!NetworkUtil.isConnected(this)) {
-            Toast.makeText(this, "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
-            return;
-        }
-
         mCompositeDisposable.add(
                 mFaqRepository
                         .createNewFaq(userId, userName, content, email)
                         .subscribe(
-                                e -> {},
-                                err -> {},
-                                () -> {
+                                e -> {
                                     progressBar.setVisibility(View.INVISIBLE);
-                                    Toast.makeText(InquiryActivity.this,
-                                            getText(R.string.snackbar_inquire_accepted).toString(), Toast.LENGTH_SHORT).show();
+                                    mToastHelper.showShortToast(getText(R.string.snackbar_inquire_accepted).toString());
                                     finish();
-                                }
+                                },
+                                err -> {},
+                                () -> {}
                         )
         );
     }
 
     private void loadInquiry() {
-
-        if (!NetworkUtil.isConnected(this)) {
-            Toast.makeText(this, "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
-            return;
-        }
 
         if (!hasMoreToLoad) return;
 
@@ -265,7 +256,7 @@ public class InquiryActivity extends BaseActivity {
                 mFaqRepository
                         .getFaqList()
                         .subscribe(
-                                e -> data.addAll(e),
+                                data::addAll,
                                 err -> { },
                                 () -> {
                                     isLoading = false;

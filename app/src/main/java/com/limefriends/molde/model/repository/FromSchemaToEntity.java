@@ -1,6 +1,5 @@
-package com.limefriends.molde.common;
+package com.limefriends.molde.model.repository;
 
-import com.limefriends.molde.common.Constant;
 import com.limefriends.molde.model.entity.comment.CommentEntity;
 import com.limefriends.molde.networking.schema.comment.CommentSchema;
 import com.limefriends.molde.model.entity.comment.ReportedCommentEntity;

@@ -1,14 +1,14 @@
 package com.limefriends.molde.model.repository.usecase;
 
-import android.util.Log;
-
-import com.limefriends.molde.common.FromSchemaToEntity;
+import com.limefriends.molde.model.repository.FromSchemaToEntity;
 import com.limefriends.molde.model.entity.comment.CommentEntity;
 import com.limefriends.molde.model.entity.comment.ReportedCommentEntity;
 import com.limefriends.molde.model.entity.news.CardNewsEntity;
 import com.limefriends.molde.model.repository.Repository;
+import com.limefriends.molde.networking.NetworkHelper;
 import com.limefriends.molde.networking.schema.response.Result;
 import com.limefriends.molde.networking.service.MoldeRestfulService;
+import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 
 import java.util.List;
 
@@ -16,29 +16,35 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class CommentUseCase implements Repository.Comment {
+public class CommentUseCase extends BaseNetworkUseCase implements Repository.Comment {
 
     private final MoldeRestfulService.Comment mCommentService;
     private final MoldeRestfulService.CardNews mCardNewsService;
-    private final FromSchemaToEntity mFromSchemaToEntity;
 
     public CommentUseCase(MoldeRestfulService.Comment commentService,
                           MoldeRestfulService.CardNews cardNewsService,
-                          FromSchemaToEntity fromSchemaToEntity) {
+                          FromSchemaToEntity fromSchemaToEntity,
+                          ToastHelper toastHelper,
+                          NetworkHelper networkHelper) {
+        super(fromSchemaToEntity, toastHelper, networkHelper);
+
         this.mCommentService = commentService;
         this.mCardNewsService = cardNewsService;
-        this.mFromSchemaToEntity = fromSchemaToEntity;
     }
 
 
     @Override
     public Observable<List<CommentEntity>> getNewsComment(int newsId, int perPage, int page) {
+
+        if (!isNetworkConnected()) return Observable.empty();
+
         return mCommentService
                 .getNewsCommentObservable(newsId, perPage, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap(commentResponseSchema -> {
-                    List<CommentEntity> entities = mFromSchemaToEntity.commentNS(commentResponseSchema.getData());
+                    List<CommentEntity> entities
+                            = getFromSchemaToEntity().commentNS(commentResponseSchema.getData());
                     return entities == null ? Observable.empty() : Observable.just(entities);
                 });
     }
@@ -53,13 +59,15 @@ public class CommentUseCase implements Repository.Comment {
     @Override
     public Observable<CardNewsEntity> getMyComment(List<CardNewsEntity> lastEntities,
                                                    String userId, int perPage, int page) {
+
+        if (!isNetworkConnected()) return Observable.empty();
+
         return mCommentService
                 .getMyCommentObservable(userId, perPage, page)
 
                 .flatMap(commentResponseSchema -> {
-                    Log.e("Thread1", Thread.currentThread().getName());
                     List<CommentEntity> entities
-                            = mFromSchemaToEntity.commentNS(commentResponseSchema.getData());
+                            = getFromSchemaToEntity().commentNS(commentResponseSchema.getData());
                     return entities == null ? Observable.empty() : Observable.fromIterable(entities);
                 })
                 .filter(commentEntity -> {
@@ -68,7 +76,6 @@ public class CommentUseCase implements Repository.Comment {
 
                     for (CardNewsEntity entity : lastEntities) {
                         if (entity.getNewsId() == commentEntity.getNewsId()) {
-                            Log.e("Thread2 - skip", Thread.currentThread().getName());
                             parentNewsAbsent = false;
                             entity.addComments(commentEntity);
                             break;
@@ -76,23 +83,16 @@ public class CommentUseCase implements Repository.Comment {
                     }
                     return parentNewsAbsent;
                 })
-                .concatMap(commentEntity -> {
-                    Log.e("Thread3", Thread.currentThread().getName());
-                    // currentComment.add(commentEntity);
-                    return mCardNewsService
-                            .getCardNewsByIdObservable(commentEntity.getNewsId())
-                            .map(cardNewsResponseSchema -> {
-                                Log.e("Thread4", Thread.currentThread().getName());
-                                CardNewsEntity newsEntity
-                                        = mFromSchemaToEntity.cardNewsNS(cardNewsResponseSchema.getData().get(0));
-//                                newsEntity.addComments(currentComment.get(0));
-//                                currentComment.clear();
-                                newsEntity.addComments(commentEntity);
-                                lastEntities.add(newsEntity);
-                                Log.e("Thread5", Thread.currentThread().getName());
-                                return newsEntity;
-                            });
-                })
+                .concatMap(commentEntity ->
+                        mCardNewsService
+                                .getCardNewsByIdObservable(commentEntity.getNewsId())
+                                .map(cardNewsResponseSchema -> {
+                                    CardNewsEntity newsEntity
+                                            = getFromSchemaToEntity().cardNewsNS(cardNewsResponseSchema.getData().get(0));
+                                    newsEntity.addComments(commentEntity);
+                                    lastEntities.add(newsEntity);
+                                    return newsEntity;
+                                }))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -100,32 +100,33 @@ public class CommentUseCase implements Repository.Comment {
 
     @Override
     public Observable<CommentEntity> getReportedComment(int perPage, int page) {
+
+        if (!isNetworkConnected()) return Observable.empty();
+
         return mCommentService
                 .getReportedCommentObservable(perPage, page)
                 .subscribeOn(Schedulers.io())
                 .flatMap(reportedCommentResponseSchema -> {
-                    Log.e("Thread1", Thread.currentThread().getName());
                     List<ReportedCommentEntity> entities
-                            = mFromSchemaToEntity.reportedCommentNS(reportedCommentResponseSchema.getData());
+                            = getFromSchemaToEntity().reportedCommentNS(reportedCommentResponseSchema.getData());
                     return entities == null ? Observable.empty() : Observable.fromIterable(entities);
                 })
-                .flatMap(reportedCommentEntity -> {
-                    Log.e("Thread2", Thread.currentThread().getName());
-                    return mCommentService
-                            .getReportedCommentDetailObservable(reportedCommentEntity.getCommId())
-                            .subscribeOn(Schedulers.io());
-                })
+                .flatMap(reportedCommentEntity ->
+                        mCommentService
+                                .getReportedCommentDetailObservable(reportedCommentEntity.getCommId())
+                                .subscribeOn(Schedulers.io()))
                 .filter(commentResponseSchema -> commentResponseSchema.getData().size() != 0)
-                .flatMap(commentResponseSchema -> {
-                    Log.e("Thread3", Thread.currentThread().getName());
-                    return Observable.just(mFromSchemaToEntity.commentNS(commentResponseSchema.getData().get(0)));
-                })
+                .flatMap(commentResponseSchema ->
+                        Observable.just(getFromSchemaToEntity().commentNS(commentResponseSchema.getData().get(0))))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
     public Observable<Result> createNewComment(String userId, String userName, int newsId, String content, String regiDate) {
+
+        if (!isNetworkConnected()) return Observable.empty();
+
         return mCommentService
                 .createNewCommentObservable(userId, userName, newsId, content, regiDate)
                 .subscribeOn(Schedulers.io())
@@ -134,6 +135,9 @@ public class CommentUseCase implements Repository.Comment {
 
     @Override
     public Observable<Result> reportComment(String uId, int commentId) {
+
+        if (!isNetworkConnected()) return Observable.empty();
+
         return mCommentService
                 .reportCommentObservable(uId, commentId)
                 .subscribeOn(Schedulers.io())
@@ -142,6 +146,9 @@ public class CommentUseCase implements Repository.Comment {
 
     @Override
     public Observable<Result> deleteComment(int commentId) {
+
+        if (!isNetworkConnected()) return Observable.empty();
+
         return mCommentService
                 .deleteCommentObservable(commentId)
                 .subscribeOn(Schedulers.io())
@@ -150,6 +157,9 @@ public class CommentUseCase implements Repository.Comment {
 
     @Override
     public Observable<Result> deleteReportedComment(int commentUserId) {
+
+        if (!isNetworkConnected()) return Observable.empty();
+
         return mCommentService
                 .deleteReportedCommentObservable(commentUserId)
                 .subscribeOn(Schedulers.io())

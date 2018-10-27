@@ -1,21 +1,19 @@
 package com.limefriends.molde.screen.magazine.main.view;
 
 import android.support.v7.widget.GridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.limefriends.molde.R;
+import com.limefriends.molde.model.entity.news.CardNewsEntity;
 import com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView;
-import com.limefriends.molde.screen.common.addOnListview.OnLoadMoreListener;
 import com.limefriends.molde.screen.common.views.BaseObservableView;
 import com.limefriends.molde.screen.magazine.main.CardNewsAdapter;
 
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class CardNewsViewImpl
         extends BaseObservableView<CardNewsView.Listener> implements CardNewsView {
@@ -24,7 +22,7 @@ public class CardNewsViewImpl
     private LinearLayout manual_new_molca;
     private LinearLayout manual_by_location;
     private LinearLayout manual_for_spreading;
-
+    
     private CardNewsAdapter cardNewsAdapter;
 
     public CardNewsViewImpl(LayoutInflater inflater, ViewGroup parent) {
@@ -39,7 +37,7 @@ public class CardNewsViewImpl
         cardnews_recyclerView = findViewById(R.id.cardnews_recyclerView);
         manual_new_molca = findViewById(R.id.manual_new_molca);
         manual_by_location = findViewById(R.id.manual_by_location);
-        manual_for_spreading = findViewById(R.id.spread_inside);
+        manual_for_spreading = findViewById(R.id.manual_for_spreading);
 
         setupViewElevation();
 
@@ -88,5 +86,10 @@ public class CardNewsViewImpl
                         listener.onLoadMore();
                     }
                 });
+    }
+
+    @Override
+    public void bindCardNews(List<CardNewsEntity> cardNewsEntities) {
+        cardNewsAdapter.addData(cardNewsEntities);
     }
 }

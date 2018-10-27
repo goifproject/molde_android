@@ -786,11 +786,6 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
 
     private void loadReport(int reportId) {
 
-        if (!NetworkUtil.isConnected(this)) {
-            mToastHelper.showNetworkError();
-            return;
-        }
-
         mCompositeDisposable.add(
                 mFeedRepository
                         .getFeedById(reportId)
@@ -846,11 +841,6 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
 
     public void deleteReport(int reportId) {
 
-        if (!NetworkUtil.isConnected(this)) {
-            mToastHelper.showNetworkError();
-            return;
-        }
-
         FirebaseAuth auth = ((MoldeApplication) getApplication()).getFireBaseAuth();
 
         String uId = auth.getCurrentUser().getUid();
@@ -866,16 +856,6 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
         return new DisposableObserver<Result>() {
             @Override
             public void onNext(Result result) {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
                 isloading = false;
 
                 mToastHelper.showShortToast("신고를 취소했습니다.");
@@ -885,15 +865,20 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
                 setResult(RESULT_OK, intent);
                 finish();
             }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
         };
     }
 
     public void updateReport(int reportId, final int state) {
-
-        if (!NetworkUtil.isConnected(this)) {
-            mToastHelper.showNetworkError();
-            return;
-        }
 
         isloading = true;
 
@@ -908,19 +893,6 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
         return new DisposableObserver<Result>() {
             @Override
             public void onNext(Result result) {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                mToastHelper.showNetworkError();
-            }
-
-            @Override
-            public void onComplete() {
-
-
-
                 changeAdminProgress(state);
                 isloading = false;
 
@@ -935,6 +907,16 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
                     mToastHelper.showShortToast("신고 상태가 변경되었습니다.");
                 }
             }
+
+            @Override
+            public void onError(Throwable e) {
+                mToastHelper.showNetworkError();
+            }
+
+            @Override
+            public void onComplete() {
+                isloading = false;
+            }
         };
     }
 
@@ -944,11 +926,6 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
     }
 
     public void reportInspection() {
-
-        if (!NetworkUtil.isConnected(this)) {
-            Toast.makeText(this, "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
-            return;
-        }
 
         if (feedEntity.getRepState() != FOUND && progress_checkbox_admin_found.isChecked()) {
             List<MultipartBody.Part> imageMultiParts = new ArrayList<>();

@@ -4,7 +4,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 
-import com.limefriends.molde.common.FromSchemaToEntity;
+import com.limefriends.molde.model.repository.FromSchemaToEntity;
+import com.limefriends.molde.networking.NetworkHelper;
 import com.limefriends.molde.screen.common.bottomNavigationViewHelper.BottomNavigationViewHelper;
 import com.limefriends.molde.model.repository.Repository;
 import com.limefriends.molde.model.repository.usecase.CardNewsUseCase;
@@ -82,14 +83,22 @@ public class PresentationCompositionRoot {
         return mCompositionRoot.getScrapRestfulService();
     }
 
-
     /**
-     * View
+     * Controller Helpers
      */
 
     private FromSchemaToEntity getFromSchemaToEntity() {
         return new FromSchemaToEntity();
     }
+
+    private NetworkHelper getNetworkHelper() {
+        return new NetworkHelper(getActivity());
+    }
+
+    /**
+     * View
+     */
+
 
     public ActivityScreenNavigator getActivityScreenNavigator() {
         return new ActivityScreenNavigator(getActivity());
@@ -127,16 +136,16 @@ public class PresentationCompositionRoot {
     public Repository.CardNews getCardNewsUseCase() {
         return new CardNewsUseCase(
                 getCardNewsRestfulService(),
-                getFromSchemaToEntity()
-        );
+                getFromSchemaToEntity(),
+                getToastHelper(),
+                getNetworkHelper());
     }
 
     public Repository.Scrap getScrapUseCase() {
         return new ScrapUseCase(
                 getScrapRestfulService(),
                 getCardNewsRestfulService(),
-                getFromSchemaToEntity()
-        );
+                getFromSchemaToEntity());
     }
 
     public Repository.Feed getFeedUseCase() {
@@ -147,26 +156,35 @@ public class PresentationCompositionRoot {
     }
 
     public Repository.FeedResult getFeedResultUseCase() {
-        return new FeedResultUseCase(getFeedResultRestfulService());
+        return new FeedResultUseCase(
+                getFeedResultRestfulService(),
+                getToastHelper(),
+                getNetworkHelper());
     }
 
     public Repository.Comment getCommentUseCase() {
         return new CommentUseCase(
                 getCommentRestfulService(),
                 getCardNewsRestfulService(),
-                getFromSchemaToEntity());
+                getFromSchemaToEntity(),
+                getToastHelper(),
+                getNetworkHelper());
     }
 
     public Repository.Faq getFaqUseCase() {
         return new FaqUseCase(
                 getFaqRestfulService(),
-                getFromSchemaToEntity());
+                getFromSchemaToEntity(),
+                getToastHelper(),
+                getNetworkHelper());
     }
 
     public Repository.Favorite getFavoriteUseCase() {
         return new FavoriteUseCase(
                 getFavoriteRestfulService(),
-                getFromSchemaToEntity());
+                getFromSchemaToEntity(),
+                getToastHelper(),
+                getNetworkHelper());
     }
 
     public Repository.Safehouse getSafehouseUseCase() {

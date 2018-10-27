@@ -109,11 +109,6 @@ public class ScrapActivity extends BaseActivity {
 
     private void loadMyScrap(int perPage, int page) {
 
-        if (!NetworkUtil.isConnected(this)) {
-            mToastHelper.showNetworkError();
-            return;
-        }
-
         if (!hasMoreToLoad) return;
 
         isLoading = true;

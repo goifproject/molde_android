@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.limefriends.molde.R;
 import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.common.MoldeApplication;
+import com.limefriends.molde.networking.schema.response.Result;
 import com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView;
 import com.limefriends.molde.common.utils.NetworkUtil;
 import com.limefriends.molde.model.entity.comment.CommentEntity;
@@ -190,11 +191,6 @@ public class CardNewsCommentActivity extends BaseActivity
 
     private void loadComment(int cardNewsId, int perPage, int page) {
 
-        if (!NetworkUtil.isConnected(this)) {
-            mToastHelper.showNetworkError();
-            return;
-        }
-
         if (!hasMoreToLoad) return;
 
         isLoading = true;
@@ -244,29 +240,19 @@ public class CardNewsCommentActivity extends BaseActivity
     private void addToComment(final String userId, final String userName,
                               final int newsId, final String content, final String regiDate) {
 
-        if (!NetworkUtil.isConnected(this)) {
-            mToastHelper.showNetworkError();
-            return;
-        }
-
         mCompositeDisposable.add(
                 mCommentRepository
                         .createNewComment(userId, userName, newsId, content, regiDate)
                         .subscribe(
-                                e -> {},
+                                e -> cardNewsCommentRecyclerAdapter.addData(
+                                        new CommentEntity(userId, userName, newsId, content, regiDate)),
                                 err -> {},
-                                () -> cardNewsCommentRecyclerAdapter.addData(
-                                        new CommentEntity(userId, userName, newsId, content, regiDate))
+                                () -> {}
                         )
         );
     }
 
     public void reportComment(int commentId) {
-
-        if (!NetworkUtil.isConnected(this)) {
-            mToastHelper.showNetworkError();
-            return;
-        }
 
         FirebaseAuth auth = ((MoldeApplication) getApplication()).getFireBaseAuth();
 
@@ -289,9 +275,8 @@ public class CardNewsCommentActivity extends BaseActivity
                                         }
                                     },
                                     err -> {},
-                                    () -> {
-                                        isReporting = false;
-                                    }
+                                    () -> isReporting = false
+
                             )
             );
         } else {

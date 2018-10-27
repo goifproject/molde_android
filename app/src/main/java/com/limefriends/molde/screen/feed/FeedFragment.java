@@ -168,11 +168,6 @@ public class FeedFragment extends BaseFragment implements FeedAdapter.OnClickFee
 
     private void fetchByLocation(int perPage, int page) {
 
-        if (!NetworkUtil.isConnected(getContext())) {
-            mToastHelper.showNetworkError();
-            return;
-        }
-
         LatLng latLng = ((MoldeApplication) getActivity().getApplication()).getCurrLocation();
 
         mCompositeDisposable.add(
@@ -183,11 +178,6 @@ public class FeedFragment extends BaseFragment implements FeedAdapter.OnClickFee
     }
 
     private void fetchByDate(int perPage, int page) {
-
-        if (!NetworkUtil.isConnected(getContext())) {
-            mToastHelper.showNetworkError();
-            return;
-        }
 
         mCompositeDisposable.add(
                 mFeedRepository

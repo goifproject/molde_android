@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.limefriends.molde.R;
 import com.limefriends.molde.common.utils.NetworkUtil;
-import com.limefriends.molde.common.FromSchemaToEntity;
+import com.limefriends.molde.model.repository.FromSchemaToEntity;
 import com.limefriends.molde.model.entity.feed.FeedEntity;
 import com.limefriends.molde.networking.schema.feed.FeedResponseSchema;
 import com.limefriends.molde.networking.MoldeNetwork;

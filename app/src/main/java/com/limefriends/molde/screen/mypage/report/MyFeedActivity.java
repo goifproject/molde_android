@@ -19,6 +19,7 @@ import com.limefriends.molde.model.entity.feed.FeedEntity;
 import com.limefriends.molde.model.repository.Repository;
 import com.limefriends.molde.screen.common.controller.BaseActivity;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
+import com.limefriends.molde.screen.common.views.ObservableView;
 import com.limefriends.molde.screen.feed.FeedDetailActivity;
 
 import java.util.ArrayList;
@@ -46,8 +47,10 @@ public class MyFeedActivity extends BaseActivity implements MyFeedAdapter.OnItem
 
     private MyFeedAdapter reportAdapter;
 
-    @Service private Repository.Feed mFeedUseCase;
-    @Service private ToastHelper mToastHelper;
+    @Service
+    private Repository.Feed mFeedUseCase;
+    @Service
+    private ToastHelper mToastHelper;
 
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
@@ -115,62 +118,43 @@ public class MyFeedActivity extends BaseActivity implements MyFeedAdapter.OnItem
     // Network
     //-----
 
-    private Observable<List<FeedEntity>> generateCall(String userId, int perPage, int page) {
+    private Observable<List<FeedEntity>> getFeedObservable(String userId, int perPage, int page) {
 
         if (authority == MEMBER || authority == GUARDIAN) {
             return mFeedUseCase.getMyFeed(userId, perPage, page);
         } else if (authority == ADMIN) {
             return mFeedUseCase.getPagedFeedByDate(perPage, page);
         }
-        return null;
+        return Observable.empty();
     }
 
     private void loadMyReport(int perPage, int page) {
-
-        if (!NetworkUtil.isConnected(this)) {
-            mToastHelper.showNetworkError();
-            return;
-        }
 
         if (!hasMoreToLoad) return;
 
         isLoading = true;
 
-        mCompositeDisposable.add(
-                generateCall(userId, perPage, page)
-                    .subscribeWith(getDisposable())
-        );
-    }
-
-    private DisposableObserver<List<FeedEntity>> getDisposable() {
         List<FeedEntity> entities = new ArrayList<>();
-        return new DisposableObserver<List<FeedEntity>>() {
-            @Override
-            public void onNext(List<FeedEntity> feedEntity) {
-                entities.addAll(feedEntity);
-            }
+        mCompositeDisposable.add(
+                getFeedObservable(userId, perPage, page)
+                        .subscribe(
+                                entities::addAll,
+                                e -> {},
+                                () -> {
+                                    isLoading = false;
 
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-                isLoading = false;
-
-                if (entities.size() == 0) {
-                    setHasMoreToLoad(false);
-                    return;
-                }
-                reportAdapter.addData(entities);
-                // 7. 추가 완료 후 다음 페이지로 넘어가도록 세팅
-                currentPage++;
-                if (entities.size() < PER_PAGE) {
-                    setHasMoreToLoad(false);
-                }
-            }
-        };
+                                    if (entities.size() == 0) {
+                                        setHasMoreToLoad(false);
+                                        return;
+                                    }
+                                    reportAdapter.addData(entities);
+                                    // 7. 추가 완료 후 다음 페이지로 넘어가도록 세팅
+                                    currentPage++;
+                                    if (entities.size() < PER_PAGE) {
+                                        setHasMoreToLoad(false);
+                                    }
+                                })
+        );
     }
 
     private void setHasMoreToLoad(boolean hasMore) {

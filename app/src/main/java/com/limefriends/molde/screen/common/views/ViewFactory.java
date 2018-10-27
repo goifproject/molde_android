@@ -16,16 +16,18 @@ public class ViewFactory {
         this.mLayoutInflater = mLayoutInflater;
     }
 
-    public  <T extends ViewMvc> T newInstance(Class<T> viewClass, @Nullable ViewGroup container) {
+    public <T extends ViewMvc> T newInstance(Class<T> mvcViewClass, @Nullable ViewGroup container) {
+
         ViewMvc viewMvc;
 
-        if (viewClass == CardNewsView.class) {
+        if (mvcViewClass == CardNewsView.class) {
             viewMvc = new CardNewsViewImpl(mLayoutInflater, container);
         }
         else {
-            throw new IllegalArgumentException("unsupported MVC view class " + viewClass);
+            throw new IllegalArgumentException("unsupported MVC view class " + mvcViewClass);
         }
 
+        // noinspection unchecked
         return (T) viewMvc;
     }
 

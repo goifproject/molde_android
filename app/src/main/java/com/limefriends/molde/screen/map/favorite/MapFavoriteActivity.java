@@ -129,11 +129,6 @@ public class MapFavoriteActivity extends BaseActivity
 
     private void loadFavorite(int perPage, int page) {
 
-        if (!NetworkUtil.isConnected(this)) {
-            mToastHelper.showNetworkError();
-            return;
-        }
-
         if (!hasMoreToLoad) return;
 
         isLoading = true;
@@ -170,23 +165,18 @@ public class MapFavoriteActivity extends BaseActivity
 
     private void deleteFavorite(final int favId) {
 
-        if (!NetworkUtil.isConnected(this)) {
-            mToastHelper.showNetworkError();
-            return;
-        }
-
         String uId =  ((MoldeApplication)getApplication()).getFireBaseAuth().getUid();
 
         mCompositeDisposable.add(
                 mFavoriteRepository
                         .deleteFavorite(uId, favId)
                         .subscribe(
-                                e -> {},
-                                err -> {},
-                                () -> {
+                                e -> {
                                     mToastHelper.showShortToast("즐겨찾기가 삭제되었습니다.");
                                     myFavoriteAdapter.notifyFavoriteRemoved();
-                                }
+                                },
+                                err -> {},
+                                () -> {}
                         )
         );
     }

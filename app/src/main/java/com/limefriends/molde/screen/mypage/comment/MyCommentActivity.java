@@ -332,19 +332,16 @@ public class MyCommentActivity
     // 3. 댓글 삭제
     public void deleteComment(final int position, final int commentId) {
 
-        if (!NetworkUtil.isConnected(this)) {
-            mToastHelper.showNetworkError();
-            return;
-        }
-
         mCompositeDisposable.add(
                 mCommentRepository
                         .deleteComment(commentId)
                         .subscribe(
-                                emit -> {}, err -> {}, () -> {
+                                emit -> {
                                     snack("신고된 댓글을 삭제했습니다");
                                     deleteReportedComment(position, commentId, false);
-                                }
+                                },
+                                err -> {},
+                                () -> {}
                         )
         );
     }
@@ -353,21 +350,16 @@ public class MyCommentActivity
     // 댓글 삭제시 신고된 댓글도 삭제
     private void deleteReportedComment(final int position, int commentId, final boolean refuseReport) {
 
-        if (!NetworkUtil.isConnected(this)) {
-            mToastHelper.showNetworkError();
-            return;
-        }
-
         mCompositeDisposable.add(
                 mCommentRepository
                         .deleteReportedComment(commentId)
                         .subscribe(
-                                emit -> {},
-                                err -> {},
-                                () -> {
+                                emit -> {
                                     if (refuseReport) snack("신고를 취소했습니다");
                                     reportedCommentAdapter.deleteComment(position);
-                                }
+                                },
+                                err -> {},
+                                () -> {}
                         )
         );
     }

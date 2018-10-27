@@ -228,11 +228,6 @@ public class CardNewsDetailActivity extends BaseActivity {
 
     private void setupData() {
 
-        if (!NetworkUtil.isConnected(this)) {
-            mToastHelper.showNetworkError();
-            return;
-        }
-
         activityName = getIntent().getStringExtra(EXTRA_KEY_ACTIVITY_NAME);
         cardNewsId = getIntent().getIntExtra("cardNewsId", 0);
         mFirebaseAuth = ((MoldeApplication) getApplication()).getFireBaseAuth();
@@ -301,11 +296,6 @@ public class CardNewsDetailActivity extends BaseActivity {
 
     private void addToMyScrap(int cardNewsId, String userId) {
 
-        if (!NetworkUtil.isConnected(this)) {
-            mToastHelper.showNetworkError();
-            return;
-        }
-
         mCompositeDisposable.add(
                 mScrapRepository
                         .addToMyScrap(userId, cardNewsId)
@@ -319,17 +309,14 @@ public class CardNewsDetailActivity extends BaseActivity {
                                         cardnews_scrap.setImageResource(R.drawable.ic_news_scrap_off);
                                         isScrap = false;
                                     }
-                                }
+                                },
+                                err -> {},
+                                () -> {}
                         )
         );
     }
 
     private void deleteFromScrap(int cardNewsScrapId, String userId) {
-
-        if (!NetworkUtil.isConnected(this)) {
-            mToastHelper.showNetworkError();
-            return;
-        }
 
         mCompositeDisposable.add(
                 mScrapRepository
@@ -348,7 +335,9 @@ public class CardNewsDetailActivity extends BaseActivity {
                                         cardnews_scrap.setImageResource(R.drawable.ic_news_scrap_on);
                                         isScrap = true;
                                     }
-                                }
+                                },
+                                err -> {},
+                                () -> {}
                         )
         );
     }

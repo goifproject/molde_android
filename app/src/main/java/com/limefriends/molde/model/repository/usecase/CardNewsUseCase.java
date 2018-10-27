@@ -1,10 +1,12 @@
 package com.limefriends.molde.model.repository.usecase;
 
-import com.limefriends.molde.common.FromSchemaToEntity;
+import com.limefriends.molde.model.repository.FromSchemaToEntity;
 import com.limefriends.molde.model.entity.news.CardNewsEntity;
 import com.limefriends.molde.model.repository.Repository;
+import com.limefriends.molde.networking.NetworkHelper;
 import com.limefriends.molde.networking.schema.news.CardNewsResponseSchema;
 import com.limefriends.molde.networking.service.MoldeRestfulService;
+import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 
 import java.util.List;
 
@@ -12,19 +14,24 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class CardNewsUseCase implements Repository.CardNews {
+public class CardNewsUseCase extends BaseNetworkUseCase implements Repository.CardNews {
 
     private final MoldeRestfulService.CardNews mCardNewsService;
-    private final FromSchemaToEntity mFromSchemaToEntity;
 
     public CardNewsUseCase(MoldeRestfulService.CardNews cardNewsService,
-                           FromSchemaToEntity fromSchemaToEntity) {
+                           FromSchemaToEntity fromSchemaToEntity,
+                           ToastHelper toastHelper,
+                           NetworkHelper networkHelper) {
+        super(fromSchemaToEntity, toastHelper, networkHelper);
+
         this.mCardNewsService = cardNewsService;
-        this.mFromSchemaToEntity = fromSchemaToEntity;
     }
 
     @Override
     public Observable<List<CardNewsEntity>> getCardNewsList(int perPage, int page) {
+
+        if (!isNetworkConnected()) return Observable.empty();
+
         return mCardNewsService.getCardNewsListObservable(perPage, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -33,6 +40,9 @@ public class CardNewsUseCase implements Repository.CardNews {
 
     @Override
     public Observable<List<CardNewsEntity>> getCardNewsListById(int newsId) {
+
+        if (!isNetworkConnected()) return Observable.empty();
+
         return mCardNewsService.getCardNewsByIdObservable(newsId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -40,7 +50,7 @@ public class CardNewsUseCase implements Repository.CardNews {
     }
 
     private Observable<List<CardNewsEntity>> getCardNewsList(CardNewsResponseSchema schema) {
-        List<CardNewsEntity> entities = mFromSchemaToEntity.cardNewsNS(schema.getData());
+        List<CardNewsEntity> entities = getFromSchemaToEntity().cardNewsNS(schema.getData());
         return entities == null ? Observable.empty() : Observable.just(entities);
     }
 

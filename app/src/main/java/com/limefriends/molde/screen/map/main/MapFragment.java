@@ -175,12 +175,18 @@ public class MapFragment extends BaseFragment implements
     private MapReportCardPagerAdapter reportCardAdapter;
     private PermissionUtil mPermission;
 
-    @Service private Repository.Favorite mFavoriteRepository;
-    @Service private Repository.Safehouse mSafehouseRepository;
-    @Service private Repository.Feed mFeedRepository;
-    @Service private ToastHelper mToastHelper;
-    @Service private DialogFactory mDialogFactory;
-    @Service private DialogManager mDialogManager;
+    @Service
+    private Repository.Favorite mFavoriteRepository;
+    @Service
+    private Repository.Safehouse mSafehouseRepository;
+    @Service
+    private Repository.Feed mFeedRepository;
+    @Service
+    private ToastHelper mToastHelper;
+    @Service
+    private DialogFactory mDialogFactory;
+    @Service
+    private DialogManager mDialogManager;
 
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
@@ -643,11 +649,6 @@ public class MapFragment extends BaseFragment implements
     // 네트워크에서 피드 데이터 받아옴
     private void loadData(final double lat, final double lng) {
 
-        if (!NetworkUtil.isConnected(getContext())) {
-            mToastHelper.showNetworkError();
-            return;
-        }
-
         if (!hasMoreToLoad) return;
 
         if (isLoading) {
@@ -801,6 +802,8 @@ public class MapFragment extends BaseFragment implements
                                     }
                                 },
                                 err -> {
+                                },
+                                () -> {
                                 }
                         )
         );
@@ -812,56 +815,16 @@ public class MapFragment extends BaseFragment implements
                 mSafehouseRepository
                         .getSafehouse(lat, lng, PER_PAGE_30, FIRST_PAGE)
                         .subscribe(
-                                entity -> {
-                                    Marker newSafehouseMarker = addMarker(
-                                            new LatLng(entity.getSafeLat(), entity.getSafeLon()),
-                                            entity.getSafeName(),
-                                            "",
-                                            R.drawable.ic_safehouse,
-                                            MARKER_SAFEHOUSE);
-                                }
+                                entity -> addMarker(
+                                        new LatLng(entity.getSafeLat(), entity.getSafeLon()),
+                                        entity.getSafeName(),
+                                        "",
+                                        R.drawable.ic_safehouse,
+                                        MARKER_SAFEHOUSE),
+                                e -> { },
+                                () -> { }
                         )
         );
-    }
-
-    private void loadReportCardInfo(int reportId) {
-
-//        if (!NetworkUtil.isConnected(getContext())) {
-//            mToastHelper.showNetworkError();
-//            return;
-//        }
-//
-//        List<FeedEntity> data = new ArrayList<>();
-//        mCompositeDisposable.add(
-//                mFeedRepository
-//                        .getFeedById(reportId)
-//                        .subscribe(
-//                                data::addAll,
-//                                err -> {},
-//                                () -> mapReportCardListDialog.setData(data)
-//                        )
-//        );
-//
-//        MoldeRestfulService.Feed feedService
-//                = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Feed.class);
-//
-//        Call<FeedResponseSchema> call = feedService.getFeedById(reportId);
-//
-//        call.enqueue(new Callback<FeedResponseSchema>() {
-//            @Override
-//            public void onResponse(Call<FeedResponseSchema> call, Response<FeedResponseSchema> response) {
-//                if (response.isSuccessful()) {
-//                    List<FeedEntity> entityList = FromSchemaToEntity.feed(response.body().getData());
-//                    reportHistoryAdapter.setData(entityList);
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<FeedResponseSchema> call, Throwable t) {
-//
-//            }
-//        });
-
     }
 
     // 새로 받아올 때 기존 데이터 캐시 제거
@@ -883,11 +846,6 @@ public class MapFragment extends BaseFragment implements
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (!NetworkUtil.isConnected(getContext())) {
-            mToastHelper.showNetworkError();
-            return;
-        }
 
         if (resultCode == RESULT_OK && requestCode == REQ_SEARCH_MAP) {
             LatLng defaultLoc = ((MoldeApplication)
@@ -965,21 +923,16 @@ public class MapFragment extends BaseFragment implements
     @Override
     public void addToMyFavorite(String userId, String name, String address, double lat, double lng) {
 
-        if (!NetworkUtil.isConnected(getContext())) {
-            mToastHelper.showNetworkError();
-            return;
-        }
-
         mCompositeDisposable.add(
                 mFavoriteRepository
                         .addToMyFavorite(userId, name, address, lat, lng)
                         .subscribe(
                                 e -> {
+                                    mToastHelper.showShortToast("즐겨찾기 추가 성공");
+                                    if (mapFavoriteDialog != null) mapFavoriteDialog.dismiss();
                                 },
                                 err -> mToastHelper.showShortToast("데이터 전송 실패"),
                                 () -> {
-                                    mToastHelper.showShortToast("즐겨찾기 추가 성공");
-                                    if (mapFavoriteDialog != null) mapFavoriteDialog.dismiss();
                                 }
                         )
         );

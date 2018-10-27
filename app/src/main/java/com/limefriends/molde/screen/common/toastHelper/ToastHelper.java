@@ -20,7 +20,10 @@ public class ToastHelper {
     }
 
     public void showNetworkError() {
-        Toast.makeText(mContext, "인터넷 연결을 확인해주세요!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, "인터넷 연결을 확인해주세요", Toast.LENGTH_SHORT).show();
     }
 
+    public void showNoNetworkError() {
+        Toast.makeText(mContext, "인터넷 연결을 확인해주세요", Toast.LENGTH_SHORT).show();
+    }
 }
