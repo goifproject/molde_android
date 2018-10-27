@@ -145,14 +145,17 @@ public class PresentationCompositionRoot {
         return new ScrapUseCase(
                 getScrapRestfulService(),
                 getCardNewsRestfulService(),
-                getFromSchemaToEntity());
+                getFromSchemaToEntity(),
+                getToastHelper(),
+                getNetworkHelper());
     }
 
     public Repository.Feed getFeedUseCase() {
         return new FeedUseCase(
                 getFeedRestfulService(),
-                getFromSchemaToEntity()
-        );
+                getFromSchemaToEntity(),
+                getToastHelper(),
+                getNetworkHelper());
     }
 
     public Repository.FeedResult getFeedResultUseCase() {
@@ -190,7 +193,9 @@ public class PresentationCompositionRoot {
     public Repository.Safehouse getSafehouseUseCase() {
         return new SafehouseUseCase(
                 getSafehouseRestfulService(),
-                getFromSchemaToEntity());
+                getFromSchemaToEntity(),
+                getToastHelper(),
+                getNetworkHelper());
     }
 
 }
