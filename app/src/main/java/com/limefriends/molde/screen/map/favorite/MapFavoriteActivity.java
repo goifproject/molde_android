@@ -1,7 +1,5 @@
 package com.limefriends.molde.screen.map.favorite;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
@@ -10,10 +8,8 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.limefriends.molde.common.di.Service;
-import com.limefriends.molde.common.MoldeApplication;
+import com.limefriends.molde.common.app.MoldeApplication;
 import com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView;
-import com.limefriends.molde.screen.common.addOnListview.OnLoadMoreListener;
-import com.limefriends.molde.common.utils.NetworkUtil;
 import com.limefriends.molde.model.entity.favorite.FavoriteEntity;
 import com.limefriends.molde.model.repository.Repository;
 import com.limefriends.molde.R;

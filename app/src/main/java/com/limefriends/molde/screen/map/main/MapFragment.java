@@ -38,7 +38,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.limefriends.molde.common.di.Service;
-import com.limefriends.molde.common.MoldeApplication;
+import com.limefriends.molde.common.app.MoldeApplication;
 import com.limefriends.molde.R;
 import com.limefriends.molde.common.utils.NetworkUtil;
 import com.limefriends.molde.common.utils.PermissionUtil;
@@ -1137,8 +1137,8 @@ public class MapFragment extends BaseFragment implements
     }
 
     public void showReportCardListDialog(int reportId) {
-        mapReportCardListDialog = new MapReportCardListDialog();
+        mapReportCardListDialog = MapReportCardListDialog.newInstance(reportId);
         mapReportCardListDialog.show(getActivity().getSupportFragmentManager(), "bottomSheet");
-        mapReportCardListDialog.setData(reportId, getContext());
+
     }
 }

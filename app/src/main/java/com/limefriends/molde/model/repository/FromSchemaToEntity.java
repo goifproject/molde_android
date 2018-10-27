@@ -3,7 +3,7 @@ package com.limefriends.molde.model.repository;
 import com.limefriends.molde.model.entity.comment.CommentEntity;
 import com.limefriends.molde.networking.schema.comment.CommentSchema;
 import com.limefriends.molde.model.entity.comment.ReportedCommentEntity;
-import com.limefriends.molde.networking.schema.comment.ReportedCommentSchema;
+import com.limefriends.molde.networking.schema.comment.reported.ReportedCommentSchema;
 import com.limefriends.molde.model.entity.faq.FaqEntity;
 import com.limefriends.molde.networking.schema.faq.FaqSchema;
 import com.limefriends.molde.model.entity.favorite.FavoriteEntity;

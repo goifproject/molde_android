@@ -1,59 +1,40 @@
 package com.limefriends.molde.screen.magazine.main;
 
-import android.content.Context;
-import android.content.Intent;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
-import com.limefriends.molde.R;
 import com.limefriends.molde.model.entity.news.CardNewsEntity;
-import com.limefriends.molde.screen.magazine.detail.CardNewsDetailActivity;
-
+import com.limefriends.molde.screen.common.views.ViewFactory;
+import com.limefriends.molde.screen.magazine.main.view.CardNewsItemView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
+public class CardNewsAdapter
+        extends RecyclerView.Adapter<CardNewsAdapter.CardNewsViewHolder>
+        implements CardNewsItemView.Listener {
 
-public class CardNewsAdapter extends RecyclerView.Adapter<CardNewsAdapter.MagazineCardNewsHolder> {
+    public interface Listener {
+        void onCardNewsClicked(int cardNewsId);
+    }
 
-    private Context context;
-
+    private Listener mListener;
+    private ViewFactory mViewFactory;
     private List<CardNewsEntity> entities = new ArrayList<>();
 
-    public CardNewsAdapter(Context context) {
-        this.context = context;
-    }
-
-    public void addData(List<CardNewsEntity> newEntities) {
-        entities.addAll(newEntities);
-        notifyDataSetChanged();
+    public CardNewsAdapter(ViewFactory viewFactory, Listener listener) {
+        this.mViewFactory = viewFactory;
+        this.mListener = listener;
     }
 
     @Override
-    public MagazineCardNewsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MagazineCardNewsHolder(LayoutInflater.from(context)
-                .inflate(R.layout.item_cardnews, parent, false));
+    public CardNewsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new CardNewsViewHolder(mViewFactory.newInstance(CardNewsItemView.class, parent));
     }
 
     @Override
-    public void onBindViewHolder(MagazineCardNewsHolder holder, int position) {
-        CardNewsEntity cardNewsEntity = entities.get(position);
-        if (cardNewsEntity.getNewsImg().size() != 0) {
-            Glide.with(context).load(cardNewsEntity.getNewsImg().get(0).getUrl())
-                    .placeholder(R.drawable.img_placeholder_magazine).into(holder.cardnews_thumbnail);
-        } else {
-            Glide.with(context).load(R.drawable.img_placeholder_magazine).into(holder.cardnews_thumbnail);
-        }
-        holder.cardnews_title.setText(cardNewsEntity.getDescription());
-        holder.cardNewsId = cardNewsEntity.getNewsId();
+    public void onBindViewHolder(CardNewsViewHolder holder, int position) {
+        holder.mCardNewsItemView.bindCardNews(entities.get(position));
+        holder.mCardNewsItemView.registerListener(this);
     }
 
     @Override
@@ -61,34 +42,23 @@ public class CardNewsAdapter extends RecyclerView.Adapter<CardNewsAdapter.Magazi
         return entities.size();
     }
 
-    class MagazineCardNewsHolder extends RecyclerView.ViewHolder {
-
-        @BindView(R.id.cardnews_layout)
-        CardView cardnews_layout;
-        @BindView(R.id.cardnews_thumbnail)
-        ImageView cardnews_thumbnail;
-        @BindView(R.id.cardnews_title)
-        TextView cardnews_title;
-
-        int cardNewsId;
-
-        MagazineCardNewsHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-            setupListener();
-        }
-
-        private void setupListener() {
-            cardnews_layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, CardNewsDetailActivity.class);
-                    intent.putExtra("cardNewsId", cardNewsId);
-                    context.startActivity(intent);
-                }
-            });
-        }
-
+    @Override
+    public void onCardNewsClicked(int cardNewsId) {
+        mListener.onCardNewsClicked(cardNewsId);
     }
 
+    public void addData(List<CardNewsEntity> newEntities) {
+        entities.addAll(newEntities);
+        notifyDataSetChanged();
+    }
+
+    class CardNewsViewHolder extends RecyclerView.ViewHolder {
+
+        private final CardNewsItemView mCardNewsItemView;
+
+        CardNewsViewHolder(CardNewsItemView view) {
+            super(view.getRootView());
+            this.mCardNewsItemView = view;
+        }
+    }
 }

@@ -1,9 +1,7 @@
 package com.limefriends.molde.screen.magazine.main.view;
 
 import android.support.v7.widget.GridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
@@ -11,12 +9,13 @@ import com.limefriends.molde.R;
 import com.limefriends.molde.model.entity.news.CardNewsEntity;
 import com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView;
 import com.limefriends.molde.screen.common.views.BaseObservableView;
+import com.limefriends.molde.screen.common.views.ViewFactory;
 import com.limefriends.molde.screen.magazine.main.CardNewsAdapter;
 
 import java.util.List;
 
 public class CardNewsViewImpl
-        extends BaseObservableView<CardNewsView.Listener> implements CardNewsView {
+        extends BaseObservableView<CardNewsView.Listener> implements CardNewsView, CardNewsAdapter.Listener {
 
     private AddOnScrollRecyclerView cardnews_recyclerView;
     private LinearLayout manual_new_molca;
@@ -24,10 +23,13 @@ public class CardNewsViewImpl
     private LinearLayout manual_for_spreading;
     
     private CardNewsAdapter cardNewsAdapter;
+    private ViewFactory mViewFactory;
 
-    public CardNewsViewImpl(LayoutInflater inflater, ViewGroup parent) {
+    public CardNewsViewImpl(LayoutInflater inflater, ViewGroup parent, ViewFactory viewFactory) {
 
         setRootView(inflater.inflate(R.layout.fragment_cardnews, parent, false));
+
+        this.mViewFactory = viewFactory;
 
         setupViews();
     }
@@ -70,16 +72,7 @@ public class CardNewsViewImpl
                 listener.onHowToRespondClicked();
             }
         });
-    }
 
-    private void setupMagazineList() {
-        if (cardNewsAdapter == null) {
-            cardNewsAdapter = new CardNewsAdapter(getContext());
-        }
-
-        cardnews_recyclerView.setAdapter(cardNewsAdapter);
-        cardnews_recyclerView.setLayoutManager(
-                new GridLayoutManager(getContext(), 2), true);
         cardnews_recyclerView.setOnLoadMoreListener(
                 () -> {
                     for (Listener listener : getListeners()) {
@@ -88,8 +81,26 @@ public class CardNewsViewImpl
                 });
     }
 
+    private void setupMagazineList() {
+
+        if (cardNewsAdapter == null) {
+            cardNewsAdapter = new CardNewsAdapter(mViewFactory, this);
+        }
+
+        cardnews_recyclerView.setAdapter(cardNewsAdapter);
+        cardnews_recyclerView.setLayoutManager(
+                new GridLayoutManager(getContext(), 2), true);
+    }
+
     @Override
     public void bindCardNews(List<CardNewsEntity> cardNewsEntities) {
         cardNewsAdapter.addData(cardNewsEntities);
+    }
+
+    @Override
+    public void onCardNewsClicked(int cardNewsId) {
+        for (Listener listener : getListeners()) {
+            listener.onCardNewsClicked(cardNewsId);
+        }
     }
 }

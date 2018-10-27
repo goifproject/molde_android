@@ -15,16 +15,9 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.Marker;
 import com.limefriends.molde.R;
-import com.limefriends.molde.common.utils.NetworkUtil;
-import com.limefriends.molde.networking.schema.response.Result;
-import com.limefriends.molde.networking.MoldeNetwork;
-import com.limefriends.molde.networking.service.MoldeRestfulService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MapFavoriteDialog extends BottomSheetDialogFragment {
 

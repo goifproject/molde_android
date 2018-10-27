@@ -11,13 +11,11 @@ import android.widget.ToggleButton;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.limefriends.molde.common.di.Service;
-import com.limefriends.molde.common.MoldeApplication;
+import com.limefriends.molde.common.app.MoldeApplication;
 import com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView;
 import com.limefriends.molde.common.utils.DateUtil;
-import com.limefriends.molde.common.utils.NetworkUtil;
 import com.limefriends.molde.model.entity.feed.FeedEntity;
 import com.limefriends.molde.model.repository.Repository;
-import com.limefriends.molde.screen.common.addOnListview.OnLoadMoreListener;
 import com.limefriends.molde.screen.common.controller.BaseFragment;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 import com.limefriends.molde.screen.main.MoldeMainActivity;

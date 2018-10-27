@@ -1,4 +1,4 @@
-package com.limefriends.molde.common.manager.camera_manager;
+package com.limefriends.molde.common.manager.cameraHelper;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -24,7 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.limefriends.molde.R;
-import com.limefriends.molde.common.manager.gallery_manager.MoldeReportGalleryActivity;
+import com.limefriends.molde.common.manager.galleryHelper.MoldeReportGalleryActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

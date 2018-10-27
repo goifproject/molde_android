@@ -1,4 +1,4 @@
-package com.limefriends.molde.common.manager.gallery_manager;
+package com.limefriends.molde.common.manager.galleryHelper;
 
 public class PhotoVO {
 

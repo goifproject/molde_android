@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 import com.limefriends.molde.common.di.CompositionRoot;
 import com.limefriends.molde.common.di.Injector;
 import com.limefriends.molde.common.di.PresentationCompositionRoot;
-import com.limefriends.molde.common.MoldeApplication;
+import com.limefriends.molde.common.app.MoldeApplication;
 
 public abstract class BaseFragment extends Fragment {
 

@@ -8,6 +8,7 @@ import com.limefriends.molde.screen.common.screensNavigator.ActivityScreenNaviga
 import com.limefriends.molde.screen.common.screensNavigator.FragmentScreenNavigator;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 import com.limefriends.molde.screen.common.views.ViewFactory;
+import com.limefriends.molde.screen.map.main.reportCard.MapReportCardListDialog;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;

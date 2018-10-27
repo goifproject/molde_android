@@ -2,19 +2,16 @@ package com.limefriends.molde.networking.service;
 
 
 import com.limefriends.molde.networking.schema.comment.CommentResponseSchema;
-import com.limefriends.molde.networking.schema.comment.ReportedCommentResponseSchema;
+import com.limefriends.molde.networking.schema.comment.reported.ReportedCommentResponseSchema;
 import com.limefriends.molde.networking.schema.faq.FaqResponseSchema;
 import com.limefriends.molde.networking.schema.favorite.FavoriteResponseSchema;
-import com.limefriends.molde.networking.schema.feed.FeedSchema;
 import com.limefriends.molde.networking.schema.feed.FeedResponseSchema;
-import com.limefriends.molde.networking.schema.feedResult.FeedResultSchema;
 import com.limefriends.molde.networking.schema.news.CardNewsResponseSchema;
 import com.limefriends.molde.networking.schema.response.Result;
 import com.limefriends.molde.networking.schema.safehouse.SafehouseResponseSchema;
 import com.limefriends.molde.networking.schema.scrap.ScrapResponseSchema;
 
 import java.util.List;
-import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
@@ -29,7 +26,6 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
-import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 
 public interface MoldeRestfulService {

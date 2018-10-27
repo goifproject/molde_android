@@ -1,4 +1,4 @@
-package com.limefriends.molde.common.manager.gallery_manager;
+package com.limefriends.molde.common.manager.galleryHelper;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;

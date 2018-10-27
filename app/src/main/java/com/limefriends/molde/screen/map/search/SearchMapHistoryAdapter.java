@@ -9,7 +9,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.limefriends.molde.R;
-import com.limefriends.molde.common.manager.cache_manager.Cache;
+import com.limefriends.molde.common.manager.cacheHelper.Cache;
 import com.limefriends.molde.model.entity.search.SearchHistoryEntity;
 
 import java.io.IOException;

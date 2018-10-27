@@ -1,4 +1,4 @@
-package com.limefriends.molde.common.manager.camera_manager;
+package com.limefriends.molde.common.manager.cameraHelper;
 
 import java.io.IOException;
 import java.util.List;

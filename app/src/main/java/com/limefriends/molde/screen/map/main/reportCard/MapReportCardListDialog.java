@@ -1,56 +1,52 @@
 package com.limefriends.molde.screen.map.main.reportCard;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
-import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.limefriends.molde.R;
-import com.limefriends.molde.common.utils.NetworkUtil;
-import com.limefriends.molde.model.repository.FromSchemaToEntity;
-import com.limefriends.molde.model.entity.feed.FeedEntity;
-import com.limefriends.molde.networking.schema.feed.FeedResponseSchema;
-import com.limefriends.molde.networking.MoldeNetwork;
-import com.limefriends.molde.networking.service.MoldeRestfulService;
-
-import java.util.List;
+import com.limefriends.molde.common.di.Service;
+import com.limefriends.molde.model.repository.Repository;
+import com.limefriends.molde.screen.common.controller.BaseBottomSheetDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.disposables.CompositeDisposable;
 
-public class MapReportCardListDialog extends BottomSheetDialogFragment {
+public class MapReportCardListDialog extends BaseBottomSheetDialog {
 
     @BindView(R.id.report_history_list_view)
     RecyclerView report_history_list_view;
 
+    @Service private Repository.Feed mFeedRepository;
+
+    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+
     private MapReportCardListDialogAdapter reportHistoryAdapter;
 
-    private ApplyReportCardInfoCallback mCallback;
-
-    public interface ApplyReportCardInfoCallback {
-
-        void fetchReportCardInfo(int reportCardId);
-    }
-
-    public void setCallback(ApplyReportCardInfoCallback callback) {
-        mCallback = callback;
+    public static MapReportCardListDialog newInstance(int reportId) {
+        MapReportCardListDialog dialog = new MapReportCardListDialog();
+        Bundle bundle = new Bundle();
+        bundle.putInt("reportId", reportId);
+        dialog.setArguments(bundle);
+        return dialog;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        getInjector().inject(this);
+
+
+
         getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
@@ -71,43 +67,32 @@ public class MapReportCardListDialog extends BottomSheetDialogFragment {
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
 
+        int reportId = getArguments().getInt("reportId");
 
-//    public void setData(List<FeedEntity> data) {
-//        reportHistoryAdapter.setData(data);
-//    }
+        setData(reportId);
+    }
 
-    public void setData(int reportId, Context context) {
+    public void setData(int reportId) {
 
-        if (!NetworkUtil.isConnected(context)) {
-            Toast.makeText(context, "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        MoldeRestfulService.Feed feedService
-                = MoldeNetwork.getInstance().generateService(MoldeRestfulService.Feed.class);
-
-        Call<FeedResponseSchema> call = feedService.getFeedById(reportId);
-
-        call.enqueue(new Callback<FeedResponseSchema>() {
-            @Override
-            public void onResponse(Call<FeedResponseSchema> call, Response<FeedResponseSchema> response) {
-                if (response.isSuccessful()) {
-                    List<FeedEntity> entityList = FromSchemaToEntity.feed(response.body().getData());
-                    reportHistoryAdapter.setData(entityList);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<FeedResponseSchema> call, Throwable t) {
-
-            }
-        });
-
+        mCompositeDisposable.add(
+            mFeedRepository
+                    .getFeedById(reportId)
+                    .subscribe(
+                            entities -> reportHistoryAdapter.setData(entities),
+                            err -> {},
+                            () -> {}
+                    )
+        );
     }
 
 
-
-
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mCompositeDisposable.clear();
+    }
 }

@@ -32,7 +32,7 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.limefriends.molde.common.Constant;
 import com.limefriends.molde.common.di.Service;
-import com.limefriends.molde.common.MoldeApplication;
+import com.limefriends.molde.common.app.MoldeApplication;
 import com.limefriends.molde.common.utils.NetworkUtil;
 import com.limefriends.molde.common.utils.PreferenceUtil;
 import com.limefriends.molde.common.utils.pattern.RegexUtil;

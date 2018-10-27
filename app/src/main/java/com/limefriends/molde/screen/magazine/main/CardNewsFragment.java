@@ -1,18 +1,19 @@
 package com.limefriends.molde.screen.magazine.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.limefriends.molde.common.di.Service;
-import com.limefriends.molde.common.utils.NetworkUtil;
 import com.limefriends.molde.model.entity.news.CardNewsEntity;
 import com.limefriends.molde.model.repository.Repository;
 import com.limefriends.molde.screen.common.controller.BaseFragment;
 import com.limefriends.molde.screen.common.screensNavigator.ActivityScreenNavigator;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 import com.limefriends.molde.screen.common.views.ViewFactory;
+import com.limefriends.molde.screen.magazine.detail.CardNewsDetailActivity;
 import com.limefriends.molde.screen.magazine.main.view.CardNewsView;
 
 import java.util.ArrayList;
@@ -23,18 +24,12 @@ import io.reactivex.observers.DisposableObserver;
 
 public class CardNewsFragment extends BaseFragment implements CardNewsView.Listener {
 
-    @Service
-    private Repository.CardNews mCardNewsRepository;
-    @Service
-    private ActivityScreenNavigator mActivityScreenNavigator;
-    @Service
-    private ViewFactory mViewFactory;
-    @Service
-    private ToastHelper mToastHelper;
+    @Service private Repository.CardNews mCardNewsRepository;
+    @Service private ActivityScreenNavigator mActivityScreenNavigator;
+    @Service private ViewFactory mViewFactory;
+    @Service private ToastHelper mToastHelper;
 
     private CardNewsView mCardNewsView;
-
-
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
     private static final int PER_PAGE = 10;
@@ -64,7 +59,12 @@ public class CardNewsFragment extends BaseFragment implements CardNewsView.Liste
         mCardNewsView.registerListener(this);
 
         if (isFirstOnCreateView) loadMagazine(PER_PAGE, FIRST_PAGE);
+    }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mCompositeDisposable.clear();
     }
 
     private void loadMagazine(int perPage, int page) {
@@ -115,12 +115,6 @@ public class CardNewsFragment extends BaseFragment implements CardNewsView.Liste
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mCompositeDisposable.clear();
-    }
-
-    @Override
     public void onNewMolcaInfoClicked() {
         mActivityScreenNavigator.toRecentMolcaInfoActivity();
     }
@@ -139,5 +133,10 @@ public class CardNewsFragment extends BaseFragment implements CardNewsView.Liste
     public void onLoadMore() {
         if (isLoading) return;
         loadMagazine(PER_PAGE, currentPage);
+    }
+
+    @Override
+    public void onCardNewsClicked(int cardNewsId) {
+        mActivityScreenNavigator.toCardNewsDetailActivity(getContext(), cardNewsId);
     }
 }

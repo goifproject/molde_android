@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CardNewsView extends ObservableView<CardNewsView.Listener> {
 
-    public interface Listener {
+    interface Listener {
 
         void onNewMolcaInfoClicked();
 
@@ -16,6 +16,8 @@ public interface CardNewsView extends ObservableView<CardNewsView.Listener> {
         void onHowToRespondClicked();
 
         void onLoadMore();
+
+        void onCardNewsClicked(int cardNewsId);
     }
 
     void bindCardNews(List<CardNewsEntity> cardNewsEntities);

@@ -15,7 +15,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".common.MoldeApplication"
+        android:name=".common.app.MoldeApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -58,15 +58,15 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".common.manager.camera_manager.MoldeReportCameraActivity"
+            android:name=".common.manager.cameraHelper.MoldeReportCameraActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".common.manager.gallery_manager.MoldeReportGalleryActivity"
+            android:name=".common.manager.galleryHelper.MoldeReportGalleryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".common.manager.camera_manager.MoldeReportCheckImageActivity"
+            android:name=".common.manager.cameraHelper.MoldeReportCheckImageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
 

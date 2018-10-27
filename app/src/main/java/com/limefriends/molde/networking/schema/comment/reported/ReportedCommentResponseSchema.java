@@ -1,4 +1,4 @@
-package com.limefriends.molde.networking.schema.comment;
+package com.limefriends.molde.networking.schema.comment.reported;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

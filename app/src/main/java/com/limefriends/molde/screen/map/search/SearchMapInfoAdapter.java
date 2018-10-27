@@ -1,7 +1,7 @@
 package com.limefriends.molde.screen.map.search;
 
 import com.limefriends.molde.R;
-import com.limefriends.molde.common.manager.cache_manager.Cache;
+import com.limefriends.molde.common.manager.cacheHelper.Cache;
 import com.limefriends.molde.model.entity.search.SearchInfoEntity;
 import com.limefriends.molde.networking.service.SearchPoiService;
 

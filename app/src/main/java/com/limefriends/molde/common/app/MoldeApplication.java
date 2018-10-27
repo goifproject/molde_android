@@ -1,4 +1,4 @@
-package com.limefriends.molde.common;
+package com.limefriends.molde.common.app;
 
 import android.app.Application;
 import com.crashlytics.android.Crashlytics;
