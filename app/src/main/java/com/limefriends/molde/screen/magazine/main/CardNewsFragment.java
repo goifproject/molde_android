@@ -1,19 +1,17 @@
 package com.limefriends.molde.screen.magazine.main;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.limefriends.molde.common.di.Service;
-import com.limefriends.molde.model.entity.news.CardNewsEntity;
+import com.limefriends.molde.model.entity.cardNews.CardNewsEntity;
 import com.limefriends.molde.model.repository.Repository;
 import com.limefriends.molde.screen.common.controller.BaseFragment;
 import com.limefriends.molde.screen.common.screensNavigator.ActivityScreenNavigator;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 import com.limefriends.molde.screen.common.views.ViewFactory;
-import com.limefriends.molde.screen.magazine.detail.CardNewsDetailActivity;
 import com.limefriends.molde.screen.magazine.main.view.CardNewsView;
 
 import java.util.ArrayList;

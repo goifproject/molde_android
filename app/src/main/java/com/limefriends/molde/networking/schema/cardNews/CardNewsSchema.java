@@ -1,4 +1,4 @@
-package com.limefriends.molde.networking.schema.news;
+package com.limefriends.molde.networking.schema.cardNews;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

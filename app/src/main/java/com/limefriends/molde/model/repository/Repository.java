@@ -4,7 +4,7 @@ import com.limefriends.molde.model.entity.comment.CommentEntity;
 import com.limefriends.molde.model.entity.faq.FaqEntity;
 import com.limefriends.molde.model.entity.favorite.FavoriteEntity;
 import com.limefriends.molde.model.entity.feed.FeedEntity;
-import com.limefriends.molde.model.entity.news.CardNewsEntity;
+import com.limefriends.molde.model.entity.cardNews.CardNewsEntity;
 import com.limefriends.molde.model.entity.safehouse.SafehouseEntity;
 import com.limefriends.molde.model.entity.scrap.ScrapEntity;
 import com.limefriends.molde.networking.schema.response.Result;

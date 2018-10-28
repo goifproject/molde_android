@@ -9,128 +9,140 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#ffffff"
-            android:gravity="center"
-            android:padding="8dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/img_molca_by_location_01"
-                android:layout_width="wrap_content"
+            <include
+                layout="@layout/element_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true" />
+                android:background="#ffffff"
+                android:gravity="center"
+                android:padding="8dp">
 
-            <TextView
-                android:id="@+id/txt_molca_by_location_01"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/img_molca_by_location_01"
-                android:layout_marginBottom="16dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="16dp"
-                android:elegantTextHeight="true"
-                android:text="@string/info_prevent_1"
-                android:textColor="#000000"
-                android:textSize="12sp" />
+                <ImageView
+                    android:id="@+id/img_molca_by_location_01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true" />
 
-            <ImageView
-                android:id="@+id/img_molca_by_location_02"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txt_molca_by_location_01" />
+                <TextView
+                    android:id="@+id/txt_molca_by_location_01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_molca_by_location_01"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="16dp"
+                    android:elegantTextHeight="true"
+                    android:text="@string/info_prevent_1"
+                    android:textColor="#000000"
+                    android:textSize="12sp" />
 
-            <ImageView
-                android:id="@+id/img_molca_by_location_03"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/img_molca_by_location_02" />
+                <ImageView
+                    android:id="@+id/img_molca_by_location_02"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_molca_by_location_01" />
 
-            <TextView
-                android:id="@+id/txt_molca_by_location_02"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/img_molca_by_location_03"
-                android:layout_marginBottom="16dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/info_prevent_2"
-                android:textColor="#000000"
-                android:textSize="12sp" />
+                <ImageView
+                    android:id="@+id/img_molca_by_location_03"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_molca_by_location_02" />
 
-            <ImageView
-                android:id="@+id/img_molca_by_location_04"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txt_molca_by_location_02" />
+                <TextView
+                    android:id="@+id/txt_molca_by_location_02"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_molca_by_location_03"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/info_prevent_2"
+                    android:textColor="#000000"
+                    android:textSize="12sp" />
 
-            <TextView
-                android:id="@+id/txt_molca_by_location_03"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/img_molca_by_location_04"
-                android:layout_marginBottom="16dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/info_prevent_3"
-                android:textColor="#000000"
-                android:textSize="12sp" />
+                <ImageView
+                    android:id="@+id/img_molca_by_location_04"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_molca_by_location_02" />
 
-            <ImageView
-                android:id="@+id/img_molca_by_location_05"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txt_molca_by_location_03" />
+                <TextView
+                    android:id="@+id/txt_molca_by_location_03"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_molca_by_location_04"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/info_prevent_3"
+                    android:textColor="#000000"
+                    android:textSize="12sp" />
 
-            <TextView
-                android:id="@+id/txt_molca_by_location_04"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/img_molca_by_location_05"
-                android:layout_marginBottom="16dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/info_prevent_2"
-                android:textColor="#000000"
-                android:textSize="12sp" />
+                <ImageView
+                    android:id="@+id/img_molca_by_location_05"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_molca_by_location_03" />
 
-            <ImageView
-                android:id="@+id/img_molca_by_location_06"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txt_molca_by_location_04" />
+                <TextView
+                    android:id="@+id/txt_molca_by_location_04"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_molca_by_location_05"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/info_prevent_2"
+                    android:textColor="#000000"
+                    android:textSize="12sp" />
 
-            <TextView
-                android:id="@+id/txt_molca_by_location_05"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/img_molca_by_location_06"
-                android:layout_marginBottom="16dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/info_prevent_5"
-                android:textColor="#000000"
-                android:textSize="12sp" />
+                <ImageView
+                    android:id="@+id/img_molca_by_location_06"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_molca_by_location_04" />
 
-            <ImageView
-                android:id="@+id/img_molca_by_location_07"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txt_molca_by_location_05" />
+                <TextView
+                    android:id="@+id/txt_molca_by_location_05"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_molca_by_location_06"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/info_prevent_5"
+                    android:textColor="#000000"
+                    android:textSize="12sp" />
 
-            <ImageView
-                android:id="@+id/img_molca_by_location_08"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/img_molca_by_location_07" />
+                <ImageView
+                    android:id="@+id/img_molca_by_location_07"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_molca_by_location_05" />
 
-        </RelativeLayout>
+                <ImageView
+                    android:id="@+id/img_molca_by_location_08"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_molca_by_location_07" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
 
     </ScrollView>
 

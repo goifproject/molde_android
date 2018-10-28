@@ -1,4 +1,4 @@
-package com.limefriends.molde.networking;
+package com.limefriends.molde.networking.common;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

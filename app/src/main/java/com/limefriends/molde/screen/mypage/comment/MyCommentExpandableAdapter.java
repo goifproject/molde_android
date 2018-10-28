@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide;
 import com.limefriends.molde.R;
 import com.limefriends.molde.common.utils.DateUtil;
 import com.limefriends.molde.model.entity.comment.CommentEntity;
-import com.limefriends.molde.model.entity.news.CardNewsEntity;
+import com.limefriends.molde.model.entity.cardNews.CardNewsEntity;
 
 import java.util.ArrayList;
 import java.util.List;

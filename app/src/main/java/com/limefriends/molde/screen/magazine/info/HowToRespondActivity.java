@@ -101,6 +101,7 @@ public class HowToRespondActivity extends AppCompatActivity {
     }
 
     private void setupHowToRespondInfo() {
+
         String txt01 = "디지털 성범죄 피해는 속도가 생명이다. 증거 수집도, 신고도 서둘러야 한다. " +
                 "가해자 신고와 영상 삭제, 심리 상담 등 모든 과정에 시민단체와 정부의 도움을 받을 수 있다.";
 

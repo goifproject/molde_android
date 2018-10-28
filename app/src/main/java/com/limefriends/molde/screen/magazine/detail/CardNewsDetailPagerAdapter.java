@@ -9,7 +9,10 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.limefriends.molde.R;
-import com.limefriends.molde.networking.schema.news.CardNewsImageSchema;
+import com.limefriends.molde.model.entity.cardNews.CardNewsImageEntity;
+import com.limefriends.molde.networking.schema.cardNews.CardNewsImageSchema;
+import com.limefriends.molde.screen.common.views.ViewFactory;
+import com.limefriends.molde.screen.magazine.detail.view.CardNewsDetailPagerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,21 +20,18 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CardNewsImagePagerAdapter extends PagerAdapter {
+public class CardNewsDetailPagerAdapter extends PagerAdapter {
 
-    @BindView(R.id.cardnews_image)
-    ImageView cardnews_image;
+    private List<CardNewsImageEntity> newsImg = new ArrayList<>();
+    private ViewFactory mViewFactory;
 
-    private LayoutInflater inflater;
-    private List<CardNewsImageSchema> newsImg = new ArrayList<>();
-
-    public void setData(List<CardNewsImageSchema> newsImg) {
-        this.newsImg = newsImg;
-        notifyDataSetChanged();
+    public CardNewsDetailPagerAdapter(ViewFactory viewFactory) {
+        this.mViewFactory = viewFactory;
     }
 
-    CardNewsImagePagerAdapter(LayoutInflater inflater) {
-        this.inflater = inflater;
+    public void setData(List<CardNewsImageEntity> newsImg) {
+        this.newsImg = newsImg;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -43,13 +43,12 @@ public class CardNewsImagePagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
 
-        View view = inflater.inflate(R.layout.item_cardnews_image,
-                container, false);
-        ButterKnife.bind(this, view);
-        Glide.with(view.getContext()).load(newsImg.get(position).getUrl())
-                .placeholder(R.drawable.img_placeholder_magazine).into(cardnews_image);
-        container.addView(view);
-        return view;
+        CardNewsDetailPagerView view
+                = mViewFactory.newInstance(CardNewsDetailPagerView.class, container);
+        view.bindCardNewsImage(newsImg.get(position).getUrl());
+        View rootView = view.getRootView();
+        container.addView(rootView);
+        return rootView;
     }
 
     @Override

@@ -4,13 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.ViewPager;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
@@ -23,63 +16,39 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.limefriends.molde.R;
 import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.common.app.MoldeApplication;
-import com.limefriends.molde.model.entity.news.CardNewsEntity;
+import com.limefriends.molde.model.entity.cardNews.CardNewsEntity;
 import com.limefriends.molde.model.entity.scrap.ScrapEntity;
 import com.limefriends.molde.model.repository.Repository;
 import com.limefriends.molde.screen.common.controller.BaseActivity;
-import com.limefriends.molde.screen.common.dialog.DialogFactory;
-import com.limefriends.molde.screen.common.dialog.DialogManager;
-import com.limefriends.molde.screen.common.dialog.view.PromptDialog;
 import com.limefriends.molde.screen.common.screensNavigator.ActivityScreenNavigator;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
+import com.limefriends.molde.screen.common.views.ViewFactory;
+import com.limefriends.molde.screen.magazine.detail.view.CardNewsDetailView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
 
 import static com.limefriends.molde.common.Constant.Common.EXTRA_KEY_ACTIVITY_NAME;
 import static com.limefriends.molde.common.Constant.Scrap.INTENT_VALUE_SCRAP;
 
-public class CardNewsDetailActivity extends BaseActivity {
+public class CardNewsDetailActivity extends BaseActivity implements CardNewsDetailView.Listener {
 
-    @BindView(R.id.cardnews_detail_layout)
-    RelativeLayout cardnews_detail_layout;
-    @BindView(R.id.cardnews_pager)
-    ViewPager cardnews_pager;
-    @BindView(R.id.cardnews_comment)
-    ImageView cardnews_comment;
-    @BindView(R.id.cardnews_scrap)
-    ImageView cardnews_scrap;
-    @BindView(R.id.cardnews_share)
-    ImageView cardnews_share;
-    @BindView(R.id.current_page_no)
-    TextView current_page_no;
-    @BindView(R.id.total_page_no)
-    TextView total_page_no;
-    @BindView(R.id.cardnews_description)
-    TextView cardnews_description;
-    @BindView(R.id.cardnews_progress)
-    ProgressBar cardnews_progress;
-
-    private CardNewsImagePagerAdapter cardNewsImagePagerAdapter;
-    private FirebaseAuth mFirebaseAuth;
-    private CardNewsEntity mCardNewsEntity;
-
-    private static final String DELETE_SCRAP_DIALOG_TAG = "DELETE_SCRAP_DIALOG_TAG";
 
     @Service private Repository.Scrap mScrapRepository;
     @Service private Repository.CardNews mCardNewsRepository;
     @Service private ToastHelper mToastHelper;
     @Service private ActivityScreenNavigator mActivityScreenNavigator;
-    @Service private DialogFactory mDialogFactory;
-    @Service private DialogManager mDialogManager;
+    @Service private ViewFactory mViewFactory;
 
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+    private CardNewsDetailView mCardNewsDetailView;
+    private CardNewsEntity mCardNewsEntity;
+    private FirebaseAuth mFirebaseAuth;
 
+    private String mUid;
     private String activityName;
     private boolean isLoading;
     private boolean isScrap;
@@ -89,153 +58,36 @@ public class CardNewsDetailActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cardnews_detail);
 
         getInjector().inject(this);
+
+        mCardNewsDetailView = mViewFactory.newInstance(CardNewsDetailView.class, null);
+
+        setContentView(mCardNewsDetailView.getRootView());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        mCardNewsDetailView.registerListener(this);
 
         FacebookSdk.sdkInitialize(this);
         AppEventsLogger.activateApp(this);
 
-        setupViews();
-
-        setupListeners();
-
-        setupCardNewsImagePager();
-
         setupData();
     }
 
-    //-----
-    // View
-    //-----
-
-    private void setupViews() {
-        ButterKnife.bind(this);
-    }
-
-    private void setupListeners() {
-
-        cardnews_comment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                mActivityScreenNavigator
-                        .toCardNewsCommentActivity(cardNewsId,
-                                cardnews_description.getText().toString());
-            }
-        });
-
-        cardnews_scrap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mFirebaseAuth != null && mFirebaseAuth.getUid() != null) {
-                    final String uId = mFirebaseAuth.getCurrentUser().getUid();
-                    if (!isLoading && isScrap) {
-                        showPromptDialog();
-                    } else {
-                        addToMyScrap(cardNewsId, uId);
-                    }
-                } else {
-                    Snackbar.make(cardnews_detail_layout,
-                            "몰디 로그인이 필요합니다!", Snackbar.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        cardnews_share.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                cardnews_progress.setVisibility(View.VISIBLE);
-
-                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.img_sub_tutorial_1);
-
-                // 액션 타입이랑 Object 타입이 맞아야 올라가고
-                // 맞더라도 페이스북 오류 때문에 실시간으로 반영되지 않음
-                // 앱 설정은 그대로 따라가면 됨
-                SharePhoto sharePhoto = new SharePhoto.Builder()
-                        .setBitmap(bitmap)
-                        .setUserGenerated(true)
-                        .build();
-
-                ShareOpenGraphObject object = new ShareOpenGraphObject.Builder()
-                        .putString("og:type", "article")
-                        .putString("og:title", mCardNewsEntity.getDescription())
-                        .build();
-                ShareOpenGraphAction action = new ShareOpenGraphAction.Builder()
-                        .setActionType("news.reads")
-                        .putObject("article", object)
-                        .putPhoto("image", sharePhoto)
-                        .build();
-                ShareOpenGraphContent content = new ShareOpenGraphContent.Builder()
-                        .setPreviewPropertyName("article")
-                        .setAction(action)
-                        .build();
-
-                ShareDialog.show(CardNewsDetailActivity.this, content);
-
-                cardnews_progress.setVisibility(View.GONE);
-
-            }
-        });
-    }
-
-    private void setupCardNewsImagePager() {
-        cardNewsImagePagerAdapter = new CardNewsImagePagerAdapter(getLayoutInflater());
-        cardnews_pager.setAdapter(cardNewsImagePagerAdapter);
-        cardnews_pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset,
-                                       int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                current_page_no.setText(String.valueOf(position + 1));
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-    }
-
-    private void showPromptDialog() {
-        PromptDialog promptDialog = mDialogFactory.newPromptDialog(
-                getText(R.string.scrap_delete_message).toString(),
-                "",
-                getText(R.string.yes).toString(),
-                getText(R.string.no).toString());
-        promptDialog.registerListener(new PromptDialog.PromptDialogDismissListener() {
-            @Override
-            public void onPositiveButtonClicked() {
-                deleteFromScrap(cardNewsScrapId, mFirebaseAuth.getUid());
-            }
-
-            @Override
-            public void onNegativeButtonClicked() {
-
-            }
-        });
-        mDialogManager.showRetainedDialogWithId(promptDialog, DELETE_SCRAP_DIALOG_TAG);
-    }
-
-    //-----
-    // Network
-    //-----
 
     private void setupData() {
 
         activityName = getIntent().getStringExtra(EXTRA_KEY_ACTIVITY_NAME);
         cardNewsId = getIntent().getIntExtra("cardNewsId", 0);
         mFirebaseAuth = ((MoldeApplication) getApplication()).getFireBaseAuth();
+        mUid = mFirebaseAuth.getUid();
+
         loadCardNews(cardNewsId);
-        if (mFirebaseAuth.getUid() != null) {
-            loadMyScrap(cardNewsId, mFirebaseAuth.getCurrentUser().getUid());
-        } else {
-            loadMyScrap(cardNewsId, "");
-        }
+        loadMyScrap(cardNewsId, mUid);
     }
 
     private void loadCardNews(int cardNewsId) {
@@ -246,11 +98,9 @@ public class CardNewsDetailActivity extends BaseActivity {
                             @Override
                             public void onNext(List<CardNewsEntity> newsEntityList) {
                                 mCardNewsEntity = newsEntityList.get(0);
-                                if (mCardNewsEntity.getNewsImg() != null) {
-                                    setImageCount(mCardNewsEntity.getNewsImg().size());
-                                }
-                                cardnews_description.setText(mCardNewsEntity.getDescription());
-                                cardNewsImagePagerAdapter.setData(mCardNewsEntity.getNewsImg());
+                                mCardNewsDetailView.bindPageCount(mCardNewsEntity.getNewsImg().size());
+                                mCardNewsDetailView.bindCardNewsDescription(mCardNewsEntity.getDescription());
+                                mCardNewsDetailView.bindCardNewsImages(mCardNewsEntity.getNewsImg());
                             }
 
                             @Override
@@ -280,10 +130,10 @@ public class CardNewsDetailActivity extends BaseActivity {
                                 },
                                 () -> {
                                     if (data.size() == 0) {
-                                        cardnews_scrap.setImageResource(R.drawable.ic_news_scrap_off);
+                                        mCardNewsDetailView.unsetScrap();
                                         isScrap = false;
                                     } else {
-                                        cardnews_scrap.setImageResource(R.drawable.ic_news_scrap_on);
+                                        mCardNewsDetailView.setIsScrap();
                                         isScrap = true;
                                         cardNewsScrapId = data.get(0).getScrapId();
                                     }
@@ -301,16 +151,18 @@ public class CardNewsDetailActivity extends BaseActivity {
                         .subscribe(
                                 e -> {
                                     if (e.getResult() == 1) {
-                                        snack(getText(R.string.snack_scrap_added).toString());
-                                        cardnews_scrap.setImageResource(R.drawable.ic_news_scrap_on);
+                                        mCardNewsDetailView.showSnackBar(getText(R.string.snack_scrap_added).toString());
+                                        mCardNewsDetailView.setIsScrap();
                                         isScrap = true;
                                     } else {
-                                        cardnews_scrap.setImageResource(R.drawable.ic_news_scrap_off);
+                                        mCardNewsDetailView.unsetScrap();
                                         isScrap = false;
                                     }
                                 },
-                                err -> {},
-                                () -> {}
+                                err -> {
+                                },
+                                () -> {
+                                }
                         )
         );
     }
@@ -323,29 +175,85 @@ public class CardNewsDetailActivity extends BaseActivity {
                         .subscribe(
                                 e -> {
                                     if (e.getResult() == 1) {
-                                        snack(getText(R.string.snack_scrap_deleted).toString());
-                                        cardnews_scrap.setImageResource(R.drawable.ic_news_scrap_off);
+                                        mCardNewsDetailView.showSnackBar(getText(R.string.snack_scrap_deleted).toString());
+                                        mCardNewsDetailView.unsetScrap();
                                         isScrap = false;
                                         if (activityName != null && activityName.equals(INTENT_VALUE_SCRAP)) {
                                             setResult(RESULT_OK);
                                             finish();
                                         }
                                     } else {
-                                        cardnews_scrap.setImageResource(R.drawable.ic_news_scrap_on);
+                                        mCardNewsDetailView.setIsScrap();
                                         isScrap = true;
                                     }
                                 },
-                                err -> {},
-                                () -> {}
+                                err -> {
+                                },
+                                () -> {
+                                }
                         )
         );
     }
 
-    private void setImageCount(int size) {
-        total_page_no.setText(String.valueOf(size));
+    /**
+     * Callback
+     */
+
+    @Override
+    public void onCommentIconClicked(String description) {
+        mActivityScreenNavigator
+                .toCardNewsCommentActivity(cardNewsId, description);
     }
 
-    private void snack(String msg) {
-        Snackbar.make(cardnews_detail_layout, msg, Snackbar.LENGTH_SHORT).show();
+    @Override
+    public void onScrapClicked() {
+        if (mFirebaseAuth != null && mUid != null) {
+            if (!isLoading && isScrap) {
+                mCardNewsDetailView.showPromptDialog();
+            } else {
+                addToMyScrap(cardNewsId, mUid);
+            }
+        } else {
+            mCardNewsDetailView.showSnackBar("몰디 로그인이 필요합니다!");
+        }
+    }
+
+    @Override
+    public void onShareClicked() {
+
+        mCardNewsDetailView.showProgressIndication();
+
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.img_sub_tutorial_1);
+
+        // 액션 타입이랑 Object 타입이 맞아야 올라가고
+        // 맞더라도 페이스북 오류 때문에 실시간으로 반영되지 않음
+        // 앱 설정은 그대로 따라가면 됨
+        SharePhoto sharePhoto = new SharePhoto.Builder()
+                .setBitmap(bitmap)
+                .setUserGenerated(true)
+                .build();
+
+        ShareOpenGraphObject object = new ShareOpenGraphObject.Builder()
+                .putString("og:type", "article")
+                .putString("og:title", mCardNewsEntity.getDescription())
+                .build();
+        ShareOpenGraphAction action = new ShareOpenGraphAction.Builder()
+                .setActionType("news.reads")
+                .putObject("article", object)
+                .putPhoto("image", sharePhoto)
+                .build();
+        ShareOpenGraphContent content = new ShareOpenGraphContent.Builder()
+                .setPreviewPropertyName("article")
+                .setAction(action)
+                .build();
+
+        ShareDialog.show(CardNewsDetailActivity.this, content);
+
+        mCardNewsDetailView.hideProgressIndication();
+    }
+
+    @Override
+    public void onDeleteScrapClicked() {
+        deleteFromScrap(cardNewsScrapId, mUid);
     }
 }

@@ -1,7 +1,7 @@
-package com.limefriends.molde.model.entity.news;
+package com.limefriends.molde.model.entity.cardNews;
 
 import com.limefriends.molde.model.entity.comment.CommentEntity;
-import com.limefriends.molde.networking.schema.news.CardNewsImageSchema;
+import com.limefriends.molde.networking.schema.cardNews.CardNewsImageSchema;
 
 import java.util.List;
 
@@ -11,11 +11,11 @@ public class CardNewsEntity {
     private String postId;
     private String description;
     private String date;
-    private List<CardNewsImageSchema> newsImg;
+    private List<CardNewsImageEntity> newsImg;
     private List<CommentEntity> comments;
 
     public CardNewsEntity(int newsId, String postId, String description, String date,
-                          List<CardNewsImageSchema> newsImg) {
+                          List<CardNewsImageEntity> newsImg) {
         this.newsId = newsId;
         this.postId = postId;
         this.description = description;
@@ -24,7 +24,7 @@ public class CardNewsEntity {
     }
 
     public CardNewsEntity(int newsId, String postId, String description, String date,
-                          List<CardNewsImageSchema> newsImg, List<CommentEntity> commentList) {
+                          List<CardNewsImageEntity> newsImg, List<CommentEntity> commentList) {
         this.newsId = newsId;
         this.postId = postId;
         this.description = description;
@@ -65,11 +65,11 @@ public class CardNewsEntity {
         this.date = date;
     }
 
-    public List<CardNewsImageSchema> getNewsImg() {
+    public List<CardNewsImageEntity> getNewsImg() {
         return newsImg;
     }
 
-    public void setNewsImg(List<CardNewsImageSchema> newsImg) {
+    public void setNewsImg(List<CardNewsImageEntity> newsImg) {
         this.newsImg = newsImg;
     }
 

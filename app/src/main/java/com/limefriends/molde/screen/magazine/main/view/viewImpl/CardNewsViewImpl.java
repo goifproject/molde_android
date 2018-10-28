@@ -1,4 +1,4 @@
-package com.limefriends.molde.screen.magazine.main.view;
+package com.limefriends.molde.screen.magazine.main.view.viewImpl;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
@@ -6,11 +6,12 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.limefriends.molde.R;
-import com.limefriends.molde.model.entity.news.CardNewsEntity;
+import com.limefriends.molde.model.entity.cardNews.CardNewsEntity;
 import com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView;
 import com.limefriends.molde.screen.common.views.BaseObservableView;
 import com.limefriends.molde.screen.common.views.ViewFactory;
 import com.limefriends.molde.screen.magazine.main.CardNewsAdapter;
+import com.limefriends.molde.screen.magazine.main.view.CardNewsView;
 
 import java.util.List;
 

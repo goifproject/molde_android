@@ -14,7 +14,7 @@ import com.limefriends.molde.R;
 import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.common.app.MoldeApplication;
 import com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView;
-import com.limefriends.molde.model.entity.news.CardNewsEntity;
+import com.limefriends.molde.model.entity.cardNews.CardNewsEntity;
 import com.limefriends.molde.model.repository.Repository;
 import com.limefriends.molde.screen.common.controller.BaseActivity;
 import com.limefriends.molde.screen.common.screensNavigator.ActivityScreenNavigator;

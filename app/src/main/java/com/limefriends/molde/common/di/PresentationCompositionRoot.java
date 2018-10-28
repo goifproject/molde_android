@@ -4,8 +4,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 
-import com.limefriends.molde.model.repository.FromSchemaToEntity;
-import com.limefriends.molde.networking.NetworkHelper;
+import com.limefriends.molde.model.repository.common.FromSchemaToEntity;
+import com.limefriends.molde.networking.common.NetworkHelper;
 import com.limefriends.molde.screen.common.bottomNavigationViewHelper.BottomNavigationViewHelper;
 import com.limefriends.molde.model.repository.Repository;
 import com.limefriends.molde.model.repository.usecase.CardNewsUseCase;
@@ -131,7 +131,11 @@ public class PresentationCompositionRoot {
     }
 
     public ViewFactory getViewFactory() {
-        return new ViewFactory(getLayoutInflater(), getImageLoader());
+        return new ViewFactory(
+                getLayoutInflater(),
+                getImageLoader(),
+                getDialogManager(),
+                getDialogFactory());
     }
 
     /**

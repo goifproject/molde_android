@@ -1,16 +1,14 @@
-package com.limefriends.molde.networking.schema.news;
+package com.limefriends.molde.model.entity.cardNews;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+public class CardNewsImageEntity {
 
-public class CardNewsImageSchema {
-
-    @SerializedName("page_num")
-    @Expose
     private int pageNum;
-    @SerializedName("url")
-    @Expose
     private String url;
+
+    public CardNewsImageEntity(int pageNum, String url) {
+        this.pageNum = pageNum;
+        this.url = url;
+    }
 
     public int getPageNum() {
         return pageNum;

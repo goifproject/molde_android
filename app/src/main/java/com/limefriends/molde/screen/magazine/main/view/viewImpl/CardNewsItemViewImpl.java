@@ -1,21 +1,16 @@
-package com.limefriends.molde.screen.magazine.main.view;
+package com.limefriends.molde.screen.magazine.main.view.viewImpl;
 
-import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.limefriends.molde.R;
-import com.limefriends.molde.model.entity.news.CardNewsEntity;
+import com.limefriends.molde.model.entity.cardNews.CardNewsEntity;
 import com.limefriends.molde.screen.common.imageLoader.ImageLoader;
 import com.limefriends.molde.screen.common.views.BaseObservableView;
-import com.limefriends.molde.screen.magazine.detail.CardNewsDetailActivity;
-
-import butterknife.BindView;
+import com.limefriends.molde.screen.magazine.main.view.CardNewsItemView;
 
 public class CardNewsItemViewImpl
         extends BaseObservableView<CardNewsItemView.Listener> implements CardNewsItemView {

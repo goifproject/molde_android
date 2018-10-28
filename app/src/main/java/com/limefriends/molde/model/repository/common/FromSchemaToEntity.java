@@ -1,6 +1,8 @@
-package com.limefriends.molde.model.repository;
+package com.limefriends.molde.model.repository.common;
 
+import com.limefriends.molde.model.entity.cardNews.CardNewsImageEntity;
 import com.limefriends.molde.model.entity.comment.CommentEntity;
+import com.limefriends.molde.networking.schema.cardNews.CardNewsImageSchema;
 import com.limefriends.molde.networking.schema.comment.CommentSchema;
 import com.limefriends.molde.model.entity.comment.ReportedCommentEntity;
 import com.limefriends.molde.networking.schema.comment.reported.ReportedCommentSchema;
@@ -12,8 +14,8 @@ import com.limefriends.molde.model.entity.feed.FeedEntity;
 import com.limefriends.molde.networking.schema.feed.FeedSchema;
 import com.limefriends.molde.model.entity.feedResult.FeedResultEntity;
 import com.limefriends.molde.networking.schema.feedResult.FeedResultSchema;
-import com.limefriends.molde.model.entity.news.CardNewsEntity;
-import com.limefriends.molde.networking.schema.news.CardNewsSchema;
+import com.limefriends.molde.model.entity.cardNews.CardNewsEntity;
+import com.limefriends.molde.networking.schema.cardNews.CardNewsSchema;
 import com.limefriends.molde.model.entity.safehouse.SafehouseEntity;
 import com.limefriends.molde.networking.schema.safehouse.SafehouseSchema;
 import com.limefriends.molde.model.entity.scrap.ScrapEntity;
@@ -40,16 +42,11 @@ public class FromSchemaToEntity {
                     schema.getPostId(),
                     schema.getDescription(),
                     schema.getDate(),
-                    schema.getNewsImg()
+                    cardNewsImage(schema.getNewsImg())
             ));
         }
         return entities;
     }
-
-
-    /**
-     * 카드뉴스
-     */
 
     public CardNewsEntity cardNewsNS(CardNewsSchema schema) {
         return new CardNewsEntity(
@@ -57,8 +54,20 @@ public class FromSchemaToEntity {
                 schema.getPostId(),
                 schema.getDescription(),
                 schema.getDate(),
-                schema.getNewsImg(),
+                cardNewsImage(schema.getNewsImg()),
                 new ArrayList<>());
+    }
+
+    private List<CardNewsImageEntity> cardNewsImage(List<CardNewsImageSchema> schemas) {
+
+        List<CardNewsImageEntity> entities = new ArrayList<>();
+        for (CardNewsImageSchema schema : schemas) {
+            entities.add(new CardNewsImageEntity(
+                    schema.getPageNum(),
+                    schema.getUrl()
+            ));
+        }
+        return entities;
     }
 
     /**
@@ -112,26 +121,6 @@ public class FromSchemaToEntity {
     /**
      * 피드
      */
-    public static List<FeedEntity> feed(List<FeedSchema> entities) {
-        List<FeedEntity> data = new ArrayList<>();
-        for (FeedSchema entity : entities) {
-            data.add(new FeedEntity(
-                    entity.getRepId(),
-                    entity.getUserName(),
-                    entity.getUserEmail(),
-                    entity.getUserId(),
-                    entity.getRepContents(),
-                    entity.getRepLat(),
-                    entity.getRepLon(),
-                    entity.getRepAddr(),
-                    entity.getRepDetailAddr(),
-                    entity.getRepDate(),
-                    entity.getRepImg(),
-                    entity.getRepState()
-            ));
-        }
-        return data;
-    }
 
     public List<FeedEntity> feedNS(List<FeedSchema> schemas) {
 
@@ -253,6 +242,7 @@ public class FromSchemaToEntity {
      */
 
     public static List<FeedResultEntity> feedResult(List<FeedResultSchema> schemas) {
+
         List<FeedResultEntity> entities = new ArrayList<>();
         for (FeedResultSchema schema : schemas) {
             entities.add(new FeedResultEntity(

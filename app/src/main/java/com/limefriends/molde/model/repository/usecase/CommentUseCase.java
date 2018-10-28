@@ -1,11 +1,11 @@
 package com.limefriends.molde.model.repository.usecase;
 
-import com.limefriends.molde.model.repository.FromSchemaToEntity;
+import com.limefriends.molde.model.repository.common.FromSchemaToEntity;
 import com.limefriends.molde.model.entity.comment.CommentEntity;
 import com.limefriends.molde.model.entity.comment.ReportedCommentEntity;
-import com.limefriends.molde.model.entity.news.CardNewsEntity;
+import com.limefriends.molde.model.entity.cardNews.CardNewsEntity;
 import com.limefriends.molde.model.repository.Repository;
-import com.limefriends.molde.networking.NetworkHelper;
+import com.limefriends.molde.networking.common.NetworkHelper;
 import com.limefriends.molde.networking.schema.response.Result;
 import com.limefriends.molde.networking.service.MoldeRestfulService;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;

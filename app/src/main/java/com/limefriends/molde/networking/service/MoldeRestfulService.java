@@ -6,7 +6,7 @@ import com.limefriends.molde.networking.schema.comment.reported.ReportedCommentR
 import com.limefriends.molde.networking.schema.faq.FaqResponseSchema;
 import com.limefriends.molde.networking.schema.favorite.FavoriteResponseSchema;
 import com.limefriends.molde.networking.schema.feed.FeedResponseSchema;
-import com.limefriends.molde.networking.schema.news.CardNewsResponseSchema;
+import com.limefriends.molde.networking.schema.cardNews.CardNewsResponseSchema;
 import com.limefriends.molde.networking.schema.response.Result;
 import com.limefriends.molde.networking.schema.safehouse.SafehouseResponseSchema;
 import com.limefriends.molde.networking.schema.scrap.ScrapResponseSchema;

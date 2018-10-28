@@ -21,7 +21,7 @@ import com.limefriends.molde.common.utils.NetworkUtil;
 import com.limefriends.molde.common.utils.PreferenceUtil;
 import com.limefriends.molde.model.entity.comment.CommentEntity;
 import com.limefriends.molde.model.repository.Repository;
-import com.limefriends.molde.model.entity.news.CardNewsEntity;
+import com.limefriends.molde.model.entity.cardNews.CardNewsEntity;
 import com.limefriends.molde.common.utils.comparator.CardNewsComparator;
 import com.limefriends.molde.screen.common.addOnListview.AddOnScrollExpandableListView;
 import com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView;

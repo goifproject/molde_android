@@ -1,9 +1,9 @@
 package com.limefriends.molde.model.repository.usecase;
 
-import com.limefriends.molde.model.repository.FromSchemaToEntity;
+import com.limefriends.molde.model.repository.common.FromSchemaToEntity;
 import com.limefriends.molde.model.entity.favorite.FavoriteEntity;
 import com.limefriends.molde.model.repository.Repository;
-import com.limefriends.molde.networking.NetworkHelper;
+import com.limefriends.molde.networking.common.NetworkHelper;
 import com.limefriends.molde.networking.schema.response.Result;
 import com.limefriends.molde.networking.service.MoldeRestfulService;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;

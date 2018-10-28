@@ -2,7 +2,7 @@ package com.limefriends.molde.screen.magazine.main;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
-import com.limefriends.molde.model.entity.news.CardNewsEntity;
+import com.limefriends.molde.model.entity.cardNews.CardNewsEntity;
 import com.limefriends.molde.screen.common.views.ViewFactory;
 import com.limefriends.molde.screen.magazine.main.view.CardNewsItemView;
 import java.util.ArrayList;

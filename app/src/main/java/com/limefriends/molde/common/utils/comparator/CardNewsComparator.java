@@ -1,7 +1,7 @@
 package com.limefriends.molde.common.utils.comparator;
 
 
-import com.limefriends.molde.model.entity.news.CardNewsEntity;
+import com.limefriends.molde.model.entity.cardNews.CardNewsEntity;
 
 import java.util.Comparator;
 
