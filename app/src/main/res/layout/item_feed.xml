@@ -14,7 +14,6 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="2dp"
-        android:src="@drawable/img_placeholder_my_comment"
         android:background="@drawable/bg_frame_rounded"
         android:scaleType="centerCrop" />
 
@@ -74,9 +73,7 @@
             android:layout_height="32dp"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="12dp"
-            android:layout_marginTop="8dp"
-            android:src="@drawable/ic_map_marker_green" />
-
+            android:layout_marginTop="8dp" />
     </RelativeLayout>
 
 </FrameLayout>

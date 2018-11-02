@@ -1,10 +1,12 @@
 package com.limefriends.molde.model.entity.feedResult;
 
+import com.limefriends.molde.model.entity.Data;
+import com.limefriends.molde.model.entity.DataType;
 import com.limefriends.molde.networking.schema.feedResult.FeedResultImgSchema;
 
 import java.util.List;
 
-public class FeedResultEntity {
+public class FeedResultEntity implements Data {
 
     private int resultId;
     private int repId;
@@ -50,4 +52,8 @@ public class FeedResultEntity {
         this.resultImg = resultImg;
     }
 
+    @Override
+    public DataType getType() {
+        return DataType.FEED_RESULT;
+    }
 }

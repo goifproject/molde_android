@@ -15,7 +15,7 @@ import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.screen.common.bottomNavigationViewHelper.BottomNavigationViewHelper;
 import com.limefriends.molde.model.entity.feed.FeedEntity;
 import com.limefriends.molde.screen.common.controller.BaseActivity;
-import com.limefriends.molde.screen.feed.FeedFragment;
+import com.limefriends.molde.screen.feed.main.FeedFragment;
 import com.limefriends.molde.screen.magazine.main.CardNewsFragment;
 import com.limefriends.molde.screen.map.main.MapFragment;
 import com.limefriends.molde.screen.mypage.main.MyPageFragment;

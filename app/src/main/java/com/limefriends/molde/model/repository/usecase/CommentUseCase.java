@@ -123,12 +123,12 @@ public class CommentUseCase extends BaseNetworkUseCase implements Repository.Com
     }
 
     @Override
-    public Observable<Result> createNewComment(String userId, String userName, int newsId, String content, String regiDate) {
+    public Observable<Result> createNewComment(String userId, String userName, int newsId, String content) {
 
         if (!isNetworkConnected()) return Observable.empty();
 
         return mCommentService
-                .createNewCommentObservable(userId, userName, newsId, content, regiDate)
+                .createNewCommentObservable(userId, userName, newsId, content)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

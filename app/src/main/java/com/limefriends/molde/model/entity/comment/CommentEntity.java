@@ -1,10 +1,13 @@
 package com.limefriends.molde.model.entity.comment;
 
+import com.limefriends.molde.model.entity.Data;
+import com.limefriends.molde.model.entity.DataType;
+
 /**
  * Created by user on 2018-05-19.
  */
 
-public class CommentEntity {
+public class CommentEntity implements Data{
 
     private int commId;
     private String userId;
@@ -12,7 +15,6 @@ public class CommentEntity {
     private int newsId;
     private String comment;
     private String commDate;
-
     private String newsTitle;
     private String newsImg;
 
@@ -30,6 +32,13 @@ public class CommentEntity {
 
     public void setNewsImg(String newsImg) {
         this.newsImg = newsImg;
+    }
+
+    public CommentEntity(String userId, String userName, int newsId, String comment) {
+        this.userId = userId;
+        this.userName = userName;
+        this.newsId = newsId;
+        this.comment = comment;
     }
 
     public CommentEntity(String userId, String userName, int newsId, String comment, String commDate) {
@@ -95,5 +104,10 @@ public class CommentEntity {
 
     public void setCommDate(String commDate) {
         this.commDate = commDate;
+    }
+
+    @Override
+    public DataType getType() {
+        return DataType.COMMENT;
     }
 }

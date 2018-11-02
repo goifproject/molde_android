@@ -1,8 +1,11 @@
 package com.limefriends.molde.model.entity.favorite;
 
+import com.limefriends.molde.model.entity.Data;
+import com.limefriends.molde.model.entity.DataType;
+
 import java.io.Serializable;
 
-public class FavoriteEntity implements Serializable {
+public class FavoriteEntity implements Serializable, Data {
 
     private int favId;
     private String userId;
@@ -105,4 +108,8 @@ public class FavoriteEntity implements Serializable {
         isActive = active;
     }
 
+    @Override
+    public DataType getType() {
+        return DataType.FAVORITE;
+    }
 }

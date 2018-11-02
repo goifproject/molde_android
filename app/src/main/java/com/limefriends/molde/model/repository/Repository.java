@@ -75,8 +75,7 @@ public interface Repository {
         Observable<CommentEntity> getReportedComment(int perPage, int page);
 
         // 댓글 작성하기
-        Observable<Result> createNewComment(String userId, String userName, int newsId,
-                                            String content, String regiDate);
+        Observable<Result> createNewComment(String userId, String userName, int newsId, String content);
 
         // 댓글 신고하기
         Observable<Result> reportComment(String uId, int commentId);

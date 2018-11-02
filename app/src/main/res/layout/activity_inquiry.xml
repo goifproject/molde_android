@@ -164,7 +164,7 @@
 
     </RelativeLayout>
 
-    <com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView
+    <com.limefriends.molde.screen.common.recyclerview.addOnRecycler.AddOnScrollRecyclerView
         android:id="@+id/inquiry_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

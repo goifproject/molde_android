@@ -15,6 +15,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -126,8 +127,6 @@ public class MapFragment extends BaseFragment implements
      */
     @BindView(R.id.map_view_progress)
     FrameLayout map_view_progress;
-    @BindView(R.id.progress_loading)
-    ProgressBar progress_loading;
 
     /**
      * 하단 카드뷰
@@ -605,6 +604,7 @@ public class MapFragment extends BaseFragment implements
      */
     // 화면에 세팅될 때마다 어떤 경로로 데이터를 세팅할지 결정함
     private void setupData() {
+
         if (isFirst) {
 
 
@@ -649,6 +649,8 @@ public class MapFragment extends BaseFragment implements
     // 네트워크에서 피드 데이터 받아옴
     private void loadData(final double lat, final double lng) {
 
+        Log.e("호출확인", "2");
+
         if (!hasMoreToLoad) return;
 
         if (isLoading) {
@@ -668,9 +670,13 @@ public class MapFragment extends BaseFragment implements
 
                                     isLoading(false);
 
+                                    Log.e("호출확인", "5");
+
                                     fromFeed = false;
                                 },
                                 () -> {
+
+                                    Log.e("호출확인", "3");
 
                                     if (entityList.size() != 0) {
 
@@ -759,12 +765,16 @@ public class MapFragment extends BaseFragment implements
                                         // 피드가 아예 없는 경우
                                     } else {
 
+                                        Log.e("호출확인", "3");
+
                                         hasMoreToLoad(false);
 
                                         snackBar(getText(R.string.toast_no_feed_place).toString());
 
                                         moveCamera(new LatLng(lat, lng), ZOOM_CUR_LOCATION);
                                     }
+
+                                    Log.e("호출확인", "4");
 
                                     isFirst(false);
 
@@ -957,7 +967,6 @@ public class MapFragment extends BaseFragment implements
         }
         boolean isGpsEnable = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         if (isGpsEnable) {
-
             getPermission().checkPermission(new String[]{
                     android.Manifest.permission.ACCESS_COARSE_LOCATION,
                     android.Manifest.permission.ACCESS_FINE_LOCATION});
@@ -972,6 +981,8 @@ public class MapFragment extends BaseFragment implements
 
         @Override
         public void onLocationChanged(Location location) {
+
+            Log.e("호출확인", "1");
 
             // 현재위치 위경도 좌표 가져오기
             lat = location.getLatitude();
@@ -1015,6 +1026,7 @@ public class MapFragment extends BaseFragment implements
     // 리스너 세팅하기
     @SuppressLint("MissingPermission")
     private void setLocationListener() {
+
         long minTime = 1500;
         float minDistance = 100;
         if (myLocationListener == null) {
@@ -1030,7 +1042,6 @@ public class MapFragment extends BaseFragment implements
     private void removeLocationListener() {
         if (manager != null && myLocationListener != null) {
             manager.removeUpdates(myLocationListener);
-            // hideProgress();
         }
     }
 

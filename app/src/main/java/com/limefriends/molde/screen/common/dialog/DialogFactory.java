@@ -2,6 +2,7 @@ package com.limefriends.molde.screen.common.dialog;
 
 import android.os.Bundle;
 
+import com.limefriends.molde.screen.common.dialog.view.ImageDialog;
 import com.limefriends.molde.screen.common.dialog.view.InfoDialog;
 import com.limefriends.molde.screen.common.dialog.view.PromptDialog;
 
@@ -40,4 +41,19 @@ public class DialogFactory {
 
         return promptDialog;
     }
+
+
+    /**
+     * Get a new instance of {@link ImageDialog}.
+     */
+    public ImageDialog newImageDialog(String imageUrl) {
+        Bundle args = new Bundle(1);
+        args.putString(ImageDialog.ARG_IMAGE_URL, imageUrl);
+
+        ImageDialog imageDialog = new ImageDialog();
+        imageDialog.setArguments(args);
+
+        return imageDialog;
+    }
+
 }

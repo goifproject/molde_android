@@ -1,6 +1,10 @@
 package com.limefriends.molde.model.entity.cardNews;
 
-public class CardNewsImageEntity {
+import com.limefriends.molde.model.entity.Data;
+import com.limefriends.molde.model.entity.DataType;
+import com.limefriends.molde.model.entity.ImageData;
+
+public class CardNewsImageEntity implements ImageData {
 
     private int pageNum;
     private String url;
@@ -26,4 +30,8 @@ public class CardNewsImageEntity {
         this.url = url;
     }
 
+    @Override
+    public String getImageUrl() {
+        return url;
+    }
 }

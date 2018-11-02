@@ -1,9 +1,11 @@
 package com.limefriends.molde.model.entity.search;
 
+import com.limefriends.molde.model.entity.Data;
+import com.limefriends.molde.model.entity.DataType;
 
 import java.io.Serializable;
 
-public class SearchInfoEntity implements Serializable {
+public class SearchInfoEntity implements Serializable, Data {
 
     private double mapLat;
     private double mapLng;
@@ -82,5 +84,10 @@ public class SearchInfoEntity implements Serializable {
     @Override
     public String toString() {
         return name + ", " + mainAddress + ", " + bizName;
+    }
+
+    @Override
+    public DataType getType() {
+        return DataType.SEARCH_INFO;
     }
 }

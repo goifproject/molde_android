@@ -49,19 +49,14 @@ public class InfoDialog extends BaseDialog {
     }
 
     private void initSubViews(View rootView) {
-        mTxtTitle = (TextView) rootView.findViewById(R.id.txt_dialog_title);
-        mTxtMessage = (TextView) rootView.findViewById(R.id.txt_dialog_message);
-        mBtnPositive = (Button) rootView.findViewById(R.id.btn_dialog_positive);
+        mTxtTitle = rootView.findViewById(R.id.txt_dialog_title);
+        mTxtMessage = rootView.findViewById(R.id.txt_dialog_message);
+        mBtnPositive = rootView.findViewById(R.id.btn_dialog_positive);
 
         // Hide "negative" button - it is used only in PromptDialog
         rootView.findViewById(R.id.btn_dialog_negative).setVisibility(View.GONE);
 
-        mBtnPositive.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+        mBtnPositive.setOnClickListener(v -> dismiss());
     }
 
     private void populateSubViews() {

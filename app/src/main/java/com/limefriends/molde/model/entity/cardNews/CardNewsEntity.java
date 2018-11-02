@@ -1,11 +1,13 @@
 package com.limefriends.molde.model.entity.cardNews;
 
+import com.limefriends.molde.model.entity.Data;
+import com.limefriends.molde.model.entity.DataType;
 import com.limefriends.molde.model.entity.comment.CommentEntity;
 import com.limefriends.molde.networking.schema.cardNews.CardNewsImageSchema;
 
 import java.util.List;
 
-public class CardNewsEntity {
+public class CardNewsEntity implements Data {
 
     private int newsId;
     private String postId;
@@ -79,5 +81,10 @@ public class CardNewsEntity {
 
     public void addComments(CommentEntity comment) {
         comments.add(comment);
+    }
+
+    @Override
+    public DataType getType() {
+        return DataType.CARD_NEWS;
     }
 }

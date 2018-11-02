@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:gravity="center"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/img_molca_by_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+    <TextView
+        android:id="@+id/txt_molca_by_location_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/img_molca_by_location"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:elegantTextHeight="true"
+        android:text="@string/info_prevent_1"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/txt_molca_by_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_molca_by_location_title"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:elegantTextHeight="true"
+        android:text="@string/info_prevent_1"
+        android:textColor="#000000"
+        android:textSize="12sp" />
+
+</RelativeLayout>

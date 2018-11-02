@@ -4,6 +4,7 @@ import com.limefriends.molde.model.repository.Repository;
 import com.limefriends.molde.screen.common.bottomNavigationViewHelper.BottomNavigationViewHelper;
 import com.limefriends.molde.screen.common.dialog.DialogFactory;
 import com.limefriends.molde.screen.common.dialog.DialogManager;
+import com.limefriends.molde.screen.common.imageLoader.ImageLoader;
 import com.limefriends.molde.screen.common.screensNavigator.ActivityScreenNavigator;
 import com.limefriends.molde.screen.common.screensNavigator.FragmentScreenNavigator;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
@@ -102,6 +103,9 @@ public class Injector {
         }
         else if (type.equals(ViewFactory.class)) {
             return mPresentationCompositionRoot.getViewFactory();
+        }
+        else if (type.equals(ImageLoader.class)) {
+            return mPresentationCompositionRoot.getImageLoader();
         }
         else {
             throw new RuntimeException("unsupported service type class: "+type);

@@ -1,6 +1,9 @@
 package com.limefriends.molde.model.entity.comment;
 
-public class ReportedCommentEntity {
+import com.limefriends.molde.model.entity.Data;
+import com.limefriends.molde.model.entity.DataType;
+
+public class ReportedCommentEntity implements Data{
 
     private int commRepId;
     private int commId;
@@ -46,4 +49,8 @@ public class ReportedCommentEntity {
         this.commRepDate = commRepDate;
     }
 
+    @Override
+    public DataType getType() {
+        return DataType.REPORTED_COMMENT;
+    }
 }

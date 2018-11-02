@@ -8,11 +8,16 @@
     android:layout_height="match_parent"
     android:background="@color/colorBG">
 
-    <com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/element_toolbar" />
+
+    <com.limefriends.molde.screen.common.recyclerview.addOnRecycler.AddOnScrollRecyclerView
         android:id="@+id/comment_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/comment_input"
+        android:layout_below="@id/toolbar"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         tools:listitem="@layout/item_cardnews_comment" />
 

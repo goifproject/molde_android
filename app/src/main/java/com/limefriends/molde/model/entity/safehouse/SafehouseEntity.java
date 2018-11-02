@@ -1,6 +1,9 @@
 package com.limefriends.molde.model.entity.safehouse;
 
-public class SafehouseEntity {
+import com.limefriends.molde.model.entity.Data;
+import com.limefriends.molde.model.entity.DataType;
+
+public class SafehouseEntity implements Data {
 
     private int safeId;
     private String safeName;
@@ -75,5 +78,10 @@ public class SafehouseEntity {
 
     public void setDistance(double distance) {
         this.distance = distance;
+    }
+
+    @Override
+    public DataType getType() {
+        return DataType.SAFE_HOUSE;
     }
 }

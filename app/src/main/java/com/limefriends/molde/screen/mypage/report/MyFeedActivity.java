@@ -11,16 +11,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.limefriends.molde.R;
 import com.limefriends.molde.common.Constant;
 import com.limefriends.molde.common.di.Service;
-import com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView;
-import com.limefriends.molde.screen.common.addOnListview.OnLoadMoreListener;
-import com.limefriends.molde.common.utils.NetworkUtil;
+import com.limefriends.molde.screen.common.recyclerview.addOnRecycler.AddOnScrollRecyclerView;
 import com.limefriends.molde.common.utils.PreferenceUtil;
 import com.limefriends.molde.model.entity.feed.FeedEntity;
 import com.limefriends.molde.model.repository.Repository;
 import com.limefriends.molde.screen.common.controller.BaseActivity;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
-import com.limefriends.molde.screen.common.views.ObservableView;
-import com.limefriends.molde.screen.feed.FeedDetailActivity;
+import com.limefriends.molde.screen.feed.detail.FeedDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +26,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.observers.DisposableObserver;
 
 import static com.limefriends.molde.common.Constant.Authority.*;
 import static com.limefriends.molde.common.Constant.Common.EXTRA_KEY_ACTIVITY_NAME;

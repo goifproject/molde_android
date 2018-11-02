@@ -74,7 +74,7 @@
         <activity
             android:name=".screen.magazine.info.RecentMolcaInfoActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppNoBarTheme" />
         <activity
             android:name=".screen.magazine.info.HowToDetectActivity"
             android:screenOrientation="portrait"
@@ -82,7 +82,7 @@
         <activity
             android:name=".screen.magazine.info.HowToRespondActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppNoBarTheme" />
         <activity
             android:name=".screen.magazine.detail.CardNewsDetailActivity"
             android:screenOrientation="portrait"
@@ -90,7 +90,7 @@
         <activity
             android:name=".screen.magazine.comment.CardNewsCommentActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppNoBarTheme" />
 
         <!-- 마이페이지 관련 -->
         <activity
@@ -111,9 +111,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".screen.feed.FeedDetailActivity"
+            android:name=".screen.feed.detail.FeedDetailActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppNoBarTheme" />
         <activity
             android:name=".screen.mypage.comment.MyCommentActivity"
             android:screenOrientation="portrait"

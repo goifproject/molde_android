@@ -21,7 +21,7 @@ public class FeedImageAdapter extends PagerAdapter {
     private Context context;
     private List<String> reportImageLinkList = new ArrayList<>();
 
-    FeedImageAdapter(Context context) {
+    public FeedImageAdapter(Context context) {
         this.context = context;
     }
 

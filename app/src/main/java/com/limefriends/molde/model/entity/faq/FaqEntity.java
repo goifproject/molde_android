@@ -1,6 +1,9 @@
 package com.limefriends.molde.model.entity.faq;
 
-public class FaqEntity {
+import com.limefriends.molde.model.entity.Data;
+import com.limefriends.molde.model.entity.DataType;
+
+public class FaqEntity implements Data {
 
     private int faqId;
     private String userId;
@@ -54,5 +57,10 @@ public class FaqEntity {
 
     public void setFaqEmail(String faqEmail) {
         this.faqEmail = faqEmail;
+    }
+
+    @Override
+    public DataType getType() {
+        return DataType.FAQ;
     }
 }

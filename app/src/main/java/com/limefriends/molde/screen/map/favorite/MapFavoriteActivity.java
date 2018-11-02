@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.common.app.MoldeApplication;
-import com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView;
+import com.limefriends.molde.screen.common.recyclerview.addOnRecycler.AddOnScrollRecyclerView;
 import com.limefriends.molde.model.entity.favorite.FavoriteEntity;
 import com.limefriends.molde.model.repository.Repository;
 import com.limefriends.molde.R;

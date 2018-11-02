@@ -1,6 +1,9 @@
 package com.limefriends.molde.model.entity.scrap;
 
-public class ScrapEntity {
+import com.limefriends.molde.model.entity.Data;
+import com.limefriends.molde.model.entity.DataType;
+
+public class ScrapEntity implements Data {
 
     private int scrapId;
     private String userId;
@@ -34,5 +37,10 @@ public class ScrapEntity {
 
     public void setNewsId(int newsId) {
         this.newsId = newsId;
+    }
+
+    @Override
+    public DataType getType() {
+        return DataType.SCRAP;
     }
 }

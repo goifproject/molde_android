@@ -18,6 +18,8 @@
         android:id="@+id/feed_dialog_thumbnail_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitCenter" />
+        android:scaleType="fitCenter"
+        android:background="#000000"
+        android:src="@drawable/img_placeholder_magazine"/>
 
 </FrameLayout>

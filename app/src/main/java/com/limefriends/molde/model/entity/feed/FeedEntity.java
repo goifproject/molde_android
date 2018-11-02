@@ -1,10 +1,12 @@
 package com.limefriends.molde.model.entity.feed;
 
+import com.limefriends.molde.model.entity.Data;
+import com.limefriends.molde.model.entity.DataType;
 import com.limefriends.molde.networking.schema.feed.FeedImageSchema;
 
 import java.util.List;
 
-public class FeedEntity {
+public class FeedEntity implements Data {
 
     private int repId;
     private String userName;
@@ -16,10 +18,13 @@ public class FeedEntity {
     private String repAddr;
     private String repDetailAddr;
     private String repDate;
-    private List<FeedImageSchema> repImg = null;
+    private List<FeedImageEntity> repImg = null;
     private int repState;
 
-    public FeedEntity(String userName, String userEmail, String userId, String repContents, double repLat, double repLon, String repAddr, String repDetailAddr, String repDate, List<FeedImageSchema> repImg, int repState) {
+    public FeedEntity(String userName, String userEmail, String userId,
+                      String repContents, double repLat, double repLon,
+                      String repAddr, String repDetailAddr, String repDate,
+                      List<FeedImageEntity> repImg, int repState) {
         this.userName = userName;
         this.userEmail = userEmail;
         this.userId = userId;
@@ -33,7 +38,9 @@ public class FeedEntity {
         this.repState = repState;
     }
 
-    public FeedEntity(int repId, String userName, String userEmail, String userId, String repContents, double repLat, double repLon, String repAddr, String repDetailAddr, String repDate, List<FeedImageSchema> repImg, int repState) {
+    public FeedEntity(int repId, String userName, String userEmail, String userId,
+                      String repContents, double repLat, double repLon, String repAddr,
+                      String repDetailAddr, String repDate, List<FeedImageEntity> repImg, int repState) {
         this.repId = repId;
         this.userName = userName;
         this.userEmail = userEmail;
@@ -128,11 +135,11 @@ public class FeedEntity {
         this.repDate = repDate;
     }
 
-    public List<FeedImageSchema> getRepImg() {
+    public List<FeedImageEntity> getRepImg() {
         return repImg;
     }
 
-    public void setRepImg(List<FeedImageSchema> repImg) {
+    public void setRepImg(List<FeedImageEntity> repImg) {
         this.repImg = repImg;
     }
 
@@ -142,5 +149,10 @@ public class FeedEntity {
 
     public void setRepState(int repState) {
         this.repState = repState;
+    }
+
+    @Override
+    public DataType getType() {
+        return DataType.FEED;
     }
 }

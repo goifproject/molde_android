@@ -126,7 +126,7 @@ public class PresentationCompositionRoot {
         return new DialogFactory();
     }
 
-    private ImageLoader getImageLoader() {
+    public ImageLoader getImageLoader() {
         return new ImageLoader(getActivity());
     }
 
@@ -135,7 +135,8 @@ public class PresentationCompositionRoot {
                 getLayoutInflater(),
                 getImageLoader(),
                 getDialogManager(),
-                getDialogFactory());
+                getDialogFactory(),
+                getToastHelper());
     }
 
     /**

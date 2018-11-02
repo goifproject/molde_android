@@ -341,6 +341,15 @@
     <string name="info_recent_7">화장실 몰카 예방법 2</string>
     <string name="info_recent_8">지하철 몰카 예방법 1</string>
 
+    <string name="info_how_to_detect_title">
+        디지털 성범죄 피해는 속도가 생명이다. 증거 수집도, 신고도 서둘러야 한다.
+        가해자 신고와 영상 삭제, 심리 상담 등 모든 과정에 시민단체와 정부의 도움을 받을 수 있다.
+    </string>
+    <string name="info_recent_info_title">
+        어떠한 몰래카메라가 있는지 알면 아무래도 더 조심할 수 있겠죠?\n\n
+        다양한 형태의 몰카와 현재 유행하는 몰카형태를 알아봅시다.
+    </string>
+
     <!-- Map -->
     <string name="dialog_request_permission">권한 설정 필요</string>
     <string name="dialog_go_settings">현재 기능을 사용하기 위해서는 해당 권한 설정이 필요합니다. 설정 페이지로 넘어가시겠습니까?</string>

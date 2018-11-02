@@ -2,6 +2,7 @@ package com.limefriends.molde.model.repository.common;
 
 import com.limefriends.molde.model.entity.cardNews.CardNewsImageEntity;
 import com.limefriends.molde.model.entity.comment.CommentEntity;
+import com.limefriends.molde.model.entity.feed.FeedImageEntity;
 import com.limefriends.molde.networking.schema.cardNews.CardNewsImageSchema;
 import com.limefriends.molde.networking.schema.comment.CommentSchema;
 import com.limefriends.molde.model.entity.comment.ReportedCommentEntity;
@@ -11,6 +12,7 @@ import com.limefriends.molde.networking.schema.faq.FaqSchema;
 import com.limefriends.molde.model.entity.favorite.FavoriteEntity;
 import com.limefriends.molde.networking.schema.favorite.FavoriteSchema;
 import com.limefriends.molde.model.entity.feed.FeedEntity;
+import com.limefriends.molde.networking.schema.feed.FeedImageSchema;
 import com.limefriends.molde.networking.schema.feed.FeedSchema;
 import com.limefriends.molde.model.entity.feedResult.FeedResultEntity;
 import com.limefriends.molde.networking.schema.feedResult.FeedResultSchema;
@@ -139,11 +141,24 @@ public class FromSchemaToEntity {
                     entity.getRepAddr(),
                     entity.getRepDetailAddr(),
                     entity.getRepDate(),
-                    entity.getRepImg(),
+                    feedImage(entity.getRepImg()),
                     entity.getRepState()
             ));
         }
         return data;
+    }
+
+    private List<FeedImageEntity> feedImage(List<FeedImageSchema> schemas) {
+
+        List<FeedImageEntity> entities = new ArrayList<>();
+        for (FeedImageSchema schema : schemas) {
+            entities.add(new FeedImageEntity(
+                    schema.getFilename(),
+                    schema.getFilepath(),
+                    schema.getFilesize()
+            ));
+        }
+        return entities;
     }
 
     /**

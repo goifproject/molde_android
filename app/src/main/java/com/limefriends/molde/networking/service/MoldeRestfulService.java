@@ -144,8 +144,7 @@ public interface MoldeRestfulService {
         Observable<Result> createNewCommentObservable(@Field("userId") String userId,
                                                       @Field("userName") String userName,
                                                       @Field("cardNewsId") int newsId,
-                                                      @Field("commentContent") String content,
-                                                      @Field("commentRegiDate") String regiDate);
+                                                      @Field("commentContent") String content);
 
         @FormUrlEncoded
         @PUT(MoldeRestfulApi.Comment.PUT_COMMENT_API)

@@ -58,29 +58,23 @@ public class PromptDialog extends BaseObservableDialog<PromptDialog.PromptDialog
     }
 
     private void initSubViews(View rootView) {
-        mTxtTitle = (TextView) rootView.findViewById(R.id.txt_dialog_title);
-        mTxtMessage = (TextView) rootView.findViewById(R.id.txt_dialog_message);
-        mBtnPositive = (Button) rootView.findViewById(R.id.btn_dialog_positive);
-        mBtnNegative = (Button) rootView.findViewById(R.id.btn_dialog_negative);
+        mTxtTitle = rootView.findViewById(R.id.txt_dialog_title);
+        mTxtMessage = rootView.findViewById(R.id.txt_dialog_message);
+        mBtnPositive = rootView.findViewById(R.id.btn_dialog_positive);
+        mBtnNegative = rootView.findViewById(R.id.btn_dialog_negative);
 
-        mBtnPositive.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (PromptDialogDismissListener listener : getListeners()) {
-                    listener.onPositiveButtonClicked();
-                }
-                dismiss();
+        mBtnPositive.setOnClickListener(v -> {
+            for (PromptDialogDismissListener listener : getListeners()) {
+                listener.onPositiveButtonClicked();
             }
+            dismiss();
         });
 
-        mBtnNegative.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (PromptDialogDismissListener listener : getListeners()) {
-                    listener.onNegativeButtonClicked();
-                }
-                dismiss();
+        mBtnNegative.setOnClickListener(v -> {
+            for (PromptDialogDismissListener listener : getListeners()) {
+                listener.onNegativeButtonClicked();
             }
+            dismiss();
         });
     }
 

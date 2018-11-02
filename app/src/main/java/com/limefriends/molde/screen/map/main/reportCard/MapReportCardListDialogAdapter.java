@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide;
 import com.limefriends.molde.R;
 import com.limefriends.molde.common.utils.DateUtil;
 import com.limefriends.molde.model.entity.feed.FeedEntity;
-import com.limefriends.molde.screen.feed.FeedDetailActivity;
+import com.limefriends.molde.screen.feed.detail.FeedDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;

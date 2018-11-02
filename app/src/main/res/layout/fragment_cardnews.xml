@@ -156,7 +156,7 @@
 
     </LinearLayout>
 
-    <com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView
+    <com.limefriends.molde.screen.common.recyclerview.addOnRecycler.AddOnScrollRecyclerView
         android:id="@+id/cardnews_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

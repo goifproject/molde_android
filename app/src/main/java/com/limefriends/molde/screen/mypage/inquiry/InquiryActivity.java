@@ -22,7 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.limefriends.molde.common.Constant;
 import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.common.app.MoldeApplication;
-import com.limefriends.molde.screen.common.addOnListview.AddOnScrollRecyclerView;
+import com.limefriends.molde.screen.common.recyclerview.addOnRecycler.AddOnScrollRecyclerView;
 import com.limefriends.molde.common.utils.PreferenceUtil;
 import com.limefriends.molde.common.utils.pattern.RegexUtil;
 import com.limefriends.molde.R;
