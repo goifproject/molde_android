@@ -4,7 +4,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.limefriends.molde.R;
@@ -20,12 +22,18 @@ public class NestedToolbar extends BaseView {
         void onHamburgerClicked();
     }
 
+    public interface SwitchGreenZoneListener {
+        void onSwitchGreenZoneClicked(boolean isChecked);
+    }
+
     private final TextView mToolbarTitle;
     private final ImageView mToolbarBtnBack;
     private final Button mToolbarBtnComplete;
+    private final Switch mSwitchGreenZone;
 
     private NavigateUpClickListener mNavigateUpClickListener;
     private CompleteClickListener mCompleteClickListener;
+    private SwitchGreenZoneListener mSwitchGreenZoneListener;
 
     public NestedToolbar(LayoutInflater inflater, ViewGroup parent) {
 
@@ -34,6 +42,7 @@ public class NestedToolbar extends BaseView {
         mToolbarTitle = findViewById(R.id.toolbar_title);
         mToolbarBtnBack = findViewById(R.id.toolbar_btn_back);
         mToolbarBtnComplete = findViewById(R.id.toolbar_btn_done);
+        mSwitchGreenZone = findViewById(R.id.toolbar_switch_green_zone);
 
         setupListener();
     }
@@ -43,6 +52,9 @@ public class NestedToolbar extends BaseView {
         mToolbarBtnBack.setOnClickListener(v -> mNavigateUpClickListener.onNavigateUpClicked());
 
         mToolbarBtnComplete.setOnClickListener(v -> mCompleteClickListener.onHamburgerClicked());
+
+        mSwitchGreenZone.setOnCheckedChangeListener((buttonView, isChecked)
+                -> mSwitchGreenZoneListener.onSwitchGreenZoneClicked(isChecked));
     }
 
     public void setTitle(String title) {
@@ -57,6 +69,11 @@ public class NestedToolbar extends BaseView {
     public void enableCompleteButtonAndListen(CompleteClickListener listener) {
         mToolbarBtnComplete.setVisibility(View.VISIBLE);
         this.mCompleteClickListener = listener;
+    }
+
+    public void enableSwitchButtonAndListen(SwitchGreenZoneListener listener) {
+        mSwitchGreenZone.setVisibility(View.VISIBLE);
+        this.mSwitchGreenZoneListener = listener;
     }
 
 }

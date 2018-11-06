@@ -24,7 +24,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -52,12 +51,12 @@ import com.limefriends.molde.screen.common.dialog.DialogManager;
 import com.limefriends.molde.screen.common.dialog.view.PromptDialog;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 import com.limefriends.molde.screen.main.MoldeMainActivity;
-import com.limefriends.molde.screen.map.favorite.MapFavoriteActivity;
-import com.limefriends.molde.screen.map.favorite.MapFavoriteDialog;
-import com.limefriends.molde.screen.map.main.reportCard.MapReportCardListDialog;
-import com.limefriends.molde.screen.map.main.reportCard.MapReportCardPagerAdapter;
-import com.limefriends.molde.screen.map.main.reportCard.MapReportCardItem;
-import com.limefriends.molde.screen.map.main.reportCard.ShadowTransformer;
+import com.limefriends.molde.screen.map.favorite.FavoriteActivity;
+import com.limefriends.molde.screen.map.main.favoriteDialog.FavoriteDialog;
+import com.limefriends.molde.screen.map.main.feedDialog.MapReportCardListDialog;
+import com.limefriends.molde.screen.map.main.feedDialog.MapReportCardPagerAdapter;
+import com.limefriends.molde.screen.map.main.feedDialog.MapReportCardItem;
+import com.limefriends.molde.screen.map.main.feedDialog.ShadowTransformer;
 import com.limefriends.molde.screen.map.report.ReportActivity;
 import com.limefriends.molde.screen.map.search.SearchMapInfoActivity;
 
@@ -80,7 +79,7 @@ import static com.limefriends.molde.common.utils.PermissionUtil.REQ_CODE;
 public class MapFragment extends BaseFragment implements
         OnMapReadyCallback, MoldeMainActivity.OnKeyBackPressedListener,
         ShadowTransformer.OnPageSelectedCallback,
-        MapFavoriteDialog.MoldeApplyMyFavoriteInfoCallback,
+        FavoriteDialog.MoldeApplyMyFavoriteInfoCallback,
         PermissionUtil.PermissionCallback, View.OnClickListener,
         GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener,
         GoogleMap.OnInfoWindowCloseListener, GoogleMap.OnMarkerClickListener {
@@ -189,7 +188,7 @@ public class MapFragment extends BaseFragment implements
 
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
-    private MapFavoriteDialog mapFavoriteDialog;
+    private FavoriteDialog favoriteDialog;
     private MapReportCardListDialog mapReportCardListDialog;
 
     /**
@@ -283,7 +282,7 @@ public class MapFragment extends BaseFragment implements
             case R.id.favorite_button:
                 if (getFirebaseAuth() != null && getFirebaseAuth().getUid() != null) {
                     intent = new Intent();
-                    intent.setClass(v.getContext(), MapFavoriteActivity.class);
+                    intent.setClass(v.getContext(), FavoriteActivity.class);
                     startActivityForResult(intent, REQ_FAVORITE);
                 } else {
                     snackBar(getText(R.string.toast_require_signin).toString());
@@ -424,8 +423,8 @@ public class MapFragment extends BaseFragment implements
 
     // 즐겨찾기 마커 클릭시 보여줄 대화상자
     private void showFavoriteDialog(Marker marker, int type) {
-        mapFavoriteDialog = new MapFavoriteDialog();
-        mapFavoriteDialog.setCallback(this, marker, getUid());
+        favoriteDialog = new FavoriteDialog();
+        favoriteDialog.setCallback(this, marker, getUid());
         Bundle bundle = new Bundle();
         bundle.putString("markerTitle", marker.getTitle());
         bundle.putString("markerInfo", marker.getSnippet());
@@ -437,8 +436,8 @@ public class MapFragment extends BaseFragment implements
             isMyFavoriteActive = false;
         }
         bundle.putBoolean("myFavoriteActive", isMyFavoriteActive);
-        mapFavoriteDialog.setArguments(bundle);
-        mapFavoriteDialog.show(
+        favoriteDialog.setArguments(bundle);
+        favoriteDialog.show(
                 ((MoldeMainActivity) getContext()).getSupportFragmentManager(),
                 "bottomSheet");
     }
@@ -939,7 +938,7 @@ public class MapFragment extends BaseFragment implements
                         .subscribe(
                                 e -> {
                                     mToastHelper.showShortToast("즐겨찾기 추가 성공");
-                                    if (mapFavoriteDialog != null) mapFavoriteDialog.dismiss();
+                                    if (favoriteDialog != null) favoriteDialog.dismiss();
                                 },
                                 err -> mToastHelper.showShortToast("데이터 전송 실패"),
                                 () -> {

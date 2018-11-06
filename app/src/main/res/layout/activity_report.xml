@@ -11,33 +11,37 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- 툴바 -->
-        <android.support.v7.widget.Toolbar
+        <include
             android:id="@+id/report_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@color/white"
-            android:elevation="4dp">
+            layout="@layout/element_toolbar"/>
 
-            <TextView
-                android:id="@+id/report_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/report"
-                android:textColor="@color/colorInfoTextColor"
-                android:textSize="18sp" />
+        <!--&lt;!&ndash; 툴바 &ndash;&gt;-->
+        <!--<android.support.v7.widget.Toolbar-->
+            <!--android:id="@+id/report_toolbar"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="56dp"-->
+            <!--android:background="@color/white"-->
+            <!--android:elevation="4dp">-->
 
-            <Switch
-                android:id="@+id/switch_green_zone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginEnd="24dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp" />
+            <!--<TextView-->
+                <!--android:id="@+id/report_title"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:text="@string/report"-->
+                <!--android:textColor="@color/colorInfoTextColor"-->
+                <!--android:textSize="18sp" />-->
 
-        </android.support.v7.widget.Toolbar>
+            <!--<Switch-->
+                <!--android:id="@+id/switch_green_zone"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="end"-->
+                <!--android:layout_marginEnd="24dp"-->
+                <!--android:layout_marginStart="16dp"-->
+                <!--android:layout_marginTop="16dp" />-->
+
+        <!--</android.support.v7.widget.Toolbar>-->
 
         <!-- 프로그래스바 -->
         <ProgressBar

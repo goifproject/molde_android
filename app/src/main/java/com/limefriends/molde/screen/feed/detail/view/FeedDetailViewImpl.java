@@ -29,7 +29,6 @@ import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 import com.limefriends.molde.screen.common.toolbar.NestedToolbar;
 import com.limefriends.molde.screen.common.views.BaseObservableView;
 import com.limefriends.molde.screen.common.views.ViewFactory;
-import com.limefriends.molde.screen.feed.FeedImageAdapter;
 import com.limefriends.molde.screen.feed.detail.FeedDetailActivity;
 
 import java.util.ArrayList;
@@ -656,7 +655,7 @@ public class FeedDetailViewImpl
         image_list.setVisibility(View.GONE);
     }
 
-    public void applyImage(Uri uri, int seq) {
+    private void applyImage(Uri uri, int seq) {
         switch (seq) {
             case 1:
                 first_iamge.setImageURI(uri);
@@ -691,6 +690,23 @@ public class FeedDetailViewImpl
     public void setPictureForReport(Uri uri, int seq) {
         imageSparseArray.append(seq, uri);
         applyImage(uri, seq);
+    }
+
+    @Override
+    public void setPictureForReport(List<String> imagePathList, int seq) {
+        int count = 0;
+        int bringImgListSize = imagePathList.size();
+        for (int i = 1; i <= 5; i++) {
+            if (bringImgListSize == 0) {
+                break;
+            }
+            if (imageSparseArray.get(i) == null) {
+                imageSparseArray.append(i, Uri.parse(imagePathList.get(count)));
+                applyImage(Uri.parse(imagePathList.get(count)), i);
+                count++;
+                bringImgListSize--;
+            }
+        }
     }
 
     @Override

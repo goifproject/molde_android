@@ -1,6 +1,6 @@
 package com.limefriends.molde.model.repository.usecase;
 
-import com.limefriends.molde.model.repository.common.FromSchemaToEntity;
+import com.limefriends.molde.model.common.FromSchemaToEntity;
 import com.limefriends.molde.model.entity.comment.CommentEntity;
 import com.limefriends.molde.model.entity.comment.ReportedCommentEntity;
 import com.limefriends.molde.model.entity.cardNews.CardNewsEntity;

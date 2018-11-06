@@ -1,4 +1,4 @@
-package com.limefriends.molde.model.repository.common;
+package com.limefriends.molde.model.common;
 
 import com.limefriends.molde.model.entity.cardNews.CardNewsImageEntity;
 import com.limefriends.molde.model.entity.comment.CommentEntity;

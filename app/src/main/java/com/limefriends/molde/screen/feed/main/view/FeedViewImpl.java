@@ -9,7 +9,7 @@ import android.widget.ToggleButton;
 import com.limefriends.molde.R;
 import com.limefriends.molde.common.utils.DateUtil;
 import com.limefriends.molde.model.entity.feed.FeedEntity;
-import com.limefriends.molde.screen.common.recyclerview.adapter.RecyclerViewAdapter;
+import com.limefriends.molde.screen.common.recyclerview.RecyclerViewAdapter;
 import com.limefriends.molde.screen.common.recyclerview.addOnRecycler.AddOnScrollRecyclerView;
 import com.limefriends.molde.screen.common.views.BaseObservableView;
 import com.limefriends.molde.screen.common.views.ViewFactory;

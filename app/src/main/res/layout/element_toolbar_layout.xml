@@ -38,6 +38,16 @@
         android:background="@android:color/transparent"
         android:text="@string/toolbar_confirm"
         android:textColor="@color/colorDeepDarkGray"
-        android:visibility="gone"/>
+        android:visibility="invisible" />
+
+    <Switch
+        android:id="@+id/toolbar_switch_green_zone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:visibility="invisible"/>
 
 </RelativeLayout>

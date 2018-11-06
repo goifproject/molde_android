@@ -6,6 +6,8 @@ import android.support.v4.util.SparseArrayCompat;
 import com.limefriends.molde.model.entity.feed.FeedEntity;
 import com.limefriends.molde.screen.common.views.ObservableView;
 
+import java.util.List;
+
 public interface FeedDetailView extends ObservableView<FeedDetailView.Listener> {
 
     public interface Listener {
@@ -28,6 +30,8 @@ public interface FeedDetailView extends ObservableView<FeedDetailView.Listener> 
     void showSnackBar(String message);
 
     void setPictureForReport(Uri uri, int seq);
+
+    void setPictureForReport(List<String> uri, int seq);
 
     void bindFeedDetail(FeedEntity entity);
 

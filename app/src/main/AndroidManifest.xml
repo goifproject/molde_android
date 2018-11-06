@@ -54,9 +54,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".screen.map.favorite.MapFavoriteActivity"
+            android:name=".screen.map.favorite.FavoriteActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppNoBarTheme" />
         <activity
             android:name=".common.manager.cameraHelper.MoldeReportCameraActivity"
             android:screenOrientation="portrait"

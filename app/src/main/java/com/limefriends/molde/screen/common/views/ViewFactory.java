@@ -30,6 +30,12 @@ import com.limefriends.molde.screen.common.recyclerview.itemView.CardNewsItemVie
 import com.limefriends.molde.screen.common.recyclerview.itemView.CardNewsItemViewImpl;
 import com.limefriends.molde.screen.magazine.main.view.CardNewsView;
 import com.limefriends.molde.screen.magazine.main.view.CardNewsViewImpl;
+import com.limefriends.molde.screen.common.recyclerview.itemView.FavoriteItemView;
+import com.limefriends.molde.screen.common.recyclerview.itemView.FavoriteItemViewImpl;
+import com.limefriends.molde.screen.map.favorite.view.FavoriteView;
+import com.limefriends.molde.screen.map.favorite.view.FavoriteViewImpl;
+import com.limefriends.molde.screen.map.report.view.ReportView;
+import com.limefriends.molde.screen.map.report.view.ReportViewImpl;
 
 import javax.annotation.Nullable;
 
@@ -96,6 +102,15 @@ public class ViewFactory {
         else if (viewClass == FeedDetailView.class) {
             viewMvc = new FeedDetailViewImpl(
                     mLayoutInflater, container, this, mDialogFactory, mDialogManager, mToastHelper);
+        }
+        else if (viewClass == FavoriteView.class) {
+            viewMvc = new FavoriteViewImpl(mLayoutInflater, container, this);
+        }
+        else if (viewClass == FavoriteItemView.class) {
+            viewMvc = new FavoriteItemViewImpl(mLayoutInflater, container, mDialogFactory, mDialogManager);
+        }
+        else if (viewClass == ReportView.class) {
+            viewMvc = new ReportViewImpl(mLayoutInflater, container, mDialogFactory, mDialogManager, mToastHelper, this);
         }
         else {
             throw new IllegalArgumentException("unsupported MVC view class " + viewClass);

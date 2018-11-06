@@ -106,6 +106,7 @@ public interface MoldeRestfulService {
 
     interface FeedResult {
 
+        @Multipart
         @POST(MoldeRestfulApi.FeedResult.POST_FEED_RESULT_API)
         Observable<Result> reportFeedResultObservable(@Part("reportId") int reportId,
                                                       @Part List<MultipartBody.Part> reportImageList

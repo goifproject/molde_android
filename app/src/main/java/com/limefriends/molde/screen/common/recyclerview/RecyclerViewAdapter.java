@@ -1,4 +1,4 @@
-package com.limefriends.molde.screen.common.recyclerview.adapter;
+package com.limefriends.molde.screen.common.recyclerview;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import com.limefriends.molde.model.entity.Data;
 import com.limefriends.molde.model.entity.cardNews.CardNewsEntity;
 import com.limefriends.molde.model.entity.comment.CommentEntity;
+import com.limefriends.molde.model.entity.favorite.FavoriteEntity;
 import com.limefriends.molde.model.entity.feed.FeedEntity;
 import com.limefriends.molde.model.entity.molcaInfo.MolcaInfo;
 import com.limefriends.molde.screen.common.views.ViewFactory;
@@ -14,17 +15,23 @@ import com.limefriends.molde.screen.common.recyclerview.itemView.MolcaInfoItemVi
 import com.limefriends.molde.screen.common.recyclerview.itemView.CardNewsItemView;
 import com.limefriends.molde.screen.common.recyclerview.itemView.CardNewsCommentItemView;
 import com.limefriends.molde.screen.common.recyclerview.itemView.FeedItemView;
+import com.limefriends.molde.screen.common.recyclerview.itemView.FavoriteItemView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerViewAdapter<T extends Data>
         extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>
-        implements CardNewsItemView.Listener, CardNewsCommentItemView.Listener, FeedItemView.Listener {
+        implements CardNewsItemView.Listener, CardNewsCommentItemView.Listener, FeedItemView.Listener, FavoriteItemView.Listener {
 
     public interface OnItemClickListener {
 
         void onItemClicked(int itemId);
+    }
+
+    public interface OnItem2ClickListener {
+
+        void onItem2Clicked(int itemId);
     }
 
     private static final int 
@@ -43,6 +50,7 @@ public class RecyclerViewAdapter<T extends Data>
     private List<T> dataList = new ArrayList<>();
     private ViewFactory mViewFactory;
     private OnItemClickListener mOnItemClickListener;
+    private OnItem2ClickListener mOnItem2ClickListener;
 
     public RecyclerViewAdapter(ViewFactory mViewFactory) {
         this.mViewFactory = mViewFactory;
@@ -75,6 +83,10 @@ public class RecyclerViewAdapter<T extends Data>
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.mOnItemClickListener = listener;
+    }
+
+    public void setOnItem2ClickListener(OnItem2ClickListener listener) {
+        this.mOnItem2ClickListener = listener;
     }
 
     @Override
@@ -126,11 +138,12 @@ public class RecyclerViewAdapter<T extends Data>
             case VIEW_TYPE_FEED:
                 viewMvc = mViewFactory.newInstance(FeedItemView.class, parent);
                 break;
+            case VIEW_TYPE_FAVORITE:
+                viewMvc = mViewFactory.newInstance(FavoriteItemView.class, parent);
+                break;
 //            case VIEW_TYPE_REPORTED_COMMENT:
 //                return ;
 //            case VIEW_TYPE_FAQ:
-//                return ;
-//            case VIEW_TYPE_FAVORITE:
 //                return ;
 //            case VIEW_TYPE_SAFEHOUSE:
 //                return ;
@@ -159,8 +172,12 @@ public class RecyclerViewAdapter<T extends Data>
         mOnItemClickListener.onItemClicked(itemId);
     }
 
+    @Override
+    public void onItem2Clicked(int itemId) {
+        mOnItem2ClickListener.onItem2Clicked(itemId);
+    }
 
-    public class ViewHolder extends RecyclerView.ViewHolder  {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         ViewMvc mViewMvc;
 
@@ -185,13 +202,15 @@ public class RecyclerViewAdapter<T extends Data>
                     ((FeedItemView) mViewMvc).bindFeed((FeedEntity) data);
                     ((FeedItemView) mViewMvc).registerListener(RecyclerViewAdapter.this);
                     break;
+                case FAVORITE:
+                    ((FavoriteItemView) mViewMvc).bindFavorite((FavoriteEntity) data);
+                    ((FavoriteItemView) mViewMvc).registerListener(RecyclerViewAdapter.this);
+                    break;
 //                case CARD_NEWS_IMAGE:
 //                    break;
 //                case REPORTED_COMMENT:
 //                    break;
 //                case FAQ:
-//                    break;
-//                case FAVORITE:
 //                    break;
 //                case FEED_RESULT:
 //                    break;

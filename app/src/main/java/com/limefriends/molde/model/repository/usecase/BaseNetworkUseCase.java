@@ -1,6 +1,6 @@
 package com.limefriends.molde.model.repository.usecase;
 
-import com.limefriends.molde.model.repository.common.FromSchemaToEntity;
+import com.limefriends.molde.model.common.FromSchemaToEntity;
 import com.limefriends.molde.networking.common.NetworkHelper;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 

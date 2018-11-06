@@ -4,7 +4,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 
-import com.limefriends.molde.model.repository.common.FromSchemaToEntity;
+import com.limefriends.molde.model.common.FromSchemaToEntity;
 import com.limefriends.molde.networking.common.NetworkHelper;
 import com.limefriends.molde.screen.common.bottomNavigationViewHelper.BottomNavigationViewHelper;
 import com.limefriends.molde.model.repository.Repository;
