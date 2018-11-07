@@ -1,4 +1,4 @@
-package com.limefriends.molde.common.utils.pattern;
+package com.limefriends.molde.common.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
