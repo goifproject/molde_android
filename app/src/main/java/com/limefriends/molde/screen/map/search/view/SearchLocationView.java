@@ -1,7 +1,7 @@
 package com.limefriends.molde.screen.map.search.view;
 
 import com.limefriends.molde.model.entity.search.SearchInfoEntity;
-import com.limefriends.molde.screen.common.views.ObservableView;
+import com.limefriends.molde.screen.common.view.ObservableView;
 
 import java.util.List;
 

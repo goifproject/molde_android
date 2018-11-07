@@ -19,10 +19,10 @@ import com.limefriends.molde.common.app.MoldeApplication;
 import com.limefriends.molde.model.entity.cardNews.CardNewsEntity;
 import com.limefriends.molde.model.entity.scrap.ScrapEntity;
 import com.limefriends.molde.model.repository.Repository;
-import com.limefriends.molde.screen.common.controller.BaseActivity;
+import com.limefriends.molde.screen.common.viewController.BaseActivity;
 import com.limefriends.molde.screen.common.screensNavigator.ActivityScreenNavigator;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
-import com.limefriends.molde.screen.common.views.ViewFactory;
+import com.limefriends.molde.screen.common.view.ViewFactory;
 import com.limefriends.molde.screen.magazine.detail.view.CardNewsDetailView;
 
 import java.util.ArrayList;

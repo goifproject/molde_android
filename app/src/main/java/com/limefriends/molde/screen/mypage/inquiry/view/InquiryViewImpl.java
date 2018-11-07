@@ -17,14 +17,14 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import com.limefriends.molde.R;
 import com.limefriends.molde.common.Constant;
-import com.limefriends.molde.common.utils.pattern.RegexUtil;
+import com.limefriends.molde.common.util.RegexUtil;
 import com.limefriends.molde.model.entity.faq.FaqEntity;
 import com.limefriends.molde.screen.common.recyclerview.adapter.RecyclerViewAdapter;
 import com.limefriends.molde.screen.common.recyclerview.addOnRecycler.AddOnScrollRecyclerView;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 import com.limefriends.molde.screen.common.toolbar.NestedToolbar;
-import com.limefriends.molde.screen.common.views.BaseObservableView;
-import com.limefriends.molde.screen.common.views.ViewFactory;
+import com.limefriends.molde.screen.common.view.BaseObservableView;
+import com.limefriends.molde.screen.common.view.ViewFactory;
 
 import java.util.List;
 

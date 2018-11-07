@@ -1,7 +1,7 @@
 package com.limefriends.molde.screen.magazine.info.view;
 
 import com.limefriends.molde.model.entity.molcaInfo.MolcaInfo;
-import com.limefriends.molde.screen.common.views.ObservableView;
+import com.limefriends.molde.screen.common.view.ObservableView;
 
 import java.util.List;
 

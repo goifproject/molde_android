@@ -1,10 +1,8 @@
 package com.limefriends.molde.screen.magazine.detail.view;
 
 
-import android.view.View;
-
 import com.limefriends.molde.model.entity.cardNews.CardNewsImageEntity;
-import com.limefriends.molde.screen.common.views.ObservableView;
+import com.limefriends.molde.screen.common.view.ObservableView;
 
 import java.util.List;
 

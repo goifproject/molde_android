@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.limefriends.molde.R;
-import com.limefriends.molde.screen.common.controller.BaseObservableDialog;
+import com.limefriends.molde.screen.common.viewController.BaseObservableDialog;
 
 public class PromptDialog extends BaseObservableDialog<PromptDialog.PromptDialogDismissListener> {
 

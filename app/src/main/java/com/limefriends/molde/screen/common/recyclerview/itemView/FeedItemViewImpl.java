@@ -7,13 +7,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.limefriends.molde.R;
-import com.limefriends.molde.common.utils.DateUtil;
+import com.limefriends.molde.common.util.DateUtil;
 import com.limefriends.molde.model.entity.feed.FeedEntity;
 import com.limefriends.molde.screen.common.dialog.DialogFactory;
 import com.limefriends.molde.screen.common.dialog.DialogManager;
 import com.limefriends.molde.screen.common.dialog.view.ImageDialog;
 import com.limefriends.molde.screen.common.imageLoader.ImageLoader;
-import com.limefriends.molde.screen.common.views.BaseObservableView;
+import com.limefriends.molde.screen.common.view.BaseObservableView;
 
 import static com.limefriends.molde.common.Constant.ReportState.ACCEPTED;
 import static com.limefriends.molde.common.Constant.ReportState.CLEAN;

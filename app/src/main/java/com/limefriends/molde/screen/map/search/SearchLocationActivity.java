@@ -4,20 +4,16 @@ import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.common.manager.cacheHelper.Cache;
 import com.limefriends.molde.model.entity.search.SearchInfoEntity;
 import com.limefriends.molde.model.repository.Repository;
-import com.limefriends.molde.screen.common.controller.BaseActivity;
+import com.limefriends.molde.screen.common.viewController.BaseActivity;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
-import com.limefriends.molde.screen.common.views.ViewFactory;
+import com.limefriends.molde.screen.common.view.ViewFactory;
 import com.limefriends.molde.screen.map.search.view.SearchLocationView;
 
 import android.content.Intent;
-import android.os.Handler;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.disposables.CompositeDisposable;

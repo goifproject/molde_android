@@ -6,7 +6,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
 import com.limefriends.molde.R;
-import com.limefriends.molde.common.utils.PreferenceUtil;
+import com.limefriends.molde.common.helper.PreferenceUtil;
 import com.limefriends.molde.screen.tutorial.SubTutorialActivity;
 import com.limefriends.molde.screen.tutorial.TutorialActivity;
 

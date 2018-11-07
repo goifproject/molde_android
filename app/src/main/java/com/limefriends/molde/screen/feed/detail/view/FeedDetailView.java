@@ -4,7 +4,7 @@ import android.net.Uri;
 import android.support.v4.util.SparseArrayCompat;
 
 import com.limefriends.molde.model.entity.feed.FeedEntity;
-import com.limefriends.molde.screen.common.views.ObservableView;
+import com.limefriends.molde.screen.common.view.ObservableView;
 
 import java.util.List;
 

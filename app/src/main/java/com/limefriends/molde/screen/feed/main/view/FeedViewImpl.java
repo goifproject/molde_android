@@ -7,12 +7,12 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.limefriends.molde.R;
-import com.limefriends.molde.common.utils.DateUtil;
+import com.limefriends.molde.common.util.DateUtil;
 import com.limefriends.molde.model.entity.feed.FeedEntity;
 import com.limefriends.molde.screen.common.recyclerview.adapter.RecyclerViewAdapter;
 import com.limefriends.molde.screen.common.recyclerview.addOnRecycler.AddOnScrollRecyclerView;
-import com.limefriends.molde.screen.common.views.BaseObservableView;
-import com.limefriends.molde.screen.common.views.ViewFactory;
+import com.limefriends.molde.screen.common.view.BaseObservableView;
+import com.limefriends.molde.screen.common.view.ViewFactory;
 
 import java.util.List;
 

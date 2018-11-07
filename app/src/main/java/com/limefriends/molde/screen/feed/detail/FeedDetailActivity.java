@@ -4,21 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.util.SparseArrayCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.util.Log;
-import android.util.TypedValue;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.gun0912.tedpermission.PermissionListener;
@@ -27,29 +13,22 @@ import com.limefriends.molde.R;
 import com.limefriends.molde.common.Constant;
 import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.common.app.MoldeApplication;
-import com.limefriends.molde.common.manager.cameraHelper.MoldeReportCameraActivity;
-import com.limefriends.molde.common.utils.DateUtil;
-import com.limefriends.molde.common.utils.PreferenceUtil;
-import com.limefriends.molde.common.utils.StringUtil;
+import com.limefriends.molde.screen.common.camera.MoldeReportCameraActivity;
+import com.limefriends.molde.common.helper.PreferenceUtil;
 import com.limefriends.molde.model.entity.feed.FeedEntity;
 import com.limefriends.molde.model.repository.Repository;
-import com.limefriends.molde.networking.schema.feed.FeedImageSchema;
 import com.limefriends.molde.networking.schema.response.Result;
-import com.limefriends.molde.screen.common.controller.BaseActivity;
+import com.limefriends.molde.screen.common.viewController.BaseActivity;
 import com.limefriends.molde.screen.common.dialog.DialogFactory;
 import com.limefriends.molde.screen.common.dialog.DialogManager;
-import com.limefriends.molde.screen.common.dialog.view.PromptDialog;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
-import com.limefriends.molde.screen.common.views.ViewFactory;
+import com.limefriends.molde.screen.common.view.ViewFactory;
 import com.limefriends.molde.screen.feed.detail.view.FeedDetailView;
-import com.limefriends.molde.screen.feed.main.view.FeedView;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
 import okhttp3.MediaType;
@@ -62,7 +41,7 @@ import static com.limefriends.molde.common.Constant.Common.EXTRA_KEY_POSITION;
 import static com.limefriends.molde.common.Constant.Common.PREF_KEY_AUTHORITY;
 import static com.limefriends.molde.common.Constant.Feed.*;
 import static com.limefriends.molde.common.Constant.ReportState.*;
-import static com.limefriends.molde.common.manager.cameraHelper.MoldeReportCameraActivity.TAKE_PICTURE_FOR_ADD_IMAGE;
+import static com.limefriends.molde.screen.common.camera.MoldeReportCameraActivity.TAKE_PICTURE_FOR_ADD_IMAGE;
 
 public class FeedDetailActivity extends BaseActivity implements FeedDetailView.Listener {
 

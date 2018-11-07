@@ -6,8 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.limefriends.molde.model.entity.ImageData;
-import com.limefriends.molde.model.entity.cardNews.CardNewsImageEntity;
-import com.limefriends.molde.screen.common.views.ViewFactory;
+import com.limefriends.molde.screen.common.view.ViewFactory;
 import com.limefriends.molde.screen.common.imagePager.itemView.ImagePagerView;
 
 import java.util.ArrayList;

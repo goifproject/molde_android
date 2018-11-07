@@ -6,31 +6,19 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatDialogFragment;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.limefriends.molde.R;
 import com.limefriends.molde.common.di.Service;
-import com.limefriends.molde.screen.common.controller.BaseDialog;
+import com.limefriends.molde.screen.common.viewController.BaseDialog;
 import com.limefriends.molde.screen.common.imageLoader.ImageLoader;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import retrofit2.http.Url;
 
 public class ImageDialog extends BaseDialog {
 

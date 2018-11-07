@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.limefriends.molde.R;
-import com.limefriends.molde.screen.common.controller.BaseDialog;
+import com.limefriends.molde.screen.common.viewController.BaseDialog;
 
 public class InfoDialog extends BaseDialog {
 

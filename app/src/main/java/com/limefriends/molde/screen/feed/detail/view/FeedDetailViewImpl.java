@@ -16,22 +16,19 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.limefriends.molde.R;
-import com.limefriends.molde.common.utils.DateUtil;
-import com.limefriends.molde.common.utils.StringUtil;
+import com.limefriends.molde.common.util.DateUtil;
+import com.limefriends.molde.common.util.StringUtil;
 import com.limefriends.molde.model.entity.feed.FeedEntity;
 import com.limefriends.molde.model.entity.feed.FeedImageEntity;
-import com.limefriends.molde.networking.schema.feed.FeedImageSchema;
 import com.limefriends.molde.screen.common.dialog.DialogFactory;
 import com.limefriends.molde.screen.common.dialog.DialogManager;
 import com.limefriends.molde.screen.common.dialog.view.PromptDialog;
 import com.limefriends.molde.screen.common.imagePager.ImagePagerAdapter;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 import com.limefriends.molde.screen.common.toolbar.NestedToolbar;
-import com.limefriends.molde.screen.common.views.BaseObservableView;
-import com.limefriends.molde.screen.common.views.ViewFactory;
-import com.limefriends.molde.screen.feed.detail.FeedDetailActivity;
+import com.limefriends.molde.screen.common.view.BaseObservableView;
+import com.limefriends.molde.screen.common.view.ViewFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.limefriends.molde.common.Constant.ReportState.ACCEPTED;
@@ -39,7 +36,6 @@ import static com.limefriends.molde.common.Constant.ReportState.CLEAN;
 import static com.limefriends.molde.common.Constant.ReportState.DENIED;
 import static com.limefriends.molde.common.Constant.ReportState.FOUND;
 import static com.limefriends.molde.common.Constant.ReportState.RECEIVING;
-import static com.limefriends.molde.common.manager.cameraHelper.MoldeReportCameraActivity.TAKE_PICTURE_FOR_ADD_IMAGE;
 
 public class FeedDetailViewImpl
         extends BaseObservableView<FeedDetailView.Listener> implements FeedDetailView, View.OnClickListener {
@@ -732,12 +728,6 @@ public class FeedDetailViewImpl
         setDate(feedEntity.getRepState(), feedEntity.getRepDate());
         // 신고 이미지
         mFeedImageAdapter.setData(feedEntity.getRepImg());
-//        List<FeedImageSchema> imageList = feedEntity.getRepImg();
-//        List<String> imageUrls = new ArrayList<>();
-//        for (int i = 0; i < imageList.size(); i++) {
-//            imageUrls.add(imageList.get(i).getFilepath());
-//        }
-//        mFeedImageAdapter.setData(imageUrls);
     }
 
     @Override

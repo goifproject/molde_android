@@ -1,9 +1,8 @@
 package com.limefriends.molde.model.repository.usecase;
 
-import com.limefriends.molde.common.utils.SecretRetriever;
+import com.limefriends.molde.common.helper.SecretRetriever;
 import com.limefriends.molde.model.database.dao.SearchHistoryDao;
 import com.limefriends.molde.model.common.FromSchemaToEntity;
-import com.limefriends.molde.model.database.schema.SearchHistorySchema;
 import com.limefriends.molde.model.entity.search.SearchInfoEntity;
 import com.limefriends.molde.model.repository.Repository;
 import com.limefriends.molde.networking.common.NetworkHelper;
@@ -12,7 +11,6 @@ import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 
 import java.util.List;
 
-import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;

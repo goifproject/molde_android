@@ -3,7 +3,7 @@ package com.limefriends.molde.common.fcm;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
-import com.limefriends.molde.common.utils.PreferenceUtil;
+import com.limefriends.molde.common.helper.PreferenceUtil;
 
 import static com.limefriends.molde.common.Constant.Common.PREF_KEY_FCM_TOKEN;
 

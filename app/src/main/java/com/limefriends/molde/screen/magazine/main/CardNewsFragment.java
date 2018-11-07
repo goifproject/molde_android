@@ -8,10 +8,10 @@ import android.view.ViewGroup;
 import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.model.entity.cardNews.CardNewsEntity;
 import com.limefriends.molde.model.repository.Repository;
-import com.limefriends.molde.screen.common.controller.BaseFragment;
+import com.limefriends.molde.screen.common.viewController.BaseFragment;
 import com.limefriends.molde.screen.common.screensNavigator.ActivityScreenNavigator;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
-import com.limefriends.molde.screen.common.views.ViewFactory;
+import com.limefriends.molde.screen.common.view.ViewFactory;
 import com.limefriends.molde.screen.magazine.main.view.CardNewsView;
 
 import java.util.ArrayList;

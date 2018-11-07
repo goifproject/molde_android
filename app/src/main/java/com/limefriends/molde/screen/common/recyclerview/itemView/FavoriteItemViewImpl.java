@@ -11,7 +11,7 @@ import com.limefriends.molde.model.entity.favorite.FavoriteEntity;
 import com.limefriends.molde.screen.common.dialog.DialogFactory;
 import com.limefriends.molde.screen.common.dialog.DialogManager;
 import com.limefriends.molde.screen.common.dialog.view.PromptDialog;
-import com.limefriends.molde.screen.common.views.BaseObservableView;
+import com.limefriends.molde.screen.common.view.BaseObservableView;
 
 public class FavoriteItemViewImpl
         extends BaseObservableView<FavoriteItemView.Listener> implements FavoriteItemView {

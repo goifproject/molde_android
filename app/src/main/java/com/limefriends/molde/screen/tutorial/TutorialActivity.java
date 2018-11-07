@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.limefriends.molde.R;
-import com.limefriends.molde.common.utils.PreferenceUtil;
+import com.limefriends.molde.common.helper.PreferenceUtil;
 import com.limefriends.molde.screen.mypage.login.LoginActivity;
 
 import butterknife.BindView;

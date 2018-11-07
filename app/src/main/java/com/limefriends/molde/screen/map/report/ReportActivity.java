@@ -13,15 +13,15 @@ import com.gun0912.tedpermission.TedPermission;
 import com.limefriends.molde.common.Constant;
 import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.common.app.MoldeApplication;
-import com.limefriends.molde.common.utils.PreferenceUtil;
+import com.limefriends.molde.common.helper.PreferenceUtil;
 import com.limefriends.molde.R;
 import com.limefriends.molde.model.repository.Repository;
-import com.limefriends.molde.screen.common.controller.BaseActivity;
+import com.limefriends.molde.screen.common.viewController.BaseActivity;
 import com.limefriends.molde.screen.common.dialog.DialogFactory;
 import com.limefriends.molde.screen.common.dialog.DialogManager;
 import com.limefriends.molde.screen.common.screensNavigator.ActivityScreenNavigator;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
-import com.limefriends.molde.screen.common.views.ViewFactory;
+import com.limefriends.molde.screen.common.view.ViewFactory;
 import com.limefriends.molde.screen.map.report.view.ReportView;
 import com.limefriends.molde.screen.map.search.SearchLocationActivity;
 

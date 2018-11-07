@@ -1,7 +1,7 @@
 package com.limefriends.molde.screen.common.recyclerview.itemView;
 
 import com.limefriends.molde.model.entity.molcaInfo.MolcaInfo;
-import com.limefriends.molde.screen.common.views.ViewMvc;
+import com.limefriends.molde.screen.common.view.ViewMvc;
 
 public interface MolcaInfoItemView extends ViewMvc {
 

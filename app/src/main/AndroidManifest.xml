@@ -59,15 +59,15 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".common.manager.cameraHelper.MoldeReportCameraActivity"
+            android:name=".screen.common.camera.MoldeReportCameraActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".common.manager.galleryHelper.MoldeReportGalleryActivity"
+            android:name=".screen.common.gallery.MoldeReportGalleryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".common.manager.cameraHelper.MoldeReportCheckImageActivity"
+            android:name=".screen.common.camera.MoldeReportCheckImageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
 

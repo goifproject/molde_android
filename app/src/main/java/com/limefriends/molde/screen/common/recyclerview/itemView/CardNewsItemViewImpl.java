@@ -9,8 +9,7 @@ import android.widget.TextView;
 import com.limefriends.molde.R;
 import com.limefriends.molde.model.entity.cardNews.CardNewsEntity;
 import com.limefriends.molde.screen.common.imageLoader.ImageLoader;
-import com.limefriends.molde.screen.common.views.BaseObservableView;
-import com.limefriends.molde.screen.common.recyclerview.itemView.CardNewsItemView;
+import com.limefriends.molde.screen.common.view.BaseObservableView;
 
 public class CardNewsItemViewImpl
         extends BaseObservableView<CardNewsItemView.Listener> implements CardNewsItemView {

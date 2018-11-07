@@ -11,8 +11,8 @@ import com.limefriends.molde.R;
 import com.limefriends.molde.model.entity.molcaInfo.MolcaInfo;
 import com.limefriends.molde.screen.common.recyclerview.adapter.RecyclerViewAdapter;
 import com.limefriends.molde.screen.common.toolbar.NestedToolbar;
-import com.limefriends.molde.screen.common.views.BaseObservableView;
-import com.limefriends.molde.screen.common.views.ViewFactory;
+import com.limefriends.molde.screen.common.view.BaseObservableView;
+import com.limefriends.molde.screen.common.view.ViewFactory;
 
 import java.util.List;
 

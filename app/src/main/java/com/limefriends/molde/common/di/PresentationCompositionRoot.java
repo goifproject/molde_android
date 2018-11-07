@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 
-import com.limefriends.molde.common.utils.SecretRetriever;
+import com.limefriends.molde.common.helper.SecretRetriever;
 import com.limefriends.molde.model.database.dao.SearchHistoryDao;
 import com.limefriends.molde.model.database.db.MoldeDatabase;
 import com.limefriends.molde.model.common.FromSchemaToEntity;
@@ -28,7 +28,7 @@ import com.limefriends.molde.screen.common.imageLoader.ImageLoader;
 import com.limefriends.molde.screen.common.screensNavigator.ActivityScreenNavigator;
 import com.limefriends.molde.screen.common.screensNavigator.FragmentScreenNavigator;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
-import com.limefriends.molde.screen.common.views.ViewFactory;
+import com.limefriends.molde.screen.common.view.ViewFactory;
 
 import static com.limefriends.molde.model.database.db.MoldeDatabase.MOLDE_DB;
 

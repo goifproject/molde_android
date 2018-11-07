@@ -1,9 +1,7 @@
 package com.limefriends.molde.screen.common.recyclerview.itemView;
 
-import android.os.Bundle;
-
 import com.limefriends.molde.model.entity.favorite.FavoriteEntity;
-import com.limefriends.molde.screen.common.views.ObservableView;
+import com.limefriends.molde.screen.common.view.ObservableView;
 
 public interface FavoriteItemView extends ObservableView<FavoriteItemView.Listener> {
 

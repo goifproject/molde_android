@@ -8,9 +8,9 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.limefriends.molde.R;
-import com.limefriends.molde.common.utils.DateUtil;
+import com.limefriends.molde.common.util.DateUtil;
 import com.limefriends.molde.model.entity.comment.CommentEntity;
-import com.limefriends.molde.screen.common.views.BaseObservableView;
+import com.limefriends.molde.screen.common.view.BaseObservableView;
 
 public class CardNewsCommentItemViewImpl
         extends BaseObservableView<CardNewsCommentItemView.Listener>

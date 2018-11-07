@@ -1,4 +1,4 @@
-package com.limefriends.molde.common.manager.cameraHelper;
+package com.limefriends.molde.screen.common.camera;
 
 import android.content.Intent;
 import android.net.Uri;

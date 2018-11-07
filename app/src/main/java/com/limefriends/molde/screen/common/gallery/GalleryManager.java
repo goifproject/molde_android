@@ -1,4 +1,4 @@
-package com.limefriends.molde.common.manager.galleryHelper;
+package com.limefriends.molde.screen.common.gallery;
 
 import android.content.Context;
 import android.database.Cursor;

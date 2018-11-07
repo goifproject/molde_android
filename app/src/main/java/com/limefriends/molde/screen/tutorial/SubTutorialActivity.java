@@ -15,7 +15,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import com.limefriends.molde.common.utils.PreferenceUtil;
+import com.limefriends.molde.common.helper.PreferenceUtil;
 import com.limefriends.molde.screen.main.MoldeMainActivity;
 import com.limefriends.molde.R;
 

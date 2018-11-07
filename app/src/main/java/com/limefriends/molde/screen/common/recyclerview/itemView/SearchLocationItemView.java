@@ -1,7 +1,7 @@
 package com.limefriends.molde.screen.common.recyclerview.itemView;
 
 import com.limefriends.molde.model.entity.search.SearchInfoEntity;
-import com.limefriends.molde.screen.common.views.ObservableView;
+import com.limefriends.molde.screen.common.view.ObservableView;
 
 public interface SearchLocationItemView extends ObservableView<SearchLocationItemView.Listener> {
 

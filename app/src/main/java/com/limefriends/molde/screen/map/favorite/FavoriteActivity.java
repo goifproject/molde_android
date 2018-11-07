@@ -1,32 +1,22 @@
 package com.limefriends.molde.screen.map.favorite;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBar;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.common.app.MoldeApplication;
-import com.limefriends.molde.screen.common.recyclerview.addOnRecycler.AddOnScrollRecyclerView;
 import com.limefriends.molde.model.entity.favorite.FavoriteEntity;
 import com.limefriends.molde.model.repository.Repository;
-import com.limefriends.molde.R;
-import com.limefriends.molde.screen.common.controller.BaseActivity;
+import com.limefriends.molde.screen.common.viewController.BaseActivity;
 import com.limefriends.molde.screen.common.dialog.DialogFactory;
 import com.limefriends.molde.screen.common.dialog.DialogManager;
-import com.limefriends.molde.screen.common.dialog.view.PromptDialog;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
-import com.limefriends.molde.screen.common.views.ViewFactory;
-import com.limefriends.molde.screen.feed.main.view.FeedView;
+import com.limefriends.molde.screen.common.view.ViewFactory;
 import com.limefriends.molde.screen.map.favorite.view.FavoriteView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import io.reactivex.disposables.CompositeDisposable;
 
 public class FavoriteActivity extends BaseActivity implements FavoriteView.Listener {

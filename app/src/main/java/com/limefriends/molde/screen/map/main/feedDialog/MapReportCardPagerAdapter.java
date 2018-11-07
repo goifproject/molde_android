@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.limefriends.molde.R;
-import com.limefriends.molde.common.utils.DateUtil;
-import com.limefriends.molde.common.utils.StringUtil;
+import com.limefriends.molde.common.util.DateUtil;
+import com.limefriends.molde.common.util.StringUtil;
 import com.limefriends.molde.screen.map.main.MapFragment;
 
 import java.util.ArrayList;

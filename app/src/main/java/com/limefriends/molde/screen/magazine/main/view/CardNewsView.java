@@ -1,7 +1,7 @@
 package com.limefriends.molde.screen.magazine.main.view;
 
 import com.limefriends.molde.model.entity.cardNews.CardNewsEntity;
-import com.limefriends.molde.screen.common.views.ObservableView;
+import com.limefriends.molde.screen.common.view.ObservableView;
 
 import java.util.List;
 

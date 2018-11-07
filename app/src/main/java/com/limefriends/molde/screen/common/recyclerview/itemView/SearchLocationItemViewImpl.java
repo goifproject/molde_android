@@ -1,6 +1,5 @@
 package com.limefriends.molde.screen.common.recyclerview.itemView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +8,7 @@ import android.widget.TextView;
 
 import com.limefriends.molde.R;
 import com.limefriends.molde.model.entity.search.SearchInfoEntity;
-import com.limefriends.molde.screen.common.views.BaseObservableView;
+import com.limefriends.molde.screen.common.view.BaseObservableView;
 
 public class SearchLocationItemViewImpl
         extends BaseObservableView<SearchLocationItemView.Listener> implements SearchLocationItemView {

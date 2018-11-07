@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
-import com.limefriends.molde.common.manager.cameraHelper.MoldeReportCameraActivity;
+import com.limefriends.molde.screen.common.camera.MoldeReportCameraActivity;
 import com.limefriends.molde.screen.magazine.comment.CardNewsCommentActivity;
 import com.limefriends.molde.screen.magazine.detail.CardNewsDetailActivity;
 import com.limefriends.molde.screen.magazine.info.HowToDetectActivity;

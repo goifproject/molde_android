@@ -6,7 +6,7 @@ import android.widget.ImageView;
 
 import com.limefriends.molde.R;
 import com.limefriends.molde.screen.common.imageLoader.ImageLoader;
-import com.limefriends.molde.screen.common.views.BaseView;
+import com.limefriends.molde.screen.common.view.BaseView;
 
 public class ImagePagerViewImpl extends BaseView implements ImagePagerView {
 

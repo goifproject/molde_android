@@ -3,7 +3,7 @@ package com.limefriends.molde.screen.map.report.view;
 import android.net.Uri;
 import android.support.v4.util.SparseArrayCompat;
 
-import com.limefriends.molde.screen.common.views.ObservableView;
+import com.limefriends.molde.screen.common.view.ObservableView;
 
 import java.util.List;
 

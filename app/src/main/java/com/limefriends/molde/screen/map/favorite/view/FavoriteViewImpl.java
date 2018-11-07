@@ -10,8 +10,8 @@ import com.limefriends.molde.model.entity.favorite.FavoriteEntity;
 import com.limefriends.molde.screen.common.recyclerview.adapter.RecyclerViewAdapter;
 import com.limefriends.molde.screen.common.recyclerview.addOnRecycler.AddOnScrollRecyclerView;
 import com.limefriends.molde.screen.common.toolbar.NestedToolbar;
-import com.limefriends.molde.screen.common.views.BaseObservableView;
-import com.limefriends.molde.screen.common.views.ViewFactory;
+import com.limefriends.molde.screen.common.view.BaseObservableView;
+import com.limefriends.molde.screen.common.view.ViewFactory;
 
 import java.util.List;
 

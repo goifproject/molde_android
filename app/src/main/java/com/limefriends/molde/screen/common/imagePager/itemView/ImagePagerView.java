@@ -1,6 +1,6 @@
 package com.limefriends.molde.screen.common.imagePager.itemView;
 
-import com.limefriends.molde.screen.common.views.ViewMvc;
+import com.limefriends.molde.screen.common.view.ViewMvc;
 
 public interface ImagePagerView extends ViewMvc {
 

@@ -1,4 +1,4 @@
-package com.limefriends.molde.common.manager.galleryHelper;
+package com.limefriends.molde.screen.common.gallery;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBar;

@@ -1,4 +1,4 @@
-package com.limefriends.molde.common.manager.galleryHelper;
+package com.limefriends.molde.screen.common.gallery;
 
 import android.content.res.Resources;
 import android.graphics.Canvas;

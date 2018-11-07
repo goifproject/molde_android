@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.limefriends.molde.R;
-import com.limefriends.molde.common.utils.DateUtil;
+import com.limefriends.molde.common.util.DateUtil;
 import com.limefriends.molde.model.entity.comment.CommentEntity;
 import com.limefriends.molde.model.entity.cardNews.CardNewsEntity;
 

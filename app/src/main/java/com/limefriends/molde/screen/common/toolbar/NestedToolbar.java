@@ -4,13 +4,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.limefriends.molde.R;
-import com.limefriends.molde.screen.common.views.BaseView;
+import com.limefriends.molde.screen.common.view.BaseView;
 
 public class NestedToolbar extends BaseView {
 

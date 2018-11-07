@@ -15,7 +15,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,12 +39,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.common.app.MoldeApplication;
 import com.limefriends.molde.R;
-import com.limefriends.molde.common.utils.NetworkUtil;
-import com.limefriends.molde.common.utils.PermissionUtil;
+import com.limefriends.molde.common.helper.NetworkUtil;
+import com.limefriends.molde.common.helper.PermissionUtil;
 import com.limefriends.molde.model.entity.favorite.FavoriteEntity;
 import com.limefriends.molde.model.repository.Repository;
 import com.limefriends.molde.model.entity.feed.FeedEntity;
-import com.limefriends.molde.screen.common.controller.BaseFragment;
+import com.limefriends.molde.screen.common.viewController.BaseFragment;
 import com.limefriends.molde.screen.common.dialog.DialogFactory;
 import com.limefriends.molde.screen.common.dialog.DialogManager;
 import com.limefriends.molde.screen.common.dialog.view.PromptDialog;
@@ -74,7 +73,7 @@ import static com.limefriends.molde.common.Constant.ReportState.CLEAN;
 import static com.limefriends.molde.common.Constant.ReportState.DENIED;
 import static com.limefriends.molde.common.Constant.ReportState.FOUND;
 import static com.limefriends.molde.common.Constant.ReportState.RECEIVING;
-import static com.limefriends.molde.common.utils.PermissionUtil.REQ_CODE;
+import static com.limefriends.molde.common.helper.PermissionUtil.REQ_CODE;
 
 public class MapFragment extends BaseFragment implements
         OnMapReadyCallback, MoldeMainActivity.OnKeyBackPressedListener,

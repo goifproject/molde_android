@@ -10,16 +10,15 @@ import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.common.app.MoldeApplication;
 import com.limefriends.molde.model.entity.comment.CommentEntity;
 import com.limefriends.molde.model.repository.Repository;
-import com.limefriends.molde.screen.common.controller.BaseActivity;
+import com.limefriends.molde.screen.common.viewController.BaseActivity;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
-import com.limefriends.molde.screen.common.views.ViewFactory;
+import com.limefriends.molde.screen.common.view.ViewFactory;
 import com.limefriends.molde.screen.magazine.comment.view.CardNewsCommentView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.observers.DisposableObserver;
 
 public class CardNewsCommentActivity extends BaseActivity
         implements CardNewsCommentView.Listener {

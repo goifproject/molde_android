@@ -8,7 +8,7 @@ import com.limefriends.molde.screen.common.imageLoader.ImageLoader;
 import com.limefriends.molde.screen.common.screensNavigator.ActivityScreenNavigator;
 import com.limefriends.molde.screen.common.screensNavigator.FragmentScreenNavigator;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
-import com.limefriends.molde.screen.common.views.ViewFactory;
+import com.limefriends.molde.screen.common.view.ViewFactory;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;

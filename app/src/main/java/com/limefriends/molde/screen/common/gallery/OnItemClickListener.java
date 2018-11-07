@@ -1,4 +1,4 @@
-package com.limefriends.molde.common.manager.galleryHelper;
+package com.limefriends.molde.screen.common.gallery;
 
 public interface OnItemClickListener {
 

@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import com.limefriends.molde.R;
 import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.model.repository.Repository;
-import com.limefriends.molde.screen.common.controller.BaseBottomSheetDialog;
+import com.limefriends.molde.screen.common.viewController.BaseBottomSheetDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

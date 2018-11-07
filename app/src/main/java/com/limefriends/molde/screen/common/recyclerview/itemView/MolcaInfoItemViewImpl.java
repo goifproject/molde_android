@@ -8,8 +8,7 @@ import android.widget.TextView;
 import com.limefriends.molde.R;
 import com.limefriends.molde.model.entity.molcaInfo.MolcaInfo;
 import com.limefriends.molde.screen.common.imageLoader.ImageLoader;
-import com.limefriends.molde.screen.common.views.BaseView;
-import com.limefriends.molde.screen.common.recyclerview.itemView.MolcaInfoItemView;
+import com.limefriends.molde.screen.common.view.BaseView;
 
 public class MolcaInfoItemViewImpl extends BaseView implements MolcaInfoItemView {
 

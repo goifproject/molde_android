@@ -2,43 +2,21 @@ package com.limefriends.molde.screen.mypage.inquiry;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.LinearLayoutManager;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.limefriends.molde.common.Constant;
 import com.limefriends.molde.common.di.Service;
-import com.limefriends.molde.common.app.MoldeApplication;
-import com.limefriends.molde.screen.common.recyclerview.addOnRecycler.AddOnScrollRecyclerView;
-import com.limefriends.molde.common.utils.PreferenceUtil;
-import com.limefriends.molde.common.utils.pattern.RegexUtil;
+import com.limefriends.molde.common.helper.PreferenceUtil;
 import com.limefriends.molde.R;
 import com.limefriends.molde.model.entity.faq.FaqEntity;
 import com.limefriends.molde.model.repository.Repository;
-import com.limefriends.molde.screen.common.controller.BaseActivity;
+import com.limefriends.molde.screen.common.viewController.BaseActivity;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
-import com.limefriends.molde.screen.common.views.ViewFactory;
+import com.limefriends.molde.screen.common.view.ViewFactory;
 import com.limefriends.molde.screen.mypage.inquiry.view.InquiryView;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import io.reactivex.disposables.CompositeDisposable;
 

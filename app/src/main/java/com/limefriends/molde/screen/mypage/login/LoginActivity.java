@@ -38,8 +38,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.limefriends.molde.R;
-import com.limefriends.molde.common.utils.NetworkUtil;
-import com.limefriends.molde.common.utils.PreferenceUtil;
+import com.limefriends.molde.common.helper.NetworkUtil;
+import com.limefriends.molde.common.helper.PreferenceUtil;
 
 import java.util.HashMap;
 import java.util.Map;

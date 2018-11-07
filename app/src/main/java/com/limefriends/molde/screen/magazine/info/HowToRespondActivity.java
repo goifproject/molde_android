@@ -10,8 +10,8 @@ import android.support.annotation.Nullable;
 import com.limefriends.molde.R;
 import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.model.entity.molcaInfo.MolcaInfo;
-import com.limefriends.molde.screen.common.controller.BaseActivity;
-import com.limefriends.molde.screen.common.views.ViewFactory;
+import com.limefriends.molde.screen.common.viewController.BaseActivity;
+import com.limefriends.molde.screen.common.view.ViewFactory;
 import com.limefriends.molde.screen.magazine.info.view.MolcaInfoView;
 
 import java.util.ArrayList;

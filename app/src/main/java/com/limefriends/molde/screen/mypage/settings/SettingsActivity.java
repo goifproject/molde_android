@@ -14,7 +14,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.limefriends.molde.R;
-import com.limefriends.molde.common.utils.PreferenceUtil;
+import com.limefriends.molde.common.helper.PreferenceUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
