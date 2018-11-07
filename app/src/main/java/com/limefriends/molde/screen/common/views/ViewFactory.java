@@ -40,6 +40,10 @@ import com.limefriends.molde.screen.common.recyclerview.itemView.SearchLocationI
 import com.limefriends.molde.screen.common.recyclerview.itemView.SearchLocationItemViewImpl;
 import com.limefriends.molde.screen.map.search.view.SearchLocationView;
 import com.limefriends.molde.screen.map.search.view.SearchLocationViewImpl;
+import com.limefriends.molde.screen.common.recyclerview.itemView.InquiryItemView;
+import com.limefriends.molde.screen.common.recyclerview.itemView.InquiryItemViewImpl;
+import com.limefriends.molde.screen.mypage.inquiry.view.InquiryView;
+import com.limefriends.molde.screen.mypage.inquiry.view.InquiryViewImpl;
 
 import javax.annotation.Nullable;
 
@@ -121,6 +125,12 @@ public class ViewFactory {
         }
         else if (viewClass == SearchLocationItemView.class) {
             viewMvc = new SearchLocationItemViewImpl(mLayoutInflater, container);
+        }
+        else if (viewClass == InquiryView.class) {
+            viewMvc = new InquiryViewImpl(mLayoutInflater, container, this, mToastHelper);
+        }
+        else if (viewClass == InquiryItemView.class) {
+            viewMvc = new InquiryItemViewImpl(mLayoutInflater, container);
         }
         else {
             throw new IllegalArgumentException("unsupported MVC view class " + viewClass);

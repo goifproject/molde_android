@@ -1,12 +1,12 @@
 package com.limefriends.molde.screen.common.recyclerview.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ViewGroup;
 
 import com.limefriends.molde.model.entity.Data;
 import com.limefriends.molde.model.entity.cardNews.CardNewsEntity;
 import com.limefriends.molde.model.entity.comment.CommentEntity;
+import com.limefriends.molde.model.entity.faq.FaqEntity;
 import com.limefriends.molde.model.entity.favorite.FavoriteEntity;
 import com.limefriends.molde.model.entity.feed.FeedEntity;
 import com.limefriends.molde.model.entity.molcaInfo.MolcaInfo;
@@ -19,6 +19,7 @@ import com.limefriends.molde.screen.common.recyclerview.itemView.CardNewsItemVie
 import com.limefriends.molde.screen.common.recyclerview.itemView.CardNewsCommentItemView;
 import com.limefriends.molde.screen.common.recyclerview.itemView.FeedItemView;
 import com.limefriends.molde.screen.common.recyclerview.itemView.FavoriteItemView;
+import com.limefriends.molde.screen.common.recyclerview.itemView.InquiryItemView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,7 @@ public class RecyclerViewAdapter<T extends Data>
         extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>
         implements
         CardNewsItemView.Listener, CardNewsCommentItemView.Listener, FeedItemView.Listener,
-        FavoriteItemView.Listener, SearchLocationItemView.Listener {
+        FavoriteItemView.Listener, SearchLocationItemView.Listener, InquiryItemView.Listener {
 
     public interface OnItemClickListener {
 
@@ -154,10 +155,12 @@ public class RecyclerViewAdapter<T extends Data>
             case VIEW_TYPE_SEARCH_INFO:
                 viewMvc = mViewFactory.newInstance(SearchLocationItemView.class, parent);
                 break;
+            case VIEW_TYPE_FAQ:
+                viewMvc = mViewFactory.newInstance(InquiryItemView.class, parent);
+                break;
 //            case VIEW_TYPE_REPORTED_COMMENT:
 //                return ;
-//            case VIEW_TYPE_FAQ:
-//                return ;
+
 //            case VIEW_TYPE_SAFEHOUSE:
 //                return ;
 //            case VIEW_TYPE_SCRAP:
@@ -224,12 +227,15 @@ public class RecyclerViewAdapter<T extends Data>
                     ((SearchLocationItemView) mViewMvc).bindSearchInfo((SearchInfoEntity) data, position);
                     ((SearchLocationItemView) mViewMvc).registerListener(RecyclerViewAdapter.this);
                     break;
+                case FAQ:
+                    ((InquiryItemView) mViewMvc).bindInquiry((FaqEntity) data);
+                    ((InquiryItemView) mViewMvc).registerListener(RecyclerViewAdapter.this);
+                    break;
 //                case CARD_NEWS_IMAGE:
 //                    break;
 //                case REPORTED_COMMENT:
 //                    break;
-//                case FAQ:
-//                    break;
+
 //                case FEED_RESULT:
 //                    break;
 //                case SAFE_HOUSE:

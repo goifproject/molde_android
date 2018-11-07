@@ -44,6 +44,7 @@
             android:name=".screen.main.MoldeMainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
+
         <!-- 지도 관련 -->
         <activity
             android:name=".screen.map.search.SearchLocationActivity"
@@ -100,12 +101,12 @@
         <activity
             android:name=".screen.mypage.inquiry.InquiryActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
+            android:theme="@style/AppNoBarTheme"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".screen.mypage.faq.FaQActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppNoBarTheme" />
         <activity
             android:name=".screen.mypage.report.MyFeedActivity"
             android:screenOrientation="portrait"

@@ -56,11 +56,13 @@ public class AddOnScrollRecyclerView extends RecyclerView {
             }
 
             if (totalItemCount == visibleItemCount) {
+                if (onLoadMoreListener != null)
                 onLoadMoreListener.loadMore();
                 return;
             }
 
             if ((totalItemCount - visibleItemCount) <= firstOrLastVisibleItem + visibleThreshold) {
+                if (onLoadMoreListener != null)
                 onLoadMoreListener.loadMore();
             }
         }

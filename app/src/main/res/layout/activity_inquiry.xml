@@ -1,174 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/inquire_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#ffffff"
-        android:visibility="visible">
+        <include layout="@layout/element_toolbar" />
 
-        <ProgressBar
-            android:id="@+id/inquiry_progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:elevation="2dp"
-            android:indeterminate="true"
-            android:visibility="invisible" />
-
-        <RelativeLayout
-            android:id="@+id/firstlayout"
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/inquire_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#fcfcfc"
-            android:focusableInTouchMode="true">
+            android:layout_height="match_parent"
+            android:background="#ffffff"
+            android:visibility="visible">
 
-            <Button
-                android:id="@+id/faq_button"
-                android:layout_width="220dp"
-                android:layout_height="32dp"
-                android:layout_alignParentTop="true"
+            <ProgressBar
+                android:id="@+id/inquiry_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginBottom="44dp"
-                android:layout_marginTop="44dp"
-                android:background="@drawable/bg_btn_faq"
-                android:gravity="center"
-                android:text="@string/faq"
-                android:textColor="#ffffff"
-                android:textSize="14sp" />
+                android:elevation="2dp"
+                android:indeterminate="true"
+                android:visibility="invisible" />
 
-        </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/firstlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#fcfcfc"
+                android:focusableInTouchMode="true">
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/firstlayout"
-            android:layout_marginStart="16dp"
-            android:text="@string/faq_content"
-            android:textColor="#646464"
-            android:layout_marginTop="16dp"
-            android:textSize="12sp" />
+                <Button
+                    android:id="@+id/faq_button"
+                    android:layout_width="220dp"
+                    android:layout_height="32dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginBottom="44dp"
+                    android:layout_marginTop="44dp"
+                    android:background="@drawable/bg_btn_faq"
+                    android:gravity="center"
+                    android:text="@string/faq"
+                    android:textColor="#ffffff"
+                    android:textSize="14sp" />
 
-        <EditText
-            android:id="@+id/faq_content"
-            android:layout_width="match_parent"
-            android:layout_height="174dp"
-            android:layout_below="@+id/textView"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/bg_frame_gray_rounded"
-            android:gravity="top|start"
-            android:lines="8"
-            android:padding="4dp" />
-
-        <TextView
-            android:id="@+id/faq_email_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/faq_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/faq_respond_email"
-            android:textSize="12sp"
-            android:textColor="#646464" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:layout_below="@+id/faq_email_title"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/bg_frame_gray_rounded">
-
-            <EditText
-                android:id="@+id/faq_email_input"
-                android:layout_width="150dp"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:gravity="center_vertical"
-                android:hint="@string/email_hint"
-                android:maxLength="30"
-                android:paddingStart="8dp"
-                android:singleLine="true"
-                android:textSize="14sp"
-                tools:ignore="RtlSymmetry" />
+            </RelativeLayout>
 
             <TextView
-                android:layout_width="32dp"
-                android:layout_height="match_parent"
-                android:layout_toEndOf="@id/faq_email_input"
-                android:gravity="center"
-                android:text="\@"
-                android:textStyle="bold" />
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/firstlayout"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/faq_content"
+                android:textColor="#646464"
+                android:textSize="12sp" />
 
-            <FrameLayout
-                android:layout_width="150dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:background="@drawable/bg_frame_rounded"
-                android:backgroundTint="@color/colorLittleWhiteGray">
+            <EditText
+                android:id="@+id/faq_content"
+                android:layout_width="match_parent"
+                android:layout_height="174dp"
+                android:layout_below="@+id/textView"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_frame_gray_rounded"
+                android:gravity="top|start"
+                android:lines="8"
+                android:padding="4dp" />
 
-                <Spinner
-                    android:id="@+id/faq_email_select"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/bg_frame_rounded"
-                    android:backgroundTint="@color/colorLittleWhiteGray" />
+            <TextView
+                android:id="@+id/faq_email_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/faq_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/faq_respond_email"
+                android:textColor="#646464"
+                android:textSize="12sp" />
 
-                <ImageView
-                    android:id="@+id/faq_self_close_button"
-                    android:layout_width="25dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="end"
-                    android:background="@drawable/ic_close"
-                    android:visibility="gone" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:layout_below="@+id/faq_email_title"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_frame_gray_rounded">
 
                 <EditText
-                    android:id="@+id/faq_email_self_input"
-                    android:layout_width="match_parent"
+                    android:id="@+id/faq_email_input"
+                    android:layout_width="150dp"
                     android:layout_height="match_parent"
-                    android:background="@drawable/bg_frame_rounded"
-                    android:backgroundTint="@color/colorLittleWhiteGray"
-                    android:maxLength="18"
-                    android:paddingEnd="4dp"
-                    android:paddingStart="4dp"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:hint="@string/email_hint"
+                    android:maxLength="30"
+                    android:paddingStart="8dp"
+                    android:singleLine="true"
                     android:textSize="14sp"
-                    android:visibility="gone" />
+                    tools:ignore="RtlSymmetry" />
 
-            </FrameLayout>
+                <TextView
+                    android:layout_width="32dp"
+                    android:layout_height="match_parent"
+                    android:layout_toEndOf="@id/faq_email_input"
+                    android:gravity="center"
+                    android:text="\@"
+                    android:textStyle="bold" />
+
+                <FrameLayout
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:background="@drawable/bg_frame_rounded"
+                    android:backgroundTint="@color/colorLittleWhiteGray">
+
+                    <Spinner
+                        android:id="@+id/faq_email_select"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_frame_rounded"
+                        android:backgroundTint="@color/colorLittleWhiteGray" />
+
+                    <ImageView
+                        android:id="@+id/faq_self_close_button"
+                        android:layout_width="25dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end"
+                        android:background="@drawable/ic_close"
+                        android:visibility="gone" />
+
+                    <EditText
+                        android:id="@+id/faq_email_self_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_frame_rounded"
+                        android:backgroundTint="@color/colorLittleWhiteGray"
+                        android:maxLength="18"
+                        android:paddingEnd="4dp"
+                        android:paddingStart="4dp"
+                        android:textSize="14sp"
+                        android:visibility="gone" />
+
+                </FrameLayout>
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/faq_send_button"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:background="@color/colorAccent"
+                android:gravity="center"
+                android:text="@string/faq_submit"
+                android:textColor="#000000"
+                android:textSize="16sp" />
 
         </RelativeLayout>
 
-        <Button
-            android:id="@+id/faq_send_button"
+        <com.limefriends.molde.screen.common.recyclerview.addOnRecycler.AddOnScrollRecyclerView
+            android:id="@+id/inquiry_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:background="@color/colorAccent"
-            android:gravity="center"
-            android:text="@string/faq_submit"
-            android:textColor="#000000"
-            android:textSize="16sp" />
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:listitem="@layout/item_inquiry" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
-    <com.limefriends.molde.screen.common.recyclerview.addOnRecycler.AddOnScrollRecyclerView
-        android:id="@+id/inquiry_recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/item_inquiry"
-        android:visibility="gone"/>
-
-</FrameLayout>
