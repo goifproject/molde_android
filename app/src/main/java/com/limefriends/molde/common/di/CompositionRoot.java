@@ -5,64 +5,89 @@ import com.limefriends.molde.networking.service.MoldeRestfulService;
 
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.limefriends.molde.BuildConfig.SERVER_URL;
+import static com.limefriends.molde.BuildConfig.TMAP_URL;
+
 public class CompositionRoot {
 
     private static final int CONNECT_TIMEOUT = 3;
 
-    private Retrofit mRetrofit;
+    private Retrofit mRetrofit, mTMapRetrofit;
 
     public MoldeRestfulService.Comment getCommentRestfulService() {
-        return generateService(MoldeRestfulService.Comment.class);
+        return generateServerService(MoldeRestfulService.Comment.class);
     }
 
     public MoldeRestfulService.Faq getFaqRestfulService() {
-        return generateService(MoldeRestfulService.Faq.class);
+        return generateServerService(MoldeRestfulService.Faq.class);
     }
 
     public MoldeRestfulService.Favorite getFavoriteRestfulService() {
-        return generateService(MoldeRestfulService.Favorite.class);
+        return generateServerService(MoldeRestfulService.Favorite.class);
     }
 
     public MoldeRestfulService.Feed getFeedRestfulService() {
-        return generateService(MoldeRestfulService.Feed.class);
+        return generateServerService(MoldeRestfulService.Feed.class);
     }
 
     public MoldeRestfulService.FeedResult getFeedResultRestfulService() {
-        return generateService(MoldeRestfulService.FeedResult.class);
+        return generateServerService(MoldeRestfulService.FeedResult.class);
     }
 
     public MoldeRestfulService.CardNews getCardNewsRestfulService() {
-        return generateService(MoldeRestfulService.CardNews.class);
+        return generateServerService(MoldeRestfulService.CardNews.class);
     }
 
     public MoldeRestfulService.Safehouse getSafehouseRestfulService() {
-        return generateService(MoldeRestfulService.Safehouse.class);
+        return generateServerService(MoldeRestfulService.Safehouse.class);
     }
 
     public MoldeRestfulService.Scrap getScrapRestfulService() {
-        return generateService(MoldeRestfulService.Scrap.class);
+        return generateServerService(MoldeRestfulService.Scrap.class);
     }
 
-    private <T> T generateService(Class<T> clazz) {
+    public MoldeRestfulService.SearchLocation getSearchLocationRestfulService() {
+        return generateTMapService(MoldeRestfulService.SearchLocation.class);
+    }
+
+    private <T> T generateServerService(Class<T> clazz) {
         return buildRetrofit().create(clazz);
+    }
+
+    private <T> T generateTMapService(Class<T> clazz) {
+        return buildTMapRetrofit().create(clazz);
     }
 
     private Retrofit buildRetrofit() {
         if (mRetrofit == null) {
             mRetrofit = new Retrofit.Builder()
-                    .baseUrl(BuildConfig.SERVER_URL)
+                    .baseUrl(SERVER_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .client(buildOkHttpClient())
                     .build();
         }
         return mRetrofit;
+    }
+
+    private Retrofit buildTMapRetrofit() {
+        if (mTMapRetrofit == null) {
+            mTMapRetrofit = new Retrofit.Builder()
+                    .baseUrl(TMAP_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .client(buildOkHttpClient())
+                    .build();
+        }
+        return mTMapRetrofit;
     }
 
     private OkHttpClient buildOkHttpClient() {

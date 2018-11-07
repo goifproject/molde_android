@@ -1,5 +1,9 @@
 package com.limefriends.molde.model.repository;
 
+import android.arch.persistence.room.Delete;
+import android.arch.persistence.room.Insert;
+
+import com.limefriends.molde.model.database.schema.SearchHistorySchema;
 import com.limefriends.molde.model.entity.comment.CommentEntity;
 import com.limefriends.molde.model.entity.faq.FaqEntity;
 import com.limefriends.molde.model.entity.favorite.FavoriteEntity;
@@ -7,10 +11,12 @@ import com.limefriends.molde.model.entity.feed.FeedEntity;
 import com.limefriends.molde.model.entity.cardNews.CardNewsEntity;
 import com.limefriends.molde.model.entity.safehouse.SafehouseEntity;
 import com.limefriends.molde.model.entity.scrap.ScrapEntity;
+import com.limefriends.molde.model.entity.search.SearchInfoEntity;
 import com.limefriends.molde.networking.schema.response.Result;
 
 import java.util.List;
 
+import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import retrofit2.http.Field;
@@ -152,25 +158,33 @@ public interface Repository {
     interface Favorite {
 
         // 내 즐겨찾기 목록 가져오기
-        Observable<List<FavoriteEntity>> getMyFavorite(@Query("userId") String userId,
-                                                                 @Query("perPage") int perPage,
-                                                                 @Query("page") int page);
+        Observable<List<FavoriteEntity>> getMyFavorite(String userId, int perPage, int page);
 
         // 거리순으로 내 즐겨찾기 목록 가져오기
-        Observable<FavoriteEntity> getMyFavoriteByDistance(@Query("userId") String userId,
-                                                                           @Query("favoriteLat") double lat,
-                                                                           @Query("favoriteLng") double lng);
+        Observable<FavoriteEntity> getMyFavoriteByDistance(String userId, double lat, double lng);
 
         // 즐겨찾기 추가하기
-        Observable<Result> addToMyFavorite(@Field("userId") String userId,
-                                                     @Field("favoriteName") String name,
-                                                     @Field("favoriteAddress") String address,
-                                                     @Field("favoriteLat") double lat,
-                                                     @Field("favoriteLng") double lng);
+        Observable<Result> addToMyFavorite(String userId, String name, String address, double lat, double lng);
 
         // 즐겨찾기 삭제하기
-        Observable<Result> deleteFavorite(@Field("userId") String userId,
-                                                    @Field("favoriteId") int favoriteId);
+        Observable<Result> deleteFavorite(String userId, int favoriteId);
+    }
+
+    /**
+     * 위치 검색
+     */
+
+    interface SearchLocation {
+
+        Maybe<Long> addToSearchHistory(SearchInfoEntity searchEntity);
+
+        Maybe<List<SearchInfoEntity>> getSearchHistory();
+
+        Maybe<Integer> deleteSearchHistory(List<SearchInfoEntity> schemas);
+
+        Maybe<Integer> deleteFromSearchHistory(SearchInfoEntity schema);
+
+        Observable<List<SearchInfoEntity>> getTMapSearchAddressInfo(String keyword);
     }
 
 

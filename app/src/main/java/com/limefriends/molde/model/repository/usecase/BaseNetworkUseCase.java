@@ -23,8 +23,8 @@ abstract class BaseNetworkUseCase {
     }
 
     BaseNetworkUseCase(FromSchemaToEntity fromSchemaToEntity,
-                              ToastHelper toastHelper,
-                              NetworkHelper networkHelper) {
+                       ToastHelper toastHelper,
+                       NetworkHelper networkHelper) {
         this.mFromSchemaToEntity = fromSchemaToEntity;
         this.mToastHelper = toastHelper;
         this.mNetworkHelper = networkHelper;

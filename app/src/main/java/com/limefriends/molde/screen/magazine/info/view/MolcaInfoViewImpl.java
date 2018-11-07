@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.limefriends.molde.R;
 import com.limefriends.molde.model.entity.molcaInfo.MolcaInfo;
-import com.limefriends.molde.screen.common.recyclerview.RecyclerViewAdapter;
+import com.limefriends.molde.screen.common.recyclerview.adapter.RecyclerViewAdapter;
 import com.limefriends.molde.screen.common.toolbar.NestedToolbar;
 import com.limefriends.molde.screen.common.views.BaseObservableView;
 import com.limefriends.molde.screen.common.views.ViewFactory;

@@ -118,6 +118,19 @@ public class MoldeRestfulApi {
         public static final String POST_FAQ_API = "/v1/faq";
     }
 
+
+    /**
+     * 위치 검색
+     */
+    public static class SearchLocation {
+
+        public static final String GET_TMAP_LOCATION = "/tmap/pois";
+    }
+
+
+    /**
+     * 안심지역
+     */
     public static class Safehouse {
 
         public static final String GET_SAFEHOUSE = "v1/safehouse";

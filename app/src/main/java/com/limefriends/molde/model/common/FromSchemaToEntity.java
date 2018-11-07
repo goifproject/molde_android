@@ -1,8 +1,10 @@
 package com.limefriends.molde.model.common;
 
+import com.limefriends.molde.model.database.schema.SearchHistorySchema;
 import com.limefriends.molde.model.entity.cardNews.CardNewsImageEntity;
 import com.limefriends.molde.model.entity.comment.CommentEntity;
 import com.limefriends.molde.model.entity.feed.FeedImageEntity;
+import com.limefriends.molde.model.entity.search.SearchInfoEntity;
 import com.limefriends.molde.networking.schema.cardNews.CardNewsImageSchema;
 import com.limefriends.molde.networking.schema.comment.CommentSchema;
 import com.limefriends.molde.model.entity.comment.ReportedCommentEntity;
@@ -22,6 +24,7 @@ import com.limefriends.molde.model.entity.safehouse.SafehouseEntity;
 import com.limefriends.molde.networking.schema.safehouse.SafehouseSchema;
 import com.limefriends.molde.model.entity.scrap.ScrapEntity;
 import com.limefriends.molde.networking.schema.scrap.ScrapSchema;
+import com.limefriends.molde.networking.schema.search.SearchSchema;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -203,7 +206,6 @@ public class FromSchemaToEntity {
     }
 
 
-
     /**
      * favorite
      */
@@ -269,4 +271,102 @@ public class FromSchemaToEntity {
         }
         return entities;
     }
+
+    /**
+     * feedResult
+     */
+
+    public List<SearchInfoEntity> searchHistory(List<SearchHistorySchema> schemas) {
+
+        if (schemas == null || schemas.size() == 0) return null;
+
+        List<SearchInfoEntity> entities = new ArrayList<>();
+        for (SearchHistorySchema schema : schemas) {
+            entities.add(new SearchInfoEntity(
+                    schema.getUId(),
+                    schema.getName(),
+                    schema.getBizName(),
+                    schema.getMainAddress(),
+                    schema.getStreetAddress(),
+                    schema.getLat(),
+                    schema.getLng(),
+                    true
+            ));
+        }
+        return entities;
+    }
+
+    public SearchHistorySchema searchHistoryReverse(SearchInfoEntity entity) {
+
+       return new SearchHistorySchema(
+               entity.getId(),
+               entity.getName(),
+               entity.getBizName(),
+               entity.getMainAddress(),
+               entity.getStreetAddress(),
+               entity.getMapLat(),
+               entity.getMapLng());
+    }
+
+    public List<SearchHistorySchema> searchHistoryReverse(List<SearchInfoEntity> entities) {
+
+        List<SearchHistorySchema> schemas = new ArrayList<>();
+        for (SearchInfoEntity entity : entities) {
+            schemas.add(new SearchHistorySchema(
+                    entity.getId(),
+                    entity.getName(),
+                    entity.getBizName(),
+                    entity.getMainAddress(),
+                    entity.getStreetAddress(),
+                    entity.getMapLat(),
+                    entity.getMapLng())
+            );
+        }
+        return schemas;
+    }
+
+    public List<SearchInfoEntity> searchInfo(List<SearchSchema> schemas) {
+
+        if (schemas == null || schemas.size() == 0) return null;
+
+        List<SearchInfoEntity> entities = new ArrayList<>();
+        for (SearchSchema schema : schemas) {
+            entities.add(convertSearchSchema(schema));
+        }
+        return entities;
+    }
+
+    private SearchInfoEntity convertSearchSchema(SearchSchema searchSchema) {
+
+        String mainAddress = "";
+        if (searchSchema.getSecondNo() == null || searchSchema.getSecondNo().trim().equals("")) {
+            mainAddress =
+                    searchSchema.getUpperAddrName().trim() + " " +
+                    searchSchema.getMiddleAddrName().trim() + " " +
+                    searchSchema.getLowerAddrName().trim() + " " +
+                    searchSchema.getDetailAddrName().trim() + " " +
+                    searchSchema.getFirstNo().trim();
+        } else {
+            mainAddress =
+                    searchSchema.getUpperAddrName().trim() + " " +
+                    searchSchema.getMiddleAddrName().trim() + " " +
+                    searchSchema.getLowerAddrName().trim() + " " +
+                    searchSchema.getDetailAddrName().trim() + " " +
+                    searchSchema.getFirstNo().trim() + "-" +
+                    searchSchema.getSecondNo().trim();
+        }
+        String streetAddress =
+                searchSchema.getRoadName().trim() + " " +
+                searchSchema.getFirstBuildNo().trim();
+
+        return new SearchInfoEntity(
+                    searchSchema.getName(),
+                    searchSchema.getBizName(),
+                    mainAddress,
+                    streetAddress,
+                    searchSchema.getNoorLat(),
+                    searchSchema.getNoorLon(),
+                    false);
+    }
+
 }

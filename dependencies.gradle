@@ -35,6 +35,8 @@ ext {
     glideTransformation = '2.0.1'
     circleImageView = '2.2.0'
 
+    room_version = "1.1.1"
+
     okHttp = '3.11.0'
     loggingInterceptor = '3.10.0'
     retrofit = '2.4.0'

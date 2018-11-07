@@ -58,7 +58,7 @@ import com.limefriends.molde.screen.map.main.feedDialog.MapReportCardPagerAdapte
 import com.limefriends.molde.screen.map.main.feedDialog.MapReportCardItem;
 import com.limefriends.molde.screen.map.main.feedDialog.ShadowTransformer;
 import com.limefriends.molde.screen.map.report.ReportActivity;
-import com.limefriends.molde.screen.map.search.SearchMapInfoActivity;
+import com.limefriends.molde.screen.map.search.SearchLocationActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -276,7 +276,7 @@ public class MapFragment extends BaseFragment implements
                 }
 
                 intent = new Intent();
-                intent.setClass(v.getContext(), SearchMapInfoActivity.class);
+                intent.setClass(v.getContext(), SearchLocationActivity.class);
                 startActivityForResult(intent, REQ_SEARCH_MAP);
                 break;
             case R.id.favorite_button:
@@ -648,8 +648,6 @@ public class MapFragment extends BaseFragment implements
     // 네트워크에서 피드 데이터 받아옴
     private void loadData(final double lat, final double lng) {
 
-        Log.e("호출확인", "2");
-
         if (!hasMoreToLoad) return;
 
         if (isLoading) {
@@ -669,13 +667,9 @@ public class MapFragment extends BaseFragment implements
 
                                     isLoading(false);
 
-                                    Log.e("호출확인", "5");
-
                                     fromFeed = false;
                                 },
                                 () -> {
-
-                                    Log.e("호출확인", "3");
 
                                     if (entityList.size() != 0) {
 
@@ -764,16 +758,12 @@ public class MapFragment extends BaseFragment implements
                                         // 피드가 아예 없는 경우
                                     } else {
 
-                                        Log.e("호출확인", "3");
-
                                         hasMoreToLoad(false);
 
                                         snackBar(getText(R.string.toast_no_feed_place).toString());
 
                                         moveCamera(new LatLng(lat, lng), ZOOM_CUR_LOCATION);
                                     }
-
-                                    Log.e("호출확인", "4");
 
                                     isFirst(false);
 
@@ -980,8 +970,6 @@ public class MapFragment extends BaseFragment implements
 
         @Override
         public void onLocationChanged(Location location) {
-
-            Log.e("호출확인", "1");
 
             // 현재위치 위경도 좌표 가져오기
             lat = location.getLatitude();

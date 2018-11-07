@@ -1,16 +1,16 @@
 package com.limefriends.molde.networking.schema.search;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class SearchSchemaList {
 
-    private ArrayList<SearchSchema> poi = null;
+    private List<SearchSchema> poi = null;
 
-    public ArrayList<SearchSchema> getSearchSchema() {
+    public List<SearchSchema> getSearchSchema() {
         return poi;
     }
 
-    public void setSearchSchema(ArrayList<SearchSchema> poi) {
+    public void setSearchSchema(List<SearchSchema> poi) {
         this.poi = poi;
     }
 }

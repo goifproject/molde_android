@@ -1,20 +1,5 @@
 package com.limefriends.molde.model.entity;
 
-import com.limefriends.molde.model.entity.cardNews.CardNewsEntity;
-import com.limefriends.molde.model.entity.cardNews.CardNewsImageEntity;
-import com.limefriends.molde.model.entity.comment.CommentEntity;
-import com.limefriends.molde.model.entity.comment.ReportedCommentEntity;
-import com.limefriends.molde.model.entity.faq.FaqEntity;
-import com.limefriends.molde.model.entity.favorite.FavoriteEntity;
-import com.limefriends.molde.model.entity.feed.FeedEntity;
-import com.limefriends.molde.model.entity.feedResult.FeedResultEntity;
-import com.limefriends.molde.model.entity.safehouse.SafehouseEntity;
-import com.limefriends.molde.model.entity.scrap.ScrapEntity;
-import com.limefriends.molde.model.entity.search.SearchHistoryEntity;
-import com.limefriends.molde.model.entity.search.SearchInfoEntity;
-
-import static com.limefriends.molde.model.entity.DataType.*;
-
 public class DataMapper {
 
 //

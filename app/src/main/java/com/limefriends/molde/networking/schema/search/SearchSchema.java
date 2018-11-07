@@ -1,8 +1,11 @@
 package com.limefriends.molde.networking.schema.search;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 
 public class SearchSchema {
-
+    
     //POI 의  id
     private String id;
     //POI 의 name

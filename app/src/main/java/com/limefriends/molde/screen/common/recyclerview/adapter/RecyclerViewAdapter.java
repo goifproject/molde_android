@@ -1,6 +1,7 @@
-package com.limefriends.molde.screen.common.recyclerview;
+package com.limefriends.molde.screen.common.recyclerview.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.ViewGroup;
 
 import com.limefriends.molde.model.entity.Data;
@@ -9,6 +10,8 @@ import com.limefriends.molde.model.entity.comment.CommentEntity;
 import com.limefriends.molde.model.entity.favorite.FavoriteEntity;
 import com.limefriends.molde.model.entity.feed.FeedEntity;
 import com.limefriends.molde.model.entity.molcaInfo.MolcaInfo;
+import com.limefriends.molde.model.entity.search.SearchInfoEntity;
+import com.limefriends.molde.screen.common.recyclerview.itemView.SearchLocationItemView;
 import com.limefriends.molde.screen.common.views.ViewFactory;
 import com.limefriends.molde.screen.common.views.ViewMvc;
 import com.limefriends.molde.screen.common.recyclerview.itemView.MolcaInfoItemView;
@@ -22,7 +25,9 @@ import java.util.List;
 
 public class RecyclerViewAdapter<T extends Data>
         extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>
-        implements CardNewsItemView.Listener, CardNewsCommentItemView.Listener, FeedItemView.Listener, FavoriteItemView.Listener {
+        implements
+        CardNewsItemView.Listener, CardNewsCommentItemView.Listener, FeedItemView.Listener,
+        FavoriteItemView.Listener, SearchLocationItemView.Listener {
 
     public interface OnItemClickListener {
 
@@ -34,7 +39,7 @@ public class RecyclerViewAdapter<T extends Data>
         void onItem2Clicked(int itemId);
     }
 
-    private static final int 
+    private static final int
             VIEW_TYPE_CARD_NEWS = 0,
             VIEW_TYPE_COMMENT = 1,
             VIEW_TYPE_REPORTED_COMMENT = 2,
@@ -46,7 +51,7 @@ public class RecyclerViewAdapter<T extends Data>
             VIEW_TYPE_SEARCH_INFO = 8,
             VIEW_TYPE_SEARCH_HISTORY = 9,
             VIEW_TYPE_MOLCA_INFO = 10;
-    
+
     private List<T> dataList = new ArrayList<>();
     private ViewFactory mViewFactory;
     private OnItemClickListener mOnItemClickListener;
@@ -73,6 +78,11 @@ public class RecyclerViewAdapter<T extends Data>
 
     public void removeData(T data) {
         dataList.remove(data);
+        notifyDataSetChanged();
+    }
+
+    public void removeData(int position) {
+        dataList.remove(position);
         notifyDataSetChanged();
     }
 
@@ -111,8 +121,8 @@ public class RecyclerViewAdapter<T extends Data>
                 return VIEW_TYPE_SCRAP;
             case SEARCH_INFO:
                 return VIEW_TYPE_SEARCH_INFO;
-            case SEARCH_HISTORY:
-                return VIEW_TYPE_SEARCH_HISTORY;
+//            case SEARCH_HISTORY:
+//                return VIEW_TYPE_SEARCH_HISTORY;
             case MOLCA_INFO:
                 return VIEW_TYPE_MOLCA_INFO;
             default:
@@ -141,6 +151,9 @@ public class RecyclerViewAdapter<T extends Data>
             case VIEW_TYPE_FAVORITE:
                 viewMvc = mViewFactory.newInstance(FavoriteItemView.class, parent);
                 break;
+            case VIEW_TYPE_SEARCH_INFO:
+                viewMvc = mViewFactory.newInstance(SearchLocationItemView.class, parent);
+                break;
 //            case VIEW_TYPE_REPORTED_COMMENT:
 //                return ;
 //            case VIEW_TYPE_FAQ:
@@ -149,8 +162,7 @@ public class RecyclerViewAdapter<T extends Data>
 //                return ;
 //            case VIEW_TYPE_SCRAP:
 //                return ;
-//            case VIEW_TYPE_SEARCH_INFO:
-//                return ;
+
 //            case VIEW_TYPE_SEARCH_HISTORY:
 //                return ;
         }
@@ -159,6 +171,7 @@ public class RecyclerViewAdapter<T extends Data>
 
     @Override
     public void onBindViewHolder(RecyclerViewAdapter.ViewHolder holder, int position) {
+        holder.position = position;
         holder.bindItem(dataList.get(position));
     }
 
@@ -177,11 +190,12 @@ public class RecyclerViewAdapter<T extends Data>
         mOnItem2ClickListener.onItem2Clicked(itemId);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         ViewMvc mViewMvc;
+        int position;
 
-        public ViewHolder(ViewMvc view) {
+        ViewHolder(ViewMvc view) {
             super(view.getRootView());
             this.mViewMvc = view;
         }
@@ -206,6 +220,10 @@ public class RecyclerViewAdapter<T extends Data>
                     ((FavoriteItemView) mViewMvc).bindFavorite((FavoriteEntity) data);
                     ((FavoriteItemView) mViewMvc).registerListener(RecyclerViewAdapter.this);
                     break;
+                case SEARCH_INFO:
+                    ((SearchLocationItemView) mViewMvc).bindSearchInfo((SearchInfoEntity) data, position);
+                    ((SearchLocationItemView) mViewMvc).registerListener(RecyclerViewAdapter.this);
+                    break;
 //                case CARD_NEWS_IMAGE:
 //                    break;
 //                case REPORTED_COMMENT:
@@ -220,8 +238,7 @@ public class RecyclerViewAdapter<T extends Data>
 //                    break;
 //                case SEARCH_INFO:
 //                    break;
-//                case SEARCH_HISTORY:
-//                    break;
+
 //                default:
             }
 

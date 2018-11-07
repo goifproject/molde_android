@@ -6,9 +6,8 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.limefriends.molde.R;
-import com.limefriends.molde.model.entity.comment.CommentEntity;
 import com.limefriends.molde.model.entity.favorite.FavoriteEntity;
-import com.limefriends.molde.screen.common.recyclerview.RecyclerViewAdapter;
+import com.limefriends.molde.screen.common.recyclerview.adapter.RecyclerViewAdapter;
 import com.limefriends.molde.screen.common.recyclerview.addOnRecycler.AddOnScrollRecyclerView;
 import com.limefriends.molde.screen.common.toolbar.NestedToolbar;
 import com.limefriends.molde.screen.common.views.BaseObservableView;

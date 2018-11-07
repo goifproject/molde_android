@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 public class SearchInfoEntity implements Serializable, Data {
 
+    private int uId;
     private double mapLat;
     private double mapLng;
     private String name;
@@ -14,6 +15,37 @@ public class SearchInfoEntity implements Serializable, Data {
     private String streetAddress;
     private String bizName;
     private String telNo;
+    private boolean fromHistory;
+
+    public SearchInfoEntity(int uId, String name, String bizName, String mainAddress, String streetAddress, double lat, double lng, boolean fromHistory) {
+        this.uId = uId;
+        this.name = name;
+        this.bizName = bizName;
+        this.mainAddress = mainAddress;
+        this.streetAddress = streetAddress;
+        this.mapLat = lat;
+        this.mapLng = lng;
+        this.fromHistory = fromHistory;
+    }
+
+    public SearchInfoEntity(String name, String bizName, String mainAddress, String streetAddress, double lat, double lng, boolean fromHistory) {
+        this.name = name;
+        this.bizName = bizName;
+        this.mainAddress = mainAddress;
+        this.streetAddress = streetAddress;
+        this.mapLat = lat;
+        this.mapLng = lng;
+        this.fromHistory = fromHistory;
+    }
+
+    public SearchInfoEntity(double mapLat, double mapLng, String name, String mainAddress, String bizName, String telNo) {
+        this.mapLat = mapLat;
+        this.mapLng = mapLng;
+        this.name = name;
+        this.mainAddress = mainAddress;
+        this.bizName = bizName;
+        this.telNo = telNo;
+    }
 
     public SearchInfoEntity(double mapLat, double mapLng, String name, String mainAddress, String streetAddress, String bizName, String telNo) {
         this.mapLat = mapLat;
@@ -23,6 +55,22 @@ public class SearchInfoEntity implements Serializable, Data {
         this.streetAddress = streetAddress;
         this.bizName = bizName;
         this.telNo = telNo;
+    }
+
+    public int getId() {
+        return uId;
+    }
+
+    public void setId(int uId) {
+        this.uId = uId;
+    }
+
+    public boolean isFromHistory() {
+        return fromHistory;
+    }
+
+    public void setFromHistory(boolean fromHistory) {
+        this.fromHistory = fromHistory;
     }
 
     public double getMapLat() {

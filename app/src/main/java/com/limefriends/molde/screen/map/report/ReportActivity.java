@@ -4,27 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.util.SparseArrayCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.Switch;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,35 +13,27 @@ import com.gun0912.tedpermission.TedPermission;
 import com.limefriends.molde.common.Constant;
 import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.common.app.MoldeApplication;
-import com.limefriends.molde.common.utils.NetworkUtil;
 import com.limefriends.molde.common.utils.PreferenceUtil;
-import com.limefriends.molde.common.utils.pattern.RegexUtil;
 import com.limefriends.molde.R;
 import com.limefriends.molde.model.repository.Repository;
-import com.limefriends.molde.networking.schema.response.Result;
 import com.limefriends.molde.screen.common.controller.BaseActivity;
 import com.limefriends.molde.screen.common.dialog.DialogFactory;
 import com.limefriends.molde.screen.common.dialog.DialogManager;
-import com.limefriends.molde.screen.common.dialog.view.PromptDialog;
 import com.limefriends.molde.screen.common.screensNavigator.ActivityScreenNavigator;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 import com.limefriends.molde.screen.common.views.ViewFactory;
 import com.limefriends.molde.screen.map.report.view.ReportView;
-import com.limefriends.molde.screen.map.search.SearchMapInfoActivity;
+import com.limefriends.molde.screen.map.search.SearchLocationActivity;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.observers.DisposableObserver;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
-import static com.limefriends.molde.common.Constant.Authority.*;
 import static com.limefriends.molde.common.Constant.Common.EXTRA_KEY_ACTIVITY_NAME;
 import static com.limefriends.molde.common.Constant.Common.PREF_KEY_AUTHORITY;
 import static com.limefriends.molde.common.Constant.ReportState.CLEAN;
@@ -181,7 +153,7 @@ public class ReportActivity extends BaseActivity implements ReportView.Listener 
     @Override
     public void onFindLocationClicked() {
         Intent intent = new Intent();
-        intent.setClass(getApplicationContext(), SearchMapInfoActivity.class);
+        intent.setClass(getApplicationContext(), SearchLocationActivity.class);
         intent.putExtra(EXTRA_KEY_ACTIVITY_NAME, "Report");
         startActivityForResult(intent, REQ_REPORT_LOCATION);
     }

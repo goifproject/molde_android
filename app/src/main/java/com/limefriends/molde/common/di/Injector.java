@@ -82,6 +82,9 @@ public class Injector {
         else if (type.equals(Repository.Scrap.class)) {
             return mPresentationCompositionRoot.getScrapUseCase();
         }
+        else if (type.equals(Repository.SearchLocation.class)) {
+            return mPresentationCompositionRoot.getSearchLocationUseCase();
+        }
         else if (type.equals(ActivityScreenNavigator.class)) {
             return mPresentationCompositionRoot.getActivityScreenNavigator();
         }

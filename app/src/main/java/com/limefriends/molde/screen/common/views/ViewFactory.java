@@ -36,6 +36,10 @@ import com.limefriends.molde.screen.map.favorite.view.FavoriteView;
 import com.limefriends.molde.screen.map.favorite.view.FavoriteViewImpl;
 import com.limefriends.molde.screen.map.report.view.ReportView;
 import com.limefriends.molde.screen.map.report.view.ReportViewImpl;
+import com.limefriends.molde.screen.common.recyclerview.itemView.SearchLocationItemView;
+import com.limefriends.molde.screen.common.recyclerview.itemView.SearchLocationItemViewImpl;
+import com.limefriends.molde.screen.map.search.view.SearchLocationView;
+import com.limefriends.molde.screen.map.search.view.SearchLocationViewImpl;
 
 import javax.annotation.Nullable;
 
@@ -111,6 +115,12 @@ public class ViewFactory {
         }
         else if (viewClass == ReportView.class) {
             viewMvc = new ReportViewImpl(mLayoutInflater, container, mDialogFactory, mDialogManager, mToastHelper, this);
+        }
+        else if (viewClass == SearchLocationView.class) {
+            viewMvc = new SearchLocationViewImpl(mLayoutInflater, container, this);
+        }
+        else if (viewClass == SearchLocationItemView.class) {
+            viewMvc = new SearchLocationItemViewImpl(mLayoutInflater, container);
         }
         else {
             throw new IllegalArgumentException("unsupported MVC view class " + viewClass);

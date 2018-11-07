@@ -1,10 +1,15 @@
 package com.limefriends.molde.common.di;
 
+import android.arch.persistence.room.Room;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 
+import com.limefriends.molde.common.utils.SecretRetriever;
+import com.limefriends.molde.model.database.dao.SearchHistoryDao;
+import com.limefriends.molde.model.database.db.MoldeDatabase;
 import com.limefriends.molde.model.common.FromSchemaToEntity;
+import com.limefriends.molde.model.repository.usecase.SearchLocationUseCase;
 import com.limefriends.molde.networking.common.NetworkHelper;
 import com.limefriends.molde.screen.common.bottomNavigationViewHelper.BottomNavigationViewHelper;
 import com.limefriends.molde.model.repository.Repository;
@@ -24,6 +29,8 @@ import com.limefriends.molde.screen.common.screensNavigator.ActivityScreenNaviga
 import com.limefriends.molde.screen.common.screensNavigator.FragmentScreenNavigator;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 import com.limefriends.molde.screen.common.views.ViewFactory;
+
+import static com.limefriends.molde.model.database.db.MoldeDatabase.MOLDE_DB;
 
 public class PresentationCompositionRoot {
 
@@ -47,6 +54,7 @@ public class PresentationCompositionRoot {
     private LayoutInflater getLayoutInflater() {
         return getActivity().getLayoutInflater();
     }
+
 
     /**
      * RestfulService
@@ -84,6 +92,26 @@ public class PresentationCompositionRoot {
         return mCompositionRoot.getScrapRestfulService();
     }
 
+    private MoldeRestfulService.SearchLocation getSearchRestfulService() {
+        return mCompositionRoot.getSearchLocationRestfulService();
+    }
+
+    /**
+     * DAO
+     */
+
+    private MoldeDatabase mMoldeDatabase;
+
+    private MoldeDatabase getMoldeDatabase() {
+        // TODO 싱글턴 유지?
+        return Room.databaseBuilder(getActivity(), MoldeDatabase.class, MOLDE_DB).allowMainThreadQueries().build();
+    }
+
+    private SearchHistoryDao getSearchHistoryDao() {
+        return getMoldeDatabase().getSearchDao();
+    }
+
+
     /**
      * Controller Helpers
      */
@@ -95,6 +123,12 @@ public class PresentationCompositionRoot {
     private NetworkHelper getNetworkHelper() {
         return new NetworkHelper(getActivity());
     }
+
+    private SecretRetriever getSecretRetriever() {
+        return new SecretRetriever(getActivity());
+    }
+
+
 
     /**
      * View
@@ -138,6 +172,7 @@ public class PresentationCompositionRoot {
                 getDialogFactory(),
                 getToastHelper());
     }
+
 
     /**
      * UseCase
@@ -198,6 +233,17 @@ public class PresentationCompositionRoot {
                 getFromSchemaToEntity(),
                 getToastHelper(),
                 getNetworkHelper());
+    }
+
+    public Repository.SearchLocation getSearchLocationUseCase() {
+        return new SearchLocationUseCase(
+                getFromSchemaToEntity(),
+                getToastHelper(),
+                getNetworkHelper(),
+                getSecretRetriever(),
+                getSearchHistoryDao(),
+                getSearchRestfulService()
+        );
     }
 
     public Repository.Safehouse getSafehouseUseCase() {

@@ -36,9 +36,11 @@ android {
     buildTypes {
         debug {
             buildConfigField "String", "SERVER_URL", SERVER_URL
+            buildConfigField "String", "TMAP_URL", TMAP_URL
         }
         release {
             buildConfigField "String", "SERVER_URL", SERVER_URL
+            buildConfigField "String", "TMAP_URL", TMAP_URL
             signingConfig signingConfigs.release
             // minifyEnabled true
             // shrinkResources true
@@ -127,7 +129,13 @@ dependencies {
     implementation "jp.wasabeef:glide-transformations:$glideTransformation"
     implementation "de.hdodenhof:circleimageview:$circleImageView"
 
-
+    /**
+     * Room
+     */
+    implementation "android.arch.persistence.room:runtime:$room_version"
+    annotationProcessor "android.arch.persistence.room:compiler:$room_version" // use kapt for Kotlin
+    // optional - RxJava support for Room
+    implementation "android.arch.persistence.room:rxjava2:$room_version"
 
     /**
      * Network

@@ -46,7 +46,7 @@
             android:theme="@style/AppNoBarTheme" />
         <!-- 지도 관련 -->
         <activity
-            android:name=".screen.map.search.SearchMapInfoActivity"
+            android:name=".screen.map.search.SearchLocationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity

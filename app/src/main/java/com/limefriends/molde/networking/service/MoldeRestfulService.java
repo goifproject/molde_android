@@ -10,10 +10,13 @@ import com.limefriends.molde.networking.schema.cardNews.CardNewsResponseSchema;
 import com.limefriends.molde.networking.schema.response.Result;
 import com.limefriends.molde.networking.schema.safehouse.SafehouseResponseSchema;
 import com.limefriends.molde.networking.schema.scrap.ScrapResponseSchema;
+import com.limefriends.molde.networking.schema.search.TMapSearchResponseSchema;
 
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.annotations.Nullable;
 import okhttp3.MultipartBody;
 
 
@@ -22,6 +25,8 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.HTTP;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -237,6 +242,30 @@ public interface MoldeRestfulService {
                                                     @Field("favoriteId") int favoriteId);
     }
 
+    /**
+     * SearchLocation
+     */
+
+    interface SearchLocation {
+
+        @GET(MoldeRestfulApi.SearchLocation.GET_TMAP_LOCATION)
+        Observable<TMapSearchResponseSchema> getSearchLocationObservable(
+                @Header("appKey") String appKey,
+                @Query("version") int version,
+                @Query("callback") String callback,
+                @NonNull @Query("count") int count,
+                @NonNull @Query("searchKeyword") String keyword,
+                @Query("areaLLCode") String areaLLCode,
+                @Query("areaLMCode") String areaLMCode,
+                @Query("resCoordType") String resCoordType,
+                @Query("searchType") String searchType,
+                @Query("multiPoint") String multiPoint,
+                @Query("searchtypCd") String searchtypCd,
+                @Query("radius") String radius,
+                @Query("reqCoordType") String reqCoordType,
+                @Query("centerLon") String centerLon,
+                @Query("centerLat") String centerLat);
+    }
 
     /**
      * Safehouse
