@@ -1,5 +1,7 @@
 package com.limefriends.molde.screen.magazine.detail;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -32,10 +34,17 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
 
 import static com.limefriends.molde.common.Constant.Common.EXTRA_KEY_ACTIVITY_NAME;
+import static com.limefriends.molde.common.Constant.Common.EXTRA_KEY_CARDNEWS_ID;
 import static com.limefriends.molde.common.Constant.Scrap.INTENT_VALUE_SCRAP;
 
 public class CardNewsDetailActivity extends BaseActivity implements CardNewsDetailView.Listener {
 
+    public static void start(Context context, int newsId) {
+        Intent intent = new Intent();
+        intent.setClass(context, CardNewsDetailActivity.class);
+        intent.putExtra(EXTRA_KEY_CARDNEWS_ID, newsId);
+        context.startActivity(intent);
+    }
 
     @Service private Repository.Scrap mScrapRepository;
     @Service private Repository.CardNews mCardNewsRepository;

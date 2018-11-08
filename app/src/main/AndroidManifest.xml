@@ -97,7 +97,7 @@
         <activity
             android:name=".screen.mypage.settings.SettingsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppNoBarTheme" />
         <activity
             android:name=".screen.mypage.inquiry.InquiryActivity"
             android:screenOrientation="portrait"
@@ -110,7 +110,7 @@
         <activity
             android:name=".screen.mypage.report.MyFeedActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppNoBarTheme" />
         <activity
             android:name=".screen.feed.detail.FeedDetailActivity"
             android:screenOrientation="portrait"
@@ -118,11 +118,11 @@
         <activity
             android:name=".screen.mypage.comment.MyCommentActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppNoBarTheme" />
         <activity
             android:name=".screen.mypage.scrap.ScrapActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppNoBarTheme" />
         <activity
             android:name=".screen.mypage.login.LoginActivity"
             android:screenOrientation="portrait"

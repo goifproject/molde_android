@@ -1,4 +1,4 @@
-package com.limefriends.molde.screen.common.recyclerview.itemView;
+package com.limefriends.molde.screen.common.recyclerview.itemView.searchLocation;
 
 import com.limefriends.molde.model.entity.search.SearchInfoEntity;
 import com.limefriends.molde.screen.common.view.ObservableView;

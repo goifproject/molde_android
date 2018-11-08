@@ -1,4 +1,4 @@
-package com.limefriends.molde.screen.common.recyclerview.itemView;
+package com.limefriends.molde.screen.common.recyclerview.itemView.molcaInfo;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;

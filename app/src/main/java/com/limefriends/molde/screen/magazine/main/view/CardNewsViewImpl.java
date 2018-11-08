@@ -9,6 +9,7 @@ import com.limefriends.molde.R;
 import com.limefriends.molde.model.entity.cardNews.CardNewsEntity;
 import com.limefriends.molde.screen.common.recyclerview.addOnRecycler.AddOnScrollRecyclerView;
 import com.limefriends.molde.screen.common.recyclerview.adapter.RecyclerViewAdapter;
+import com.limefriends.molde.screen.common.recyclerview.itemView.ItemViewType;
 import com.limefriends.molde.screen.common.view.BaseObservableView;
 import com.limefriends.molde.screen.common.view.ViewFactory;
 
@@ -85,7 +86,7 @@ public class CardNewsViewImpl
     private void setupMagazineList() {
 
         if (cardNewsAdapter == null) {
-            cardNewsAdapter = new RecyclerViewAdapter<>(mViewFactory);
+            cardNewsAdapter = new RecyclerViewAdapter<>(mViewFactory, ItemViewType.CARDNEWS);
             cardNewsAdapter.setOnItemClickListener(this);
         }
 

@@ -17,6 +17,7 @@ import com.limefriends.molde.screen.common.dialog.DialogManager;
 import com.limefriends.molde.screen.common.recyclerview.adapter.RecyclerViewAdapter;
 import com.limefriends.molde.screen.common.recyclerview.addOnRecycler.AddOnScrollRecyclerView;
 import com.limefriends.molde.screen.common.dialog.view.PromptDialog;
+import com.limefriends.molde.screen.common.recyclerview.itemView.ItemViewType;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 import com.limefriends.molde.screen.common.toolbar.NestedToolbar;
 import com.limefriends.molde.screen.common.view.BaseObservableView;
@@ -109,7 +110,7 @@ public class CardNewsCommentViewImpl
     }
 
     private void setupCommentList() {
-        mCommentAdapter = new RecyclerViewAdapter<>(mViewFactory);
+        mCommentAdapter = new RecyclerViewAdapter<>(mViewFactory, ItemViewType.CARDNEWS_COMMENT);
         mCommentAdapter.setOnItemClickListener(this);
         comment_list_view.setAdapter(mCommentAdapter);
         comment_list_view.setLayoutManager(new LinearLayoutManager(getContext()), false);

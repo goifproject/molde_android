@@ -9,6 +9,7 @@ import com.limefriends.molde.R;
 import com.limefriends.molde.model.entity.favorite.FavoriteEntity;
 import com.limefriends.molde.screen.common.recyclerview.adapter.RecyclerViewAdapter;
 import com.limefriends.molde.screen.common.recyclerview.addOnRecycler.AddOnScrollRecyclerView;
+import com.limefriends.molde.screen.common.recyclerview.itemView.ItemViewType;
 import com.limefriends.molde.screen.common.toolbar.NestedToolbar;
 import com.limefriends.molde.screen.common.view.BaseObservableView;
 import com.limefriends.molde.screen.common.view.ViewFactory;
@@ -74,7 +75,7 @@ public class FavoriteViewImpl
 
     private void setupFavoriteList() {
 
-        mCommentAdapter = new RecyclerViewAdapter<>(mViewFactory);
+        mCommentAdapter = new RecyclerViewAdapter<>(mViewFactory, ItemViewType.FAVORITE);
         mCommentAdapter.setOnItemClickListener(this);
         mCommentAdapter.setOnItem2ClickListener(this);
         my_favorite_list_view.setAdapter(mCommentAdapter);

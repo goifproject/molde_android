@@ -1,5 +1,6 @@
 package com.limefriends.molde.screen.mypage.report;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -15,9 +16,12 @@ import com.limefriends.molde.screen.common.recyclerview.addOnRecycler.AddOnScrol
 import com.limefriends.molde.common.helper.PreferenceUtil;
 import com.limefriends.molde.model.entity.feed.FeedEntity;
 import com.limefriends.molde.model.repository.Repository;
+import com.limefriends.molde.screen.common.view.ViewFactory;
 import com.limefriends.molde.screen.common.viewController.BaseActivity;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 import com.limefriends.molde.screen.feed.detail.FeedDetailActivity;
+import com.limefriends.molde.screen.mypage.inquiry.InquiryActivity;
+import com.limefriends.molde.screen.mypage.report.view.MyFeedView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,19 +40,21 @@ import static com.limefriends.molde.common.Constant.Feed.EXTRA_KEY_STATE;
 import static com.limefriends.molde.common.Constant.Feed.INTENT_KEY_MY_FEED;
 import static com.limefriends.molde.common.Constant.Feed.INTENT_VALUE_MY_FEED;
 
-public class MyFeedActivity extends BaseActivity implements MyFeedAdapter.OnItemClickListener {
+public class MyFeedActivity
+        extends BaseActivity implements MyFeedView.Listener {
 
-    @BindView(R.id.myReport_recyclerView)
-    AddOnScrollRecyclerView myReport_recyclerView;
+    public static void start(Context context) {
+        Intent intent = new Intent(context, MyFeedActivity.class);
+        context.startActivity(intent);
+    }
 
-    private MyFeedAdapter reportAdapter;
-
-    @Service
-    private Repository.Feed mFeedUseCase;
-    @Service
-    private ToastHelper mToastHelper;
+    @Service private Repository.Feed mFeedUseCase;
+    @Service private ToastHelper mToastHelper;
+    @Service private ViewFactory mViewFactory;
+    private MyFeedView mMyFeedView;
 
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+    private List<FeedEntity> currentlyShownMyFeed = new ArrayList<>();
 
     private static final int PER_PAGE = 10;
     private static final int FIRST_PAGE = 0;
@@ -61,58 +67,34 @@ public class MyFeedActivity extends BaseActivity implements MyFeedAdapter.OnItem
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_feed);
 
         getInjector().inject(this);
+
+        mMyFeedView = mViewFactory.newInstance(MyFeedView.class, null);
+
+        setContentView(mMyFeedView.getRootView());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        mMyFeedView.registerListener(this);
 
         authority = PreferenceUtil.getLong(this, PREF_KEY_AUTHORITY, Constant.Authority.GUEST);
 
         userId = FirebaseAuth.getInstance().getUid();
 
-        setupViews();
-
-        setFeedRecycler();
-
         loadMyReport(PER_PAGE, currentPage);
     }
 
-    //-----
-    // View
-    //-----
-
-    private void setupViews() {
-        ButterKnife.bind(this);
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.custom_toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        TextView toolbar_title = getSupportActionBar().getCustomView().findViewById(R.id.toolbar_title);
-        toolbar_title.setText(getText(R.string.myreport));
-    }
-
-    private void setFeedRecycler() {
-        reportAdapter = new MyFeedAdapter(this, this);
-        myReport_recyclerView.setAdapter(reportAdapter);
-        myReport_recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()), false);
-        myReport_recyclerView.setOnLoadMoreListener(() -> {
-            if (isLoading) return;
-            loadMyReport(PER_PAGE, currentPage);
-        });
-    }
-
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-        return false;
+    protected void onDestroy() {
+        super.onDestroy();
+        setHasMoreToLoad(true);
+        currentPage = 0;
     }
 
-    //-----
-    // Network
-    //-----
 
     private Observable<List<FeedEntity>> getFeedObservable(String userId, int perPage, int page) {
 
@@ -143,7 +125,8 @@ public class MyFeedActivity extends BaseActivity implements MyFeedAdapter.OnItem
                                         setHasMoreToLoad(false);
                                         return;
                                     }
-                                    reportAdapter.addData(entities);
+                                    mMyFeedView.bindMyFeed(entities);
+                                    currentlyShownMyFeed.addAll(entities);
                                     // 7. 추가 완료 후 다음 페이지로 넘어가도록 세팅
                                     currentPage++;
                                     if (entities.size() < PER_PAGE) {
@@ -158,15 +141,6 @@ public class MyFeedActivity extends BaseActivity implements MyFeedAdapter.OnItem
     }
 
     @Override
-    public void OnItemClick(int feedId, int position) {
-        Intent intent = new Intent(this, FeedDetailActivity.class);
-        intent.putExtra(EXTRA_KEY_FEED_ID, feedId);
-        intent.putExtra(EXTRA_KEY_ACTIVITY_NAME, INTENT_VALUE_MY_FEED);
-        intent.putExtra(EXTRA_KEY_POSITION, position);
-        startActivityForResult(intent, INTENT_KEY_MY_FEED);
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == INTENT_KEY_MY_FEED) {
@@ -175,21 +149,32 @@ public class MyFeedActivity extends BaseActivity implements MyFeedAdapter.OnItem
             int position = data.getIntExtra(EXTRA_KEY_POSITION, 0);
 
             if (state == -1) {
-                reportAdapter.removeItem(position);
+                mMyFeedView.deleteFeed(position);
             } else {
-                reportAdapter.updateItem(position, state);
+                FeedEntity entity = currentlyShownMyFeed.get(position);
+                entity.setRepState(state);
+                mMyFeedView.updateFeed(position, entity);
             }
         }
     }
 
-    //-----
-    // lifecycle
-    //-----
+    @Override
+    public void onNavigateUpClicked() {
+        onBackPressed();
+    }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        setHasMoreToLoad(true);
-        currentPage = 0;
+    public void onLoadMore() {
+        if (isLoading) return;
+        loadMyReport(PER_PAGE, currentPage);
+    }
+
+    @Override
+    public void onMyFeedSelected(int position) {
+        Intent intent = new Intent(this, FeedDetailActivity.class);
+        intent.putExtra(EXTRA_KEY_FEED_ID, currentlyShownMyFeed.get(position).getRepId());
+        intent.putExtra(EXTRA_KEY_ACTIVITY_NAME, INTENT_VALUE_MY_FEED);
+        intent.putExtra(EXTRA_KEY_POSITION, position);
+        startActivityForResult(intent, INTENT_KEY_MY_FEED);
     }
 }

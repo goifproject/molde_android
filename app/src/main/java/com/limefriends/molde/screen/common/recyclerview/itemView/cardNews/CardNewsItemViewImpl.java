@@ -1,4 +1,4 @@
-package com.limefriends.molde.screen.common.recyclerview.itemView;
+package com.limefriends.molde.screen.common.recyclerview.itemView.cardNews;
 
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;

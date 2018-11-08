@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import com.limefriends.molde.R;
 import com.limefriends.molde.model.entity.search.SearchInfoEntity;
 import com.limefriends.molde.screen.common.recyclerview.adapter.RecyclerViewAdapter;
+import com.limefriends.molde.screen.common.recyclerview.itemView.ItemViewType;
 import com.limefriends.molde.screen.common.view.BaseObservableView;
 import com.limefriends.molde.screen.common.view.ViewFactory;
 
@@ -60,7 +61,7 @@ public class SearchLocationViewImpl
 
     private void setMapInfoRecyclerView() {
 
-        mSearchInfoAdapter = new RecyclerViewAdapter<>(mViewFactory);
+        mSearchInfoAdapter = new RecyclerViewAdapter<>(mViewFactory, ItemViewType.SEARCH_LOCATION);
         search_info_list.setLayoutManager(new LinearLayoutManager(getContext()));
         search_info_list.setAdapter(mSearchInfoAdapter);
         mSearchInfoAdapter.setOnItemClickListener(this);

@@ -11,10 +11,15 @@
         android:layout_height="match_parent"
         android:background="@color/colorBG">
 
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/element_toolbar"/>
+
         <RelativeLayout
             android:id="@+id/mypage_my_loc_push"
             android:layout_width="match_parent"
             android:layout_height="56dp"
+            android:layout_below="@id/toolbar"
             android:background="@color/colorWhite">
 
             <TextView

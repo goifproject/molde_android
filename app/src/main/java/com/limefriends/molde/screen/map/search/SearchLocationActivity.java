@@ -1,7 +1,6 @@
 package com.limefriends.molde.screen.map.search;
 
 import com.limefriends.molde.common.di.Service;
-import com.limefriends.molde.common.manager.cacheHelper.Cache;
 import com.limefriends.molde.model.entity.search.SearchInfoEntity;
 import com.limefriends.molde.model.repository.Repository;
 import com.limefriends.molde.screen.common.viewController.BaseActivity;

@@ -1,6 +1,7 @@
 package com.limefriends.molde.screen.mypage.login;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -38,8 +39,13 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.limefriends.molde.R;
+import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.common.helper.NetworkUtil;
 import com.limefriends.molde.common.helper.PreferenceUtil;
+import com.limefriends.molde.screen.common.view.ViewFactory;
+import com.limefriends.molde.screen.common.viewController.BaseActivity;
+import com.limefriends.molde.screen.mypage.login.view.LoginView;
+import com.limefriends.molde.screen.mypage.report.MyFeedActivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,22 +55,9 @@ import butterknife.ButterKnife;
 
 import static com.limefriends.molde.common.Constant.Common.PREF_KEY_FCM_TOKEN;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity implements LoginView.Listener {
 
     public static final int NORMAL = 0;
-
-    @BindView(R.id.login_google_button)
-    RelativeLayout login_google_button;
-    @BindView(R.id.login_facebook_button)
-    RelativeLayout login_facebook_button;
-    @BindView(R.id.login_to_google)
-    TextView login_to_google;
-    @BindView(R.id.login_to_facebook)
-    TextView login_to_facebook;
-    @BindView(R.id.skip_login_button)
-    TextView skip_login_button;
-
-    ProgressDialog loginProgressDialog;
 
     //로그인 안하고 건너뜀
     private static final int SKIP_LOGIN_CODE = 1001;
@@ -81,9 +74,20 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleSignInClient googleSignInClient;
     private CallbackManager facebookCallbackManager;
 
-    /**
-     * TODO FirebaseAuth.getInstance() 하는 곳에서 받아 사용한다.
-     */
+    @Service private ViewFactory mViewFactory;
+    private LoginView mLoginView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        getInjector().inject(this);
+
+        mLoginView = mViewFactory.newInstance(LoginView.class, null);
+
+        setContentView(mLoginView.getRootView());
+    }
+
     private FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
         @Override
         public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -95,54 +99,28 @@ public class LoginActivity extends AppCompatActivity {
                 // User is signed out
                 Log.d("onAuthStateChanged", "onAuthStateChanged:signed_out");
             }
-            // ...
         }
     };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+    public void onStart() {
+        super.onStart();
 
-        setupViews();
+        mLoginView.registerListener(this);
 
-        setupListener();
+        firebaseAuth.addAuthStateListener(mAuthListener);
 
         configureFacebookSignIn();
 
         configureGoogleSignIn();
     }
 
-    private void setupViews() {
-        ButterKnife.bind(this);
-        loginProgressDialog = new ProgressDialog(LoginActivity.this);
-        loginProgressDialog.setTitle("로그인 중입니다...");
-    }
-
-    private void setupListener() {
-
-        // 구글 로그인
-        login_google_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (!NetworkUtil.isConnected(LoginActivity.this)) {
-                    Toast.makeText(LoginActivity.this, "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
-                }
-
-                // 로그인 하기 전에 클라이언트가 준비되어 있어야 함
-                googleSignIn();
-            }
-        });
-
-        // 로그인 스킵
-        skip_login_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setResult(SKIP_LOGIN_CODE);
-                finish();
-            }
-        });
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            firebaseAuth.removeAuthStateListener(mAuthListener);
+        }
     }
 
     // --------
@@ -164,7 +142,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void firebaseAuthWithGoogle(final GoogleSignInAccount acct) {
         // TODO 토큰값 변경 반영 위해 리스너로 설정해야 할 듯
-        loginProgressDialog.show();
+        mLoginView.showProgressIndication();
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -229,7 +207,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void handleFacebookAccessToken(final AccessToken token) {
-        loginProgressDialog.show();
+        mLoginView.showProgressIndication();
         final AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -249,7 +227,7 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         } else {
                             // TODO 기존에 존재하는 아이디일 경우
-                            loginProgressDialog.dismiss();
+                            mLoginView.hideProgressIndication();
                             if (task.getException().getMessage()
                                     .startsWith("An account already exists with the same email address")) {
                                 Snackbar.make(findViewById(R.id.mypage_login_layout),
@@ -285,7 +263,7 @@ public class LoginActivity extends AppCompatActivity {
                         // 리스너 설정해서 변화가 일어날 때마다 다시 데이터 받아오고 갱신해 준다.
                         int authority = (int) userMap.get("authority");
                         PreferenceUtil.putLong(LoginActivity.this, "authority", authority);
-                        loginProgressDialog.dismiss();
+                        mLoginView.hideProgressIndication();
                         setResult(resultCode);
                         finish();
                     }
@@ -317,7 +295,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         PreferenceUtil.putLong(LoginActivity.this,
                                 "authority", authority);
-                        loginProgressDialog.dismiss();
+                        mLoginView.hideProgressIndication();
                         setResult(resultCode);
                         finish();
                     }
@@ -331,8 +309,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        // TODO 계정을 삭제했는데 왜 계속 하나밖에 안 뜨는거지
         if (resultCode == RESULT_OK && requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
@@ -345,19 +321,20 @@ public class LoginActivity extends AppCompatActivity {
         facebookCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
+
     @Override
-    public void onStart() {
-        super.onStart();
-        firebaseAuth.addAuthStateListener(mAuthListener);
+    public void onSkipLoginClicked() {
+        setResult(SKIP_LOGIN_CODE);
+        finish();
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            firebaseAuth.removeAuthStateListener(mAuthListener);
+    public void onGoogleLoginClicked() {
+
+        if (!NetworkUtil.isConnected(LoginActivity.this)) {
+            Toast.makeText(LoginActivity.this, "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
         }
+        googleSignIn();
     }
-
 }
 

@@ -4,9 +4,6 @@ public enum DataType {
 
     CARD_NEWS,
     CARD_NEWS_IMAGE,
-//    HOW_TO_RESPOND,
-//    HOW_TO_PREVENT,
-//    RECENT_MOLCA,
     COMMENT,
     REPORTED_COMMENT,
     FAQ,

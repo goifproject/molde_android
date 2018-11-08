@@ -8,42 +8,58 @@ import com.limefriends.molde.screen.common.dialog.DialogManager;
 import com.limefriends.molde.screen.common.imageLoader.ImageLoader;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 import com.limefriends.molde.screen.common.toolbar.NestedToolbar;
-import com.limefriends.molde.screen.common.recyclerview.itemView.CardNewsCommentItemView;
-import com.limefriends.molde.screen.common.recyclerview.itemView.FeedItemView;
-import com.limefriends.molde.screen.common.recyclerview.itemView.FeedItemViewImpl;
+import com.limefriends.molde.screen.common.recyclerview.itemView.cardNewsComment.CardNewsCommentItemView;
+import com.limefriends.molde.screen.common.recyclerview.itemView.feed.FeedItemView;
+import com.limefriends.molde.screen.common.recyclerview.itemView.feed.FeedItemViewImpl;
 import com.limefriends.molde.screen.feed.detail.view.FeedDetailView;
 import com.limefriends.molde.screen.feed.detail.view.FeedDetailViewImpl;
 import com.limefriends.molde.screen.feed.main.view.FeedView;
 import com.limefriends.molde.screen.feed.main.view.FeedViewImpl;
 import com.limefriends.molde.screen.magazine.comment.view.CardNewsCommentView;
-import com.limefriends.molde.screen.common.recyclerview.itemView.CardNewsCommentItemViewImpl;
+import com.limefriends.molde.screen.common.recyclerview.itemView.cardNewsComment.CardNewsCommentItemViewImpl;
 import com.limefriends.molde.screen.magazine.comment.view.CardNewsCommentViewImpl;
 import com.limefriends.molde.screen.common.imagePager.itemView.ImagePagerView;
 import com.limefriends.molde.screen.common.imagePager.itemView.ImagePagerViewImpl;
 import com.limefriends.molde.screen.magazine.detail.view.CardNewsDetailView;
 import com.limefriends.molde.screen.magazine.detail.view.CardNewsDetailViewImpl;
-import com.limefriends.molde.screen.common.recyclerview.itemView.MolcaInfoItemView;
+import com.limefriends.molde.screen.common.recyclerview.itemView.molcaInfo.MolcaInfoItemView;
 import com.limefriends.molde.screen.magazine.info.view.MolcaInfoView;
-import com.limefriends.molde.screen.common.recyclerview.itemView.MolcaInfoItemViewImpl;
+import com.limefriends.molde.screen.common.recyclerview.itemView.molcaInfo.MolcaInfoItemViewImpl;
 import com.limefriends.molde.screen.magazine.info.view.MolcaInfoViewImpl;
-import com.limefriends.molde.screen.common.recyclerview.itemView.CardNewsItemView;
-import com.limefriends.molde.screen.common.recyclerview.itemView.CardNewsItemViewImpl;
+import com.limefriends.molde.screen.common.recyclerview.itemView.cardNews.CardNewsItemView;
+import com.limefriends.molde.screen.common.recyclerview.itemView.cardNews.CardNewsItemViewImpl;
 import com.limefriends.molde.screen.magazine.main.view.CardNewsView;
 import com.limefriends.molde.screen.magazine.main.view.CardNewsViewImpl;
-import com.limefriends.molde.screen.common.recyclerview.itemView.FavoriteItemView;
-import com.limefriends.molde.screen.common.recyclerview.itemView.FavoriteItemViewImpl;
+import com.limefriends.molde.screen.common.recyclerview.itemView.favorite.FavoriteItemView;
+import com.limefriends.molde.screen.common.recyclerview.itemView.favorite.FavoriteItemViewImpl;
 import com.limefriends.molde.screen.map.favorite.view.FavoriteView;
 import com.limefriends.molde.screen.map.favorite.view.FavoriteViewImpl;
 import com.limefriends.molde.screen.map.report.view.ReportView;
 import com.limefriends.molde.screen.map.report.view.ReportViewImpl;
-import com.limefriends.molde.screen.common.recyclerview.itemView.SearchLocationItemView;
-import com.limefriends.molde.screen.common.recyclerview.itemView.SearchLocationItemViewImpl;
+import com.limefriends.molde.screen.common.recyclerview.itemView.searchLocation.SearchLocationItemView;
+import com.limefriends.molde.screen.common.recyclerview.itemView.searchLocation.SearchLocationItemViewImpl;
 import com.limefriends.molde.screen.map.search.view.SearchLocationView;
 import com.limefriends.molde.screen.map.search.view.SearchLocationViewImpl;
-import com.limefriends.molde.screen.common.recyclerview.itemView.InquiryItemView;
-import com.limefriends.molde.screen.common.recyclerview.itemView.InquiryItemViewImpl;
+import com.limefriends.molde.screen.common.recyclerview.itemView.inquiry.InquiryItemView;
+import com.limefriends.molde.screen.common.recyclerview.itemView.inquiry.InquiryItemViewImpl;
+import com.limefriends.molde.screen.mypage.comment.view.MyCommentView;
+import com.limefriends.molde.screen.common.recyclerview.itemView.reportedComment.ReportedCommentItemView;
+import com.limefriends.molde.screen.common.recyclerview.itemView.reportedComment.ReportedCommentItemViewImpl;
+import com.limefriends.molde.screen.mypage.comment.view.MyCommentViewImpl;
 import com.limefriends.molde.screen.mypage.inquiry.view.InquiryView;
 import com.limefriends.molde.screen.mypage.inquiry.view.InquiryViewImpl;
+import com.limefriends.molde.screen.common.recyclerview.itemView.myFeed.MyFeedItemView;
+import com.limefriends.molde.screen.common.recyclerview.itemView.myFeed.MyFeedItemViewImpl;
+import com.limefriends.molde.screen.mypage.login.view.LoginView;
+import com.limefriends.molde.screen.mypage.login.view.LoginViewImpl;
+import com.limefriends.molde.screen.mypage.main.view.MyPageMainView;
+import com.limefriends.molde.screen.mypage.main.view.MyPageMainViewImpl;
+import com.limefriends.molde.screen.mypage.report.view.MyFeedView;
+import com.limefriends.molde.screen.mypage.report.view.MyFeedViewImpl;
+import com.limefriends.molde.screen.mypage.scrap.view.ScrapView;
+import com.limefriends.molde.screen.mypage.scrap.view.ScrapViewImpl;
+import com.limefriends.molde.screen.mypage.settings.view.SettingsView;
+import com.limefriends.molde.screen.mypage.settings.view.SettingsViewImpl;
 
 import javax.annotation.Nullable;
 
@@ -131,6 +147,31 @@ public class ViewFactory {
         }
         else if (viewClass == InquiryItemView.class) {
             viewMvc = new InquiryItemViewImpl(mLayoutInflater, container);
+        }
+        else if (viewClass == ScrapView.class) {
+            viewMvc = new ScrapViewImpl(mLayoutInflater, container, this);
+        }
+        else if (viewClass == MyFeedView.class) {
+            viewMvc = new MyFeedViewImpl(mLayoutInflater, container, this);
+        }
+        else if (viewClass == MyFeedItemView.class) {
+            viewMvc = new MyFeedItemViewImpl(mLayoutInflater, container, mImageLoader);
+        }
+        else if (viewClass == SettingsView.class) {
+            viewMvc = new SettingsViewImpl(mLayoutInflater, container, this, mToastHelper);
+        }
+        else if (viewClass == MyPageMainView.class) {
+            viewMvc = new MyPageMainViewImpl(
+                    mLayoutInflater, container, mDialogFactory, mDialogManager, mImageLoader, mToastHelper);
+        }
+        else if (viewClass == LoginView.class) {
+            viewMvc = new LoginViewImpl(mLayoutInflater, container);
+        }
+        else if (viewClass == MyCommentView.class) {
+            viewMvc = new MyCommentViewImpl(mLayoutInflater, container, this, mDialogFactory, mDialogManager, mToastHelper);
+        }
+        else if (viewClass == ReportedCommentItemView.class) {
+            viewMvc = new ReportedCommentItemViewImpl(mLayoutInflater, container, mImageLoader);
         }
         else {
             throw new IllegalArgumentException("unsupported MVC view class " + viewClass);

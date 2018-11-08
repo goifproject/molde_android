@@ -1,5 +1,6 @@
 package com.limefriends.molde.screen.mypage.comment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -25,6 +26,7 @@ import com.limefriends.molde.model.entity.cardNews.CardNewsEntity;
 import com.limefriends.molde.common.util.comparator.CardNewsComparator;
 import com.limefriends.molde.screen.common.recyclerview.addOnRecycler.AddOnScrollExpandableListView;
 import com.limefriends.molde.screen.common.recyclerview.addOnRecycler.AddOnScrollRecyclerView;
+import com.limefriends.molde.screen.common.view.ViewFactory;
 import com.limefriends.molde.screen.common.viewController.BaseActivity;
 import com.limefriends.molde.screen.common.dialog.DialogFactory;
 import com.limefriends.molde.screen.common.dialog.DialogManager;
@@ -33,6 +35,8 @@ import com.limefriends.molde.screen.common.screensNavigator.ActivityScreenNaviga
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 import com.limefriends.molde.screen.magazine.comment.CardNewsCommentActivity;
 import com.limefriends.molde.screen.magazine.detail.CardNewsDetailActivity;
+import com.limefriends.molde.screen.mypage.comment.view.MyCommentView;
+import com.limefriends.molde.screen.mypage.report.MyFeedActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,27 +51,19 @@ import static com.limefriends.molde.common.Constant.Comment.EXTRA_KEY_COMMENT_DE
 import static com.limefriends.molde.common.Constant.Common.EXTRA_KEY_CARDNEWS_ID;
 import static com.limefriends.molde.common.Constant.Common.PREF_KEY_AUTHORITY;
 
-public class MyCommentActivity
-        extends BaseActivity
-        implements MyCommentExpandableAdapter.OnItemClickCallback, ReportedCommentAdapter.OnCommentClickListener {
+public class MyCommentActivity extends BaseActivity
+        implements MyCommentExpandableAdapter.OnItemClickCallback, MyCommentView.Listener {
+
+    public static void start(Context context) {
+        Intent intent = new Intent(context, MyCommentActivity.class);
+        context.startActivity(intent);
+    }
 
     public static final String DELETE_COMMENT_DIALOG = "DELETE_COMMENT_DIALOG";
-    @BindView(R.id.myComment_container)
-    RelativeLayout myComment_container;
-    @BindView(R.id.myComment_listView)
-    AddOnScrollExpandableListView myComment_listView;
-    @BindView(R.id.myComment_reported_comment_listview)
-    AddOnScrollRecyclerView myComment_reported_comment_listview;
-    @BindView(R.id.progressBar2)
-    ProgressBar progressBar;
-
     private static final int PER_PAGE = 10;
     private static final int FIRST_PAGE = 0;
     private int currentPage = FIRST_PAGE;
     private boolean isLoading;
-
-    private MyCommentExpandableAdapter commentExpandableAdapter;
-    private ReportedCommentAdapter reportedCommentAdapter;
 
     // 카드뉴스 목록
     private List<CardNewsEntity> newsEntities = new ArrayList<>();
@@ -75,12 +71,12 @@ public class MyCommentActivity
     private long authority;
 
     @Service private Repository.Comment mCommentRepository;
-    @Service private ToastHelper mToastHelper;
-    @Service private DialogFactory mDialogFactory;
-    @Service private DialogManager mDialogManager;
     @Service private ActivityScreenNavigator mActivityScreenNavigator;
+    @Service private ViewFactory mViewFactory;
+    private MyCommentView mMyCommentView;
 
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+    private List<CommentEntity> currentlyShownReportedComment = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,108 +84,29 @@ public class MyCommentActivity
 
         getInjector().inject(this);
 
+        mMyCommentView = mViewFactory.newInstance(MyCommentView.class, null);
+
+        setContentView(mMyCommentView.getRootView());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        mMyCommentView.registerListener(this);
+
         authority = PreferenceUtil.getLong(this, PREF_KEY_AUTHORITY, Constant.Authority.GUEST);
 
-        setupViews();
-
-        setupList();
-
         loadData();
-    }
 
-    //-----
-    // View
-    //-----
-
-    private void setupViews() {
-        setContentView(R.layout.activity_my_comment);
-        ButterKnife.bind(this);
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.custom_toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        TextView toolbar_title
-                = getSupportActionBar().getCustomView().findViewById(R.id.toolbar_title);
-        if (authority == Constant.Authority.ADMIN) {
-            toolbar_title.setText(getText(R.string.reported_comment));
-        } else {
-            toolbar_title.setText(getText(R.string.my_comment));
-        }
-    }
-
-    private void setupList() {
-        if (authority == Constant.Authority.ADMIN) {
-            myComment_reported_comment_listview.setVisibility(View.VISIBLE);
-            myComment_listView.setVisibility(View.INVISIBLE);
-            reportedCommentAdapter = new ReportedCommentAdapter(this, this);
-            myComment_reported_comment_listview.setAdapter(reportedCommentAdapter);
-            myComment_reported_comment_listview.setLayoutManager(new LinearLayoutManager(this), false);
-            myComment_reported_comment_listview.setOnLoadMoreListener(() -> {
-                if (isLoading) return;
-                loadReportedComment(PER_PAGE, currentPage);
-            });
-        } else {
-            commentExpandableAdapter = new MyCommentExpandableAdapter(this);
-            myComment_listView.setAdapter(commentExpandableAdapter);
-            myComment_listView.setOnLoadMoreListener(() -> {
-                if (isLoading) return;
-                loadComment(PER_PAGE, currentPage);
-            });
-            myComment_listView.setGroupIndicator(null);
-            myComment_listView.setChildIndicator(null);
-            myComment_listView.setChildDivider(getResources().getDrawable(R.color.white));
-            myComment_listView.setDivider(getResources().getDrawable(R.color.white));
-            myComment_listView.setDividerHeight(0);
-        }
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-        return false;
+    public void onDestroy() {
+        super.onDestroy();
+        hasMoreToLoad(true);
+        currentPage = 0;
     }
-
-    public void showDeleteCommentDialog(final int position, final int commentId) {
-        PromptDialog promptDialog = mDialogFactory.newPromptDialog(
-                getText(R.string.dialog_msg_delete_comment).toString(),
-                "",
-                getText(R.string.refuse_report).toString(),
-                getText(R.string.delete_comment).toString());
-        promptDialog.registerListener(new PromptDialog.PromptDialogDismissListener() {
-            @Override
-            public void onPositiveButtonClicked() {
-                deleteReportedComment(position, commentId, true);
-            }
-
-            @Override
-            public void onNegativeButtonClicked() {
-                deleteComment(position, commentId);
-            }
-        });
-        mDialogManager.showRetainedDialogWithId(promptDialog, DELETE_COMMENT_DIALOG);
-    }
-
-    @Override
-    public void onSirenClicked(int position, int commentId) {
-        showDeleteCommentDialog(position, commentId);
-    }
-
-    @Override
-    public void onCommentClicked(int cardNewsId) {
-        mActivityScreenNavigator.toCardNewsDetailActivity(this, cardNewsId);
-    }
-
-    private void snack(String message) {
-        Snackbar.make(myComment_container, message, Snackbar.LENGTH_LONG).show();
-    }
-
-    //-----
-    // Network
-    //-----
 
     private void loadData() {
         if (authority == Constant.Authority.ADMIN) {
@@ -204,14 +121,9 @@ public class MyCommentActivity
     // 1. 내가 작성한 댓글
     private void loadComment(int perPage, int page) {
 
-        if (!NetworkUtil.isConnected(this)) {
-            Toast.makeText(this, "인터넷 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
-            return;
-        }
-
         if (!hasMoreToLoad) return;
 
-        progressBar.setVisibility(View.VISIBLE);
+        mMyCommentView.showProgressIndication();
 
         isLoading = true;
 
@@ -223,109 +135,73 @@ public class MyCommentActivity
         mCompositeDisposable.add(
                 mCommentRepository
                         .getMyComment(newsEntities, uId, perPage, page)
-                        .subscribeWith(getNewsObserver())
+                        .subscribe(
+                                e -> {},
+                                err -> mMyCommentView.showSnackBar("작성한 댓글을 불러오는 중 오류가 발생했습니다."),
+                                () -> {
+                                    Collections.sort(newsEntities, new CardNewsComparator());
+                                    mMyCommentView.bindComments(newsEntities);
+                                    mMyCommentView.expandMyCommentList(newsEntities.size());
+
+                                    int commentSize = 0;
+
+                                    for (CardNewsEntity entity : newsEntities) {
+                                        commentSize += entity.getComments().size();
+                                    }
+
+                                    if (commentSize < (currentPage + 1) * PER_PAGE) {
+                                        hasMoreToLoad(false);
+                                    }
+
+                                    currentPage++;
+
+                                    isLoading = false;
+
+                                    mMyCommentView.hideProgressIndication();
+                                }
+                        )
         );
 
-    }
-
-    private DisposableObserver<CardNewsEntity> getNewsObserver() {
-        return new DisposableObserver<CardNewsEntity>() {
-            @Override
-            public void onNext(CardNewsEntity cardNewsEntity) {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.e("에러", e.getMessage());
-            }
-
-            @Override
-            public void onComplete() {
-
-                Collections.sort(newsEntities, new CardNewsComparator());
-                commentExpandableAdapter.addAll(newsEntities);
-
-                for (int i = 0; i < newsEntities.size(); i++) {
-                    myComment_listView.expandGroup(i);
-                }
-
-                int commentSize = 0;
-
-                for (CardNewsEntity entity : newsEntities) {
-                    commentSize += entity.getComments().size();
-                }
-
-                if (commentSize < (currentPage + 1) * PER_PAGE) {
-                    hasMoreToLoad(false);
-                }
-
-                currentPage++;
-
-                isLoading = false;
-
-                progressBar.setVisibility(View.GONE);
-            }
-        };
     }
 
     // 2. 관리자용 신고된 댓글
     private void loadReportedComment(int perPage, int page) {
 
-        if (!NetworkUtil.isConnected(this)) {
-            mToastHelper.showNetworkError();
-            return;
-        }
-
         if (!hasMoreToLoad) return;
 
         isLoading = true;
 
-        progressBar.setVisibility(View.VISIBLE);
+        mMyCommentView.showProgressIndication();
 
+        List<CommentEntity> data = new ArrayList<>();
         mCompositeDisposable.add(
                 mCommentRepository
                         .getReportedComment(perPage, page)
-                        .subscribeWith(getReportedCommentObserver())
+                        .subscribe(
+                                data::add,
+                                err -> mMyCommentView.showSnackBar("신고댓글을 불러오는 중 오류가 발생했습니다."),
+                                () -> {
+                                    if (data.size() == 0) {
+                                        isLoading = false;
+                                        mMyCommentView.hideProgressIndication();
+                                        hasMoreToLoad(false);
+                                        return;
+                                    }
+
+                                    mMyCommentView.hideProgressIndication();
+
+                                    mMyCommentView.bindReportedComments(data);
+
+                                    currentPage++;
+
+                                    isLoading = false;
+
+                                    if (data.size() < PER_PAGE) {
+                                        hasMoreToLoad(false);
+                                    }
+                                }
+                        )
         );
-    }
-
-    private DisposableObserver<CommentEntity> getReportedCommentObserver() {
-        List<CommentEntity> data = new ArrayList<>();
-        return new DisposableObserver<CommentEntity>() {
-            @Override
-            public void onNext(CommentEntity commentEntity) {
-                data.add(commentEntity);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.e("에러", e.getMessage());
-            }
-
-            @Override
-            public void onComplete() {
-
-                if (data.size() == 0) {
-                    isLoading = false;
-                    progressBar.setVisibility(View.GONE);
-                    hasMoreToLoad(false);
-                    return;
-                }
-
-                progressBar.setVisibility(View.GONE);
-
-                reportedCommentAdapter.addData(data);
-
-                currentPage++;
-
-                isLoading = false;
-
-                if (data.size() < PER_PAGE) {
-                    hasMoreToLoad(false);
-                }
-            }
-        };
     }
 
     // 3. 댓글 삭제
@@ -336,7 +212,7 @@ public class MyCommentActivity
                         .deleteComment(commentId)
                         .subscribe(
                                 emit -> {
-                                    snack("신고된 댓글을 삭제했습니다");
+                                    mMyCommentView.showSnackBar("신고된 댓글을 삭제했습니다");
                                     deleteReportedComment(position, commentId, false);
                                 },
                                 err -> {},
@@ -354,8 +230,8 @@ public class MyCommentActivity
                         .deleteReportedComment(commentId)
                         .subscribe(
                                 emit -> {
-                                    if (refuseReport) snack("신고를 취소했습니다");
-                                    reportedCommentAdapter.deleteComment(position);
+                                    if (refuseReport) mMyCommentView.showSnackBar("신고를 취소했습니다");
+                                    mMyCommentView.deleteComment(position);
                                 },
                                 err -> {},
                                 () -> {}
@@ -363,38 +239,50 @@ public class MyCommentActivity
         );
     }
 
-
     private void hasMoreToLoad(boolean hasMore) {
         hasMoreToLoad = hasMore;
     }
 
     @Override
+    public void onNavigateUpClicked() {
+        onBackPressed();
+    }
+
+    @Override
+    public void onMyCommentLoadMore() {
+        if (isLoading) return;
+        loadComment(PER_PAGE, currentPage);
+    }
+
+    @Override
+    public void onReportedCommentLoadMore() {
+        if (isLoading) return;
+        loadReportedComment(PER_PAGE, currentPage);
+    }
+
+    @Override
+    public void onDeleteCommentClicked(int position) {
+        deleteComment(position, currentlyShownReportedComment.get(position).getCommId());
+    }
+
+    @Override
+    public void onRefuseReportClicked(int position) {
+        deleteReportedComment(position, currentlyShownReportedComment.get(position).getCommId(), true);
+    }
+
+    @Override
+    public void onReportedCommentClicked(int position) {
+        // none
+    }
+
+    @Override
     public void onParentItemClick(int groupPosition, int newsId) {
-        myComment_listView.expandGroup(groupPosition);
-        Intent intent = new Intent();
-        intent.setClass(this, CardNewsDetailActivity.class);
-        intent.putExtra(EXTRA_KEY_CARDNEWS_ID, newsId);
-        startActivity(intent);
+        mMyCommentView.expandGroup(groupPosition);
+        mActivityScreenNavigator.toCardNewsDetailActivity(newsId);
     }
 
     @Override
     public void onChildItemClick(int childPosition, int newsId, String description) {
-        Intent intent = new Intent();
-        intent.setClass(this, CardNewsCommentActivity.class);
-        intent.putExtra(EXTRA_KEY_CARDNEWS_ID, newsId);
-        intent.putExtra(EXTRA_KEY_COMMENT_DESCRIPTION, description);
-        startActivity(intent);
+        mActivityScreenNavigator.toCardNewsCommentActivity(newsId, description);
     }
-
-    //-----
-    // lifecycle
-    //-----
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        hasMoreToLoad(true);
-        currentPage = 0;
-    }
-
 }

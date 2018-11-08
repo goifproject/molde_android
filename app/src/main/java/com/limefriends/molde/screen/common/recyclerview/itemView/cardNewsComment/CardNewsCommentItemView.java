@@ -1,4 +1,4 @@
-package com.limefriends.molde.screen.common.recyclerview.itemView;
+package com.limefriends.molde.screen.common.recyclerview.itemView.cardNewsComment;
 
 import com.limefriends.molde.model.entity.comment.CommentEntity;
 import com.limefriends.molde.screen.common.view.ObservableView;

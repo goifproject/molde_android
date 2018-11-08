@@ -27,7 +27,7 @@ public class MyCommentExpandableAdapter extends BaseExpandableListAdapter {
         void onChildItemClick(int childPosition, int newsId, String description);
     }
 
-    MyCommentExpandableAdapter(OnItemClickCallback callback) {
+    public MyCommentExpandableAdapter(OnItemClickCallback callback) {
         this.callback = callback;
     }
 
@@ -43,6 +43,7 @@ public class MyCommentExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
+        if (newsEntityList.size() == 0) return 0;
         return newsEntityList.get(groupPosition).getComments().size();
     }
 

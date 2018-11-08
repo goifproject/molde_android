@@ -1,5 +1,6 @@
 package com.limefriends.molde.screen.mypage.inquiry;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -23,6 +24,11 @@ import io.reactivex.disposables.CompositeDisposable;
 import static com.limefriends.molde.common.Constant.Common.*;
 
 public class InquiryActivity extends BaseActivity implements InquiryView.Listener {
+
+    public static void start(Context context) {
+        Intent intent = new Intent(context, InquiryActivity.class);
+        context.startActivity(intent);
+    }
 
     private final int PER_PAGE = 10;
     private final int FIRST_PAGE = 0;

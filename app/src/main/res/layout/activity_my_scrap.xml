@@ -6,11 +6,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/element_toolbar" />
+
     <com.limefriends.molde.screen.common.recyclerview.addOnRecycler.AddOnScrollRecyclerView
         android:id="@+id/myScrap_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
+        android:layout_below="@id/toolbar"
         android:paddingEnd="4dp"
         android:paddingStart="4dp"
         app:layoutManager="android.support.v7.widget.GridLayoutManager"

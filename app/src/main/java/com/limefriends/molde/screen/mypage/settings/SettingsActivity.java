@@ -1,5 +1,7 @@
 package com.limefriends.molde.screen.mypage.settings;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
@@ -14,7 +16,12 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.limefriends.molde.R;
+import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.common.helper.PreferenceUtil;
+import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
+import com.limefriends.molde.screen.common.view.ViewFactory;
+import com.limefriends.molde.screen.common.viewController.BaseActivity;
+import com.limefriends.molde.screen.mypage.settings.view.SettingsView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,131 +31,70 @@ import static com.limefriends.molde.common.Constant.Common.DISALLOW_PUSH;
 import static com.limefriends.molde.common.Constant.Common.PREF_KEY_FEED_CHANGE_PUSH;
 import static com.limefriends.molde.common.Constant.Common.PREF_KEY_NEW_FEED_PUSH;
 
-public class SettingsActivity extends AppCompatActivity implements View.OnClickListener {
+public class SettingsActivity extends BaseActivity implements SettingsView.Listener {
 
-    @BindView(R.id.mypage_made_by)
-    Button mypage_made_by;
-    @BindView(R.id.mypage_made_by_answer)
-    LinearLayout mypage_made_by_answer;
-    @BindView(R.id.mypage_provisions)
-    Button mypage_provisions;
-    @BindView(R.id.mypage_provisions_answer)
-    LinearLayout mypage_provisions_answer;
-    @BindView(R.id.mypage_license)
-    Button mypage_license;
-    @BindView(R.id.mypage_license_answer)
-    TextView mypage_license_answer;
-    @BindView(R.id.mypage_version_info)
-    Button mypage_version_info;
-    @BindView(R.id.mypage_version_answer)
-    TextView mypage_version_answer;
-    @BindView(R.id.switch_favorite_push)
-    Switch switch_my_favorite_push;
-    @BindView(R.id.switch_feed_change_push)
-    Switch switch_feed_change_push;
-    @BindView(R.id.settings_container)
-    RelativeLayout settings_container;
+    public static void start(Context context) {
+        Intent intent = new Intent(context, SettingsActivity.class);
+        context.startActivity(intent);
+    }
+
+    @Service private ViewFactory mViewFactory;
+    @Service private ToastHelper mToastHelper;
+    private SettingsView mSettingsView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
-        ButterKnife.bind(this);
 
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.custom_toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        TextView toolbar_title = getSupportActionBar().getCustomView().findViewById(R.id.toolbar_title);
-        toolbar_title.setText(getText(R.string.settings));
+        getInjector().inject(this);
 
-        findViewById(R.id.mypage_version_info).setOnClickListener(this);
-        findViewById(R.id.mypage_made_by).setOnClickListener(this);
-        findViewById(R.id.mypage_provisions).setOnClickListener(this);
-        findViewById(R.id.mypage_license).setOnClickListener(this);
+        mSettingsView = mViewFactory.newInstance(SettingsView.class, null);
+
+        setContentView(mSettingsView.getRootView());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        mSettingsView.registerListener(this);
 
         int allowNewFeedPush =  PreferenceUtil.getInt(SettingsActivity.this, PREF_KEY_NEW_FEED_PUSH, DISALLOW_PUSH);
         int allowFeedChangePush = PreferenceUtil.getInt(SettingsActivity.this, PREF_KEY_FEED_CHANGE_PUSH, DISALLOW_PUSH);
 
         if (allowNewFeedPush == ALLOW_PUSH) {
-            switch_my_favorite_push.setChecked(true);
+            mSettingsView.bindFavoritePush(true);
         }
-
         if (allowFeedChangePush == ALLOW_PUSH) {
-            switch_feed_change_push.setChecked(false);
-        }
-
-        switch_my_favorite_push.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    PreferenceUtil.putInt(SettingsActivity.this, PREF_KEY_NEW_FEED_PUSH, ALLOW_PUSH);
-                    snack("새 피드 푸쉬알람이 설정되었습니다.");
-                } else {
-                    PreferenceUtil.putInt(SettingsActivity.this, PREF_KEY_NEW_FEED_PUSH, DISALLOW_PUSH);
-                    snack("새 피드 푸쉬알람이 해제되었습니다.");
-                }
-            }
-        });
-        switch_feed_change_push.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    PreferenceUtil.putInt(SettingsActivity.this, PREF_KEY_FEED_CHANGE_PUSH, ALLOW_PUSH);
-                    snack("신고 상태변화 푸쉬알람이 설정되었습니다.");
-                } else {
-                    PreferenceUtil.putInt(SettingsActivity.this, PREF_KEY_FEED_CHANGE_PUSH, DISALLOW_PUSH);
-                    snack("신고 상태변화 푸쉬알람이 해제되었습니다.");
-                }
-            }
-        });
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.mypage_version_info:
-                mypage_version_answer.setVisibility(View.VISIBLE);
-                mypage_made_by_answer.setVisibility(View.GONE);
-                mypage_provisions_answer.setVisibility(View.GONE);
-                mypage_license_answer.setVisibility(View.GONE);
-                break;
-            case R.id.mypage_made_by:
-                mypage_version_answer.setVisibility(View.GONE);
-                mypage_made_by_answer.setVisibility(View.VISIBLE);
-                mypage_provisions_answer.setVisibility(View.GONE);
-                mypage_license_answer.setVisibility(View.GONE);
-                break;
-
-            case R.id.mypage_provisions:
-                mypage_version_answer.setVisibility(View.GONE);
-                mypage_made_by_answer.setVisibility(View.GONE);
-                mypage_provisions_answer.setVisibility(View.VISIBLE);
-                mypage_license_answer.setVisibility(View.GONE);
-                break;
-
-            case R.id.mypage_license:
-                mypage_version_answer.setVisibility(View.GONE);
-                mypage_made_by_answer.setVisibility(View.GONE);
-                mypage_provisions_answer.setVisibility(View.GONE);
-                mypage_license_answer.setVisibility(View.VISIBLE);
-                break;
-
+            mSettingsView.bindFeedPush(true);
         }
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-        return false;
+    public void onNavigateUpClicked() {
+        onBackPressed();
     }
 
-    private void snack(String message) {
-        Snackbar.make(settings_container, message, Snackbar.LENGTH_SHORT).show();
+    @Override
+    public void onFavoritePushCheckChanged(boolean isChecked) {
+        if (isChecked) {
+            PreferenceUtil.putInt(SettingsActivity.this, PREF_KEY_NEW_FEED_PUSH, ALLOW_PUSH);
+            mSettingsView.showSnackBar("새 피드 푸쉬알람이 설정되었습니다.");
+        } else {
+            PreferenceUtil.putInt(SettingsActivity.this, PREF_KEY_NEW_FEED_PUSH, DISALLOW_PUSH);
+            mSettingsView.showSnackBar("새 피드 푸쉬알람이 해제되었습니다.");
+        }
+    }
+
+    @Override
+    public void onFeedChangePushCheckChanged(boolean isChecked) {
+        if (isChecked) {
+            PreferenceUtil.putInt(SettingsActivity.this, PREF_KEY_FEED_CHANGE_PUSH, ALLOW_PUSH);
+            mSettingsView.showSnackBar("신고 상태변화 푸쉬알람이 설정되었습니다.");
+        } else {
+            PreferenceUtil.putInt(SettingsActivity.this, PREF_KEY_FEED_CHANGE_PUSH, DISALLOW_PUSH);
+            mSettingsView.showSnackBar("신고 상태변화 푸쉬알람이 해제되었습니다.");
+        }
     }
 
 }

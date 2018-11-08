@@ -1,4 +1,4 @@
-package com.limefriends.molde.screen.common.recyclerview.itemView;
+package com.limefriends.molde.screen.common.recyclerview.itemView.inquiry;
 
 import com.limefriends.molde.model.entity.faq.FaqEntity;
 import com.limefriends.molde.screen.common.view.ObservableView;

@@ -1,6 +1,7 @@
 package com.limefriends.molde.screen.common.imageLoader;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
@@ -20,6 +21,12 @@ public class ImageLoader {
     public void load(int url, ImageView imageView) {
         Glide.with(mContext)
                 .load(url)
+                .into(imageView);
+    }
+
+    public void load(Uri uri, ImageView imageView) {
+        Glide.with(mContext)
+                .load(uri)
                 .into(imageView);
     }
 

@@ -11,6 +11,7 @@ import com.limefriends.molde.common.util.DateUtil;
 import com.limefriends.molde.model.entity.feed.FeedEntity;
 import com.limefriends.molde.screen.common.recyclerview.adapter.RecyclerViewAdapter;
 import com.limefriends.molde.screen.common.recyclerview.addOnRecycler.AddOnScrollRecyclerView;
+import com.limefriends.molde.screen.common.recyclerview.itemView.ItemViewType;
 import com.limefriends.molde.screen.common.view.BaseObservableView;
 import com.limefriends.molde.screen.common.view.ViewFactory;
 
@@ -84,7 +85,7 @@ public class FeedViewImpl
     private void setupFeedList() {
 
         if (mFeedAdapter == null) {
-            mFeedAdapter = new RecyclerViewAdapter<>(mViewFactory);
+            mFeedAdapter = new RecyclerViewAdapter<>(mViewFactory, ItemViewType.FEED);
             mFeedAdapter.setOnItemClickListener(this);
         }
         feed_list.setAdapter(mFeedAdapter);
