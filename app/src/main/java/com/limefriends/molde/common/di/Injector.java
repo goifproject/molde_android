@@ -9,6 +9,7 @@ import com.limefriends.molde.screen.common.screensNavigator.ActivityScreenNaviga
 import com.limefriends.molde.screen.common.screensNavigator.FragmentScreenNavigator;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 import com.limefriends.molde.screen.common.view.ViewFactory;
+import com.limefriends.molde.screen.common.viewController.BackPressDispatcher;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -108,6 +109,9 @@ public class Injector {
         }
         else if (type.equals(ImageLoader.class)) {
             return mPresentationCompositionRoot.getImageLoader();
+        }
+        else if (type.equals(BackPressDispatcher.class)) {
+            return mPresentationCompositionRoot.getBackPressDispatcher();
         }
         else {
             throw new RuntimeException("unsupported service type class: "+type);

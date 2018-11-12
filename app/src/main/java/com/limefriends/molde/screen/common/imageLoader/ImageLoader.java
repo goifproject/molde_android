@@ -49,4 +49,17 @@ public class ImageLoader {
                 .into(imageView);
     }
 
+    public void loadCenterCrop(String url, ImageView imageView) {
+        Glide.with(mContext)
+                .load(url)
+                .into(imageView);
+    }
+
+    public void loadCenterCrop(String url, int placeHolder, ImageView imageView) {
+        Glide.with(mContext)
+                .load(url)
+                .placeholder(placeHolder)
+                .into(imageView);
+    }
+
 }

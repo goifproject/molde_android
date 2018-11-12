@@ -9,7 +9,7 @@
 
     <include layout="@layout/element_toolbar" />
 
-    <com.limefriends.molde.screen.common.recyclerview.addOnRecycler.AddOnScrollRecyclerView
+    <com.limefriends.molde.screen.common.recyclerviewHelper.addOnRecycler.AddOnScrollRecyclerView
         android:id="@+id/my_favorite_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

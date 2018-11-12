@@ -21,6 +21,15 @@ public class FeedEntity implements Data {
     private List<FeedImageEntity> repImg = null;
     private int repState;
 
+    public FeedEntity(String repContent, String detailAddress, int status, int repId, String date, List<FeedImageEntity> thumbnailUrl) {
+        this.repContents = repContent;
+        this.repDetailAddr = detailAddress;
+        this.repState = status;
+        this.repId = repId;
+        this.repDate = date;
+        this.repImg = thumbnailUrl;
+    }
+
     public FeedEntity(String userName, String userEmail, String userId,
                       String repContents, double repLat, double repLon,
                       String repAddr, String repDetailAddr, String repDate,

@@ -2,9 +2,11 @@ package com.limefriends.molde.screen.common.dialog;
 
 import android.os.Bundle;
 
+import com.limefriends.molde.screen.common.dialog.view.FavoriteDialog;
 import com.limefriends.molde.screen.common.dialog.view.ImageDialog;
 import com.limefriends.molde.screen.common.dialog.view.InfoDialog;
 import com.limefriends.molde.screen.common.dialog.view.PromptDialog;
+import com.limefriends.molde.screen.common.dialog.view.ReportCardListDialog;
 
 public class DialogFactory {
 
@@ -20,7 +22,6 @@ public class DialogFactory {
 
         InfoDialog infoDialog = new InfoDialog();
         infoDialog.setArguments(args);
-
         return infoDialog;
     }
 
@@ -38,7 +39,6 @@ public class DialogFactory {
 
         PromptDialog promptDialog = new PromptDialog();
         promptDialog.setArguments(args);
-
         return promptDialog;
     }
 
@@ -52,8 +52,34 @@ public class DialogFactory {
 
         ImageDialog imageDialog = new ImageDialog();
         imageDialog.setArguments(args);
-
         return imageDialog;
+    }
+
+    /**
+     * Get a new instance of {@link FavoriteDialog}.
+     */
+    public FavoriteDialog newFavoriteDialog(String title, String snippet, double lat, double lng) {
+        Bundle bundle = new Bundle(1);
+        bundle.putString(FavoriteDialog.ARG_TITLE, title);
+        bundle.putString(FavoriteDialog.ARG_INFO, snippet);
+        bundle.putDouble(FavoriteDialog.ARG_LAT, lat);
+        bundle.putDouble(FavoriteDialog.ARG_LNG, lng);
+
+        FavoriteDialog favoriteDialog = new FavoriteDialog();
+        favoriteDialog.setArguments(bundle);
+        return favoriteDialog;
+    }
+
+    /**
+     * Get a new instance of {@link ReportCardListDialog}.
+     */
+    public ReportCardListDialog newMapReportCardListDialog(int reportId) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(ReportCardListDialog.ARG_REPORT_ID, reportId);
+
+        ReportCardListDialog reportCardListDialog = new ReportCardListDialog();
+        reportCardListDialog.setArguments(bundle);
+        return reportCardListDialog;
     }
 
 }

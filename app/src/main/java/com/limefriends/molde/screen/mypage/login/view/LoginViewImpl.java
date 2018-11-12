@@ -16,12 +16,12 @@ import com.limefriends.molde.screen.common.view.BaseObservableView;
 public class LoginViewImpl
         extends BaseObservableView<LoginView.Listener> implements LoginView {
 
-    RelativeLayout login_google_button;
-    RelativeLayout login_facebook_button;
-    TextView login_to_google;
-    TextView skip_login_button;
-    TextView login_to_facebook;
-    ProgressDialog loginProgressDialog;
+    private RelativeLayout login_google_button;
+    private RelativeLayout login_facebook_button;
+    private TextView login_to_google;
+    private TextView skip_login_button;
+    private TextView login_to_facebook;
+    private ProgressDialog loginProgressDialog;
 
     public LoginViewImpl(LayoutInflater inflater,
                          ViewGroup parent) {
@@ -33,12 +33,10 @@ public class LoginViewImpl
     }
 
     private void setupViews() {
-
         login_google_button = findViewById(R.id.login_google_button);
         login_facebook_button = findViewById(R.id.login_facebook_button);
         login_to_google = findViewById(R.id.login_to_google);
         skip_login_button = findViewById(R.id.skip_login_button);
-
         loginProgressDialog = new ProgressDialog(getContext());
         loginProgressDialog.setTitle("로그인 중입니다...");
     }

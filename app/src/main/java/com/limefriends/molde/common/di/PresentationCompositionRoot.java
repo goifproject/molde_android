@@ -24,11 +24,14 @@ import com.limefriends.molde.model.repository.usecase.ScrapUseCase;
 import com.limefriends.molde.networking.service.MoldeRestfulService;
 import com.limefriends.molde.screen.common.dialog.DialogFactory;
 import com.limefriends.molde.screen.common.dialog.DialogManager;
+import com.limefriends.molde.screen.common.fragmentFrameHelper.FragmentFrameHelper;
+import com.limefriends.molde.screen.common.fragmentFrameHelper.FragmentFrameWrapper;
 import com.limefriends.molde.screen.common.imageLoader.ImageLoader;
 import com.limefriends.molde.screen.common.screensNavigator.ActivityScreenNavigator;
 import com.limefriends.molde.screen.common.screensNavigator.FragmentScreenNavigator;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 import com.limefriends.molde.screen.common.view.ViewFactory;
+import com.limefriends.molde.screen.common.viewController.BackPressDispatcher;
 
 import static com.limefriends.molde.model.database.db.MoldeDatabase.MOLDE_DB;
 
@@ -140,8 +143,7 @@ public class PresentationCompositionRoot {
     }
 
     public FragmentScreenNavigator getFragmentScreenNavigator() {
-        // TODO -
-        return null;
+        return new FragmentScreenNavigator(getFragmentFrameHelper());
     }
 
     public ToastHelper getToastHelper() {
@@ -164,13 +166,26 @@ public class PresentationCompositionRoot {
         return new ImageLoader(getActivity());
     }
 
+    private FragmentFrameHelper getFragmentFrameHelper() {
+        return new FragmentFrameHelper(getActivity(), getFragmentFrameWrapper(), getFragmentManager());
+    }
+
+    private FragmentFrameWrapper getFragmentFrameWrapper() {
+        return (FragmentFrameWrapper) getActivity();
+    }
+
+    public BackPressDispatcher getBackPressDispatcher() {
+        return (BackPressDispatcher) getActivity();
+    }
+
     public ViewFactory getViewFactory() {
         return new ViewFactory(
                 getLayoutInflater(),
                 getImageLoader(),
                 getDialogManager(),
                 getDialogFactory(),
-                getToastHelper());
+                getToastHelper(),
+                getFragmentManager());
     }
 
 

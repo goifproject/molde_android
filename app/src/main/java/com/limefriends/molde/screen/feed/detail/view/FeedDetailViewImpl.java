@@ -23,7 +23,7 @@ import com.limefriends.molde.model.entity.feed.FeedImageEntity;
 import com.limefriends.molde.screen.common.dialog.DialogFactory;
 import com.limefriends.molde.screen.common.dialog.DialogManager;
 import com.limefriends.molde.screen.common.dialog.view.PromptDialog;
-import com.limefriends.molde.screen.common.imagePager.ImagePagerAdapter;
+import com.limefriends.molde.screen.common.pagerHelper.adapter.ImagePagerAdapter;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 import com.limefriends.molde.screen.common.toolbar.NestedToolbar;
 import com.limefriends.molde.screen.common.view.BaseObservableView;

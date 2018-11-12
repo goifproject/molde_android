@@ -40,6 +40,11 @@ import static com.limefriends.molde.common.Constant.MyPage.*;
 
 public class MyPageFragment extends BaseFragment implements MyPageMainView.Listener {
 
+    public static MyPageFragment newInstance() {
+        MyPageFragment myPageFragment = new MyPageFragment();
+        return myPageFragment;
+    }
+
     public static final String SIGNIN_TYPE = "signinType";
     public static final String SIGN_OUT_DIALOG = "SIGN_OUT_DIALOG";
 

@@ -5,13 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- 지도 -->
-    <fragment
-        android:id="@+id/mapView"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
+    <FrameLayout
+        android:id="@+id/map_fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="com.limefriends.molde.screen.main.MoldeMainActivity" />
+        android:layout_height="match_parent" />
+
+    <!-- 지도 -->
+    <!--<fragment-->
+        <!--android:id="@+id/mapView"-->
+        <!--android:name="com.google.android.gms.maps.SupportMapFragment"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--tools:context="com.limefriends.molde.screen.main.MoldeMainActivity" />-->
 
     <!-- 맵 위에 올라가는 뷰 -->
     <RelativeLayout

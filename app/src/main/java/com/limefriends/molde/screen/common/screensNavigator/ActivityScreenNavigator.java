@@ -3,14 +3,19 @@ package com.limefriends.molde.screen.common.screensNavigator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.provider.Settings;
 
 import com.limefriends.molde.screen.common.camera.MoldeReportCameraActivity;
+import com.limefriends.molde.screen.feed.detail.FeedDetailActivity;
 import com.limefriends.molde.screen.magazine.comment.CardNewsCommentActivity;
 import com.limefriends.molde.screen.magazine.detail.CardNewsDetailActivity;
 import com.limefriends.molde.screen.magazine.info.HowToDetectActivity;
 import com.limefriends.molde.screen.magazine.info.HowToRespondActivity;
 import com.limefriends.molde.screen.magazine.info.RecentMolcaInfoActivity;
+import com.limefriends.molde.screen.map.favorite.FavoriteActivity;
 import com.limefriends.molde.screen.map.report.ReportActivity;
+import com.limefriends.molde.screen.map.search.SearchLocationActivity;
 import com.limefriends.molde.screen.mypage.comment.MyCommentActivity;
 import com.limefriends.molde.screen.mypage.inquiry.InquiryActivity;
 import com.limefriends.molde.screen.mypage.login.LoginActivity;
@@ -23,6 +28,8 @@ import static com.limefriends.molde.common.Constant.Common.EXTRA_KEY_CARDNEWS_ID
 import static com.limefriends.molde.common.Constant.MyPage.INTENT_VALUE_MYCOMMENT;
 import static com.limefriends.molde.common.Constant.MyPage.RC_SIGN_IN;
 import static com.limefriends.molde.common.Constant.Scrap.INTENT_VALUE_SCRAP;
+import static com.limefriends.molde.screen.map.main.MapFragment.REQ_FAVORITE;
+import static com.limefriends.molde.screen.map.main.MapFragment.REQ_SEARCH_MAP;
 
 public class ActivityScreenNavigator {
 
@@ -72,6 +79,20 @@ public class ActivityScreenNavigator {
         CardNewsDetailActivity.start(mContext, newsId);
     }
 
+    public void toFeedDetailActivity(int feedId) {
+        FeedDetailActivity.start(mContext, feedId);
+    }
+
+    public void toReportActivity() {
+        ReportActivity.start(mContext);
+    }
+
+    public void toSystemSettings() {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_SETTINGS,
+                Uri.fromParts("package", mContext.getPackageName(), null));
+        mContext.startActivity(intent);
+    }
+
     // 아무리 생각해도 Activity 를 static 으로 넘겨주는 것은 너무 위험하다
     public void toCardNewsDetailActivity(Context context, int newsId) {
         Intent intent = new Intent(context, CardNewsDetailActivity.class);
@@ -100,7 +121,17 @@ public class ActivityScreenNavigator {
         activity.startActivityForResult(intent, RC_SIGN_IN);
     }
 
+    public void toSearchLocationActivity(Activity activity) {
+        Intent intent = new Intent();
+        intent.setClass(activity, SearchLocationActivity.class);
+        activity.startActivityForResult(intent, REQ_SEARCH_MAP);
+    }
 
+    public void toFavoriteActivity(Activity activity) {
+        Intent intent = new Intent();
+        intent.setClass(activity, FavoriteActivity.class);
+        activity.startActivityForResult(intent, REQ_FAVORITE);
+    }
 
 
 }

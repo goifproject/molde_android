@@ -9,7 +9,7 @@
         android:id="@+id/toolbar"
         layout="@layout/element_toolbar" />
 
-    <com.limefriends.molde.screen.common.recyclerview.addOnRecycler.AddOnScrollExpandableListView
+    <com.limefriends.molde.screen.common.recyclerviewHelper.addOnRecycler.AddOnScrollExpandableListView
         android:id="@+id/myComment_listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,7 +18,7 @@
         android:groupIndicator="@null"
         android:visibility="visible" />
 
-    <com.limefriends.molde.screen.common.recyclerview.addOnRecycler.AddOnScrollRecyclerView
+    <com.limefriends.molde.screen.common.recyclerviewHelper.addOnRecycler.AddOnScrollRecyclerView
         android:id="@+id/myComment_reported_comment_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

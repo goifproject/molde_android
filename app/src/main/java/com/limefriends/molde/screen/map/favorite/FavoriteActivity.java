@@ -1,5 +1,6 @@
 package com.limefriends.molde.screen.map.favorite;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 

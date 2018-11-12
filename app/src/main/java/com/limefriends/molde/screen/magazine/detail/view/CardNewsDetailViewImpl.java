@@ -17,7 +17,7 @@ import com.limefriends.molde.screen.common.dialog.view.PromptDialog;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 import com.limefriends.molde.screen.common.view.BaseObservableView;
 import com.limefriends.molde.screen.common.view.ViewFactory;
-import com.limefriends.molde.screen.common.imagePager.ImagePagerAdapter;
+import com.limefriends.molde.screen.common.pagerHelper.adapter.ImagePagerAdapter;
 
 import java.util.List;
 

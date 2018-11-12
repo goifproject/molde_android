@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 
 import com.limefriends.molde.R;
 import com.limefriends.molde.model.entity.molcaInfo.MolcaInfo;
-import com.limefriends.molde.screen.common.recyclerview.adapter.RecyclerViewAdapter;
-import com.limefriends.molde.screen.common.recyclerview.itemView.ItemViewType;
+import com.limefriends.molde.screen.common.recyclerviewHelper.adapter.RecyclerViewAdapter;
+import com.limefriends.molde.screen.common.recyclerviewHelper.itemView.ItemViewType;
 import com.limefriends.molde.screen.common.toolbar.NestedToolbar;
 import com.limefriends.molde.screen.common.view.BaseObservableView;
 import com.limefriends.molde.screen.common.view.ViewFactory;
@@ -86,8 +86,7 @@ public class MolcaInfoViewImpl
 
     @Override
     public void bindInfo(List<MolcaInfo> infoList) {
-        mRecyclerViewAdapter.setData(infoList);
+        mRecyclerViewAdapter.addData(infoList);
     }
-
 
 }

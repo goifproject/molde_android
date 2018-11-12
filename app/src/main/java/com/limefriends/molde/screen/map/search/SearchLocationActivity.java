@@ -8,6 +8,7 @@ import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 import com.limefriends.molde.screen.common.view.ViewFactory;
 import com.limefriends.molde.screen.map.search.view.SearchLocationView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;

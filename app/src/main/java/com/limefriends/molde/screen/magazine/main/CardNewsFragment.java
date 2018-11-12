@@ -22,6 +22,12 @@ import io.reactivex.observers.DisposableObserver;
 
 public class CardNewsFragment extends BaseFragment implements CardNewsView.Listener {
 
+    public static CardNewsFragment newInstance() {
+        CardNewsFragment cardNewsFragment = new CardNewsFragment();
+        return cardNewsFragment;
+    }
+
+
     @Service private Repository.CardNews mCardNewsRepository;
     @Service private ActivityScreenNavigator mActivityScreenNavigator;
     @Service private ViewFactory mViewFactory;
@@ -47,7 +53,6 @@ public class CardNewsFragment extends BaseFragment implements CardNewsView.Liste
         if (mCardNewsView == null){
             mCardNewsView = mViewFactory.newInstance(CardNewsView.class, container);
         }
-
         return mCardNewsView.getRootView();
     }
 
@@ -71,45 +76,32 @@ public class CardNewsFragment extends BaseFragment implements CardNewsView.Liste
 
         isLoading = true;
 
+        List<CardNewsEntity> data = new ArrayList<>();
         mCompositeDisposable.add(
                 mCardNewsRepository
                         .getCardNewsList(perPage, page)
-                        .subscribeWith(getDisposable())
+                        .subscribe(
+                                data::addAll,
+                                err -> isFirstOnCreateView = false,
+                                () -> {
+                                    isFirstOnCreateView = false;
+                                    if (data.size() == 0) {
+                                        isLoading = false;
+                                        hasMoreToLoad(false);
+                                        return;
+                                    } else if (data.size() < PER_PAGE) {
+                                        hasMoreToLoad(false);
+                                    }
+                                    mCardNewsView.bindCardNews(data);
+                                    currentPage++;
+                                    isLoading = false;
+                                }
+                        )
         );
     }
 
     private void hasMoreToLoad(boolean hasMore) {
         hasMoreToLoad = hasMore;
-    }
-
-    private DisposableObserver<List<CardNewsEntity>> getDisposable() {
-        List<CardNewsEntity> data = new ArrayList<>();
-        return new DisposableObserver<List<CardNewsEntity>>() {
-            @Override
-            public void onNext(List<CardNewsEntity> newsEntityList) {
-                data.addAll(newsEntityList);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                isFirstOnCreateView = false;
-            }
-
-            @Override
-            public void onComplete() {
-                isFirstOnCreateView = false;
-                if (data.size() == 0) {
-                    isLoading = false;
-                    hasMoreToLoad(false);
-                    return;
-                } else if (data.size() < PER_PAGE) {
-                    hasMoreToLoad(false);
-                }
-                mCardNewsView.bindCardNews(data);
-                currentPage++;
-                isLoading = false;
-            }
-        };
     }
 
     @Override

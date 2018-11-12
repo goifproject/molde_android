@@ -88,20 +88,6 @@ public class LoginActivity extends BaseActivity implements LoginView.Listener {
         setContentView(mLoginView.getRootView());
     }
 
-    private FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
-        @Override
-        public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-            FirebaseUser user = firebaseAuth.getCurrentUser();
-            if (user != null) {
-                // User is signed in
-                Log.d("onAuthStateChanged", "onAuthStateChanged:signed_in:" + user.getUid());
-            } else {
-                // User is signed out
-                Log.d("onAuthStateChanged", "onAuthStateChanged:signed_out");
-            }
-        }
-    };
-
     @Override
     public void onStart() {
         super.onStart();
@@ -122,6 +108,17 @@ public class LoginActivity extends BaseActivity implements LoginView.Listener {
             firebaseAuth.removeAuthStateListener(mAuthListener);
         }
     }
+
+    private FirebaseAuth.AuthStateListener mAuthListener = firebaseAuth -> {
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if (user != null) {
+            // User is signed in
+            Log.d("onAuthStateChanged", "onAuthStateChanged:signed_in:" + user.getUid());
+        } else {
+            // User is signed out
+            Log.d("onAuthStateChanged", "onAuthStateChanged:signed_out");
+        }
+    };
 
     // --------
     // 구글 로그인

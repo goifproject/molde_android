@@ -28,6 +28,11 @@ import static com.limefriends.molde.common.Constant.Feed.*;
 
 public class FeedFragment extends BaseFragment implements FeedView.Listener {
 
+    public static FeedFragment newInstance() {
+        FeedFragment feedFragment = new FeedFragment();
+        return feedFragment;
+    }
+
     private boolean isLoading;
 
     @Service private Repository.Feed mFeedRepository;

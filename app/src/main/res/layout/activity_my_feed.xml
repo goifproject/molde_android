@@ -9,7 +9,7 @@
         android:id="@+id/toolbar"
         layout="@layout/element_toolbar" />
 
-    <com.limefriends.molde.screen.common.recyclerview.addOnRecycler.AddOnScrollRecyclerView
+    <com.limefriends.molde.screen.common.recyclerviewHelper.addOnRecycler.AddOnScrollRecyclerView
         android:id="@+id/myReport_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

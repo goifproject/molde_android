@@ -121,8 +121,6 @@ public class ImageDialog extends BaseDialog {
         String imageUrl = getArguments().getString(ARG_IMAGE_URL);
 
         if (imageUrl != null) {
-            // mImageLoader.load(imageUrl, feed_dialog_thumbnail_image);
-
             mImageLoader.load(imageUrl, new SimpleTarget<GlideDrawable>() {
                 @Override
                 public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {

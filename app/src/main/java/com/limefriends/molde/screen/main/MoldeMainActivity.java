@@ -14,17 +14,36 @@ import com.limefriends.molde.R;
 import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.screen.common.bottomNavigationViewHelper.BottomNavigationViewHelper;
 import com.limefriends.molde.model.entity.feed.FeedEntity;
+import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
+import com.limefriends.molde.screen.common.viewController.BackPressDispatcher;
+import com.limefriends.molde.screen.common.viewController.BackPressedListener;
 import com.limefriends.molde.screen.common.viewController.BaseActivity;
 import com.limefriends.molde.screen.feed.main.FeedFragment;
 import com.limefriends.molde.screen.magazine.main.CardNewsFragment;
 import com.limefriends.molde.screen.map.main.MapFragment;
 import com.limefriends.molde.screen.mypage.main.MyPageFragment;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MoldeMainActivity extends BaseActivity
-        implements BottomNavigationView.OnNavigationItemSelectedListener {
+        implements BottomNavigationView.OnNavigationItemSelectedListener, BackPressDispatcher {
+
+    private Set<BackPressedListener> mBackPressListeners = new HashSet<>();
+
+    @Override
+    public void registerListener(BackPressedListener listener) {
+        mBackPressListeners.add(listener);
+    }
+
+    @Override
+    public void unregisterListener(BackPressedListener listener) {
+        mBackPressListeners.remove(listener);
+    }
 
     public interface OnKeyBackPressedListener {
         void onBackKey();
@@ -33,13 +52,14 @@ public class MoldeMainActivity extends BaseActivity
     @BindView(R.id.navigation)
     BottomNavigationView navigation;
 
-    private OnKeyBackPressedListener mOnKeyBackPressedListener;
+    //private OnKeyBackPressedListener mOnKeyBackPressedListener;
     private SparseArrayCompat fragmentSparseArray;
     private FeedEntity feedEntity;
     private Fragment fragment;
     private long lastTimeBackPressed;
 
     @Service private BottomNavigationViewHelper mBottomNavigationViewHelper;
+    @Service private ToastHelper mToastHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,9 +104,9 @@ public class MoldeMainActivity extends BaseActivity
                 .addToBackStack(null).commit();
     }
 
-    public void setOnKeyBackPressedListener(OnKeyBackPressedListener listener) {
-        mOnKeyBackPressedListener = listener;
-    }
+//    public void setOnKeyBackPressedListener(OnKeyBackPressedListener listener) {
+//        mOnKeyBackPressedListener = listener;
+//    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -137,13 +157,22 @@ public class MoldeMainActivity extends BaseActivity
 
     @Override
     public void onBackPressed() {
-        if (System.currentTimeMillis() > lastTimeBackPressed + 1500) {
-            lastTimeBackPressed = System.currentTimeMillis();
-            if (mOnKeyBackPressedListener != null) {
-                mOnKeyBackPressedListener.onBackKey();
+
+        boolean isBackPressConsumedByAnyListener = false;
+
+        for (BackPressedListener listener : mBackPressListeners) {
+            if (listener.onBackPressed()) {
+                isBackPressConsumedByAnyListener = true;
             }
-        } else {
-            finishAfterTransition();
+        }
+
+        if (!isBackPressConsumedByAnyListener) {
+            if (System.currentTimeMillis() > lastTimeBackPressed + 1500) {
+                lastTimeBackPressed = System.currentTimeMillis();
+                mToastHelper.showShortToast("한번 더 누르면 앱이 종료됩니다");
+            } else {
+                finishAfterTransition();
+            }
         }
     }
 

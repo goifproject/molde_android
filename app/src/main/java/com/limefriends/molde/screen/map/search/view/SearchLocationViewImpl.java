@@ -13,8 +13,8 @@ import android.widget.LinearLayout;
 
 import com.limefriends.molde.R;
 import com.limefriends.molde.model.entity.search.SearchInfoEntity;
-import com.limefriends.molde.screen.common.recyclerview.adapter.RecyclerViewAdapter;
-import com.limefriends.molde.screen.common.recyclerview.itemView.ItemViewType;
+import com.limefriends.molde.screen.common.recyclerviewHelper.adapter.RecyclerViewAdapter;
+import com.limefriends.molde.screen.common.recyclerviewHelper.itemView.ItemViewType;
 import com.limefriends.molde.screen.common.view.BaseObservableView;
 import com.limefriends.molde.screen.common.view.ViewFactory;
 

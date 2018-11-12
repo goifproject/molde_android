@@ -1,6 +1,7 @@
 package com.limefriends.molde.screen.map.report;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -39,6 +40,12 @@ import static com.limefriends.molde.common.Constant.Common.PREF_KEY_AUTHORITY;
 import static com.limefriends.molde.common.Constant.ReportState.CLEAN;
 
 public class ReportActivity extends BaseActivity implements ReportView.Listener {
+
+    public static void start(Context context) {
+        Intent intent = new Intent();
+        intent.setClass(context, ReportActivity.class);
+        context.startActivity(intent);
+    }
 
     private static final int TAKE_PICTURE_FOR_ADD_IMAGE = 100;
     private static final int REQ_REPORT_LOCATION = 997;

@@ -1,6 +1,7 @@
 package com.limefriends.molde.screen.feed.detail;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -44,6 +45,12 @@ import static com.limefriends.molde.common.Constant.ReportState.*;
 import static com.limefriends.molde.screen.common.camera.MoldeReportCameraActivity.TAKE_PICTURE_FOR_ADD_IMAGE;
 
 public class FeedDetailActivity extends BaseActivity implements FeedDetailView.Listener {
+
+    public static void start(Context context, int feedId) {
+        Intent intent = new Intent(context, FeedDetailActivity.class);
+        intent.putExtra(EXTRA_KEY_FEED_ID, feedId);
+        context.startActivity(intent);
+    }
 
     private FeedEntity feedEntity;
 
@@ -198,9 +205,6 @@ public class FeedDetailActivity extends BaseActivity implements FeedDetailView.L
                 .check();
     }
 
-    //-----
-    // Network
-    //-----
 
     private void loadReport(int reportId) {
 
