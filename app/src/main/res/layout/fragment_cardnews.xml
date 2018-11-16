@@ -154,20 +154,30 @@
             android:textSize="14sp"
             tools:ignore="RtlSymmetry" />
 
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/cardnews_swipe_layout"
+            android:layout_marginBottom="60dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.limefriends.molde.screen.common.recyclerviewHelper.addOnRecycler.AddOnScrollRecyclerView
+                android:id="@+id/cardnews_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingEnd="4dp"
+                android:paddingStart="4dp"
+                app:layoutManager="android.support.v7.widget.GridLayoutManager"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:spanCount="2"
+                tools:listitem="@layout/item_cardnews" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
     </LinearLayout>
 
-    <com.limefriends.molde.screen.common.recyclerviewHelper.addOnRecycler.AddOnScrollRecyclerView
-        android:id="@+id/cardnews_recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="65dp"
-        android:layout_marginTop="65dp"
-        android:paddingEnd="4dp"
-        android:paddingStart="4dp"
-        app:layoutManager="android.support.v7.widget.GridLayoutManager"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:spanCount="2"
-        tools:listitem="@layout/item_cardnews" />
+
+
+
 
 </android.support.design.widget.CoordinatorLayout>
 

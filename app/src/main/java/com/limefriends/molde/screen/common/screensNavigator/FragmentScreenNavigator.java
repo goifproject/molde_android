@@ -1,10 +1,12 @@
 package com.limefriends.molde.screen.common.screensNavigator;
 
+import android.support.v4.app.Fragment;
+
 import com.limefriends.molde.screen.common.fragmentFrameHelper.FragmentFrameHelper;
-import com.limefriends.molde.screen.feed.main.FeedFragment;
-import com.limefriends.molde.screen.magazine.main.CardNewsFragment;
-import com.limefriends.molde.screen.map.main.MapFragment;
-import com.limefriends.molde.screen.mypage.main.MyPageFragment;
+import com.limefriends.molde.screen.controller.feed.main.FeedFragment;
+import com.limefriends.molde.screen.controller.magazine.main.CardNewsFragment;
+import com.limefriends.molde.screen.controller.map.main.MapFragment;
+import com.limefriends.molde.screen.controller.mypage.main.MyPageFragment;
 
 public class FragmentScreenNavigator {
 
@@ -12,6 +14,10 @@ public class FragmentScreenNavigator {
 
     public FragmentScreenNavigator(FragmentFrameHelper mFragmentFrameHelper) {
         this.mFragmentFrameHelper = mFragmentFrameHelper;
+    }
+
+    public void replaceFragment(Fragment fragment) {
+        mFragmentFrameHelper.replaceFragment(fragment);
     }
 
     public void toMagazineFragment() {

@@ -1,8 +1,11 @@
 package com.limefriends.molde.screen.common.mapView;
 
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 
@@ -52,13 +55,27 @@ public class GoogleMapView extends BaseView
 
     private GoogleMap mGoogleMap;
 
-    public GoogleMapView(LayoutInflater inflater, ViewGroup parent, FragmentManager fragmentManager) {
 
-        setRootView(inflater.inflate(R.layout.element_map_fragment, parent, false));
+    public GoogleMapView(FragmentManager fragmentManager, int container) {
 
-        SupportMapFragment mapView = (SupportMapFragment) fragmentManager.findFragmentById(R.id.mapView);
+        SupportMapFragment mapFragment = (SupportMapFragment) fragmentManager.findFragmentByTag("mapFragment");
 
-        mapView.getMapAsync(this);
+//        if (mapFragment == null) {
+            mapFragment = SupportMapFragment.newInstance();
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.add(container, mapFragment, "mapFragment");
+            ft.commit();
+//        }
+        mapFragment.getMapAsync(this);
+    }
+
+
+    public GoogleMapView(SupportMapFragment mapFragment) {
+        mapFragment.getMapAsync(this);
+    }
+
+    public void setRootViewNull() {
+        setRootView(null);
     }
 
     private void setMapUI() {

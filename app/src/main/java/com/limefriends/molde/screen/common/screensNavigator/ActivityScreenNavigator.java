@@ -6,30 +6,33 @@ import android.content.Intent;
 import android.net.Uri;
 import android.provider.Settings;
 
-import com.limefriends.molde.screen.common.camera.MoldeReportCameraActivity;
-import com.limefriends.molde.screen.feed.detail.FeedDetailActivity;
-import com.limefriends.molde.screen.magazine.comment.CardNewsCommentActivity;
-import com.limefriends.molde.screen.magazine.detail.CardNewsDetailActivity;
-import com.limefriends.molde.screen.magazine.info.HowToDetectActivity;
-import com.limefriends.molde.screen.magazine.info.HowToRespondActivity;
-import com.limefriends.molde.screen.magazine.info.RecentMolcaInfoActivity;
-import com.limefriends.molde.screen.map.favorite.FavoriteActivity;
-import com.limefriends.molde.screen.map.report.ReportActivity;
-import com.limefriends.molde.screen.map.search.SearchLocationActivity;
-import com.limefriends.molde.screen.mypage.comment.MyCommentActivity;
-import com.limefriends.molde.screen.mypage.inquiry.InquiryActivity;
-import com.limefriends.molde.screen.mypage.login.LoginActivity;
-import com.limefriends.molde.screen.mypage.report.MyFeedActivity;
-import com.limefriends.molde.screen.mypage.scrap.ScrapActivity;
-import com.limefriends.molde.screen.mypage.settings.SettingsActivity;
+import com.limefriends.molde.screen.common.camera.CameraActivity;
+import com.limefriends.molde.screen.controller.feed.detail.FeedDetailActivity;
+import com.limefriends.molde.screen.controller.magazine.comment.CardNewsCommentActivity;
+import com.limefriends.molde.screen.controller.magazine.detail.CardNewsDetailActivity;
+import com.limefriends.molde.screen.controller.magazine.info.HowToDetectActivity;
+import com.limefriends.molde.screen.controller.magazine.info.HowToRespondActivity;
+import com.limefriends.molde.screen.controller.magazine.info.RecentMolcaInfoActivity;
+import com.limefriends.molde.screen.controller.map.favorite.FavoriteActivity;
+import com.limefriends.molde.screen.controller.map.report.ReportActivity;
+import com.limefriends.molde.screen.controller.map.search.SearchLocationActivity;
+import com.limefriends.molde.screen.controller.mypage.comment.MyCommentActivity;
+import com.limefriends.molde.screen.controller.mypage.inquiry.InquiryActivity;
+import com.limefriends.molde.screen.controller.mypage.login.LoginActivity;
+import com.limefriends.molde.screen.controller.mypage.report.MyFeedActivity;
+import com.limefriends.molde.screen.controller.mypage.scrap.ScrapActivity;
+import com.limefriends.molde.screen.controller.mypage.settings.SettingsActivity;
+import com.limefriends.molde.screen.controller.main.MoldeMainActivity;
+import com.limefriends.molde.screen.view.tutorial.SubTutorialActivity;
+import com.limefriends.molde.screen.view.tutorial.TutorialActivity;
 
 import static com.limefriends.molde.common.Constant.Common.EXTRA_KEY_ACTIVITY_NAME;
 import static com.limefriends.molde.common.Constant.Common.EXTRA_KEY_CARDNEWS_ID;
 import static com.limefriends.molde.common.Constant.MyPage.INTENT_VALUE_MYCOMMENT;
 import static com.limefriends.molde.common.Constant.MyPage.RC_SIGN_IN;
 import static com.limefriends.molde.common.Constant.Scrap.INTENT_VALUE_SCRAP;
-import static com.limefriends.molde.screen.map.main.MapFragment.REQ_FAVORITE;
-import static com.limefriends.molde.screen.map.main.MapFragment.REQ_SEARCH_MAP;
+import static com.limefriends.molde.screen.controller.map.main.MapFragment.REQ_FAVORITE;
+import static com.limefriends.molde.screen.controller.map.main.MapFragment.REQ_SEARCH_MAP;
 
 public class ActivityScreenNavigator {
 
@@ -79,6 +82,18 @@ public class ActivityScreenNavigator {
         CardNewsDetailActivity.start(mContext, newsId);
     }
 
+    public void toMoldeMainActivity() {
+        MoldeMainActivity.start(mContext);
+    }
+
+    public void toSubTutorialActivity() {
+        SubTutorialActivity.start(mContext);
+    }
+
+    public void toTutorialActivity() {
+        TutorialActivity.start(mContext);
+    }
+
     public void toFeedDetailActivity(int feedId) {
         FeedDetailActivity.start(mContext, feedId);
     }
@@ -110,7 +125,7 @@ public class ActivityScreenNavigator {
 
     public void toMoldeReportCameraActivity(Activity activity, int imageSeq, int size, int reqCode) {
         Intent intent = new Intent();
-        intent.setClass(activity, MoldeReportCameraActivity.class);
+        intent.setClass(activity, CameraActivity.class);
         intent.putExtra("imageSeq", imageSeq);
         intent.putExtra("imageArraySize", size);
         activity.startActivityForResult(intent, reqCode);

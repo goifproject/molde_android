@@ -8,14 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.limefriends.molde.R;
 import com.limefriends.molde.common.util.DateUtil;
 import com.limefriends.molde.common.util.StringUtil;
 import com.limefriends.molde.model.entity.feed.FeedEntity;
 import com.limefriends.molde.screen.common.imageLoader.ImageLoader;
 import com.limefriends.molde.screen.common.pagerHelper.common.ShadowTransformer;
-import com.limefriends.molde.screen.map.main.MapFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,12 +53,6 @@ public class ReportCardPagerAdapter
         reportCardViewArrayTemp = new CardView[0];
         reportCardDataList = new ArrayList<>();
         this.mImageLoader = imageLoader;
-    }
-
-    public void setData(List<FeedEntity> data) {
-        reportCardDataList = data;
-        reportCardViewArrayOrigin = new CardView[data.size()];
-        notifyDataSetChanged();
     }
 
     public void addAll(List<FeedEntity> data) {
@@ -114,7 +106,6 @@ public class ReportCardPagerAdapter
 
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
-        // TODO 살짝 손
         View view = LayoutInflater.from(container.getContext())
                 .inflate(R.layout.item_feed_pager, container, false);
         ButterKnife.bind(this, view);

@@ -22,8 +22,8 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.limefriends.molde.R;
 import com.limefriends.molde.common.helper.PreferenceUtil;
-import com.limefriends.molde.screen.main.MoldeMainActivity;
-import com.limefriends.molde.screen.feed.detail.FeedDetailActivity;
+import com.limefriends.molde.screen.controller.main.MoldeMainActivity;
+import com.limefriends.molde.screen.controller.feed.detail.FeedDetailActivity;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -137,7 +137,6 @@ public class PresentationCompositionRoot {
      * View
      */
 
-
     public ActivityScreenNavigator getActivityScreenNavigator() {
         return new ActivityScreenNavigator(getActivity());
     }
@@ -185,7 +184,8 @@ public class PresentationCompositionRoot {
                 getDialogManager(),
                 getDialogFactory(),
                 getToastHelper(),
-                getFragmentManager());
+                getFragmentManager(),
+                getBottomNavigationViewHelper());
     }
 
 

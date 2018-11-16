@@ -23,7 +23,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true">
         <activity
-            android:name=".screen.main.MoldeSplashActivity"
+            android:name=".screen.controller.main.MoldeSplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme">
             <intent-filter>
@@ -33,33 +33,33 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".screen.tutorial.TutorialActivity"
+            android:name=".screen.view.tutorial.TutorialActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".screen.tutorial.SubTutorialActivity"
+            android:name=".screen.view.tutorial.SubTutorialActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".screen.main.MoldeMainActivity"
+            android:name=".screen.controller.main.MoldeMainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
 
         <!-- 지도 관련 -->
         <activity
-            android:name=".screen.map.search.SearchLocationActivity"
+            android:name=".screen.controller.map.search.SearchLocationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".screen.map.report.ReportActivity"
+            android:name=".screen.controller.map.report.ReportActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".screen.map.favorite.FavoriteActivity"
+            android:name=".screen.controller.map.favorite.FavoriteActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".screen.common.camera.MoldeReportCameraActivity"
+            android:name=".screen.common.camera.CameraActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
@@ -67,64 +67,64 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".screen.common.camera.MoldeReportCheckImageActivity"
+            android:name=".screen.common.camera.CheckImageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
 
         <!-- 매거진 관련 -->
         <activity
-            android:name=".screen.magazine.info.RecentMolcaInfoActivity"
+            android:name=".screen.controller.magazine.info.RecentMolcaInfoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".screen.magazine.info.HowToDetectActivity"
+            android:name=".screen.controller.magazine.info.HowToDetectActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".screen.magazine.info.HowToRespondActivity"
+            android:name=".screen.controller.magazine.info.HowToRespondActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".screen.magazine.detail.CardNewsDetailActivity"
+            android:name=".screen.controller.magazine.detail.CardNewsDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".screen.magazine.comment.CardNewsCommentActivity"
+            android:name=".screen.controller.magazine.comment.CardNewsCommentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
 
         <!-- 마이페이지 관련 -->
         <activity
-            android:name=".screen.mypage.settings.SettingsActivity"
+            android:name=".screen.controller.mypage.settings.SettingsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".screen.mypage.inquiry.InquiryActivity"
+            android:name=".screen.controller.mypage.inquiry.InquiryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".screen.mypage.faq.FaQActivity"
+            android:name=".screen.controller.mypage.faq.FaQActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".screen.mypage.report.MyFeedActivity"
+            android:name=".screen.controller.mypage.report.MyFeedActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".screen.feed.detail.FeedDetailActivity"
+            android:name=".screen.controller.feed.detail.FeedDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".screen.mypage.comment.MyCommentActivity"
+            android:name=".screen.controller.mypage.comment.MyCommentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".screen.mypage.scrap.ScrapActivity"
+            android:name=".screen.controller.mypage.scrap.ScrapActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:name=".screen.mypage.login.LoginActivity"
+            android:name=".screen.controller.mypage.login.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
 

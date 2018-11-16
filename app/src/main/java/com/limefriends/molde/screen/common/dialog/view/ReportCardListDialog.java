@@ -27,6 +27,11 @@ import static com.limefriends.molde.screen.common.recyclerviewHelper.itemView.re
 
 public class ReportCardListDialog extends BaseObservableBottomSheetDialog<Listener> {
 
+    public interface OnReportCardItemClickListener {
+
+        void onReportCardItemClicked(int item);
+    }
+
     /* package */ public static final String ARG_REPORT_ID = "ARG_REPORT_ID";
 
     private RecyclerView report_history_list_view;

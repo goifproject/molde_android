@@ -48,13 +48,21 @@
         android:textOn="@string/feedSortCategory"
         android:textSize="10sp" />
 
-    <com.limefriends.molde.screen.common.recyclerviewHelper.addOnRecycler.AddOnScrollRecyclerView
-        android:id="@+id/feed_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/feed_swipe_layout"
         android:layout_below="@id/feed_sort_toggle"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="@dimen/bottom_layout_height"
-        tools:listitem="@layout/item_feed" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.limefriends.molde.screen.common.recyclerviewHelper.addOnRecycler.AddOnScrollRecyclerView
+            android:id="@+id/feed_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            tools:listitem="@layout/item_feed" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

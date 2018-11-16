@@ -1,7 +1,6 @@
 package com.limefriends.molde.common.di;
 
 import com.limefriends.molde.model.repository.Repository;
-import com.limefriends.molde.screen.common.bottomNavigationViewHelper.BottomNavigationViewHelper;
 import com.limefriends.molde.screen.common.dialog.DialogFactory;
 import com.limefriends.molde.screen.common.dialog.DialogManager;
 import com.limefriends.molde.screen.common.imageLoader.ImageLoader;
@@ -94,9 +93,6 @@ public class Injector {
         }
         else if (type.equals(ToastHelper.class)) {
             return mPresentationCompositionRoot.getToastHelper();
-        }
-        else if (type.equals(BottomNavigationViewHelper.class)) {
-            return mPresentationCompositionRoot.getBottomNavigationViewHelper();
         }
         else if (type.equals(DialogManager.class)) {
             return mPresentationCompositionRoot.getDialogManager();

@@ -74,7 +74,7 @@ public class MyFeedItemViewImpl
     private void setupListener() {
         mypage_report_layout.setOnClickListener(v -> {
             for (Listener listener : getListeners()) {
-                listener.onItemClicked(mFeedEntity.getRepId());
+                listener.onItemClicked(position);
             }
         });
     }
