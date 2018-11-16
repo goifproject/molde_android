@@ -61,6 +61,7 @@ public class FavoriteDialog
 
     private double markerLat;
     private double markerLng;
+    private FirebaseAuth mAuth;
 
     public interface FavoriteDialogDismissListener {
 
@@ -82,6 +83,8 @@ public class FavoriteDialog
         setupViews(view);
 
         setupListener();
+
+        mAuth = FirebaseAuth.getInstance();
 
         return view;
     }
@@ -110,40 +113,39 @@ public class FavoriteDialog
     private void setupListener() {
 
         if (my_favorite_marker_title.getText().toString().equals(getText(R.string.marker_require_info))) {
-            my_favorite_marker_modify_button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    my_favorite_content.setVisibility(View.GONE);
-                    my_favorite_content_modify.setVisibility(View.VISIBLE);
-                }
+            my_favorite_marker_modify_button.setOnClickListener(v -> {
+                my_favorite_content.setVisibility(View.GONE);
+                my_favorite_content_modify.setVisibility(View.VISIBLE);
             });
         }
 
-        my_favorite_modify_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        my_favorite_modify_button.setOnClickListener(v -> {
 
-                if (my_favorite_modify_title.getText().toString().equals("")
-                        || my_favorite_modify_info.getText().toString().equals("")
-                        || my_favorite_modify_title.getText().toString().equals(getText(R.string.marker_title_favorite).toString())
-                        || my_favorite_modify_title.getText().toString().equals(getText(R.string.marker_title_search_location).toString())) {
-                    Toast.makeText(getContext(), "정보가 부족합니다.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                my_favorite_content.setVisibility(View.VISIBLE);
-                my_favorite_content_modify.setVisibility(View.GONE);
-                my_favorite_marker_title.setText(my_favorite_modify_title.getText());
-                my_favorite_marker_info.setText(my_favorite_modify_info.getText());
-
-                String uId = FirebaseAuth.getInstance().getUid();
-
-                addToMyFavorite(uId,
-                        my_favorite_marker_title.getText().toString(),
-                        my_favorite_marker_info.getText().toString(),
-                        markerLat, markerLng
-                );
+            if (mAuth.getCurrentUser() == null) {
+                mToastHelper.showShortToast("몰디 로그인이 필요합니다");
+                return;
             }
+
+            if (my_favorite_modify_title.getText().toString().equals("")
+                    || my_favorite_modify_info.getText().toString().equals("")
+                    || my_favorite_modify_title.getText().toString().equals(getText(R.string.marker_title_favorite).toString())
+                    || my_favorite_modify_title.getText().toString().equals(getText(R.string.marker_title_search_location).toString())) {
+                mToastHelper.showShortToast("정보가 부족합니다");
+                return;
+            }
+
+            my_favorite_content.setVisibility(View.VISIBLE);
+            my_favorite_content_modify.setVisibility(View.GONE);
+            my_favorite_marker_title.setText(my_favorite_modify_title.getText());
+            my_favorite_marker_info.setText(my_favorite_modify_info.getText());
+
+            String uId = FirebaseAuth.getInstance().getUid();
+
+            addToMyFavorite(uId,
+                    my_favorite_marker_title.getText().toString(),
+                    my_favorite_marker_info.getText().toString(),
+                    markerLat, markerLng
+            );
         });
     }
 

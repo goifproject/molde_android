@@ -48,17 +48,11 @@ public class ReportCardListDialog extends BaseObservableBottomSheetDialog<Listen
 
         getInjector().inject(this);
 
-        getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                BottomSheetDialog bottomSheetDialog = (BottomSheetDialog) dialog;
-                View bottomSheetInternal = bottomSheetDialog.findViewById(android.support.design.R.id.design_bottom_sheet);
-                assert bottomSheetInternal != null;
-                BottomSheetBehavior.from(bottomSheetInternal).setState(BottomSheetBehavior.STATE_EXPANDED);
-            }
-        });
+        View view = setupViews(inflater, container);
 
-        return setupViews(inflater, container);
+        setData(getArguments().getInt(ARG_REPORT_ID, 0));
+
+        return view;
     }
 
     private View setupViews(LayoutInflater inflater, ViewGroup container) {
@@ -73,12 +67,6 @@ public class ReportCardListDialog extends BaseObservableBottomSheetDialog<Listen
         });
         report_history_list_view.setAdapter(mFeedAdapter);
         return view;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        setData(getArguments().getInt("reportId", 0));
     }
 
     public void setData(int reportId) {

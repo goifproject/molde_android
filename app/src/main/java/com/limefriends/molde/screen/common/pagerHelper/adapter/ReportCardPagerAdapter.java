@@ -2,6 +2,7 @@ package com.limefriends.molde.screen.common.pagerHelper.adapter;
 
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,7 +117,10 @@ public class ReportCardPagerAdapter
         }
         report_card_view.setMaxCardElevation(mBaseElevation * MAX_ELEVATION_FACTOR);
         report_card_view.setOnClickListener(v
-                -> mOnReportCardClickListener.onReportCardClicked(reportCardDataList.get(position).getRepId()));
+                -> {
+            mOnReportCardClickListener.onReportCardClicked(reportCardDataList.get(position).getRepId());
+            Log.e("호출확인", reportCardDataList.get(position).getRepId()+"");
+        });
         reportCardViewArrayOrigin[position] = report_card_view;
         return view;
     }
