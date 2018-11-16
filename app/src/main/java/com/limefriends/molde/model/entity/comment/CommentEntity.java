@@ -41,6 +41,14 @@ public class CommentEntity implements Data{
         this.comment = comment;
     }
 
+    public CommentEntity(int commId, String userId, String userName, int newsId, String comment) {
+        this.commId = commId;
+        this.userId = userId;
+        this.userName = userName;
+        this.newsId = newsId;
+        this.comment = comment;
+    }
+
     public CommentEntity(String userId, String userName, int newsId, String comment, String commDate) {
         this.userId = userId;
         this.userName = userName;

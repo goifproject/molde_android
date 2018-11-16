@@ -136,8 +136,16 @@ public class CardNewsCommentActivity extends BaseActivity
                     mCommentRepository
                             .createNewComment(userId, userName, cardNewsId, content)
                             .subscribe(
-                                    e -> mCardNewsCommentView.bindComment(commentEntity),
-                                    err -> { },
+                                    e -> {
+                                        if (e.getResult() < 0) {
+                                            mCardNewsCommentView.showSnackBar("댓글 생성 중 오류가 발생했습니다");
+                                        } else {
+
+                                            commentEntity.setCommId(e.getResult());
+                                            mCardNewsCommentView.bindComment(commentEntity);
+                                        }
+                                    },
+                                    err -> mCardNewsCommentView.showSnackBar("댓글 생성 중 오류가 발생했습니다"),
                                     () -> { }
                             )
             );

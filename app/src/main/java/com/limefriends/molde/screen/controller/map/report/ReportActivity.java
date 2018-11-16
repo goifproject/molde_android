@@ -55,6 +55,7 @@ public class ReportActivity extends BaseActivity implements ReportView.Listener 
 
     private int reportState = Constant.ReportState.RECEIVING;
     private boolean isGreenFeed;
+    private boolean isReporting = false;
 
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
@@ -129,11 +130,13 @@ public class ReportActivity extends BaseActivity implements ReportView.Listener 
 
     @Override
     public void onNavigateUpClicked() {
-        finish();
+        if (isReporting()) return;
+        mReportView.onBackPressed();
     }
 
     @Override
     public void onSelectPictureClicked(int sequence, int size) {
+        if (isReporting()) return;
         PermissionListener permissionlistener = new PermissionListener() {
             @Override
             public void onPermissionGranted() {
@@ -159,6 +162,7 @@ public class ReportActivity extends BaseActivity implements ReportView.Listener 
 
     @Override
     public void onFindLocationClicked() {
+        if (isReporting()) return;
         Intent intent = new Intent();
         intent.setClass(getApplicationContext(), SearchLocationActivity.class);
         intent.putExtra(EXTRA_KEY_ACTIVITY_NAME, "Report");
@@ -168,6 +172,8 @@ public class ReportActivity extends BaseActivity implements ReportView.Listener 
     @Override
     public void onSendReportClicked(SparseArrayCompat<Uri> images, String reportContent,
                                     String reportAddress, String detailAddress, String email, boolean isGreenZone) {
+        if (isReporting()) return;
+
         // 1. 이미지 등록 확인
         List<MultipartBody.Part> imageMultiParts = new ArrayList<>();
         for (int i = 1; i <= images.size(); i++) {
@@ -187,6 +193,8 @@ public class ReportActivity extends BaseActivity implements ReportView.Listener 
 
         mReportView.showProgressIndication();
 
+        isReporting = true;
+
         mCompositeDisposable.add(
                 mFeedRepository.reportNewFeed(
                         reportUserId,
@@ -202,11 +210,15 @@ public class ReportActivity extends BaseActivity implements ReportView.Listener 
                         imageMultiParts
                 ).subscribe(
                         e -> {
+                            isReporting = false;
                             mReportView.hideProgressIndication();
                             mToastHelper.showShortToast(getText(R.string.snackbar_report_success).toString());
                             finish();
                         },
-                        err -> mReportView.showSnackBar(getText(R.string.snackbar_network_error).toString())
+                        err -> {
+                            mReportView.showSnackBar(getText(R.string.snackbar_network_error).toString());
+                            isReporting = false;
+                        }
                 )
         );
     }
@@ -224,5 +236,13 @@ public class ReportActivity extends BaseActivity implements ReportView.Listener 
     @Override
     public void onBackPressed() {
         mReportView.onBackPressed();
+    }
+
+    private boolean isReporting() {
+        if (isReporting) {
+            mReportView.showSnackBar("이미 신고중입니다.");
+            return true;
+        }
+        return false;
     }
 }

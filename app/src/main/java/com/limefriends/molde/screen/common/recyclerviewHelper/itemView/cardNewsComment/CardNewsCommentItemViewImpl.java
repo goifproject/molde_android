@@ -1,6 +1,7 @@
 package com.limefriends.molde.screen.common.recyclerviewHelper.itemView.cardNewsComment;
 
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -57,5 +58,6 @@ public class CardNewsCommentItemViewImpl
         txt_comment_date.setText(DateUtil.fromLongToDate(commentEntity.getCommDate()));
         txt_comment_content.setText(commentEntity.getComment());
         commentId = commentEntity.getCommId();
+        Log.e("호출확인", commentId+"");
     }
 }
