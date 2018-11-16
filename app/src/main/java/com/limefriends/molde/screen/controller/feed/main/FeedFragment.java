@@ -37,9 +37,12 @@ public class FeedFragment extends BaseFragment implements FeedView.Listener {
     private boolean isLoading;
     private boolean hasOnRefreshCalled;
 
-    @Service private Repository.Feed mFeedRepository;
-    @Service private ToastHelper mToastHelper;
-    @Service private ViewFactory mViewFactory;
+    @Service
+    private Repository.Feed mFeedRepository;
+    @Service
+    private ToastHelper mToastHelper;
+    @Service
+    private ViewFactory mViewFactory;
 
     private FeedView mFeedView;
 
@@ -177,7 +180,9 @@ public class FeedFragment extends BaseFragment implements FeedView.Listener {
                     return;
                 }
 
+
                 mFeedView.bindLastData(DateUtil.fromLongToDate(currentlyShownData.get(0).getRepDate()));
+
                 mFeedView.bindFeed(filteredData);
                 currentPage++;
 
@@ -201,7 +206,7 @@ public class FeedFragment extends BaseFragment implements FeedView.Listener {
         // 오른쪽, 시간순
         if (isChecked) {
 
-             if (!isByDateFirstCall) return;
+            if (!isByDateFirstCall) return;
 
             isByDateFirstCall = false;
 

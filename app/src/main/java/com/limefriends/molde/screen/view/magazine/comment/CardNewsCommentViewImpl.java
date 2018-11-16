@@ -152,8 +152,9 @@ public class CardNewsCommentViewImpl
 
     @Override
     public void bindComment(CommentEntity entity) {
+
+        comment_list_view.scrollToPosition(mCommentAdapter.getItemCount());
         mCommentAdapter.addData(entity);
-        hideSoftKeyboard();
         comment_input.setText("");
     }
 

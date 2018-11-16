@@ -34,6 +34,8 @@ public class SettingsViewImpl
 
     private Toolbar mToolbar;
     private NestedToolbar mNestedToolbar;
+    private boolean isFavoritePushChecked = false;
+    private boolean isFeedChangePushChecked = false;
 
     private ToastHelper mToastHelper;
     private ViewFactory mViewFactory;
@@ -91,6 +93,7 @@ public class SettingsViewImpl
                 listener.onFavoritePushCheckChanged(isChecked);
             }
         });
+
         switch_feed_change_push.setOnCheckedChangeListener((buttonView, isChecked) -> {
             for (Listener listener : getListeners()) {
                 listener.onFeedChangePushCheckChanged(isChecked);

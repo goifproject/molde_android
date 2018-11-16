@@ -32,7 +32,7 @@ public class ScrapViewImpl
     public ScrapViewImpl(LayoutInflater inflater,
                            ViewGroup parent,
                            ViewFactory viewFactory) {
-        setRootView(inflater.inflate(R.layout.activity_my_scrap, parent, false));
+        setRootView(inflater.inflate(R.layout.activity_scrap, parent, false));
 
         this.mViewFactory = viewFactory;
 

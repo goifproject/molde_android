@@ -64,10 +64,8 @@ public class SettingsActivity extends BaseActivity implements SettingsView.Liste
     public void onFavoritePushCheckChanged(boolean isChecked) {
         if (isChecked) {
             PreferenceUtil.putInt(SettingsActivity.this, PREF_KEY_NEW_FEED_PUSH, ALLOW_PUSH);
-            mSettingsView.showSnackBar("새 피드 푸쉬알람이 설정되었습니다.");
         } else {
             PreferenceUtil.putInt(SettingsActivity.this, PREF_KEY_NEW_FEED_PUSH, DISALLOW_PUSH);
-            mSettingsView.showSnackBar("새 피드 푸쉬알람이 해제되었습니다.");
         }
     }
 
@@ -75,10 +73,8 @@ public class SettingsActivity extends BaseActivity implements SettingsView.Liste
     public void onFeedChangePushCheckChanged(boolean isChecked) {
         if (isChecked) {
             PreferenceUtil.putInt(SettingsActivity.this, PREF_KEY_FEED_CHANGE_PUSH, ALLOW_PUSH);
-            mSettingsView.showSnackBar("신고 상태변화 푸쉬알람이 설정되었습니다.");
         } else {
             PreferenceUtil.putInt(SettingsActivity.this, PREF_KEY_FEED_CHANGE_PUSH, DISALLOW_PUSH);
-            mSettingsView.showSnackBar("신고 상태변화 푸쉬알람이 해제되었습니다.");
         }
     }
 
