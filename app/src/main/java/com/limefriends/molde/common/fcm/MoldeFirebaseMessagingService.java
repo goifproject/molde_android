@@ -131,9 +131,17 @@ public class MoldeFirebaseMessagingService extends FirebaseMessagingService {
 
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        NotificationCompat.Builder mBuilder = createNotification(title, message);
-        mBuilder.setContentIntent(createGoFeedPendingIntent(feedId));
-        mNotificationManager.notify(1, mBuilder.build());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel nc = new NotificationChannel("molde_channel", title, NotificationManager.IMPORTANCE_DEFAULT);
+            nc.setDescription(message);
+            nc.enableLights(true);
+            nc.setLightColor(Color.GREEN);
+            mNotificationManager.createNotificationChannel(nc);
+        } else {
+            NotificationCompat.Builder mBuilder = createNotification(title, message);
+            mBuilder.setContentIntent(createGoFeedPendingIntent(feedId));
+            mNotificationManager.notify(1, mBuilder.build());
+        }
     }
 
     private NotificationCompat.Builder createNotification(String title, String message) {
