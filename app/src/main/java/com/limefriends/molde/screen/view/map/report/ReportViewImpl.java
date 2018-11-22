@@ -1,9 +1,16 @@
 package com.limefriends.molde.screen.view.map.report;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
+import android.provider.MediaStore;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,16 +26,26 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.limefriends.molde.R;
+import com.limefriends.molde.common.helper.BitmapHelper;
 import com.limefriends.molde.common.util.RegexUtil;
 import com.limefriends.molde.screen.common.dialog.DialogFactory;
 import com.limefriends.molde.screen.common.dialog.DialogManager;
 import com.limefriends.molde.screen.common.dialog.view.PromptDialog;
+import com.limefriends.molde.screen.common.imageLoader.ImageLoader;
 import com.limefriends.molde.screen.common.toastHelper.ToastHelper;
 import com.limefriends.molde.screen.common.toolbar.NestedToolbar;
 import com.limefriends.molde.screen.common.view.BaseObservableView;
 import com.limefriends.molde.screen.common.view.ViewFactory;
 
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.IOException;
 import java.util.List;
 
 import static com.limefriends.molde.common.Constant.Authority.ADMIN;
@@ -36,7 +53,8 @@ import static com.limefriends.molde.common.Constant.Authority.GUARDIAN;
 import static com.limefriends.molde.common.Constant.Authority.MEMBER;
 
 public class ReportViewImpl
-        extends BaseObservableView<ReportView.Listener> implements ReportView, View.OnClickListener, NestedToolbar.SwitchGreenZoneListener, NestedToolbar.NavigateUpClickListener {
+        extends BaseObservableView<ReportView.Listener>
+        implements ReportView, View.OnClickListener, NestedToolbar.SwitchGreenZoneListener, NestedToolbar.NavigateUpClickListener {
 
     public static final String CANCEL_REPORT_DIALOG = "CANCEL_REPORT_DIALOG";
 
@@ -73,10 +91,12 @@ public class ReportViewImpl
     private DialogFactory mDialogFactory;
     private DialogManager mDialogManager;
 
-    private SparseArrayCompat<Uri> imageSparseArray = new SparseArrayCompat<>();
+    private SparseArrayCompat<File> imageFileSparseArray = new SparseArrayCompat<>();
     private ArrayAdapter emailArrayAdapter;
     private ToastHelper mToastHelper;
     private ViewFactory mViewFactory;
+    private BitmapHelper mBitmapHelper;
+    private ImageLoader mImageLoader;
 
     private int authority;
     private boolean isGreenZone;
@@ -86,12 +106,16 @@ public class ReportViewImpl
                           DialogFactory dialogFactory,
                           DialogManager dialogManager,
                           ToastHelper toastHelper,
-                          ViewFactory viewFactory) {
+                          ViewFactory viewFactory,
+                          ImageLoader imageLoader,
+                          BitmapHelper bitmapHelper) {
 
         this.mDialogFactory = dialogFactory;
         this.mDialogManager = dialogManager;
         this.mToastHelper = toastHelper;
         this.mViewFactory = viewFactory;
+        this.mImageLoader = imageLoader;
+        this.mBitmapHelper = bitmapHelper;
 
         setRootView(inflater.inflate(R.layout.activity_report, parent, false));
 
@@ -171,52 +195,57 @@ public class ReportViewImpl
                 onBackPressed();
                 break;
             case R.id.first_iamge:
+                if (first_iamge_delete_button.getVisibility() == View.VISIBLE) return;
                 for (Listener listener : getListeners()) {
-                    listener.onSelectPictureClicked(1, imageSparseArray.size());
+                    listener.onSelectPictureClicked(1, imageFileSparseArray.size());
                 }
                 break;
             case R.id.second_iamge:
+                if (second_iamge_delete_button.getVisibility() == View.VISIBLE) return;
                 for (Listener listener : getListeners()) {
-                    listener.onSelectPictureClicked(2, imageSparseArray.size());
+                    listener.onSelectPictureClicked(2, imageFileSparseArray.size());
                 }
                 break;
             case R.id.third_iamge:
+                if (third_iamge_delete_button.getVisibility() == View.VISIBLE) return;
                 for (Listener listener : getListeners()) {
-                    listener.onSelectPictureClicked(3, imageSparseArray.size());
+                    listener.onSelectPictureClicked(3, imageFileSparseArray.size());
                 }
                 break;
             case R.id.forth_image:
+                if (forth_iamge_delete_button.getVisibility() == View.VISIBLE) return;
                 for (Listener listener : getListeners()) {
-                    listener.onSelectPictureClicked(4, imageSparseArray.size());
+                    listener.onSelectPictureClicked(4, imageFileSparseArray.size());
                 }
                 break;
             case R.id.fifth_image:
+                if (fifth_iamge_delete_button.getVisibility() == View.VISIBLE) return;
                 for (Listener listener : getListeners()) {
-                    listener.onSelectPictureClicked(5, imageSparseArray.size());
+                    listener.onSelectPictureClicked(5, imageFileSparseArray.size());
                 }
                 break;
             case R.id.first_iamge_delete_button:
-                imageSparseArray.delete(1);
+                imageFileSparseArray.delete(1);
                 first_iamge_delete_button.setVisibility(View.INVISIBLE);
                 first_iamge.setImageResource(R.drawable.ic_report_add);
                 break;
             case R.id.second_iamge_delete_button:
-                imageSparseArray.delete(2);
+                imageFileSparseArray.delete(2);
                 second_iamge_delete_button.setVisibility(View.INVISIBLE);
                 second_iamge.setImageResource(R.drawable.ic_report_add);
                 break;
             case R.id.third_iamge_delete_button:
-                imageSparseArray.delete(3);
+                imageFileSparseArray.delete(3);
                 third_iamge_delete_button.setVisibility(View.INVISIBLE);
                 third_iamge.setImageResource(R.drawable.ic_report_add);
                 break;
             case R.id.forth_iamge_delete_button:
-                imageSparseArray.delete(4);
+                imageFileSparseArray.delete(4);
                 forth_iamge_delete_button.setVisibility(View.INVISIBLE);
                 forth_iamge.setImageResource(R.drawable.ic_report_add);
                 break;
             case R.id.fifth_iamge_delete_button:
-                imageSparseArray.delete(5);
+                imageFileSparseArray.delete(5);
                 fifth_iamge_delete_button.setVisibility(View.INVISIBLE);
                 fifth_iamge.setImageResource(R.drawable.ic_report_add);
                 break;
@@ -288,7 +317,7 @@ public class ReportViewImpl
 
     private void sendReport() {
 
-        if (imageSparseArray == null || imageSparseArray.size() == 0) {
+        if (imageFileSparseArray == null || imageFileSparseArray.size() == 0) {
             showSnackBar(getContext().getText(R.string.snackbar_no_image).toString());
             return;
         }
@@ -325,36 +354,54 @@ public class ReportViewImpl
 
         if (RegexUtil.validateEmail(reportEmail)) {
             for (Listener listener : getListeners()) {
-                listener.onSendReportClicked(imageSparseArray, reportContent, reportAddress, reportDetailAddress, email, isGreenZone);
+                listener.onSendReportClicked(imageFileSparseArray, reportContent, reportAddress, reportDetailAddress, email, isGreenZone);
             }
         } else {
             showSnackBar(getContext().getText(R.string.snackbar_wrong_email_form).toString());
         }
     }
 
-    private void applyImage(Uri uri, int seq) {
-        switch (seq) {
-            case 1:
-                first_iamge.setImageURI(uri);
-                first_iamge_delete_button.setVisibility(View.VISIBLE);
-                break;
-            case 2:
-                second_iamge.setImageURI(uri);
-                second_iamge_delete_button.setVisibility(View.VISIBLE);
-                break;
-            case 3:
-                third_iamge.setImageURI(uri);
-                third_iamge_delete_button.setVisibility(View.VISIBLE);
-                break;
-            case 4:
-                forth_iamge.setImageURI(uri);
-                forth_iamge_delete_button.setVisibility(View.VISIBLE);
-                break;
-            case 5:
-                fifth_iamge.setImageURI(uri);
-                fifth_iamge_delete_button.setVisibility(View.VISIBLE);
-                break;
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            int seq = msg.what;
+            File file = (File) msg.obj;
+            imageFileSparseArray.append(seq, file);
+            Bitmap bitmap = mBitmapHelper.resize(file, first_iamge.getWidth());
+            switch (seq) {
+                case 1:
+                    first_iamge.setImageBitmap(bitmap);
+                    first_iamge_delete_button.setVisibility(View.VISIBLE);
+                    break;
+                case 2:
+                    second_iamge.setImageBitmap(bitmap);
+                    second_iamge_delete_button.setVisibility(View.VISIBLE);
+                    break;
+                case 3:
+                    third_iamge.setImageBitmap(bitmap);
+                    third_iamge_delete_button.setVisibility(View.VISIBLE);
+                    break;
+                case 4:
+                    forth_iamge.setImageBitmap(bitmap);
+                    forth_iamge_delete_button.setVisibility(View.VISIBLE);
+                    break;
+                case 5:
+                    fifth_iamge.setImageBitmap(bitmap);
+                    fifth_iamge_delete_button.setVisibility(View.VISIBLE);
+                    break;
+            }
         }
+    };
+
+    private void applyImage(String uri, int seq) {
+        File file = new File(uri);
+        mBitmapHelper.saveBitmapToFileThread(mHandler, file, seq);
+    }
+
+    private void applyImage(Uri uri, int seq) {
+        File file = new File(uri.getPath());
+        mBitmapHelper.saveBitmapToFileThread(mHandler, file, seq);
     }
 
     @Override
@@ -387,7 +434,6 @@ public class ReportViewImpl
 
     @Override
     public void setPictureForReport(Uri uri, int seq) {
-        imageSparseArray.append(seq, uri);
         applyImage(uri, seq);
     }
 
@@ -399,9 +445,8 @@ public class ReportViewImpl
             if (bringImgListSize == 0) {
                 break;
             }
-            if (imageSparseArray.get(i) == null) {
-                imageSparseArray.append(i, Uri.parse(imagePathList.get(count)));
-                applyImage(Uri.parse(imagePathList.get(count)), i);
+            if (imageFileSparseArray.get(i) == null) {
+                applyImage(imagePathList.get(count), i);
                 count++;
                 bringImgListSize--;
             }

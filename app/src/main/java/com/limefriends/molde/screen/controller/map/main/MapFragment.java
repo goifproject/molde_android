@@ -544,6 +544,7 @@ public class MapFragment extends BaseFragment implements
 
     // App 단위로 현재 위치 설정하기
     private void setCurrentLocation(LatLng currLocation) {
+        if (getActivity() != null)
         ((MoldeApplication) getActivity().getApplication()).setCurrLocation(currLocation);
     }
 
@@ -626,8 +627,5 @@ public class MapFragment extends BaseFragment implements
     public boolean onBackPressed() {
         return !mMapView.isReportCardShown();
     }
-
-
-
 
 }

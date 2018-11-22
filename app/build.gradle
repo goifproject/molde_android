@@ -154,6 +154,8 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:$rxJava"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit"
 
+    implementation "com.android.support:exifinterface:26.1.0"
+
     /**
      * Fabric Crashlytics
      */

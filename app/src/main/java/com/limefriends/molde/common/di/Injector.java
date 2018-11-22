@@ -1,5 +1,6 @@
 package com.limefriends.molde.common.di;
 
+import com.limefriends.molde.common.helper.BitmapHelper;
 import com.limefriends.molde.model.repository.Repository;
 import com.limefriends.molde.screen.common.dialog.DialogFactory;
 import com.limefriends.molde.screen.common.dialog.DialogManager;
@@ -113,7 +114,5 @@ public class Injector {
             throw new RuntimeException("unsupported service type class: "+type);
         }
     }
-
-
 
 }

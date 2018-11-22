@@ -5,6 +5,7 @@ import android.support.v4.util.SparseArrayCompat;
 
 import com.limefriends.molde.screen.common.view.ObservableView;
 
+import java.io.File;
 import java.util.List;
 
 public interface ReportView extends ObservableView<ReportView.Listener> {
@@ -17,12 +18,13 @@ public interface ReportView extends ObservableView<ReportView.Listener> {
 
         void onFindLocationClicked();
 
-        void onSendReportClicked(SparseArrayCompat<Uri> images, String reportContent,
+        void onSendReportClicked(SparseArrayCompat<File> images, String reportContent,
                                  String reportAddress, String detailAddress, String email, boolean isGreenZone);
 
         void onCancelReportClicked();
 
         void onGreenZoneCheckChanged(boolean isChecked);
+
     }
 
     void onBackPressed();

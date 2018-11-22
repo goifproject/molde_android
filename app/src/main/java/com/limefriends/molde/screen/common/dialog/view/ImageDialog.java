@@ -26,6 +26,7 @@ public class ImageDialog extends BaseDialog {
 
     private ImageView feed_dialog_thumbnail_image;
     private ImageView feed_dialog_close_button;
+    private FrameLayout dialog_image_container;
 
     @Service ImageLoader mImageLoader;
 
@@ -84,24 +85,27 @@ public class ImageDialog extends BaseDialog {
             @Override
             public void onShow(DialogInterface dialog) {
 
-                WindowManager.LayoutParams params = getDialog().getWindow().getAttributes();
-                params.width = getResources().getDisplayMetrics().widthPixels;
-                params.height = getResources().getDisplayMetrics().heightPixels;
-                getDialog().getWindow().setAttributes(params);
+//                WindowManager.LayoutParams params = getDialog().getWindow().getAttributes();
+//                params.width = getResources().getDisplayMetrics().widthPixels;
+//                params.height = getResources().getDisplayMetrics().heightPixels;
+//                getDialog().getWindow().setAttributes(params);
+//
+//                FrameLayout.LayoutParams imageParam = new FrameLayout.LayoutParams(
+//                        FrameLayout.LayoutParams.MATCH_PARENT,
+//                        FrameLayout.LayoutParams.MATCH_PARENT
+//                );
+//
+//                feed_dialog_thumbnail_image.setLayoutParams(imageParam);
 
-                FrameLayout.LayoutParams imageParam = new FrameLayout.LayoutParams(
-                        FrameLayout.LayoutParams.MATCH_PARENT,
-                        FrameLayout.LayoutParams.MATCH_PARENT
-                );
+//                String imageUrl = getArguments().getString(ARG_IMAGE_URL);
+//                mImageLoader.load(imageUrl, feed_dialog_thumbnail_image);
 
-                feed_dialog_thumbnail_image.setLayoutParams(imageParam);
+                populateSubViews();
 
-                String imageUrl = getArguments().getString(ARG_IMAGE_URL);
-                mImageLoader.load(imageUrl, feed_dialog_thumbnail_image);
             }
         });
 
-        populateSubViews();
+        // populateSubViews();
 
         setCancelable(true);
 
@@ -112,6 +116,15 @@ public class ImageDialog extends BaseDialog {
     private void initSubViews(View rootView) {
         feed_dialog_close_button = rootView.findViewById(R.id.feed_dialog_close_button);
         feed_dialog_thumbnail_image = rootView.findViewById(R.id.feed_dialog_thumbnail_image);
+        dialog_image_container = rootView.findViewById(R.id.dialog_image_container);
+
+        int width = getResources().getDisplayMetrics().widthPixels;
+        int height = getResources().getDisplayMetrics().heightPixels * 4/5;
+        FrameLayout.LayoutParams params
+                = new FrameLayout.LayoutParams(width, height);
+
+        dialog_image_container.setLayoutParams(params);
+        feed_dialog_thumbnail_image.setLayoutParams(params);
 
         feed_dialog_close_button.setOnClickListener(v -> dismiss());
     }
@@ -124,14 +137,9 @@ public class ImageDialog extends BaseDialog {
             mImageLoader.load(imageUrl, new SimpleTarget<GlideDrawable>() {
                 @Override
                 public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                    WindowManager.LayoutParams params = getDialog().getWindow().getAttributes();
-                    params.width = getResources().getDisplayMetrics().widthPixels;
-                    params.height = getResources().getDisplayMetrics().heightPixels;
-                    getDialog().getWindow().setAttributes(params);
                     feed_dialog_thumbnail_image.setImageDrawable(resource);
                 }
             });
-
         } else {
             mImageLoader.load(R.drawable.img_placeholder_magazine, feed_dialog_thumbnail_image);
         }

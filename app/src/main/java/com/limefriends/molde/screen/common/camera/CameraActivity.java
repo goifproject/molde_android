@@ -1,14 +1,20 @@
 package com.limefriends.molde.screen.common.camera;
 
 import android.app.Activity;
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.hardware.Camera;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.Surface;
 import android.view.View;
@@ -30,6 +36,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -193,19 +200,18 @@ public class CameraActivity extends AppCompatActivity {
 
     Camera.ShutterCallback shutterCallback = new Camera.ShutterCallback() {
         public void onShutter() {
-            Log.d(TAG, "onPictureTaken - shutterCallback");
+
         }
     };
 
     Camera.PictureCallback rawCallback = new Camera.PictureCallback() {
         public void onPictureTaken(byte[] data, Camera camera) {
-            Log.d(TAG, "onPictureTaken - rawCallback");
+
         }
     };
 
     Camera.PictureCallback jpegCallback = new Camera.PictureCallback() {
         public void onPictureTaken(byte[] data, Camera camera) {
-            Log.d(TAG, "onPictureTaken - jpegCallback");
             //이미지의 너비와 높이 결정
             int w = camera.getParameters().getPictureSize().width;
             int h = camera.getParameters().getPictureSize().height;
@@ -246,11 +252,11 @@ public class CameraActivity extends AppCompatActivity {
             try {
                 File sdCard = Environment.getExternalStorageDirectory();
                 File dir = new File(sdCard.getAbsolutePath() + "/molde");
-                dir.mkdirs();
+                if (!dir.exists()) dir.mkdirs();
 
                 long systemTime = System.currentTimeMillis();
 
-                String fileName = String.format("%d.jpg", systemTime);
+                String fileName = String.format(Locale.KOREA, "%d.jpg", systemTime);
                 File outFile = new File(dir, fileName);
 
                 outStream = new FileOutputStream(outFile);
@@ -258,13 +264,67 @@ public class CameraActivity extends AppCompatActivity {
                 outStream.flush();
                 outStream.close();
 
-                Log.d(TAG, "onPictureTaken - wrote bytes: " + data.length + " to "
-                        + outFile.getAbsolutePath());
-
                 refreshGallery(outFile);
-            } catch (IOException  e) {
+
+                getImageContentUri(outFile.getPath());
+
+            } catch (IOException e) {
                 e.printStackTrace();
             }
+            return null;
+        }
+    }
+
+    public boolean setOrientation(String path, int orientation) {
+
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.ORIENTATION, orientation);
+        Uri uri = getImageContentUri(path);
+        int rowsUpdated = getContentResolver().update(uri, values, null, null);
+        return rowsUpdated > 0;
+    }
+
+    public Uri getContentUriForFilePath(String path) {
+        String[] projection = {
+                MediaStore.Images.Media._ID
+        };
+        Cursor cursor = getContentResolver().query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
+                MediaStore.Images.Media.DATA + " = ?", new String[]{
+                        path
+                }, null);
+        Uri result = null;
+        if (cursor != null) {
+            try {
+                if (cursor.moveToNext()) {
+                    long mediaId = cursor.getLong(0);
+                    result = ContentUris.withAppendedId(
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, mediaId);
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        return result;
+    }
+
+    public Uri getImageContentUri(String absPath) {
+
+        Cursor cursor = getContentResolver().query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                , new String[]{MediaStore.Images.Media._ID}
+                , MediaStore.Images.Media.DATA + "=? "
+                , new String[]{absPath}, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
+            return Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, Integer.toString(id));
+        } else if (!absPath.isEmpty()) {
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.Images.Media.DATA, absPath);
+            values.put(MediaStore.Images.Media.ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            return getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        } else {
             return null;
         }
     }

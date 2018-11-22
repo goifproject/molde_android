@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 
+import com.limefriends.molde.common.helper.BitmapHelper;
 import com.limefriends.molde.common.helper.SecretRetriever;
 import com.limefriends.molde.model.database.dao.SearchHistoryDao;
 import com.limefriends.molde.model.database.db.MoldeDatabase;
@@ -131,7 +132,9 @@ public class PresentationCompositionRoot {
         return new SecretRetriever(getActivity());
     }
 
-
+    public BitmapHelper getBitmapHelper() {
+        return new BitmapHelper();
+    }
 
     /**
      * View
@@ -149,7 +152,7 @@ public class PresentationCompositionRoot {
         return new ToastHelper(getActivity());
     }
 
-    public BottomNavigationViewHelper getBottomNavigationViewHelper() {
+    private BottomNavigationViewHelper getBottomNavigationViewHelper() {
         return new BottomNavigationViewHelper();
     }
 
@@ -185,7 +188,8 @@ public class PresentationCompositionRoot {
                 getDialogFactory(),
                 getToastHelper(),
                 getFragmentManager(),
-                getBottomNavigationViewHelper());
+                getBottomNavigationViewHelper(),
+                getBitmapHelper());
     }
 
 

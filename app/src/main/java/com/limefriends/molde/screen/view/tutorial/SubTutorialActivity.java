@@ -44,7 +44,6 @@ public class SubTutorialActivity extends AppCompatActivity {
     @BindView(R.id.go_to_start_button)
     Button go_to_start_button;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,14 +61,12 @@ public class SubTutorialActivity extends AppCompatActivity {
                 break;
         }
         molde_sub_desc_pager.setAdapter(new MoldeSubDescAdapter());
-        go_to_start_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PreferenceUtil.putBoolean(SubTutorialActivity.this, "skipSecond", true);
-                Intent intent = new Intent(SubTutorialActivity.this, MoldeMainActivity.class);
-                startActivity(intent);
-                finish();
-            }
+
+        go_to_start_layout.setOnClickListener(v -> {
+            PreferenceUtil.putBoolean(SubTutorialActivity.this, "skipSecond", true);
+            Intent intent1 = new Intent(SubTutorialActivity.this, MoldeMainActivity.class);
+            startActivity(intent1);
+            finish();
         });
         molde_sub_desc_pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

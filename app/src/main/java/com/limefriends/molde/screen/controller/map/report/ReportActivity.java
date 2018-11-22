@@ -3,9 +3,11 @@ package com.limefriends.molde.screen.controller.map.report;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.util.SparseArrayCompat;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
@@ -14,6 +16,7 @@ import com.gun0912.tedpermission.TedPermission;
 import com.limefriends.molde.common.Constant;
 import com.limefriends.molde.common.di.Service;
 import com.limefriends.molde.common.app.MoldeApplication;
+import com.limefriends.molde.common.helper.BitmapHelper;
 import com.limefriends.molde.common.helper.PreferenceUtil;
 import com.limefriends.molde.R;
 import com.limefriends.molde.model.repository.Repository;
@@ -65,6 +68,7 @@ public class ReportActivity extends BaseActivity implements ReportView.Listener 
     @Service private DialogFactory mDialogFactory;
     @Service private DialogManager mDialogManager;
     @Service private ViewFactory mViewFactory;
+
     private ReportView mReportView;
 
     @Override
@@ -81,6 +85,8 @@ public class ReportActivity extends BaseActivity implements ReportView.Listener 
     @Override
     protected void onStart() {
         super.onStart();
+
+
         mReportView.registerListener(this);
 
         int authority = (int) PreferenceUtil.getLong(this, PREF_KEY_AUTHORITY, Constant.Authority.GUEST);
@@ -113,20 +119,17 @@ public class ReportActivity extends BaseActivity implements ReportView.Listener 
                 List<String> imagePathList = data.getStringArrayListExtra("imagePathList");
 
                 if (uri != null && imageSeq != 0) {
+                    mToastHelper.showShortToast("이미지를 업로드중입니다.");
                     mReportView.setPictureForReport(uri, imageSeq);
                 }
                 else if (imagePathList != null) {
+                    mToastHelper.showShortToast("이미지를 업로드중입니다.");
                     mReportView.setPictureForReport(imagePathList, imageSeq);
                 }
             }
         }
     }
 
-    private MultipartBody.Part prepareFilePart(String partName, Uri fileUri) {
-        File file = new File(fileUri.getPath());
-        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-        return MultipartBody.Part.createFormData(partName, file.getName(), requestFile);
-    }
 
     @Override
     public void onNavigateUpClicked() {
@@ -170,7 +173,7 @@ public class ReportActivity extends BaseActivity implements ReportView.Listener 
     }
 
     @Override
-    public void onSendReportClicked(SparseArrayCompat<Uri> images, String reportContent,
+    public void onSendReportClicked(SparseArrayCompat<File> images, String reportContent,
                                     String reportAddress, String detailAddress, String email, boolean isGreenZone) {
         if (isReporting()) return;
 
@@ -222,6 +225,12 @@ public class ReportActivity extends BaseActivity implements ReportView.Listener 
                 )
         );
     }
+
+    private MultipartBody.Part prepareFilePart(String partName, File file) {
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        return MultipartBody.Part.createFormData(partName, file.getName(), requestFile);
+    }
+
 
     @Override
     public void onCancelReportClicked() {

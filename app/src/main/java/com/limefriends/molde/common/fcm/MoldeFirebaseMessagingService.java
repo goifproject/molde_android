@@ -1,6 +1,7 @@
 package com.limefriends.molde.common.fcm;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
@@ -8,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 
@@ -126,16 +128,11 @@ public class MoldeFirebaseMessagingService extends FirebaseMessagingService {
      * Create and show a simple notification containing the received FCM message.
      */
     private void sendNotification(int type, int feedId, String title, String message) {
-        NotificationCompat.Builder mBuilder = createNotification(title, message);
-            mBuilder.setContentIntent(createGoFeedPendingIntent(feedId));
+
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            TODO Notification Channel
-//            NotificationChannel channel = new NotificationChannel(channelId,
-//                    "Channel human readable title",
-//                    NotificationManager.IMPORTANCE_DEFAULT);
-//            mNotificationManager.createNotificationChannel(channel);
-        }
+
+        NotificationCompat.Builder mBuilder = createNotification(title, message);
+        mBuilder.setContentIntent(createGoFeedPendingIntent(feedId));
         mNotificationManager.notify(1, mBuilder.build());
     }
 
@@ -158,12 +155,18 @@ public class MoldeFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private PendingIntent createGoFeedPendingIntent(int feedId) {
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+
+        Intent baseIntent = new Intent (this, MoldeMainActivity.class);
+        stackBuilder.addParentStack(MoldeMainActivity.class);
+        stackBuilder.addNextIntent(baseIntent);
+
         Intent resultIntent = new Intent(this, FeedDetailActivity.class);
         resultIntent.putExtra(EXTRA_KEY_FEED_ID, feedId);
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(MoldeMainActivity.class);
         stackBuilder.addNextIntent(resultIntent);
-        return stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        return stackBuilder.getPendingIntent(0, PendingIntent.FLAG_CANCEL_CURRENT);
     }
 
 }

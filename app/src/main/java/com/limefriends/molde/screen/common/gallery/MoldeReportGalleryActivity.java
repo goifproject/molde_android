@@ -103,7 +103,6 @@ public class MoldeReportGalleryActivity extends AppCompatActivity {
         List<PhotoVO> selectedPhotoList = galleryAdapter.getSelectedPhotoList();
         ArrayList<String> pathList = new ArrayList<String>();
         for (int i = 0; i < selectedPhotoList.size(); i++) {
-            Log.i("selectedPhotoList", selectedPhotoList.get(i).getImgPath());
             pathList.add(selectedPhotoList.get(i).getImgPath());
         }
         return pathList;

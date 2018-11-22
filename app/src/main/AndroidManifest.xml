@@ -112,6 +112,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
+            android:parentActivityName=".screen.controller.main.MoldeMainActivity"
             android:name=".screen.controller.feed.detail.FeedDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />

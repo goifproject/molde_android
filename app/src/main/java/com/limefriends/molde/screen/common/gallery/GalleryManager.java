@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -28,16 +30,21 @@ public class GalleryManager {
 
         String[] projection = {
                 MediaStore.MediaColumns.DATA,
-                MediaStore.Images.Media.DATE_ADDED
+                // MediaStore.Images.Media.DATE_ADDED,
+                MediaStore.Images.ImageColumns.ORIENTATION
         };
 
         Cursor cursor = mContext.getContentResolver().query(uri, projection, null, null, null);
 
-        int columnIndexData = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+        int pathColumnIndex = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+        int orientationColumnIndex = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
 
         while (cursor.moveToNext()) {
 
-            PhotoVO photoVO = new PhotoVO(cursor.getString(columnIndexData),false);
+            String path = cursor.getString(pathColumnIndex);
+            int orientation = cursor.getInt(orientationColumnIndex);
+
+            PhotoVO photoVO = new PhotoVO(path,false, orientation);
             photoList.add(photoVO);
         }
 

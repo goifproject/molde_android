@@ -4,6 +4,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.limefriends.molde.common.helper.BitmapHelper;
 import com.limefriends.molde.screen.common.bottomNavigationViewHelper.BottomNavigationViewHelper;
 import com.limefriends.molde.screen.common.dialog.DialogFactory;
 import com.limefriends.molde.screen.common.dialog.DialogManager;
@@ -85,6 +86,7 @@ public class ViewFactory {
     private final ToastHelper mToastHelper;
     private final FragmentManager mFragmentManager;
     private final BottomNavigationViewHelper mBottomNavigationViewHelper;
+    private final BitmapHelper mBitmapHelper;
 
     public ViewFactory(LayoutInflater mLayoutInflater,
                        ImageLoader imageLoader,
@@ -92,7 +94,7 @@ public class ViewFactory {
                        DialogFactory dialogFactory,
                        ToastHelper toastHelper,
                        FragmentManager fragmentManager,
-                       BottomNavigationViewHelper bottomNavigationViewHelper) {
+                       BottomNavigationViewHelper bottomNavigationViewHelper, BitmapHelper bitmapHelper) {
         this.mLayoutInflater = mLayoutInflater;
         this.mImageLoader = imageLoader;
         this.mDialogFactory = dialogFactory;
@@ -100,6 +102,7 @@ public class ViewFactory {
         this.mToastHelper = toastHelper;
         this.mFragmentManager = fragmentManager;
         this.mBottomNavigationViewHelper = bottomNavigationViewHelper;
+        this.mBitmapHelper = bitmapHelper;
     }
 
     public <T extends ViewMvc> T newInstance(Class<T> viewClass, @Nullable ViewGroup container) {
@@ -153,7 +156,8 @@ public class ViewFactory {
             viewMvc = new FavoriteItemViewImpl(mLayoutInflater, container, mDialogFactory, mDialogManager);
         }
         else if (viewClass == ReportView.class) {
-            viewMvc = new ReportViewImpl(mLayoutInflater, container, mDialogFactory, mDialogManager, mToastHelper, this);
+            viewMvc = new ReportViewImpl(mLayoutInflater, container, mDialogFactory, mDialogManager,
+                    mToastHelper, this, mImageLoader, mBitmapHelper);
         }
         else if (viewClass == SearchLocationView.class) {
             viewMvc = new SearchLocationViewImpl(mLayoutInflater, container, this);

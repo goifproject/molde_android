@@ -8,7 +8,9 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
 
 public class ImageLoader {
 
@@ -28,6 +30,12 @@ public class ImageLoader {
         Glide.with(mContext)
                 .load(uri)
                 .into(imageView);
+    }
+
+    public void load(Uri uri, SimpleTarget<GlideDrawable> target) {
+        Glide.with(mContext)
+                .load(uri)
+                .into(target);
     }
 
     public void load(String url, ImageView imageView) {
