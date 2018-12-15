@@ -1,5 +1,6 @@
 package com.limefriends.molde.screen.common.view;
 
+import android.graphics.Bitmap;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -147,7 +148,7 @@ public class ViewFactory {
         }
         else if (viewClass == FeedDetailView.class) {
             viewMvc = new FeedDetailViewImpl(
-                    mLayoutInflater, container, this, mDialogFactory, mDialogManager, mToastHelper);
+                    mLayoutInflater, container, this, mDialogFactory, mDialogManager, mToastHelper, mBitmapHelper);
         }
         else if (viewClass == FavoriteView.class) {
             viewMvc = new FavoriteViewImpl(mLayoutInflater, container, this);

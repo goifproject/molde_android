@@ -25,6 +25,8 @@ ext {
     firebaseAuth = '16.0.3'
     firebaseUiAuth = '3.2.2'
     firebaseFacebookSDK = '4.36.0'
+    facebookLogin = '4.36.0'
+    facebookShare = '4.36.0'
 
     butterKnife = '8.8.1'
     androidAnnotations = '28.0.0'

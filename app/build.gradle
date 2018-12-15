@@ -97,7 +97,9 @@ dependencies {
     implementation "com.google.firebase:firebase-auth:$firebaseAuth"
     implementation "com.firebaseui:firebase-ui-auth:$firebaseUiAuth"
     // Facebook
-    implementation "com.facebook.android:facebook-android-sdk:$firebaseFacebookSDK"
+    // implementation "com.facebook.android:facebook-android-sdk:$firebaseFacebookSDK"
+    implementation "com.facebook.android:facebook-login:$facebookLogin"
+    implementation "com.facebook.android:facebook-share:$facebookShare"
 
 
 

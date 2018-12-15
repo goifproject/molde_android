@@ -1,6 +1,8 @@
 package com.limefriends.molde.common.app;
 
 import android.app.Application;
+import android.util.Log;
+
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;

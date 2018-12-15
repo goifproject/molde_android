@@ -1,6 +1,7 @@
 package com.limefriends.molde.screen.common.imageLoader;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -68,6 +69,13 @@ public class ImageLoader {
                 .load(url)
                 .placeholder(placeHolder)
                 .into(imageView);
+    }
+
+    public void loadBitmap(String uri, SimpleTarget<Bitmap> target) {
+        Glide.with(mContext)
+                .load(uri)
+                .asBitmap()
+                .into(target);
     }
 
 }

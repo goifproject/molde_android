@@ -1,6 +1,9 @@
 package com.limefriends.molde.screen.view.feed.detail;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.limefriends.molde.R;
+import com.limefriends.molde.common.helper.BitmapHelper;
 import com.limefriends.molde.common.util.DateUtil;
 import com.limefriends.molde.common.util.StringUtil;
 import com.limefriends.molde.model.entity.feed.FeedEntity;
@@ -29,6 +33,7 @@ import com.limefriends.molde.screen.common.toolbar.NestedToolbar;
 import com.limefriends.molde.screen.common.view.BaseObservableView;
 import com.limefriends.molde.screen.common.view.ViewFactory;
 
+import java.io.File;
 import java.util.List;
 
 import static com.limefriends.molde.common.Constant.ReportState.ACCEPTED;
@@ -40,9 +45,9 @@ import static com.limefriends.molde.common.Constant.ReportState.RECEIVING;
 public class FeedDetailViewImpl
         extends BaseObservableView<FeedDetailView.Listener> implements FeedDetailView, View.OnClickListener {
 
-    public static final String REFUSE_REPORTED_COMMENT_DIALOG = "REFUSE_REPORTED_COMMENT_DIALOG";
-    public static final String CANCEL_REPORT_FEED_DIALOG = "CANCEL_REPORT_FEED_DIALOG";
-    public static final String CHANGE_FEED_STATE_DIALOG = "CHANGE_FEED_STATE_DIALOG";
+    private static final String REFUSE_REPORTED_COMMENT_DIALOG = "REFUSE_REPORTED_COMMENT_DIALOG";
+    private static final String CANCEL_REPORT_FEED_DIALOG = "CANCEL_REPORT_FEED_DIALOG";
+    private static final String CHANGE_FEED_STATE_DIALOG = "CHANGE_FEED_STATE_DIALOG";
 
     private LinearLayout feed_detail_container;
     // 이미지 페이저
@@ -113,6 +118,7 @@ public class FeedDetailViewImpl
     private NestedToolbar mNestedToolbar;
     private ViewFactory mViewFactory;
     private ToastHelper mToastHelper;
+    private BitmapHelper mBitmapHelper;
     private ImagePagerAdapter<FeedImageEntity> mFeedImageAdapter;
 
     private SparseArrayCompat<Uri> imageSparseArray = new SparseArrayCompat<>();
@@ -125,13 +131,15 @@ public class FeedDetailViewImpl
                               ViewFactory viewFactory,
                               DialogFactory dialogFactory,
                               DialogManager dialogManager,
-                              ToastHelper toastHelper) {
+                              ToastHelper toastHelper,
+                              BitmapHelper bitmapHelper) {
         setRootView(inflater.inflate(R.layout.activity_feed_detail, parent, false));
 
         this.mDialogFactory = dialogFactory;
         this.mDialogManager = dialogManager;
         this.mViewFactory = viewFactory;
         this.mToastHelper = toastHelper;
+        this.mBitmapHelper = bitmapHelper;
 
         setupViews();
 
@@ -652,29 +660,42 @@ public class FeedDetailViewImpl
     }
 
     private void applyImage(Uri uri, int seq) {
-        switch (seq) {
-            case 1:
-                first_iamge.setImageURI(uri);
-                first_iamge_delete_button.setVisibility(View.VISIBLE);
-                break;
-            case 2:
-                second_iamge.setImageURI(uri);
-                second_iamge_delete_button.setVisibility(View.VISIBLE);
-                break;
-            case 3:
-                third_iamge.setImageURI(uri);
-                third_iamge_delete_button.setVisibility(View.VISIBLE);
-                break;
-            case 4:
-                forth_iamge.setImageURI(uri);
-                forth_iamge_delete_button.setVisibility(View.VISIBLE);
-                break;
-            case 5:
-                fifth_iamge.setImageURI(uri);
-                fifth_iamge_delete_button.setVisibility(View.VISIBLE);
-                break;
-        }
+        File file = new File(uri.getPath());
+        mBitmapHelper.saveBitmapToFileThread(mHandler, file, seq);
     }
+
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            int seq = msg.what;
+            File file = (File) msg.obj;
+            Bitmap bitmap = mBitmapHelper.extractThumnail(file, first_iamge.getWidth());
+            //  bitmap = mBitmapHelper.resize(file, first_iamge.getWidth());
+            switch (seq) {
+                case 1:
+                    first_iamge.setImageBitmap(bitmap);
+                    first_iamge_delete_button.setVisibility(View.VISIBLE);
+                    break;
+                case 2:
+                    second_iamge.setImageBitmap(bitmap);
+                    second_iamge_delete_button.setVisibility(View.VISIBLE);
+                    break;
+                case 3:
+                    third_iamge.setImageBitmap(bitmap);
+                    third_iamge_delete_button.setVisibility(View.VISIBLE);
+                    break;
+                case 4:
+                    forth_iamge.setImageBitmap(bitmap);
+                    forth_iamge_delete_button.setVisibility(View.VISIBLE);
+                    break;
+                case 5:
+                    fifth_iamge.setImageBitmap(bitmap);
+                    fifth_iamge_delete_button.setVisibility(View.VISIBLE);
+                    break;
+            }
+        }
+    };
 
 
     @Override

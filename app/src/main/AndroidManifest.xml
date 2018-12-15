@@ -9,9 +9,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.hardware.camera.autofocus" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -112,8 +112,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity
-            android:parentActivityName=".screen.controller.main.MoldeMainActivity"
             android:name=".screen.controller.feed.detail.FeedDetailActivity"
+            android:parentActivityName=".screen.controller.main.MoldeMainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNoBarTheme" />
         <activity

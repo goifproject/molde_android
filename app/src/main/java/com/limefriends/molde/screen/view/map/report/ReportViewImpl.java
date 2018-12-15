@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
@@ -368,7 +369,8 @@ public class ReportViewImpl
             int seq = msg.what;
             File file = (File) msg.obj;
             imageFileSparseArray.append(seq, file);
-            Bitmap bitmap = mBitmapHelper.resize(file, first_iamge.getWidth());
+            Bitmap bitmap = mBitmapHelper.extractThumnail(file, first_iamge.getWidth());
+            //  bitmap = mBitmapHelper.resize(file, first_iamge.getWidth());
             switch (seq) {
                 case 1:
                     first_iamge.setImageBitmap(bitmap);

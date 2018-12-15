@@ -3,6 +3,7 @@ package com.limefriends.molde.common.helper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.media.ThumbnailUtils;
 import android.os.Handler;
 import android.os.Message;
 import android.support.media.ExifInterface;
@@ -84,6 +85,7 @@ public class BitmapHelper {
         return save;
     }
 
+
     private boolean saveBitmapToFile(File file) {
 
         Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
@@ -135,6 +137,13 @@ public class BitmapHelper {
         rotatedBitmap = rotateBitmap(resizedBitmap, uri.getPath());
 
         return rotatedBitmap;
+    }
+
+    public Bitmap extractThumnail(File uri, int resize) {
+
+        Bitmap bitmap = BitmapFactory.decodeFile(uri.getPath());
+
+        return ThumbnailUtils.extractThumbnail(bitmap, resize, resize);
     }
 
     //회전방지
