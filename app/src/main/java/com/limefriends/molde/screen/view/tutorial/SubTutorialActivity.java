@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.limefriends.molde.common.helper.PreferenceUtil;
 import com.limefriends.molde.screen.controller.main.MoldeMainActivity;
@@ -42,7 +43,7 @@ public class SubTutorialActivity extends AppCompatActivity {
     @BindView(R.id.go_to_start_layout)
     FrameLayout go_to_start_layout;
     @BindView(R.id.go_to_start_button)
-    Button go_to_start_button;
+    TextView go_to_start_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

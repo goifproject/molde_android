@@ -219,7 +219,13 @@ public class ReportActivity extends BaseActivity implements ReportView.Listener 
                             finish();
                         },
                         err -> {
-                            mReportView.showSnackBar(getText(R.string.snackbar_network_error).toString());
+
+                            if (err.getMessage().startsWith("413")) {
+                                mReportView.showSnackBar("이미지 크기가 한도를 초과했습니다.");
+                            } else {
+                                mReportView.showSnackBar(getText(R.string.snackbar_network_error).toString());
+                            }
+                            mReportView.hideProgressIndication();
                             isReporting = false;
                         }
                 )

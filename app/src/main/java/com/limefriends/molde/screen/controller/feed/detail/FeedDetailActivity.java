@@ -226,7 +226,6 @@ public class FeedDetailActivity extends BaseActivity implements FeedDetailView.L
 
             @Override
             public void onError(Throwable e) {
-
             }
 
             @Override
@@ -266,7 +265,6 @@ public class FeedDetailActivity extends BaseActivity implements FeedDetailView.L
 
             @Override
             public void onError(Throwable e) {
-
             }
 
             @Override

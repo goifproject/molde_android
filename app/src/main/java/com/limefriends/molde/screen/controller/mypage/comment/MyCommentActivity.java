@@ -111,7 +111,10 @@ public class MyCommentActivity extends BaseActivity
                         .getMyComment(newsEntities, uId, perPage, page)
                         .subscribe(
                                 e -> {},
-                                err -> mMyCommentView.showSnackBar("작성한 댓글을 불러오는 중 오류가 발생했습니다."),
+                                err -> {
+                                    mMyCommentView.showSnackBar("작성한 댓글을 불러오는 중 오류가 발생했습니다.");
+                                    throw new RuntimeException("[MyCommentActivity][loadComment] " + err.getMessage());
+                                },
                                 () -> {
                                     Collections.sort(newsEntities, new CardNewsComparator());
                                     mMyCommentView.bindComments(newsEntities);
@@ -153,7 +156,10 @@ public class MyCommentActivity extends BaseActivity
                         .getReportedComment(perPage, page)
                         .subscribe(
                                 data::add,
-                                err -> mMyCommentView.showSnackBar("신고댓글을 불러오는 중 오류가 발생했습니다."),
+                                err -> {
+                                    mMyCommentView.showSnackBar("신고댓글을 불러오는 중 오류가 발생했습니다.");
+
+                                },
                                 () -> {
                                     if (data.size() == 0) {
                                         isLoading = false;

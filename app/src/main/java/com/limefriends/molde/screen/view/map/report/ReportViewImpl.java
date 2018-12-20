@@ -47,7 +47,10 @@ import com.limefriends.molde.screen.common.view.ViewFactory;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.limefriends.molde.common.Constant.Authority.ADMIN;
 import static com.limefriends.molde.common.Constant.Authority.GUARDIAN;
@@ -93,6 +96,7 @@ public class ReportViewImpl
     private DialogManager mDialogManager;
 
     private SparseArrayCompat<File> imageFileSparseArray = new SparseArrayCompat<>();
+    private Map<Integer, Boolean> imageFileReadySparseArray = new HashMap<>();
     private ArrayAdapter emailArrayAdapter;
     private ToastHelper mToastHelper;
     private ViewFactory mViewFactory;
@@ -318,6 +322,15 @@ public class ReportViewImpl
 
     private void sendReport() {
 
+        // seq 가 1부터이니 조심할 것
+        for (int i = 1; i < imageFileReadySparseArray.size()+1; i++) {
+            boolean ready = imageFileReadySparseArray.get(i);
+            if (!ready) {
+                showSnackBar("이미지를 로딩중입니다");
+                return;
+            }
+        }
+
         if (imageFileSparseArray == null || imageFileSparseArray.size() == 0) {
             showSnackBar(getContext().getText(R.string.snackbar_no_image).toString());
             return;
@@ -369,8 +382,8 @@ public class ReportViewImpl
             int seq = msg.what;
             File file = (File) msg.obj;
             imageFileSparseArray.append(seq, file);
-            Bitmap bitmap = mBitmapHelper.extractThumnail(file, first_iamge.getWidth());
-            //  bitmap = mBitmapHelper.resize(file, first_iamge.getWidth());
+            imageFileReadySparseArray.put(seq, true);
+            Bitmap bitmap = mBitmapHelper.extractThumbnail(file, first_iamge.getWidth());
             switch (seq) {
                 case 1:
                     first_iamge.setImageBitmap(bitmap);
@@ -397,11 +410,13 @@ public class ReportViewImpl
     };
 
     private void applyImage(String uri, int seq) {
+        imageFileReadySparseArray.put(seq, false);
         File file = new File(uri);
         mBitmapHelper.saveBitmapToFileThread(mHandler, file, seq);
     }
 
     private void applyImage(Uri uri, int seq) {
+        imageFileReadySparseArray.put(seq, false);
         File file = new File(uri.getPath());
         mBitmapHelper.saveBitmapToFileThread(mHandler, file, seq);
     }

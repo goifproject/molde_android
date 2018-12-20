@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
@@ -59,12 +60,12 @@ public class MoldeFirebaseMessagingService extends FirebaseMessagingService {
             if (type == TYPE_NEW_FEED) {
                 int push = PreferenceUtil.getInt(this, PREF_KEY_NEW_FEED_PUSH, DISALLOW_PUSH);
                 if (push == ALLOW_PUSH)
-                sendNotification(type, feedId, "새로운 신고", "즐겨찾기 지역에 신고가 발생했습니다.");
+                sendNotification(feedId, "새로운 신고", "즐겨찾기 지역에 신고가 발생했습니다.");
             }
             else if (type == TYPE_REPORT_STATE_CHANGE) {
                 int push = PreferenceUtil.getInt(this, PREF_KEY_FEED_CHANGE_PUSH, DISALLOW_PUSH);
                 if (push == ALLOW_PUSH)
-                sendNotification(type, feedId, "신고 상태 변화", "신고한 피드 상태가 변경되었습니다.");
+                sendNotification(feedId, "신고 상태 변화", "신고한 피드 상태가 변경되었습니다.");
             }
         }
     }
@@ -127,21 +128,22 @@ public class MoldeFirebaseMessagingService extends FirebaseMessagingService {
     /**
      * Create and show a simple notification containing the received FCM message.
      */
-    private void sendNotification(int type, int feedId, String title, String message) {
+    private void sendNotification(int feedId, String title, String message) {
 
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel nc = new NotificationChannel("molde_channel", title, NotificationManager.IMPORTANCE_DEFAULT);
-            nc.setDescription(message);
-            nc.enableLights(true);
-            nc.setLightColor(Color.GREEN);
-            mNotificationManager.createNotificationChannel(nc);
-        } else {
-            NotificationCompat.Builder mBuilder = createNotification(title, message);
-            mBuilder.setContentIntent(createGoFeedPendingIntent(feedId));
-            mNotificationManager.notify(1, mBuilder.build());
+            NotificationChannel channel = new NotificationChannel("molde_channel", title, NotificationManager.IMPORTANCE_HIGH);
+            //channel.setDescription(message);
+            //channel.enableLights(true);
+            //channel.setLightColor(Color.GREEN);
+            //mNotificationManager.createNotificationChannel(channel);
         }
+            NotificationCompat.Builder mBuilder = createNotification(title, message);
+            mBuilder.setChannelId("molde_channel");
+            mBuilder.setContentIntent(createGoFeedPendingIntent(feedId));
+            //mNotificationManager.notify(1, mBuilder.build());
+
     }
 
     private NotificationCompat.Builder createNotification(String title, String message) {

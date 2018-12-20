@@ -37,12 +37,9 @@ public class FeedFragment extends BaseFragment implements FeedView.Listener {
     private boolean isLoading;
     private boolean hasOnRefreshCalled;
 
-    @Service
-    private Repository.Feed mFeedRepository;
-    @Service
-    private ToastHelper mToastHelper;
-    @Service
-    private ViewFactory mViewFactory;
+    @Service private Repository.Feed mFeedRepository;
+    @Service private ToastHelper mToastHelper;
+    @Service private ViewFactory mViewFactory;
 
     private FeedView mFeedView;
 

@@ -670,7 +670,7 @@ public class FeedDetailViewImpl
             super.handleMessage(msg);
             int seq = msg.what;
             File file = (File) msg.obj;
-            Bitmap bitmap = mBitmapHelper.extractThumnail(file, first_iamge.getWidth());
+            Bitmap bitmap = mBitmapHelper.extractThumbnail(file, first_iamge.getWidth());
             //  bitmap = mBitmapHelper.resize(file, first_iamge.getWidth());
             switch (seq) {
                 case 1:
