@@ -43,6 +43,7 @@ public class ScrapActivity extends BaseActivity implements ScrapView.Listener {
 
     private boolean hasMoreToLoad = true;
     private boolean isLoading;
+    private boolean isFirst = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +60,7 @@ public class ScrapActivity extends BaseActivity implements ScrapView.Listener {
     protected void onStart() {
         super.onStart();
         mScrapView.registerListener(this);
-        loadMyScrap(PER_PAGE, currentPage);
+        if (isFirst) loadMyScrap(PER_PAGE, currentPage);
     }
 
     @Override
@@ -99,6 +100,7 @@ public class ScrapActivity extends BaseActivity implements ScrapView.Listener {
                                     currentlyShownList.addAll(data);
                                     currentPage++;
                                     isLoading = false;
+                                    isFirst = false;
                                     if (data.size() < PER_PAGE) {
                                         hasMoreToLoad(false);
                                     }

@@ -42,6 +42,7 @@ public class MyCommentActivity extends BaseActivity
     // 카드뉴스 목록
     private List<CardNewsEntity> newsEntities = new ArrayList<>();
     private boolean hasMoreToLoad = true;
+    private boolean isFirst = true;
     private long authority;
 
     @Service private Repository.Comment mCommentRepository;
@@ -51,6 +52,7 @@ public class MyCommentActivity extends BaseActivity
 
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private List<CommentEntity> currentlyShownReportedComment = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +73,7 @@ public class MyCommentActivity extends BaseActivity
 
         authority = PreferenceUtil.getLong(this, PREF_KEY_AUTHORITY, Constant.Authority.GUEST);
 
-        loadData();
+        if (isFirst) loadData();
 
     }
 
@@ -133,6 +135,8 @@ public class MyCommentActivity extends BaseActivity
                                     currentPage++;
 
                                     isLoading = false;
+
+                                    isFirst = false;
 
                                     mMyCommentView.hideProgressIndication();
                                 }

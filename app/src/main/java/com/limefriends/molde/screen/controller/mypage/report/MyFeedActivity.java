@@ -54,6 +54,7 @@ public class MyFeedActivity
     private long authority;
     private String userId;
     private boolean isLoading;
+    private boolean isFirst = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +77,7 @@ public class MyFeedActivity
 
         userId = FirebaseAuth.getInstance().getUid();
 
-        loadMyReport(PER_PAGE, currentPage);
+        if (isFirst) loadMyReport(PER_PAGE, currentPage);
     }
 
     @Override
@@ -120,6 +121,9 @@ public class MyFeedActivity
                                     currentlyShownMyFeed.addAll(entities);
                                     // 7. 추가 완료 후 다음 페이지로 넘어가도록 세팅
                                     currentPage++;
+
+                                    isFirst = false;
+
                                     if (entities.size() < PER_PAGE) {
                                         setHasMoreToLoad(false);
                                     }

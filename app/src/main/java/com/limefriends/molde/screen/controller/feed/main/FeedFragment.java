@@ -167,22 +167,27 @@ public class FeedFragment extends BaseFragment implements FeedView.Listener {
                 isByDistanceFirstCall = false;
 
                 if (hasOnRefreshCalled) {
-                    mFeedView.setRefreshDone();
                     mFeedView.clearFeed();
+                    mFeedView.setRefreshDone();
                     hasOnRefreshCalled = false;
                 }
 
+                // 아예 데이터가 없거나 불러오는데 오류가 생긴 경우
                 if (unfilteredData.size() == 0) {
                     hasMoreToLoad(false);
                     return;
                 }
 
-
-                mFeedView.bindLastData(DateUtil.fromLongToDate(currentlyShownData.get(0).getRepDate()));
+                if (filteredData.size() != 0) {
+                    mFeedView.bindLastData(DateUtil.fromLongToDate(currentlyShownData.get(0).getRepDate()));
+                } else {
+                    mToastHelper.showShortToast("신고된 피드를 처리중입니다.");
+                }
 
                 mFeedView.bindFeed(filteredData);
                 currentPage++;
 
+                // 불러온 개수가 10개 미만일 경우 더 이상 호출하지 않는다
                 if (unfilteredData.size() < PER_PAGE) {
                     hasMoreToLoad(false);
                 }
