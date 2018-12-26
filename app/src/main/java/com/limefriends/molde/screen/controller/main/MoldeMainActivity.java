@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.util.SparseArrayCompat;
 import android.transition.Slide;
 import android.transition.TransitionInflater;
+import android.util.Log;
 import android.widget.FrameLayout;
 
 import com.limefriends.molde.R;
@@ -81,8 +82,6 @@ public class MoldeMainActivity extends BaseActivity
     @Override
     protected void onStart() {
         super.onStart();
-
-
     }
 
     public void changeTab(int fragmentId) {
