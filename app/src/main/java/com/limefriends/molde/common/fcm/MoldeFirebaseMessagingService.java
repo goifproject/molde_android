@@ -59,13 +59,14 @@ public class MoldeFirebaseMessagingService extends FirebaseMessagingService {
 
             if (type == TYPE_NEW_FEED) {
                 int push = PreferenceUtil.getInt(this, PREF_KEY_NEW_FEED_PUSH, DISALLOW_PUSH);
-                if (push == ALLOW_PUSH)
-                sendNotification(feedId, "새로운 신고", "즐겨찾기 지역에 신고가 발생했습니다.");
-            }
-            else if (type == TYPE_REPORT_STATE_CHANGE) {
+                if (push == ALLOW_PUSH) {
+                    sendNotification(feedId, "새로운 신고", "즐겨찾기 지역에 신고가 발생했습니다.");
+                }
+            } else if (type == TYPE_REPORT_STATE_CHANGE) {
                 int push = PreferenceUtil.getInt(this, PREF_KEY_FEED_CHANGE_PUSH, DISALLOW_PUSH);
-                if (push == ALLOW_PUSH)
-                sendNotification(feedId, "신고 상태 변화", "신고한 피드 상태가 변경되었습니다.");
+                if (push == ALLOW_PUSH) {
+                    sendNotification(feedId, "신고 상태 변화", "신고한 피드 상태가 변경되었습니다.");
+                }
             }
         }
     }
@@ -133,17 +134,18 @@ public class MoldeFirebaseMessagingService extends FirebaseMessagingService {
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("molde_channel", title, NotificationManager.IMPORTANCE_HIGH);
-            //channel.setDescription(message);
-            //channel.enableLights(true);
-            //channel.setLightColor(Color.GREEN);
-            //mNotificationManager.createNotificationChannel(channel);
+            NotificationChannel channel = new NotificationChannel("molde_channel", title, NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription(message);
+            channel.enableLights(true);
+            channel.enableVibration(true);
+            channel.setLockscreenVisibility(Notification.VISIBILITY_SECRET);
+            channel.setLightColor(Color.GREEN);
+            mNotificationManager.createNotificationChannel(channel);
         }
-            NotificationCompat.Builder mBuilder = createNotification(title, message);
-            mBuilder.setChannelId("molde_channel");
-            mBuilder.setContentIntent(createGoFeedPendingIntent(feedId));
-            //mNotificationManager.notify(1, mBuilder.build());
-
+        NotificationCompat.Builder mBuilder = createNotification(title, message);
+        mBuilder.setChannelId("molde_channel");
+        mBuilder.setContentIntent(createGoFeedPendingIntent(feedId));
+        mNotificationManager.notify(1, mBuilder.build());
     }
 
     private NotificationCompat.Builder createNotification(String title, String message) {
@@ -168,7 +170,7 @@ public class MoldeFirebaseMessagingService extends FirebaseMessagingService {
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
 
-        Intent baseIntent = new Intent (this, MoldeMainActivity.class);
+        Intent baseIntent = new Intent(this, MoldeMainActivity.class);
         stackBuilder.addParentStack(MoldeMainActivity.class);
         stackBuilder.addNextIntent(baseIntent);
 
